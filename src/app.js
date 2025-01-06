@@ -1,9 +1,9 @@
 import Header from "./component/header.js";
-import Column from "./component/column.js";
+import Body from "./component/body.js";
 
 const root = document.getElementById("root");
 const header = Header();
-const column = Column();
+const body = Body();
 
 root.innerHTML += `${header}`;
-root.innerHTML += `${column}`;
+root.innerHTML += `${body}`;

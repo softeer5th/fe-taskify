@@ -1,4 +1,4 @@
-export default function Column() {
+export default function Body() {
   const column = "";
   return `<div class="column">
         ${column}
