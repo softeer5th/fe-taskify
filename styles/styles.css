@@ -1,0 +1,23 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+.header {
+  height: 5vh;
+  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner__header {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.column__section {
+  height: 95vh;
+  border: 1px solid blue;
+}
