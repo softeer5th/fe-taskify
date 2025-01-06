@@ -13,43 +13,36 @@
 .display-bold24 {
   font-weight: var(--bold-large);
   font-size: var(--size-large);
-  color: var(--color-text-default);
 }
 
 .display-bold16 {
   font-weight: var(--bold-large);
   font-size: var(--size-medium);
-  color: var(--color-text-default);
 }
 
 .display-bold14 {
   font-weight: var(--bold-large);
   font-size: var(--size-regular);
-  color: var(--color-text-default);
 }
 
 .display-bold12 {
   font-weight: var(--bold-large);
   font-size: var(--size-small);
-  color: var(--color-text-default);
 }
 
 .display-medium16 {
   font-weight: var(--bold-medium);
   font-size: var(--size-medium);
-  color: var(--color-text-default);
 }
 
 .display-medium14 {
   font-weight: var(--bold-medium);
   font-size: var(--size-regular);
-  color: var(--color-text-default);
 }
 
 .display-medium12 {
   font-weight: var(--bold-medium);
   font-size: var(--size-small);
-  color: var(--color-text-default);
 }
 
 .selected-bold16 {
