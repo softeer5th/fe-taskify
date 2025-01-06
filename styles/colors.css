@@ -1,0 +1,18 @@
+:root {
+  --color-text-strong: #14142b;
+  --color-text-bold: #4e4b66;
+  --color-text-default: #6e7191;
+  --color-text-weak: #a0a3bd;
+  --color-text-white-default: #fefefe;
+  --color-text-white-weak: #f7f7fc;
+  --color-text-brand: #007aff;
+  --color-text-danger: #ff3b30;
+
+  --color-surface-default: #fefefe;
+  --color-surface-alt: #f7f7fc;
+  --color-surface-brand: #007aff;
+  --color-surface-danger: #ff3b30;
+
+  --color-border-default: #eff0f6;
+  --color-border-bord: #bec1d5;
+}

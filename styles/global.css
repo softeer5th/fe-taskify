@@ -2,3 +2,7 @@
   box-sizing: border-box;
   font-family: "Pretendard Variable", Pretendard, sans-serif;
 }
+
+html {
+  font-size: 10px;
+}

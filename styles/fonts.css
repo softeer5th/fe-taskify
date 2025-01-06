@@ -1,0 +1,73 @@
+@import "./colors.css";
+
+:root {
+  --bold-large: 700;
+  --bold-medium: 500;
+
+  --size-large: 24px;
+  --size-medium: 16px;
+  --size-regular: 14px;
+  --size-small: 12px;
+}
+
+.display-bold24 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-large);
+  color: var(--color-text-default);
+}
+
+.display-bold16 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-medium);
+  color: var(--color-text-default);
+}
+
+.display-bold14 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-regular);
+  color: var(--color-text-default);
+}
+
+.display-bold12 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-small);
+  color: var(--color-text-default);
+}
+
+.display-medium16 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-medium);
+  color: var(--color-text-default);
+}
+
+.display-medium14 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-regular);
+  color: var(--color-text-default);
+}
+
+.display-medium12 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-small);
+  color: var(--color-text-default);
+}
+
+.selected-bold16 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-medium);
+}
+
+.selected-bold14 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-regular);
+}
+
+.available-medium16 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-medium);
+}
+
+.available-medium14 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-regular);
+}
