@@ -1,0 +1,17 @@
+{
+  "name": "fe-taskify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^9.17.0",
+    "eslint-config-ham-javascript": "^0.0.11",
+    "eslint-plugin-prettier": "^5.2.1"
+  }
+}
