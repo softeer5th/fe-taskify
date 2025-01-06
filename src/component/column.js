@@ -6,12 +6,14 @@ export default function Column({ id, title, tasks }) {
         <div class="column__header">
             <h4 class="column__header--title">${title}</h4>
             <p class="column__header--count">${tasks.length}</p>
-            <button class="column__header--button--add">
-                +
-            </button>
-            <button class="column__header--button--delete">
-                ×
-            </button>
+            <div class="column__header--button">
+                <button class="column__header--button--add">
+                    +
+                </button>
+                <button class="column__header--button--delete">
+                    ×
+                </button>
+            </div>
         </div>
         <div class="column__body">
             ${tasks
