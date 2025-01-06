@@ -63,6 +63,7 @@ table {
     .header__button--sort {
         display: flex;
         align-items: center;
+        align-content: center;
         justify-content: center;
         width: auto;
         height: 24px;
@@ -74,8 +75,8 @@ table {
         font-family: 'Pretendard Variable', sans-serif;
         font-size: 0.75rem;
         font-weight: 500;
-        line-height: 16px;
         color: #4E4B66;
+        overflow: visible;
         white-space: nowrap;
     }
 
