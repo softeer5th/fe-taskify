@@ -39,25 +39,6 @@ Vanilla JS로  React의 컴포넌트 기반 개발 방식을 구현.
 - 실행 취소: 마지막 작업(등록, 삭제, 수정, 이동) 을 취소.
 - 다시 실행: 취소한 작업을 다시 실행.
 
-## 📂 폴더 구조
-
-fe-taskify/
-├── index.html            # 메인 HTML 파일
-├── css/                  # 스타일 파일
-│   └── styles.css        # 메인 스타일 시트
-├── js/                   # JavaScript 파일
-│   ├── components/       # UI 컴포넌트
-│   │   ├── Column.js      # 칼럼 컴포넌트
-│   │   ├── Card.js           # 카드 컴포넌트
-│   │   ├── History.js       # 히스토리 컴포넌트
-│   │   └── Alert.js    # 알림 컴포넌트
-│   ├── state/            # 상태 관리
-│   │   ├── store.js      # 중앙 상태 저장소
-│   │   └── actions.js    # 상태 변경 액션 정의
-│   ├── app.js            # 메인 애플리케이션 로직
-│   └── utils.js          # 유틸리티 함수
-└── [README.md](http://readme.md/)             # 프로젝트 개요
-
 ## 📅 작업 계획
 
 ### 1주차 기능 범위
