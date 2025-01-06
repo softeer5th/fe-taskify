@@ -1,3 +1,5 @@
+import { createDeleteModal } from "../script/task.js";
+
 export function onSubmit(e, idx) {
     // 새로고침 방지
     e.preventDefault();
@@ -20,6 +22,10 @@ export function onSubmit(e, idx) {
             <button>수정</button>
         </div>
     `
+    const buttons = newCard.getElementsByTagName('button');
+    const deleteButton = buttons[0];
+    deleteButton.addEventListener('click', ()=>createDeleteModal(newCard));
+    
     column.appendChild(newCard);
 
     // newCard 컴포넌트 삭제
