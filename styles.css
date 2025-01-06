@@ -20,7 +20,7 @@
 }
 
 .todos {
-    width: 160px;
+    width: 320px;
 }
 
 .todos__header {
@@ -56,7 +56,36 @@
     list-style-type: none;
     width: 100%;
 }
+.todos__body__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+.todos__body__item__left-container {
+    display: flex;
+    flex-direction: column;
+}
+.todos__body__item__title {
 
+}
+.todos__body__item__content {
+
+}
+.todos__body__item__author {
+
+}
+
+.todos__body__item__right-container {
+    display: flex;
+    flex-direction: column;
+}
+.todos__body__item__delete-btn {
+
+}
+.todos__body__item__modify-btn {
+
+}
 
 ul, li {
     /* list-style-position: inside; */
