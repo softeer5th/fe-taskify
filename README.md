@@ -8,9 +8,9 @@
 
 ---
 - [ ] Skeleton Layout
-  - [ ] Header
+  - [x] Header
   - [ ] Main
-  - [ ] Footer
+  - [x] Footer
 ---
 - [ ] storage
     - [ ] Add
