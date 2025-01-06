@@ -19,6 +19,7 @@
     - [ ] Move
     - [ ] Undo
     - [ ] Redo
+    - [ ] Make API
 ---
 - [ ] Header
   - [ ] Logo
@@ -49,6 +50,8 @@
     - [ ] Add Card
     - [ ] Delete Card
     - [ ] Edit Column Name
+    - [ ] OverFlow Control
+      - [ ] Scroll
 ---
 - [ ] Footer
   - [ ] FAB btn
