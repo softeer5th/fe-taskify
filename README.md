@@ -1,9 +1,6 @@
 # fe-taskify
-## With Html Css Js
-### Project Architecture
-```
-미 정
-```
+
+
 ### Development Plan
 
 ---
