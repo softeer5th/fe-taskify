@@ -1,4 +1,28 @@
-import { createDeleteModal } from "../script/task.js";
+import { createDeleteModal, editTask } from "../script/task.js";
+
+export function onEdit(e, card) {
+    // 새로고침 방지
+    e.preventDefault();
+    const newTitle = e.target.title.value;
+    const newContent = e.target.content.value;
+    card.innerHTML = `
+    <div class="card_text_container">
+            <h4>${newTitle}</h4>
+            <p>${newContent}</p>
+        </div>
+        <div class="card_button_container">
+            <button>삭제</button>
+            <button>수정</button>
+        </div>
+    `
+
+    // 이벤트 새 등록
+    const buttons = card.getElementsByTagName('button');
+    const deleteButton = buttons[0];
+    deleteButton.addEventListener('click', ()=>createDeleteModal(card));
+    const editButton = buttons[1];
+    editButton.addEventListener('click', ()=>editTask(card, newTitle, newContent));
+}
 
 export function onSubmit(e, idx) {
     // 새로고침 방지
@@ -22,9 +46,13 @@ export function onSubmit(e, idx) {
             <button>수정</button>
         </div>
     `
+
+    // 이벤트 등록
     const buttons = newCard.getElementsByTagName('button');
     const deleteButton = buttons[0];
     deleteButton.addEventListener('click', ()=>createDeleteModal(newCard));
+    const editButton = buttons[1];
+    editButton.addEventListener('click', ()=>editTask(newCard, title, content));
     
     column.appendChild(newCard);
 
