@@ -3,6 +3,37 @@
     border-color: #000000;
     border-style: solid;
 }
+
+:root {
+    --color-grayscale-50: #FEFEFE;
+    --color-grayscale-100: #F7F7FC;
+    --color-grayscale-200: #EFFOF6;
+    --color-grayscale-300: #D9DBE9;
+    --color-grayscale-400: #BEC1D5;
+    --color-grayscale-500: #AOA3BD;
+    --color-grayscale-600: #6E7191;
+    --color-grayscale-700: #4E4B66;
+    --color-grayscale-800: #2A2A44;
+    --color-grayscale-900: #14142B;
+    --color-accent-blue: #007AFF;
+    --color-accent-red: #FF3B30;
+
+    --text-strong: var(--color-grayscale-900);
+    --text-bold: var(--color-grayscale-700);
+    --text-default: var(--color-grayscale-600);
+    --text-weak: var(--color-grayscale-500);
+    --text-white-default: var(--color-grayscale-50);
+    --text-white-weak: var(--color-grayscale-100);
+    --text-brand: var(--color-accent-blue);
+    --text-danger: var(--color-accent-red);
+    --surface-default: var(--color-grayscale-50);
+    --surface-alt: var(--color-grayscale-100);
+    --surface-brand: var(--color-accent-blue);
+    --surface-danger: var(--color-accent-red);
+    --border-default: var(--color-grayscale-200);
+    --border-bord: var(--color-grayscale-400);
+}
+
 .body {
     width: 100%;
     height: 100%;
