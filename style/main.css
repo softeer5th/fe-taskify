@@ -10,6 +10,7 @@ main {
     list-style-type: none;
 }
 
+
 .column {
     width: 320px;
     margin-right: 32px;
@@ -47,4 +48,8 @@ main {
     display: flex;
     flex-direction: column;
     padding: 3px;
+}
+
+.card_form {
+    
 }
