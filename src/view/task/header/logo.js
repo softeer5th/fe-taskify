@@ -1,11 +1,10 @@
-import Component from "../../components/component.js";
+import Component from "../../../components/component.js";
 
-export class Column extends Component{
-
+export class Logo extends Component {
 
     children = {};
 
-    events = []; 
+    events = [];
 
     constructor() {
         super();
@@ -13,7 +12,7 @@ export class Column extends Component{
 
     template() {
         return `
-            <div>Column</div>
+            <div>Logo</div>
         `;
     }
 
@@ -32,8 +31,8 @@ export class Column extends Component{
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({listenerName, callback});
+        this.events.push({ listenerName, callback });
 
     }
-    
+
 }

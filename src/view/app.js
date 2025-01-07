@@ -1,6 +1,6 @@
 import Component from "../components/component.js";
-import { Header } from "./header/header.js";
-import { Column } from "./column/column.js";
+import { Header } from "./task/header/header.js";
+import { Column } from "./task/column/column.js";
 
 export class App extends Component {
 
