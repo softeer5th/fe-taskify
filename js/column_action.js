@@ -2,9 +2,9 @@ export function addCard(id) {
     const parentElement = document.querySelector('.column-idnum'+id);
     const childElement = parentElement.querySelector("#card-list");
 
-    const li = document.createElement('li');
-    li.className = 'new-card';
-    li.innerHTML = `
+    const newDiv = document.createElement('div');
+    newDiv.className = 'new-card';
+    newDiv.innerHTML = `
         <div class="card-info">
             <input class="card-title" type="text" placeholder="제목을 입력하세요" />
             <input class="card-content" type="text" placeholder="내용을 입력하세요" />
@@ -13,6 +13,7 @@ export function addCard(id) {
             <button class="cancel-button">
                 취소
             </button>
+            <div style="width:10px"></div>
             <button class="confirm-button">
                 등록    
             </button>
@@ -22,7 +23,7 @@ export function addCard(id) {
     if (newCard) {
         newCard.remove();
     } else {
-        childElement.appendChild(li);
+        childElement.appendChild(newDiv);
     }
 }
 
