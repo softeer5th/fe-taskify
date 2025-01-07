@@ -15,4 +15,30 @@
 
   --color-border-default: #eff0f6;
   --color-border-bord: #bec1d5;
+
+  --grayscale50: #fefefe;
+  --grayscale100: #f7f7fc;
+  --grayscale200: #eff0f6;
+  --grayscale300: #d9d8e8;
+  --grayscale400: #bec1d5;
+  --grayscale500: #a0a3bd;
+  --grayscale600: #6e7191;
+  --grayscale700: #4e4b66;
+  --grayscale800: #2a2a44;
+  --grayscale900: #14142b;
+  --accent-blue: #007aff;
+  --accent-red: #ff3b30;
+}
+
+.shadow-normal {
+  box-shadow: 0px 1px 4px rgba(110, 128, 145, 24%);
+}
+
+.shadow-up {
+  box-shadow: 0px 2px 8px rgba(110, 128, 145, 32%);
+}
+
+.shadow-floating {
+  box-shadow: 0px 0px 4px rgba(110, 128, 145, 8%),
+    0px 0px 16px rgba(110, 128, 145, 24%);
 }
