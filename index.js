@@ -1,4 +1,4 @@
-import { createNode, createButtonNode, createImgNode } from "./dom.js";
+import { createNode, createButtonNode, createTextareaNode } from "./dom.js";
 
 const $TODO_ADD_BUTTON = document.querySelector("#todo__section .add__button");
 
@@ -10,56 +10,90 @@ const handleEditTodo = () => {
   alert("edit");
 };
 
-const createColumnItem = () => {
-  const $columnItem = createNode("div", null, "column__item");
+const handleCancel = () => {
+  alert("cancel");
+};
 
-  const $textContainer = createNode("div", null, "column__item__textContainer");
+const handleSubmit = () => {
+  alert("submit");
+};
 
+const handleInputTitle = (event) => {
+  const value = event.target.value;
+};
+
+const handleInputContent = (event) => {
+  const value = event.target.value;
+};
+
+const handleResizeTitle = (event) => {
+  const $textarea = event.target;
+  $textarea.style.height = $textarea.scrollHeight + "px";
+};
+
+const handleResizeContent = (event) => {
+  const $textarea = event.target;
+  $textarea.style.height = $textarea.scrollHeight + "px";
+};
+
+const createTextBox = () => {
   const $textBox = createNode("div", null, "column__item__textBox");
-  const $title = createNode(
-    "div",
-    null,
-    "column__item__title display-bold14",
-    "Github 공부하기"
-  );
-  const $content = createNode(
-    "div",
-    null,
-    "column__item__content display-medium14",
-    "add, commit, push"
-  );
+
+  const $title = createTextareaNode({
+    id: "title",
+    className: "column__item__title display-bold14",
+    handleChange: handleResizeTitle,
+    placeholder: "제목을 입력하세요",
+    handleInput: handleInputTitle,
+  });
+  const $content = createTextareaNode({
+    id: "content",
+    className: "column__item__content display-medium14",
+    handleChange: handleResizeContent,
+    placeholder: "내용을 입력하세요",
+    handleInput: handleInputContent,
+  });
+
   $textBox.appendChild($title);
   $textBox.appendChild($content);
 
-  const $userAgent = createNode(
-    "span",
-    null,
-    "userAgent display-medium12",
-    "author by web"
-  );
+  return $textBox;
+};
 
-  $textContainer.appendChild($textBox);
-  $textContainer.appendChild($userAgent);
-
-  const $buttonContainer = createNode(
+const createAddButtonContainer = () => {
+  const $addButtonContainer = createNode(
     "div",
     null,
-    "column__item__buttonContainer"
+    "column__item__addButtonContainer"
+  );
+  const $closeButton = createButtonNode(
+    null,
+    "close__button",
+    "취소",
+    handleCancel
+  );
+  const $submitButton = createButtonNode(
+    null,
+    "submit__button",
+    "등록",
+    handleSubmit
   );
 
-  const $deleteButton = createButtonNode(null, null, null, handleDeleteTodo);
-  const $deleteImg = createImgNode("./assets/icon/closed.svg", "닫기");
-  $deleteButton.appendChild($deleteImg);
+  $addButtonContainer.appendChild($closeButton);
+  $addButtonContainer.appendChild($submitButton);
 
-  const $editButton = createButtonNode(null, null, null, handleEditTodo);
-  const $editImg = createImgNode("./assets/icon/edit.svg", "수정");
-  $editButton.appendChild($editImg);
+  return $addButtonContainer;
+};
 
-  $buttonContainer.appendChild($deleteButton);
-  $buttonContainer.appendChild($editButton);
+const createColumnItem = () => {
+  const $columnItem = createNode("div", null, "column__item");
+  const $textContainer = createNode("div", null, "column__item__textContainer");
+  const $textBox = createTextBox();
+  const $addButtonContainer = createAddButtonContainer();
 
+  $textContainer.appendChild($textBox);
   $columnItem.appendChild($textContainer);
-  $columnItem.appendChild($buttonContainer);
+  $columnItem.appendChild($addButtonContainer);
   return $columnItem;
 };
 

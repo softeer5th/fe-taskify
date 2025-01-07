@@ -32,3 +32,20 @@ export const createImgNode = (src, alt) => {
 
   return $img;
 };
+
+export const createTextareaNode = ({
+  id = null,
+  className = null,
+  handleChange,
+  handleInput,
+  placeholder = "",
+}) => {
+  const $textarea = createNode("textarea", id, className);
+  $textarea.rows = 1;
+  $textarea.placeholder = placeholder ?? undefined;
+
+  $textarea.addEventListener("change", handleChange);
+  $textarea.addEventListener("input", handleInput);
+
+  return $textarea;
+};
