@@ -1,10 +1,22 @@
+
+@font-face {
+    font-family: 'pretendard';
+    src: url('./assets/fonts/Pretendard-Medium.woff');
+}
+
+@font-face {
+    font-family: 'pretendard-bold';
+    src: url('./assets/fonts/Pretendard-Bold.woff');
+}
+
 * {
     border-width: 1px;
     border-color: #000000;
     border-style: solid;
+    font-family: 'pretendard';
 }
-
 :root {
+    
     --color-grayscale-50: #FEFEFE;
     --color-grayscale-100: #F7F7FC;
     --color-grayscale-200: #EFFOF6;
@@ -17,37 +29,43 @@
     --color-grayscale-900: #14142B;
     --color-accent-blue: #007AFF;
     --color-accent-red: #FF3B30;
-
-    --text-strong: var(--color-grayscale-900);
-    --text-bold: var(--color-grayscale-700);
-    --text-default: var(--color-grayscale-600);
-    --text-weak: var(--color-grayscale-500);
-    --text-white-default: var(--color-grayscale-50);
-    --text-white-weak: var(--color-grayscale-100);
-    --text-brand: var(--color-accent-blue);
-    --text-danger: var(--color-accent-red);
-    --surface-default: var(--color-grayscale-50);
-    --surface-alt: var(--color-grayscale-100);
-    --surface-brand: var(--color-accent-blue);
-    --surface-danger: var(--color-accent-red);
-    --border-default: var(--color-grayscale-200);
-    --border-bord: var(--color-grayscale-400);
-}
+    
+    --color-bg: var(--color-grayscale-100);
+    --color-text-strong: var(--color-grayscale-900);
+    --color-text-bold: var(--color-grayscale-700);
+    --color-text-default: var(--color-grayscale-600);
+    --color-text-weak: var(--color-grayscale-500);
+    --color-text-white-default: var(--color-grayscale-50);
+    --color-text-white-weak: var(--color-grayscale-100);
+    --color-text-brand: var(--color-accent-blue);
+    --color-text-danger: var(--color-accent-red);
+    --color-surface-default: var(--color-grayscale-50);
+    --color-surface-alt: var(--color-grayscale-100);
+    --color-surface-brand: var(--color-accent-blue);
+    --color-surface-danger: var(--color-accent-red);
+    --color-border-default: var(--color-grayscale-200);
+    --color-border-bord: var(--color-grayscale-400);
+}color-
 
 .body {
     width: 100%;
+    background-color: var();
     height: 100%;
 }
 
 .header {
-    background-color: #ffffff;
     padding: 10px 30px;
-    font-size: 24px;
-    font-weight: bold;
 }
+.header__title {
+    color: var(--color-text-bold);
+    font-family: 'pretendard-bold';
+    font-size: 24px;
+}
+
 .main {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .todos {
@@ -76,10 +94,10 @@
 .todos__header__todo-count {
     
 }
-.todos__header__add {
+.todos__header__add-btn {
 
 }
-.todos__header__delete {
+.todos__header__delete-btn {
 
 }
 
@@ -118,8 +136,28 @@
 
 }
 
+.btn {
+    width: 24px;
+    height: 24px;
+    padding: 10px;
+    border-radius: 50%;
+}
+.add-btn {
+    width: 24px;
+    height: 24px;
+    padding: 10px;
+    border-radius: 50%;
+}
+.add-btn:hover {
+    background-color: var(--color-accent-blue);
+}
+
 ul, li {
     /* list-style-position: inside; */
     margin: 0;
     padding: 0;
+}
+button {
+    all: unset;
+    display: inline-block;
 }
