@@ -9,7 +9,9 @@
 <body class="body">
     <header class="header">
         <h1 class="header__title">TASKIFY</h1>
-        <img class="btn activity-history-btn" src="./assets/icon/history.png">
+        <button class="btn activity-history__toggle-btn">
+            <img  src="./assets/icon/history.png">
+        </button>
     </header>
     <main class="main">
         <section class="todos">
@@ -47,34 +49,24 @@
                 </li>
             </ul>
         </section>
-        <section class="todos">
-            <div class="todos__header">
-                <div class="todos__header__title">하고 있는 일</div>
-                <div class="todos__header__todo-count">0</div>
-                <div class="todos__header__add">+</div>
-                <div class="todos__header__delete">X</div>
+        <section class="activity-history">
+            <div class="activity-history__header">
+                <h2 class="activity-history__title">사용자 활동 기록</h2>
+                <button class="activity-history__close-container">
+                    <img src="./assets/icon/closed.png">
+                    <h3 class="activity-history__close-label">닫기</h3>
+                </button>
             </div>
-            <ul class="todos__body">
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
+            <ul class="activity-history__body">
+                <li class="activity-history__item">
+                    <img class="activity-history__item__profile" src="./assets/icon/plus.png">
+                    <div>
+                        <h3 class="activity-history__item__nickname">@멋진삼</h3>
+                        <h3 class="activity-history__item__content">내용내용내용내용내용내용내용내용내용내용</h3>
+                        <h3 class="activity-history__item__time">3분 전</h3>
+                    </div>
+                </li>
             </ul>
-        </section>
-        <section class="todos">
-            <div class="todos__header">
-                <div class="todos__header__title">완료한 일</div>
-                <div class="todos__header__todo-count">0</div>
-                <div class="todos__header__add">+</div>
-                <div class="todos__header__delete">X</div>
-            </div>
-            <ul class="todos__body">
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-            </ul>
-        </section>
-        <section >
-
         </section>
     </main>
 </body>
