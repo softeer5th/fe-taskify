@@ -21,7 +21,7 @@
 │   ├── `history.css`           # History modal styles
 │   └── `column.css`            # Column styles ( card lists )
 │
-├── `js directories`                    # JavaScript files ( Can be divided into more directories )
+├── `js`                    # JavaScript files ( Can be divided into more directories )
 │   ├── storage          # Storage and history management functions (add, delete, edit, undo, redo, etc.)
 │   ├── card               # Card functions (add, delete, edit, drag, drop, etc.)
 │   ├── column          # Column management functions (add, delete, rename, etc.)
