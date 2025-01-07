@@ -80,7 +80,7 @@ const createTaskBox = (type, list, task = null) => {
             taskBox.replaceWith(task);
         } else {
             const newTask = createTaskElement(type, titleInput.value, contentInput.value);
-            list.appendChild(newTask);
+            list.insertBefore(newTask, list.firstChild);
             taskBox.remove();
         }
     };
