@@ -84,3 +84,7 @@ section {
         gap: 8px;
     }
 }
+
+.list {
+    min-height: 300px;
+}

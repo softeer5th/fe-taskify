@@ -18,11 +18,13 @@ function createSection(containerId, title) {
         </div>
         <ul class="list" id="list-${containerId}"></ul>
     `;
-
     container.appendChild(section);
+
+    const ulElement = document.getElementById(`list-${containerId}`);
 
     document.getElementById(`plus-${containerId}`).addEventListener('click', () => {
         toggleTaskBox(`list-${containerId}`, title);
+        ulElement.style.height = `${ulElement.scrollHeight + 300}px`;
     });
 }
 
@@ -30,6 +32,60 @@ export const DOMLoaded = () => {
     createSection('todo', '해야할 일');
     createSection('doing', '하고 있는 일');
     createSection('done', '완료한 일');
+
+    initializeDragAndDrop();
+};
+
+const initializeDragAndDrop = () => {
+    const lists = ['list-todo', 'list-doing', 'list-done'];
+
+    lists.forEach(listId => {
+        const list = document.getElementById(listId);
+
+        list.addEventListener('dragstart', (e) => {
+            e.target.classList.add('dragging');
+        });
+
+        list.addEventListener('dragend', (e) => {
+            e.target.classList.remove('dragging');
+        });
+
+        list.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        list.addEventListener('drop', (e) => {
+            e.preventDefault();
+
+            const afterElement = getDragAfterElement(list, e.clientY);
+            const draggable = document.querySelector('.dragging');
+            if (draggable) {
+                if (afterElement) {
+                    list.insertBefore(draggable, afterElement);
+                } else {
+                    list.appendChild(draggable);
+                }
+                console.log(list.scrollHeight);
+                list.style.height = `${list.scrollHeight + 300}px`;
+            }
+        });
+    });
+};
+
+const getDragAfterElement = (list, y) => {
+    const draggableElements = [...list.querySelectorAll('.task-item:not(.dragging)')];
+
+    const result = draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+
+    return result;
 };
 
 const toggleTaskBox = (listId, type) => {
