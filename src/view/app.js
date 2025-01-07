@@ -1,26 +1,49 @@
-import Component from "/components/component.js";
-
+import Component from "../components/component.js";
+import { Header } from "./header/header.js";
+import { Column } from "./column/column.js";
 
 export class App extends Component {
-    constructor(parent) {
+
+    children = {};
+    events = [];
+
+    constructor() {
         super();
-        this.parent = parent;
-        this.state = {};
-        this.events = [];
+        this.children = {
+            header: {
+                object: new Header(),
+                parentSelector: "#header",
+            },
+            column: {
+                object: new Column(),
+                parentSelector: "#column",
+            },
+        };
     }
 
     template() {
         return `
-            <div id = "header">hi</div>
-            <div id = "column">hello </div>
+            <div id = "header"></div>
+            <div id = "column"> </div>
         `;
     }
 
-    render() {
-        this.parent.innerHTML = this.template();
+    render(parent) {
+
+        parent.innerHTML = this.template();
+
+        for (const key in this.children) {
+            const parent = document.querySelector(this.children[key].parentSelector);
+            this.children[key].object.render(parent);
+        }
+
+        this.events.forEach(({ listenerName, callback }) => {
+            this.template.addEventListener(listenerName, callback);
+        });
     }
 
-    addEvent() {
+    addEvent(listenerName, callback) {
+        this.events.push({ listenerName, callback });
 
     }
 }

@@ -1,4 +1,6 @@
 :root {
+    margin: 0 auto;
+
     --color_text_strong: #14142B;
     --color_text_bold: #4E4B66;
     --color_text_default: #6E7191;
