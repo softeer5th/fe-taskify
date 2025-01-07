@@ -8,5 +8,132 @@
 
 body {
     font-family: "Pretendard";
-    background-color: #F7F7FC;  
+}
+
+:root {
+    --grayscale_50: #FEFEFE;
+    --grayscale_100: #F7F7FC;
+    --grayscale_200: #EFF0F6;
+    --grayscale_300: #D9DBE9;
+    --grayscale_400: #BEC1D5;
+    --grayscale_500: #A0A3BD;
+    --grayscale_600: #6E7191;
+    --grayscale_700: #4E4B66;
+    --grayscale_800: #2A2A44;
+    --grayscale_900: #14142B;
+    --accent_red: #FF3B30;
+    --accent_blue: #007AFF;
+}
+
+.text-strong {
+    color: var(--grayscale_900);
+}
+
+.text-bold {
+    color: var(--grayscale_700);
+}
+
+.text-default {
+    color: var(--grayscale_600);
+}
+
+.text-weak {
+    color: var(--grayscale_500);
+}
+
+.text-white-default {
+    color: var(--grayscale_50);
+}
+
+.text-white-weak {
+    color: var(--grayscale_100);
+}
+
+.text-brand {
+    color: var(--accent_blue);
+}
+
+.text-danger {
+    color: var(--accent_red);
+}
+
+.surface-default {
+    background-color: var(--grayscale_50);
+}
+
+.surface-alt {
+    background-color: var(--grayscale_100);
+}
+
+.surface-brand {
+    background-color: var(--accent_blue);
+}
+
+.surface-danger {
+    background-color: var(--accent_red);
+}
+
+.border-default {
+    border-color: var(--grayscale_200);
+}
+
+.border-bord {
+    border-color: var(--grayscale_400);
+}
+
+.display-bold24 {
+    font-size: 24px;
+    line-height: auto;
+    font-weight: 700;
+}
+
+.display-bold16 {
+    font-size: 16px;
+    line-height: auto;
+    font-weight: 700;
+}
+
+.display-bold14 {
+    font-size: 14px;
+    line-height: auto;
+    font-weight: 700;
+}
+
+.display-bold12 {
+    font-size: 12px;
+    line-height: auto;
+    font-weight: 700;
+}
+
+.display-medium16 {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 500;
+}
+
+.display-medium14 {
+    font-size: 14px;
+    line-height: auto;
+    font-weight: 500;
+}
+
+.display-medium12 {
+    font-size: 12px;
+    line-height: auto;
+    font-weight: 500;
+}
+
+.shadow-normal {
+    box-shadow: 0px 1px 4px rgba(110, 113, 145, 0.24);
+}
+
+.shadow-up {
+    box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.32);
+    backdrop-filter: blur(4px)
+
+}
+
+.shadow-floating {
+    box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
+    box-shadow: 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
 }
