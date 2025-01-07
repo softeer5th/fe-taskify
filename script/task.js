@@ -1,7 +1,7 @@
 import CardForm, { onCancelEdit, onEdit, onSubmit } from "../components/cardForm.js";
 import Modal from "../components/modal.js";
 import { renderTasks } from "./column.js";
-import { columns } from "./index.js";
+import { columns, handleDrag } from "./index.js";
 import { createModalChildren } from "./modal.js";
 
 export function createDeleteModal(task) {
@@ -11,13 +11,17 @@ export function createDeleteModal(task) {
     body.appendChild(modal);
 }
 
+
+
 export function createTask(task) {
     const {title, content, created, column} = task;
     
     // 새 카드 컴포넌트 생성
     const newCard = document.createElement('li')
     newCard.setAttribute('class', 'card')
+    newCard.setAttribute('draggable', 'true')
     newCard.innerHTML = taskHTML({title, content});
+    newCard.addEventListener("dragstart", (e)=>handleDrag(e, task));
     // 이벤트 등록
     taskEventHandler(newCard, task);
 
