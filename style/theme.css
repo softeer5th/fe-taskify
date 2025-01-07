@@ -1,0 +1,51 @@
+:root {
+    /* Grayscale Colors */
+    --grayscale-50: #FEFEFE;
+    --grayscale-100: #F7F7FC;
+    --grayscale-200: #EFF0F6;
+    --grayscale-300: #D9DBE9;
+    --grayscale-400: #BEC1D5;
+    --grayscale-500: #A0A3BD;
+    --grayscale-600: #6E7191;
+    --grayscale-700: #4E4B66;
+    --grayscale-800: #2A2A44;
+    --grayscale-900: #14142B;
+    /* Accent Colors */
+    --accent-blue: #007AFF;
+    --accent-red: #FF3B30;
+}
+
+.bold24 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.bold16 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.bold14 {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.bold12 {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.medium16 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.medium14 {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.medium12 {
+    font-size: 12px;
+    font-weight: 500;
+}
