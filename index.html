@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Somin An's Taskify</title>
+    <link rel="stylesheet" href="./styles/globalStyles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="service-title">
+        <p class="service-name">TASKIFY</p>
+        <p class="sort-method"></p>
+      </div>
+      <div class="service-history">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 7.8V12H16.2"
+            stroke="#6E7191"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path
+            d="M12 19C15.8661 19 19 15.8661 19 12C19 8.1339 15.8661 5 12 5C8.1339 5 5 8.1339 5 12C5 15.8661 8.1339 19 12 19Z"
+            stroke="#6E7191"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </div>
+    </header>
+    <main class="column-area">
+      <section class="todo-wrapper">
+        <!-- 카드 추가하는 부분 -->
+        <div class="add-container">
+          <div class="container-text">
+            <div class="container-title">해야할 일</div>
+            <div class="card-count">2</div>
+          </div>
+          <div class="container-icon">
+            <div class="add-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99805H13V10.998H19V12.998Z"
+                  fill="#A0A3BD" />
+              </svg>
+            </div>
+            <div class="delete-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z"
+                  fill="#A0A3BD" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- 카드 부분 -->
+        <article class="card-container">
+          <div class="card">
+            <div class="card-contents-icons-box">
+              <div class="card-texts">
+                <p class="title" aria-placeholder="제목"></p>
+                <p class="content" aria-placeholder="내용"></p>
+              </div>
+              <div class="card-icons">
+                <!-- x 아이콘 -->
+                <div class="card-delete-icon">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z"
+                      fill="#A0A3BD" />
+                  </svg>
+                </div>
+                <!-- 편집 아이콘 -->
+                <div class="card-edit-icon">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M13.727 6.72708L14.9642 5.48991C15.1194 5.33459 15.3038 5.21139 15.5066 5.12733C15.7095 5.04327 15.927 5 16.1466 5C16.3662 5 16.5836 5.04327 16.7865 5.12733C16.9894 5.21139 17.1737 5.33459 17.329 5.48991L18.511 6.67191C18.8244 6.98542 19.0005 7.41059 19.0005 7.8539C19.0005 8.29722 18.8244 8.72238 18.511 9.0359L17.2738 10.2731M13.727 6.72708L5.68877 14.7645C5.41122 15.042 5.24018 15.4084 5.2056 15.7994L5.00331 18.0898C4.99244 18.2115 5.00842 18.3342 5.0501 18.4491C5.09178 18.564 5.15816 18.6684 5.24456 18.7549C5.33096 18.8414 5.43528 18.9078 5.55016 18.9496C5.66503 18.9914 5.78768 19.0075 5.90945 18.9968L8.19988 18.7945C8.59145 18.7603 8.95845 18.5892 9.23642 18.3113L17.2738 10.2731M13.727 6.72708L17.2738 10.2731"
+                      stroke="#A0A3BD"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- card-btn-box 은 + 버튼 누르면 보이는 영역 -->
+            <div class="card-btn-box">
+              <button class="cancel-btn"></button>
+              <button class="add-btn"></button>
+            </div>
+          </div>
+        </article>
+      </section>
+      <section class="doing-wrapper">
+        <!-- 카드 추가하는 부분 -->
+        <div class="add-container">
+          <div class="container-text">
+            <div class="container-title">하고 있는 일</div>
+            <div class="card-count">1</div>
+          </div>
+          <div class="container-icon">
+            <div class="container-icon">
+              <div class="add-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99805H13V10.998H19V12.998Z"
+                    fill="#A0A3BD" />
+                </svg>
+              </div>
+              <div class="delete-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z"
+                    fill="#A0A3BD" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 카드 부분 -->
+        <article class="card-container">
+          <div class="card">
+            <div class="card-contents-icons-box">
+              <div class="card-texts">
+                <p class="title" aria-placeholder="제목"></p>
+                <p class="content" aria-placeholder="내용"></p>
+              </div>
+              <div class="card-icons">
+                <!-- x 아이콘 -->
+                <div class="card-delete-icon">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z"
+                      fill="#A0A3BD" />
+                  </svg>
+                </div>
+                <!-- 편집 아이콘 -->
+                <div class="card-edit-icon">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M13.727 6.72708L14.9642 5.48991C15.1194 5.33459 15.3038 5.21139 15.5066 5.12733C15.7095 5.04327 15.927 5 16.1466 5C16.3662 5 16.5836 5.04327 16.7865 5.12733C16.9894 5.21139 17.1737 5.33459 17.329 5.48991L18.511 6.67191C18.8244 6.98542 19.0005 7.41059 19.0005 7.8539C19.0005 8.29722 18.8244 8.72238 18.511 9.0359L17.2738 10.2731M13.727 6.72708L5.68877 14.7645C5.41122 15.042 5.24018 15.4084 5.2056 15.7994L5.00331 18.0898C4.99244 18.2115 5.00842 18.3342 5.0501 18.4491C5.09178 18.564 5.15816 18.6684 5.24456 18.7549C5.33096 18.8414 5.43528 18.9078 5.55016 18.9496C5.66503 18.9914 5.78768 19.0075 5.90945 18.9968L8.19988 18.7945C8.59145 18.7603 8.95845 18.5892 9.23642 18.3113L17.2738 10.2731M13.727 6.72708L17.2738 10.2731"
+                      stroke="#A0A3BD"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- card-btn-box 은 + 버튼 누르면 보이는 영역 -->
+            <div class="card-btn-box">
+              <button class="cancel-btn"></button>
+              <button class="add-btn"></button>
+            </div>
+          </div>
+        </article>
+      </section>
+      <section class="done-wrapper">
+        <!-- 카드 추가하는 부분 -->
+        <div class="add-container">
+          <div class="container-text">
+            <div class="container-title">완료한 일</div>
+            <div class="card-count">0</div>
+          </div>
+          <div class="container-icon">
+            <div class="container-icon">
+              <div class="add-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99805H13V10.998H19V12.998Z"
+                    fill="#A0A3BD" />
+                </svg>
+              </div>
+              <div class="delete-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z"
+                    fill="#A0A3BD" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <article class="card-container">
+          <div class="card">
+            <div class="card-contents-icons-box">
+              <div class="card-texts">
+                <p class="title" aria-placeholder="제목"></p>
+                <p class="content" aria-placeholder="내용"></p>
+              </div>
+              <div class="card-icons">
+                <i>+</i>
+                <i>x</i>
+              </div>
+            </div>
+            
+            <div class="card-btn-box">
+              <button class="cancel-btn"></button>
+              <button class="add-btn"></button>
+            </div>
+          </div>
+        </article> -->
+      </section>
+    </main>
+  </body>
+</html>
