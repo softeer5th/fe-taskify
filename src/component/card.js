@@ -1,4 +1,4 @@
-export default function Card({ id, title, description, createdAt, device }) {
+export default function Card({ id, title, description, device }) {
   const card = document.createElement("div");
   card.className = "card";
   card.dataset.cardId = id;
