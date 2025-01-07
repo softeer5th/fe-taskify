@@ -2,5 +2,5 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 8rem;
+    padding: 2rem 0;
 }
