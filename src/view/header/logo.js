@@ -1,17 +1,10 @@
 import Component from "../../components/component.js";
-import { Logo } from "./logo.js";
 
+export class Logo extends Component {
 
-export class Header extends Component{
+    children = {};
 
-    children = {
-        logo: {
-            object: new Logo(),
-            selector: "#logo",
-        }
-    };
-
-    events = []; 
+    events = [];
 
     constructor() {
         super();
@@ -19,7 +12,7 @@ export class Header extends Component{
 
     template() {
         return `
-            <div id ="logo"> ${this.children.logo.object.template()}</div>
+            <div>Logo</div>
         `;
     }
 
@@ -38,8 +31,8 @@ export class Header extends Component{
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({listenerName, callback});
+        this.events.push({ listenerName, callback });
 
     }
-    
+
 }

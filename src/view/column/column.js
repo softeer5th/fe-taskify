@@ -7,14 +7,13 @@ export class Column extends Component{
 
     events = []; 
 
-    constructor(parent) {
+    constructor() {
         super();
-        this.parent = parent;
     }
 
     template() {
         return `
-            <div >Column</div>
+            <div>Column</div>
         `;
     }
 

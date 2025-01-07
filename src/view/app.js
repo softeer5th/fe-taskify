@@ -23,8 +23,8 @@ export class App extends Component {
 
     template() {
         return `
-            <div id = "header"></div>
-            <div id = "column"> </div>
+            <div id = "header"> ${this.children.header.object.template()}</div>
+            <div id = "column">  ${this.children.column.object.template()}</div>
         `;
     }
 
