@@ -34,17 +34,17 @@
     
 ```
 ### Development Plan
-1. Super Simple Layout ✅
-2. Storage setting (add , delete, edit, redo ..,,etc )
-3. Task adding  
-4. Card Sorting
-5. Card editing ( + delete)
-6. Card moving
-7. History manager
-8. Column manager
-9. FAB button
-10. Design 
-11. Refactor
+0. Super Simple Layout ✅
+1. Storage setting (add , delete, edit, redo ..,,etc )
+2. Task adding  
+3. Card Sorting
+4. Card editing ( + delete)
+5. Card moving
+6. History manager
+7. Column manager
+8. FAB button
+9. Design 
+10. Refactor
 ---
 
 ### Things to do 
