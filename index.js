@@ -54,7 +54,7 @@ const handleSubmit = (e) => {
     "span",
     null,
     "userAgent display-medium12",
-    "author by web"
+    `author by ${getDeviceType()}`
   );
 
   const $buttonContainer = createEditButtonContainer();
@@ -199,3 +199,11 @@ const addTodoItem = () => {
 };
 
 $TODO_ADD_BUTTON.addEventListener("click", handleClickAdd);
+
+const getDeviceType = () => {
+  if ("ontouchstart" in document.documentElement) {
+    return "mobile";
+  }
+
+  return "web";
+};
