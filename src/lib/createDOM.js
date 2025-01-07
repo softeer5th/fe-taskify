@@ -25,7 +25,9 @@ export const createDOM = (node) => {
   }
 
   const element = document.createElement(node.type);
-
+  Object.entries(node.props).forEach(([key, value]) => {
+    element.setAttribute(key, value.toString());
+  });
   node.children.forEach((child) => element.appendChild(createDOM(child)));
 
   return element;

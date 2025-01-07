@@ -1,6 +1,19 @@
-import { createElement } from "../lib/createElement.js";
+import { parser } from "../lib/index.js";
 
 // eslint-disable-next-line
-const App = () => createElement("div", null, createElement("h1", null, "HI!!!"), createElement("h2", null, "My name is Hamm"));
+const App = () => {
+  const container = "hihi";
+
+  return (
+    parser`
+        <div class=${container}>
+            <div>
+                <h1>HI!!!</h1>
+                <h2>My name is Hamm</h2>
+            </div>
+            <div>hello</div>
+        </div>`
+  );
+};
 
 export default App;
