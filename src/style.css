@@ -228,6 +228,10 @@ table {
             cursor: pointer;
             font-size: 1.2rem;
             color: #A0A3BD;
+
+            &:hover {
+                color: #FF3B30;
+            }
         }
     }
 }
