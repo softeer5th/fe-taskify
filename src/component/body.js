@@ -12,21 +12,27 @@ const mockTask = [
   { id: 3, title: "HTML/CSS 공부하기", description: "input 태그 실습", createdAt: "1736181611", device: "web" },
 ];
 
-function addNewTask(columnId, task) {
-  const column = mockColumn.find((column) => column.id === columnId);
-  column.tasks.push(task.id);
-  mockTask.push(task);
-}
-
-export default function Body() {
+export default function Body(orderBy = "latest") {
   const body = document.createElement("div");
   body.className = "body";
 
   mockColumn.forEach((column) => {
+    const tasks = [...column.tasks].map((taskId) => mockTask.find((task) => task.id === taskId));
+    tasks.sort((a, b) => {
+      if (orderBy === "latest") {
+        return b.createdAt - a.createdAt;
+      } else if (orderBy === "oldest") {
+        return a.createdAt - b.createdAt;
+      } else {
+        return 0;
+      }
+    });
+
+    console.log(tasks);
     body.appendChild(
       Column({
         ...column,
-        tasks: column.tasks.map((taskId) => mockTask.find((task) => task.id === taskId)),
+        tasks: tasks,
       })
     );
   });
