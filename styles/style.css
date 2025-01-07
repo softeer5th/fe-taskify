@@ -1,0 +1,57 @@
+.total-wrapper {
+  padding: 0px 80px;
+}
+header {
+  padding: 18px 0px 17px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.service-title {
+  display: flex;
+}
+.service-name {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28.64px;
+}
+
+main {
+  margin-top: 32px;
+  display: flex;
+}
+.column-area section {
+  margin-right: 24px;
+  width: 320px;
+}
+.add-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 16px;
+}
+.add-container-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.add-container-icon {
+  display: flex;
+}
+.add-icon {
+  margin-right: 8px;
+}
+.container-title {
+  font-size: 16px;
+  line-height: 18.75px;
+  text-align: left;
+}
+.card-count {
+  margin-left: 8px;
+  padding: 5px 8px;
+  font-size: 12px;
+  line-height: 14.06px;
+  text-align: center;
+  border: 1px var(--border-default) solid;
+
+  border-radius: 8px;
+}
