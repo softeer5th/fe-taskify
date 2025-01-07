@@ -28,7 +28,6 @@ export default function Body(orderBy = "latest") {
       }
     });
 
-    console.log(tasks);
     body.appendChild(
       Column({
         ...column,
