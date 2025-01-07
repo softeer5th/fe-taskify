@@ -1,3 +1,4 @@
+import Test from "../components/test.js";
 import { parser } from "../lib/index.js";
 
 // eslint-disable-next-line
@@ -12,6 +13,7 @@ const App = () => {
                 <h2>My name is Hamm</h2>
             </div>
             <div>hello</div>
+            ${Test()}
         </div>`
   );
 };
