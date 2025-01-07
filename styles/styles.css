@@ -67,9 +67,11 @@
 }
 
 .column__item {
+  width: 32rem;
+  height: 13rem;
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  justify-content: space-between;
   background-color: var(--color-surface-default);
   padding: 1.6rem;
   border-radius: 0.8rem;
@@ -98,7 +100,7 @@
   .submit__button {
     color: var(--color-text-white-default);
     background-color: var(--color-surface-brand);
-    opacity: 1;
+    transition: all 0.2s;
   }
 
   .submit__button:disabled {
@@ -110,6 +112,7 @@
     width: 100%;
     padding: 0.75rem 0;
     border-radius: 1.2rem;
+    height: 3.2rem;
   }
 }
 

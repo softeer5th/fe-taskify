@@ -142,3 +142,7 @@ button {
     color: black;
   }
 }
+
+textarea {
+  padding: 0;
+}

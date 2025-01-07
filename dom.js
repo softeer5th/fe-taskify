@@ -1,7 +1,9 @@
 export const createNode = (tagName, id = null, className = null, text) => {
   const node = document.createElement(tagName);
 
-  node.id = id ?? undefined;
+  if (id) {
+    node.id = id;
+  }
 
   className &&
     className.split(" ").forEach((className) => {
