@@ -67,12 +67,44 @@
     padding: 0px 20px;
 }
 
-/* .header {
-} */
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0px 20px;
+}
 .header__title {
     color: var(--color-text-bold);
     font: var(--font-bold-l);
     font-size: 24px;
+}
+.activity-history-btn {
+    margin: 0px 20px;
+}
+.activity-history {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: var(--color-surface-default);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 5px 0px;
+    box-shadow: var(--shadow-normal);
+}
+.activyti-history__header {
+
+}
+.activity-history__title {
+}
+.activity-history__close-container {
+
+}
+.activity-history__close-btn {
+
+}
+.activity-history__close-label {
+
 }
 
 .main {
@@ -84,6 +116,7 @@
 
 .todos {
     width: 320px;
+    margin: 0px 8px;
 }
 
 .todos__header {
@@ -111,7 +144,7 @@
 }
 .todos__header__todo-count {
     border-radius: 4px;
-    border-width: 0.5px;
+    border-width: 1px;
     border-color: var(--color-border-default);
     padding: 3px 6px;
     margin: 0px 10px;
@@ -153,6 +186,9 @@
 .todos__body__item__right-container {
     display: flex;
     flex-direction: column;
+    position: relative;
+    top: -6px;
+    right: -6px;
 }
 .todos__body__item__delete-btn {
 
@@ -178,14 +214,4 @@
 }
 .delete-btn:hover {
     background-color: var(--color-accent-red);
-}
-
-ul, li {
-    /* list-style-position: inside; */
-    margin: 0;
-    padding: 0;
-}
-button {
-    all: unset;
-    display: inline-block;
 }
