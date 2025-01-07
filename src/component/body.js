@@ -13,17 +13,17 @@ const mockTask = [
 ];
 
 export default function Body() {
-  const columns = mockColumn
-    .map(
-      (column) => `
-        ${Column({
-          ...column,
-          tasks: column.tasks.map((taskId) => mockTask.find((task) => task.id === taskId)),
-        })}
-        `
-    )
-    .join("");
-  return `<div class="body">
-        ${columns}
-    </div>`;
+  const body = document.createElement("div");
+  body.className = "body";
+
+  mockColumn.forEach((column) => {
+    body.appendChild(
+      Column({
+        ...column,
+        tasks: column.tasks.map((taskId) => mockTask.find((task) => task.id === taskId)),
+      })
+    );
+  });
+
+  return body;
 }
