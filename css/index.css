@@ -1,0 +1,21 @@
+* {
+    font-family: var(--todo-font-family);
+}
+
+.container{
+    display: flex;
+    background-color: var(--todo-surface-alt);
+}
+.nav-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px 80px;
+}
+
+.nav-bar-text { 
+    font-size: var(--todo-font-size-large);
+    font-weight: var(--todo-font-weight-bold);
+    color: var(--todo-text-strong);
+}
