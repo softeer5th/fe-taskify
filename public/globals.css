@@ -6,6 +6,11 @@
     box-sizing: border-box;
 }
 
+button {
+    background: none;
+    border: none;
+}
+
 body {
     font-family: "Pretendard";
 }
@@ -136,4 +141,16 @@ body {
 .shadow-floating {
     box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
     box-shadow: 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+}
+
+.rounded-100 {
+    border-radius: 8px;
+}
+
+.rounded-200 {
+    border-radius: 16px;
+}
+
+.rounded-500 {
+    border-radius: 50%;
 }

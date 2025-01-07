@@ -5,48 +5,86 @@
     <link rel="stylesheet" href="public/globals.css">
     <link rel="stylesheet" href="public/header.css">
     <link rel="stylesheet" href="public/main.css">
+    <link rel="stylesheet" href="public/form.css">
+    <link rel="stylesheet" href="public/modal.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 
-<body class="surface-default">
+<body class="surface-alt">
     <header>
-        <h1>TASKIFY</h1>
-        <button>log</button>
+        <h1 class="text-strong display-bold24">TASKIFY</h1>
+        <button>
+            <img width="24" height="24" src="/public/icon/clock.svg"/>
+        </button>
     </header>
     <main>
         <ul id="column_container">
             <li class="column" index="0">
-                <h3 class="column-title">
+                <h3 class="column_title text-bold display-bold16">
                     해야할 일
-                    <span class="column_task_counter">2</span>
-                    <span class="column_button_container"><button>추가</button><button>삭제</button></span>
+                    <span class="column_task_counter text-weak display-medium12">2</span>
+                    <span class="column_button_container">
+                        <button>
+                            <img width="24" height="24" src="/public/icon/plus.svg" />
+                        </button>
+                        <button>
+                            <img width="24" height="24" src="/public/icon/closed.svg" />
+                        </button>
+                    </span>
                 </h3>
                 <div class="card_add"></div>
                 <ol class="card_list">
-
+                    <li class="card surface-default shadow-normal rounded-100" draggable="true">
+                        <div class="card_text_container">
+                            <h4 class="text-strong display-bold14">1</h4>
+                            <p class="text-weak display-medium14">1</p>
+                        </div>
+                        <div class="card_button_container">
+                            <button>
+                                <img width="24" height="24" src="/public/icon/closed.svg"/>
+                            </button>
+                            <button>
+                                <img width="24" height="24" src="/public/icon/edit.svg"/>
+                            </button>
+                        </div>
+                    </li>
                 </ol>
             </li>
             <li class="column" index="1">
-                <h3 class="column_title">
+                <h3 class="column_title text-bold display-bold16">
                     하고 있는 일
-                    <span class="column_task_counter">2</span>
-                    <span class="column_button_container"><button>추가</button><button>삭제</button></span>
+                    <span class="column_task_counter text-weak display-medium12">2</span>
+                    <span class="column_button_container">
+                        <button>
+                            <img width="24" height="24" src="/public/icon/plus.svg" />
+                        </button>
+                        <button>
+                            <img width="24" height="24" src="/public/icon/closed.svg" />
+                        </button>
+                    </span>
                 </h3>
                 <div class="card_add"></div>
                 <ol class="card_list">
 
                 </ol>
             </li>
-            <li class="column" index="2"> 
-                <h3 class="column_title">
+            <li class="column" index="2">
+                <h3 class="column_title text-bold display-bold16">
                     완료한 일
-                    <span class="column_task_counter">2</span>
-                    <span class="column_button_container"><button>추가</button><button>삭제</button></span>
+                    <span class="column_task_counter text-weak display-medium12">2</span>
+                    <span class="column_button_container">
+                        <button>
+                            <img width="24" height="24" src="/public/icon/plus.svg" />
+                        </button>
+                        <button>
+                            <img width="24" height="24" src="/public/icon/closed.svg" />
+                        </button>
+                    </span>
                 </h3>
                 <div class="card_add"></div>
-                <ol class="card_list" >
+                <ol class="card_list">
 
                 </ol>
             </li>

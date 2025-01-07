@@ -18,7 +18,7 @@ export function createTask(task) {
     
     // 새 카드 컴포넌트 생성
     const newCard = document.createElement('li')
-    newCard.setAttribute('class', 'card')
+    newCard.setAttribute('class', 'card surface-default shadow-normal rounded-100')
     newCard.setAttribute('draggable', 'true')
     newCard.innerHTML = taskHTML({title, content});
     newCard.addEventListener("dragstart", (e)=>handleDrag(e, task));
@@ -48,14 +48,18 @@ export function editTask(cardElement, task) {
 
 export function taskHTML({title, content}) {
     return (
-        `
+    `
         <div class="card_text_container">
-            <h4>${title}</h4>
-            <p>${content}</p>
+            <h4 class="text-strong display-bold14">${title}</h4>
+            <p class="text-weak display-medium14">${content}</p>
         </div>
         <div class="card_button_container">
-            <button>삭제</button>
-            <button>수정</button>
+            <button>
+                <img width="24" height="24" src="/public/icon/closed.svg"/>
+            </button>
+            <button>
+                <img width="24" height="24" src="/public/icon/edit.svg"/>
+            </button>
         </div>
     `
     )

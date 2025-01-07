@@ -13,6 +13,7 @@ main {
 
 .column {
     width: 320px;
+    min-width: 320px;
     margin-right: 32px;
     &:last-of-type {
         margin: 0;
@@ -27,6 +28,15 @@ main {
     display: flex;
     align-items: center;
     padding: 0 16px;
+    span {
+        display: flex;
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
 }
 
 .column_button_container {
@@ -36,11 +46,15 @@ main {
 .card {
     display: flex;
     flex-direction: row;
-    border: 1px black solid;
+    margin-top: 10px;
+    padding: 16px;
 }
 
 .card_text_container {
     flex-grow: 1;
+    h4 {
+        margin-bottom: 8px;
+    }
 }
 
 .card_button_container {
@@ -48,25 +62,4 @@ main {
     display: flex;
     flex-direction: column;
     padding: 3px;
-}
-
-.card_form {
-    
-}
-
-#modal {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(0,0,0,0.6);
-}
-
-#modal > div {
-    background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
