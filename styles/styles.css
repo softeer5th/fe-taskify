@@ -20,6 +20,9 @@
 .activity-history__toggle-btn {
     margin: 0px 20px;
 }
+.activity-history__toggle-btn:hover {
+    background-color: var(--color-accent-blue);
+}
 .activity-history {
     display: flex;
     flex-direction: column;
