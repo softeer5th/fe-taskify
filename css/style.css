@@ -25,14 +25,14 @@ header .material-icons {
 }
 
 
-.column-area {
+#column-area {
     list-style: none;
     display: flex;
     width: 100%;
 }
 
 
-.column-area li {
+#column-area li {
     width: 25%;
     min-width: 120px;
     max-width: 320px;
