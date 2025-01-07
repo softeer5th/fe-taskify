@@ -1,0 +1,60 @@
+/* Typography System 설정  */
+:root{
+    --todo-font-weight-bold: 700;
+    --todo-font-weight-medium: 500;
+    --todo-font-size-large: 24px;
+    --todo-font-size-medium: 16px;
+    --todo-font-size-regular: 14px;
+    --todo-font-size-small: 12px;
+}
+
+:root{
+    --todo-font-family : "Pretendard Variable"
+}
+
+/* Color System 설정 */
+:root {
+    --todo-gray-color-50: #fefefe;
+    --todo-gray-color-100: #f7f7fc;
+    --todo-gray-color-200: #eff0f6;
+    --todo-gray-color-300: #d9dbe9;
+    --todo-gray-color-400: #bec1d5;
+    --todo-gray-color-500: #a0a3bd;
+    --todo-gray-color-600: #6e7191;
+    --todo-gray-color-700: #4e4b66;
+    --todo-gray-color-800: #2a2a44;
+    --todo-gray-color-900: #14142b;
+    --todo-accent-color-blue: #007aff;
+    --todo-accent-color-red: #ff3b30;
+}
+
+:root{
+    --todo-text-strong: var(--todo-gray-color-900);
+    --todo-text-bold: var(--todo-gray-color-700);
+    --todo-text-default: var(--todo-gray-color-600);
+    --todo-text-weak: var(--todo-gray-color-500);
+    --todo-text-white-default: var(--todo-gray-color-50);
+    --todo-text-white-weak: var(--todo-gray-color-100);
+    --todo-text-brand: var(--todo-accent-color-blue);
+    --todo-text-danger: var(--todo-accent-color-red);
+    --todo-surface-default: var(--todo-gray-color-50);
+    --todo-surface-alt: var(--todo-gray-color-100);
+    --todo-surface-brand: var(--todo-accent-color-blue);
+    --todo-surface-danger: var(--todo-accent-color-red);
+    --todo-border-default: var(--todo-gray-color-200);
+    --todo-border-bord: var(--todo-gray-color-400);
+}
+
+/* Number System 설정 */
+:root {
+    --todo-number-50 : 4;
+    --todo-number-100 : 8;
+    --todo-number-200 : 16;
+    --todo-number-300 : 24;
+    --todo-number-400 : 32;
+    --todo-number-500 : 40;
+    --todo-number-600 : 48;
+    --todo-number-700 : 56;
+    --todo-number-800 : 64;
+    --todo-number-900 : 72;
+}
