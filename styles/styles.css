@@ -68,8 +68,8 @@
 
 .column__item {
   width: 32rem;
-  height: 13rem;
   display: flex;
+  gap: 1.6rem;
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--color-surface-default);
@@ -120,12 +120,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-
-  textarea {
-    border: none;
-    height: auto;
-    resize: none;
-  }
+  white-space: pre;
 
   textarea#title {
     color: var(--color-text-strong);

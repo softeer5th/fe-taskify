@@ -145,4 +145,7 @@ button {
 
 textarea {
   padding: 0;
+  border: none;
+  height: auto;
+  resize: none;
 }
