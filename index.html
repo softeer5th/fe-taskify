@@ -20,14 +20,14 @@
     <button>버튼</button>
   </header>
   <main class="column__section">
-    <section class="column__container">
+    <section id="todo__section" class="column__container">
       <div class="column__header">
         <div class="column__header__titleContainer">
           <span class="column__title display-bold16">해야 할 일</span>
           <span class="column__count display-medium12">3</span>
         </div>
         <div class="column__header__buttonContainer">
-          <button>+</button>
+          <button class="add__button">+</button>
           <button>X</button>
         </div>
       </div>
@@ -74,7 +74,7 @@
       </div>
     </section>
 
-    <section class="column__container">
+    <section id="progress__section" class="column__container">
       <div class="column__header">
         <div class="column__header__titleContainer">
           <span class="column__title display-bold16">하고 있는 일</span>
@@ -103,7 +103,7 @@
     </section>
 
 
-    <section class="column__container">
+    <section id="finished__section" class="column__container">
       <div class="column__header">
         <div class="column__header__titleContainer">
           <span class="column__title display-bold16">완료한 일</span>
@@ -117,6 +117,7 @@
       <div class="column__body"></div>
     </section>
   </main>
+  <script src="./index.js"></script>
 </body>
 
 </html>
