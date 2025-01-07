@@ -4,8 +4,10 @@ export default function Column({ id, title, tasks }) {
   return `
     <div class="column" data-column-id="${id}">
         <div class="column__header">
-            <h4 class="column__header--title">${title}</h4>
-            <p class="column__header--count">${tasks.length}</p>
+            <div class="column__header--text">
+                <h4 class="column__header--title">${title}</h4>
+                <p class="column__header--count">${tasks.length}</p>
+            </div>
             <div class="column__header--button">
                 <button class="column__header--button--add">
                     +
