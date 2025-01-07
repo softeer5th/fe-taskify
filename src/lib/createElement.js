@@ -1,25 +1,33 @@
-import { transformJSX } from "./transform.js";
+/**
+ * @typedef VNode
+ * @type {string | number | VDOM | null | undefined}
+ */
+
+/**
+ * @typedef VDOM
+ * @type {object}
+ * @property {string} tag - 생성할 HTML 태그의 종류.
+ * @property {{ [key: string]: unknown } | null } props - 생성할 HTML 태그의 속성 객체.
+ * @property {VNode[]} children - 생성할 HTML 태그의 자식 요소.
+ */
 
 /**
  *
- * @param {any} node - 변환할 JSX.
- * @returns {HTMLElement | Text | DocumentFragment} - 변환된 DOM.
+ * @param {string} type - 생성할 가상 DOM의 HTML 태그 이름
+ * @param {{ [key: string]: unknown } | null } config - 생성할 HTML 태그의 속성 객체
+ * @param {VNode[]} children - 생성할 HTML 태그의 자식 요소
+ * @returns {VDOM} - 생성된 가상 DOM
  */
-export const createElement = (node) => {
-  const JSX = transformJSX(node);
+export const createElement = (type, config, ...children) => {
+  const props = {};
 
-  if (JSX === null || JSX === undefined) {
-    return document.createDocumentFragment();
+  for (const propName in config) {
+    props[propName] = config[propName];
   }
 
-  if (typeof JSX === "string" || typeof JSX === "number") {
-    return document.createTextNode(JSX);
-  }
-
-  const element = document.createElement(JSX.tag);
-
-  // 자식 노드 추가
-  JSX.children.forEach((child) => element.appendChild(createElement(child)));
-
-  return element;
+  return {
+    type,
+    props,
+    children,
+  };
 };

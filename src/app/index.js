@@ -1,6 +1,6 @@
-import { createElement } from "../lib/createElement.js";
+import { createDOM } from "../lib/createDOM.js";
 
 import App from "./app.js";
 
 const root = document.getElementById("root");
-root.appendChild(createElement(App()));
+root.appendChild(createDOM(App()));
