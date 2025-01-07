@@ -1,18 +1,13 @@
+import { createNode, createButtonNode, createImgNode } from "./dom.js";
+
 const $TODO_ADD_BUTTON = document.querySelector("#todo__section .add__button");
 
-const createNode = (tagName, id = null, className = null, text) => {
-  const node = document.createElement(tagName);
+const handleDeleteTodo = () => {
+  alert("delete");
+};
 
-  node.id = id ?? undefined;
-
-  className &&
-    className.split(" ").forEach((className) => {
-      node.classList.add(className);
-    });
-
-  node.textContent = text;
-
-  return node;
+const handleEditTodo = () => {
+  alert("edit");
 };
 
 const createColumnItem = () => {
@@ -51,8 +46,14 @@ const createColumnItem = () => {
     null,
     "column__item__buttonContainer"
   );
-  const $deleteButton = createNode("button", null, null, "X");
-  const $editButton = createNode("button", null, null, "edit");
+
+  const $deleteButton = createButtonNode(null, null, null, handleDeleteTodo);
+  const $deleteImg = createImgNode("./assets/icon/closed.svg", "닫기");
+  $deleteButton.appendChild($deleteImg);
+
+  const $editButton = createButtonNode(null, null, null, handleEditTodo);
+  const $editImg = createImgNode("./assets/icon/edit.svg", "수정");
+  $editButton.appendChild($editImg);
 
   $buttonContainer.appendChild($deleteButton);
   $buttonContainer.appendChild($editButton);
