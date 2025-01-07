@@ -10,7 +10,7 @@
 }
 
 * {
-    border-width: 1px;
+    border-width: 0.3px;
     border-color: #000000;
     border-style: solid;
     font-family: 'pretendard';
@@ -139,17 +139,20 @@
 .btn {
     width: 24px;
     height: 24px;
-    padding: 10px;
+    padding: 6px;
     border-radius: 50%;
 }
-.add-btn {
-    width: 24px;
-    height: 24px;
-    padding: 10px;
-    border-radius: 50%;
+.btn:hover .icon {
+    filter: brightness(0) invert(1);
 }
 .add-btn:hover {
     background-color: var(--color-accent-blue);
+}
+.edit-btn:hover {
+    background-color: var(--color-accent-blue);
+}
+.delete-btn:hover {
+    background-color: var(--color-accent-red);
 }
 
 ul, li {
