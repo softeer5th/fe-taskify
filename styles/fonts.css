@@ -1,0 +1,66 @@
+@import "./colors.css";
+
+:root {
+  --bold-large: 700;
+  --bold-medium: 500;
+
+  --size-large: 24px;
+  --size-medium: 16px;
+  --size-regular: 14px;
+  --size-small: 12px;
+}
+
+.display-bold24 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-large);
+}
+
+.display-bold16 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-medium);
+}
+
+.display-bold14 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-regular);
+}
+
+.display-bold12 {
+  font-weight: var(--bold-large);
+  font-size: var(--size-small);
+}
+
+.display-medium16 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-medium);
+}
+
+.display-medium14 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-regular);
+}
+
+.display-medium12 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-small);
+}
+
+.selected-bold16 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-medium);
+}
+
+.selected-bold14 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-regular);
+}
+
+.available-medium16 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-medium);
+}
+
+.available-medium14 {
+  font-weight: var(--bold-medium);
+  font-size: var(--size-regular);
+}
