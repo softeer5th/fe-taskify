@@ -1,23 +1,26 @@
-import Component from "../components/component";
+import Component from "/components/component.js";
 
 
-class App extends Component{
-    constructor(parent ){
+export class App extends Component {
+    constructor(parent) {
+        super();
         this.parent = parent;
-    }
-    
-    template(){
-        return `
-            <div id = "header"></div>
-            <div id = "column"></div>
-        `
+        this.state = {};
+        this.events = [];
     }
 
-    render(){
+    template() {
+        return `
+            <div id = "header">hi</div>
+            <div id = "column">hello </div>
+        `;
+    }
+
+    render() {
         this.parent.innerHTML = this.template();
     }
 
-    addEvent(){
+    addEvent() {
 
     }
 }

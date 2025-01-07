@@ -1,8 +1,8 @@
 
 export default class Component {
-    
-    constructor(){
 
+    constructor(){
+        console.log("component loaded");
     }
     
     template(){
