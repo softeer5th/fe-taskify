@@ -21,7 +21,7 @@ export default function Column({ id, title, tasks }) {
             ${tasks
               .map(
                 (task) => `
-                ${Card()}
+                ${Card(task)}
                 `
               )
               .join("")}
