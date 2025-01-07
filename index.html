@@ -3,12 +3,16 @@
 <html>
 <head>
     <title>TASKIFY</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="./styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="./styles/global.css">
+    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
 </head>
 <body class="body">
-    <header>
-        <h1 class="header">TASKIFY</h1>
-        <img class="activity-history" src="">
+    <header class="header">
+        <h1 class="header__title">TASKIFY</h1>
+        <button class="btn activity-history__toggle-btn">
+            <img class="icon" src="./assets/icon/history.png">
+        </button>
     </header>
     <main class="main">
         <section class="todos">
@@ -18,50 +22,54 @@
                     <div class="todos__header__todo-count">0</div>
                 </div>
                 <div class="todos__header__right-container">
-                    <button class="todos__header__add" type="button" >+</button>
-                    <button class="todos__header__delete" type="button" >X</button>
+                    <button class="btn add-btn todos__header__add-btn" type="button">
+                        <img class="icon" src="./assets/icon/plus.png">
+                    </button>
+                    <button class="btn delete-btn todos__header__delete-btn" type="button">
+                        <img class="icon" src="./assets/icon/closed.png">
+                    </button>
                 </div>
             </div>
             <ul class="todos__body">
                 <li class="todos__body__item">
                     <div class="todos__body__item__left-container">
-                        <div class="todos__body__item__title">GitHub 공부하기</div>
-                        <div class="todos__body__item__content">add, commit, push</div>
+                        <div>
+                            <div class="todos__body__item__title">GitHub 공부하기</div>
+                            <div class="todos__body__item__content">add, commit, push</div>
+                        </div>
                         <div class="todos__body__item__author">author by web</div>
                     </div>
                     <div class="todos__body__item__right-container">
-                        <button class="todos__body__item__delete-btn" type="button">X</button>
-                        <button class="todos__body__item__modify-btn" type="button">X</button>
+                        <button class="btn delete-btn" type="button">
+                            <img class="icon" src="./assets/icon/closed.png">
+                        </button>
+                        <button class="btn edit-btn" type="button">
+                            <img class="icon" src="./assets/icon/edit.png">
+                        </button>
                     </div>
                 </li>
             </ul>
         </section>
-        <section class="todos">
-            <div class="todos__header">
-                <div class="todos__header__title">하고 있는 일</div>
-                <div class="todos__header__todo-count">0</div>
-                <div class="todos__header__add">+</div>
-                <div class="todos__header__delete">X</div>
+        <section class="activity-history">
+            <div class="activity-history__header">
+                <h2 class="activity-history__title">사용자 활동 기록</h2>
+                <button class="activity-history__close-container">
+                    <img src="./assets/icon/closed.png">
+                    <h3 class="activity-history__close-label">닫기</h3>
+                </button>
             </div>
-            <ul class="todos__body">
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-            </ul>
-        </section>
-        <section class="todos">
-            <div class="todos__header">
-                <div class="todos__header__title">완료한 일</div>
-                <div class="todos__header__todo-count">0</div>
-                <div class="todos__header__add">+</div>
-                <div class="todos__header__delete">X</div>
-            </div>
-            <ul class="todos__body">
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
+            <ul class="activity-history__body">
+                <li class="activity-history__item">
+                    <img class="activity-history__item__profile" src="./assets/icon/plus.png">
+                    <div>
+                        <h3 class="activity-history__item__nickname">@멋진삼</h3>
+                        <h3 class="activity-history__item__content">내용내용내용내용내용내용내용내용내용내용</h3>
+                        <h3 class="activity-history__item__time">3분 전</h3>
+                    </div>
+                </li>
             </ul>
         </section>
     </main>
+    <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>
