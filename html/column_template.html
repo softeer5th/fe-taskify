@@ -1,22 +1,21 @@
-
 <template id="column-template">
-    <li>
+    <li class="column-idnum">
         <div class="column-header">
             <div class="column-header-left">
                 <div class="column-name"></div>
                 <div class="card-count"></div>
             </div>
             <div class="column-header-right">
-                <button class="icon-button material-icons">
+                <button id="add-card-button" class="icon-button material-icons">
                     add
                 </button>
-                <button class="icon-button material-icons">
+                <button id="delete-cards-button"  class="icon-button material-icons">
                     close
                 </button>
             </div>
         </div>
-        <div class="card-list">
-
-        </div>
+        <ul id="card-list">
+            
+        </ul>
     </li>
 </template>

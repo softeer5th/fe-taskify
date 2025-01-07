@@ -19,6 +19,11 @@ header .material-icons {
     color: #6E7191;
 }
 
+ul {
+    padding-inline-start: 0;
+}
+
+
 .icon-button {
     border: none;
     background: transparent;
@@ -29,6 +34,7 @@ header .material-icons {
     list-style: none;
     display: flex;
     width: 100%;
+    height: 100%;
 }
 
 
@@ -48,6 +54,7 @@ header .material-icons {
 
 .column-header-left {
     display: flex;
+    margin-left: 20px;
 }
 
 .column-name {
@@ -61,10 +68,15 @@ header .material-icons {
 
 .column-header-right {
     display: flex;
+    margin-right: 20px;
 }
 
 .column-header-right .material-icons {
     color: #A0A3BD;
+}
+
+#delete-cards-button:hover {
+    color: red;
 }
 
 .card-count {
