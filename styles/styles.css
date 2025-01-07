@@ -68,7 +68,7 @@
 
 .column__item {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 1.6rem;
   background-color: var(--color-surface-default);
   padding: 1.6rem;
@@ -76,16 +76,61 @@
   box-shadow: 0px 1px 4px 0px #6e80913d;
 }
 
+.column__item.new {
+  flex-direction: column;
+}
+
 .column__item__textContainer {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: 1.6rem;
+}
+
+.column__item__addButtonContainer {
+  display: flex;
+  gap: 0.8rem;
+
+  .close__button {
+    color: var(--color-text-default);
+    background-color: var(--color-surface-alt);
+  }
+
+  .submit__button {
+    color: var(--color-text-white-default);
+    background-color: var(--color-surface-brand);
+    opacity: 0.3;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.75rem 0;
+    border-radius: 1.2rem;
+  }
 }
 
 .column__item__textBox {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
+  textarea {
+    border: none;
+    height: auto;
+    resize: none;
+  }
+
+  textarea#title {
+    color: var(--color-text-strong);
+  }
+
+  textarea#title::placeholder {
+    color: var(--color-text-strong);
+  }
+}
+
+.column__item__addButtonContainer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .column__item__title {
