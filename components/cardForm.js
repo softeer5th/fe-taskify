@@ -1,66 +1,48 @@
-import { createDeleteModal, editTask } from "../script/task.js";
+import { renderTasks } from "../script/column.js";
+import { columns } from "../script/index.js";
+import { taskHTML } from "../script/task.js";
 
-export function onEdit(e, card) {
+export function onEdit(e, task) {
     // 새로고침 방지
     e.preventDefault();
+    const { title, content, created, column } = task;
+
+    const idx = columns[column].indexOf(task);
     const newTitle = e.target.title.value;
     const newContent = e.target.content.value;
-    card.innerHTML = `
-    <div class="card_text_container">
-            <h4>${newTitle}</h4>
-            <p>${newContent}</p>
-        </div>
-        <div class="card_button_container">
-            <button>삭제</button>
-            <button>수정</button>
-        </div>
-    `
+    const newTask = { ...task, title: newTitle, content: newContent };
+    columns[column][idx] = newTask;
 
-    // 이벤트 새 등록
-    const buttons = card.getElementsByTagName('button');
-    const deleteButton = buttons[0];
-    deleteButton.addEventListener('click', ()=>createDeleteModal(card));
-    const editButton = buttons[1];
-    editButton.addEventListener('click', ()=>editTask(card, newTitle, newContent));
+    renderTasks(column);
 }
 
-export function onSubmit(e, idx) {
+export function onCancelEdit(task, cardElement) {
+    // task 내부를 task HTML로 재교체
+    cardElement.innerHTML = taskHTML({ ...task });
+}
+
+export function onSubmit(e, columnIdx) {
     // 새로고침 방지
     e.preventDefault();
     const self = e.target;
     const title = self.title.value;
     const content = self.content.value;
-
-    const column = document.getElementsByClassName('card_list')[idx];
-
-    // 새 카드 컴포넌트 생성
-    const newCard = document.createElement('li')
-    newCard.setAttribute('class', 'card')
-    newCard.innerHTML = `
-        <div class="card_text_container">
-            <h4>${title}</h4>
-            <p>${content}</p>
-        </div>
-        <div class="card_button_container">
-            <button>삭제</button>
-            <button>수정</button>
-        </div>
-    `
-
-    // 이벤트 등록
-    const buttons = newCard.getElementsByTagName('button');
-    const deleteButton = buttons[0];
-    deleteButton.addEventListener('click', ()=>createDeleteModal(newCard));
-    const editButton = buttons[1];
-    editButton.addEventListener('click', ()=>editTask(newCard, title, content));
-    
-    column.appendChild(newCard);
-
-    // newCard 컴포넌트 삭제
     self.parentNode.removeChild(self);
+
+    const newTask = {
+        title: title,
+        content: content,
+        created: new Date(),
+        column: columnIdx,
+    };
+
+    // columns 상태에 새 task 추가
+    columns[columnIdx].push(newTask);
+
+    renderTasks(columnIdx);
 }
 
-export function onReset(e){
+export function onCancel(e) {
     // self = delete button
     const self = e.target;
 
@@ -68,13 +50,11 @@ export function onReset(e){
     self.parentNode.parentNode.removeChild(self.parentNode);
 }
 
-export default function CardForm(idx) {
-    return (
-       `<form class="card_form">
+export default function CardForm() {
+    return `<form class="card_form">
             <input name="title" type="text"/>
             <input name="content" type="text"/>
             <button type="button">취소</button>
             <button type="submit">제출</button>
-        </form>`
-    )
+        </form>`;
 }

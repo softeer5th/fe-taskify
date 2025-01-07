@@ -1,25 +1,65 @@
-import CardForm, { onEdit, onSubmit } from "../components/cardForm.js";
+import CardForm, { onCancelEdit, onEdit, onSubmit } from "../components/cardForm.js";
 import Modal from "../components/modal.js";
+import { renderTasks } from "./column.js";
+import { columns } from "./index.js";
 import { createModalChildren } from "./modal.js";
 
-export function createDeleteModal(card) {
+export function createDeleteModal(task) {
     const body = document.getElementsByTagName("body")[0];
-    const modalElement = createModalChildren('선택한 카드를 삭제할까요?', ()=>deleteTask(card))
+    const modalElement = createModalChildren('선택한 카드를 삭제할까요?', ()=>deleteTask(task))
     const modal = Modal(modalElement);
     body.appendChild(modal);
 }
 
-export function deleteTask(card) {
-    card.parentNode.removeChild(card);
+export function createTask(task) {
+    const {title, content, created, column} = task;
+    
+    // 새 카드 컴포넌트 생성
+    const newCard = document.createElement('li')
+    newCard.setAttribute('class', 'card')
+    newCard.innerHTML = taskHTML({title, content});
+    // 이벤트 등록
+    taskEventHandler(newCard, task);
+
+    return newCard;
 }
 
-export function editTask(card, title, content) {
-    card.innerHTML = CardForm(0);
-    const inputs = card.getElementsByTagName('input');
-    inputs[0].value = title;
-    inputs[1].value = content;
-    const form = card.getElementsByTagName('form')[0];
-    form.addEventListener('submit', (e)=>{onEdit(e, card)})
+export function deleteTask(task) {
+    const {title, content, created, column} = task;
+    columns[column] = columns[column].filter(el => el != task);
+    renderTasks(column);
+}
 
+export function editTask(cardElement, task) {
+    const {title, content, created, column} = task;
+    cardElement.innerHTML = CardForm();
+    const inputs = cardElement.getElementsByTagName('input');
+    const [titleInput, contentInput] = inputs
+    titleInput.value = title;
+    contentInput.value = content;
+    const form = cardElement.getElementsByTagName('form')[0];
+    form.addEventListener('submit', (e)=>{onEdit(e, task)})
+    form.getElementsByTagName('button')[0].addEventListener('click', ()=>onCancelEdit(task, cardElement))
+}
 
+export function taskHTML({title, content}) {
+    return (
+        `
+        <div class="card_text_container">
+            <h4>${title}</h4>
+            <p>${content}</p>
+        </div>
+        <div class="card_button_container">
+            <button>삭제</button>
+            <button>수정</button>
+        </div>
+    `
+    )
+}
+
+export function taskEventHandler(cardElement, task) {
+    const buttons = cardElement.getElementsByTagName('button');
+    const [deleteButton, editButton] = buttons;
+    deleteButton.addEventListener('click', ()=>createDeleteModal(task));
+    editButton.addEventListener('click', ()=>editTask(cardElement, task));
 }
