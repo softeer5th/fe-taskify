@@ -12,6 +12,12 @@ const mockTask = [
   { id: 3, title: "HTML/CSS 공부하기", description: "input 태그 실습", createdAt: "1736181611", device: "web" },
 ];
 
+function addNewTask(columnId, task) {
+  const column = mockColumn.find((column) => column.id === columnId);
+  column.tasks.push(task.id);
+  mockTask.push(task);
+}
+
 export default function Body() {
   const body = document.createElement("div");
   body.className = "body";
