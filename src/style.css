@@ -43,6 +43,25 @@ table {
     border-spacing: 0;
 }
 
+input {
+    border: none;
+    outline: none;
+
+    &::placeholder {
+        color: inherit;
+    }
+}
+
+textarea {
+    border: none;
+    outline: none;
+    resize: none;
+
+    &::placeholder {
+        color: inherit;
+    }
+}
+
 #root {
     display: flex;
     flex-direction: column;
@@ -188,7 +207,7 @@ table {
 
         .card__content--title {
             font-family: 'Pretendard', sans-serif;
-            font-size: 1rem;
+            font-size: .875rem;
             font-weight: 700;
             color: #14142B;
         }
@@ -208,6 +227,43 @@ table {
             font-size: 0.75rem;
             font-weight: 500;
             color: #A0A3BD;
+        }
+
+        .card__content--editor {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+
+            .card__content--editor--save {
+                width: 50%;
+                height: 25px;
+                border-radius: 8px;
+                font-family: 'Pretendard Variable', sans-serif;
+                color: #FEFEFE;
+                font-size: .875rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                background-color: #007AFF;
+                justify-content: center;
+            }
+
+            .card__content--editor--cancel {
+                width: 50%;
+                height: 25px;
+                border-radius: 8px;
+                font-family: 'Pretendard Variable', sans-serif;
+                color: #6E7191;
+                font-size: .875rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                background-color: #F7F7FC;
+                justify-content: center;
+            }
         }
     }
 
