@@ -54,28 +54,43 @@ const handleSubmit = (e) => {
 
   const $buttonContainer = createEditButtonContainer();
 
+  // TODO: 개선 필요
   $textBox.replaceChildren($title, $content);
   $textContainer.appendChild($buttonContainer);
   $columnItem.removeChild($columnItem.lastChild);
   $columnItem.appendChild($userAgent);
 };
 
-const handleInputTitle = (event) => {
-  const value = event.target.value;
+const handleInputTitle = (e) => {
+  const $input = e.target;
+  $input.style.height = $input.scrollHeight + "px"; // 글의 길이에 맞춰 입력창 높이 조절
+
+  const $column__item = $input.closest(".column__item");
+  const $submitButton = $column__item.querySelector(".submit__button");
+  const content = $input.nextElementSibling.value;
+  const title = e.target.value;
+
+  if (title.length > 0 && content.length > 0) {
+    $submitButton.disabled = false;
+  } else {
+    $submitButton.disabled = true;
+  }
 };
 
-const handleInputContent = (event) => {
-  const value = event.target.value;
-};
+const handleInputContent = (e) => {
+  const $input = e.target;
+  $input.style.height = $input.scrollHeight + "px";
 
-const handleResizeTitle = (event) => {
-  const $textarea = event.target;
-  $textarea.style.height = $textarea.scrollHeight + "px";
-};
+  const $column__item = $input.closest(".column__item");
+  const $submitButton = $column__item.querySelector(".submit__button");
+  const title = $input.previousElementSibling.value;
+  const content = e.target.value;
 
-const handleResizeContent = (event) => {
-  const $textarea = event.target;
-  $textarea.style.height = $textarea.scrollHeight + "px";
+  if (title.length > 0 && content.length > 0) {
+    $submitButton.disabled = false;
+  } else {
+    $submitButton.disabled = true;
+  }
 };
 
 const createTextBox = () => {
@@ -84,14 +99,12 @@ const createTextBox = () => {
   const $title = createTextareaNode({
     id: "title",
     className: "column__item__title display-bold14",
-    handleChange: handleResizeTitle,
     placeholder: "제목을 입력하세요",
     handleInput: handleInputTitle,
   });
   const $content = createTextareaNode({
     id: "content",
     className: "column__item__content display-medium14",
-    handleChange: handleResizeContent,
     placeholder: "내용을 입력하세요",
     handleInput: handleInputContent,
   });
@@ -139,7 +152,8 @@ const createAddButtonContainer = () => {
     null,
     "submit__button",
     "등록",
-    handleSubmit
+    handleSubmit,
+    true
   );
 
   $addButtonContainer.appendChild($closeButton);

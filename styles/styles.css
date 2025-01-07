@@ -98,7 +98,12 @@
   .submit__button {
     color: var(--color-text-white-default);
     background-color: var(--color-surface-brand);
+    opacity: 1;
+  }
+
+  .submit__button:disabled {
     opacity: 0.3;
+    cursor: not-allowed;
   }
 
   button {

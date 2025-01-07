@@ -17,9 +17,11 @@ export const createButtonNode = (
   id = null,
   className = null,
   text = "",
-  handleClick
+  handleClick,
+  disabled
 ) => {
   const $button = createNode("button", id, className, text);
+  $button.disabled = disabled ?? false;
   $button.addEventListener("click", handleClick);
 
   return $button;
@@ -39,9 +41,11 @@ export const createTextareaNode = ({
   handleChange,
   handleInput,
   placeholder = "",
+  maxLength = 500,
 }) => {
   const $textarea = createNode("textarea", id, className);
   $textarea.rows = 1;
+  $textarea.maxLength = maxLength;
   $textarea.placeholder = placeholder ?? undefined;
 
   $textarea.addEventListener("change", handleChange);
