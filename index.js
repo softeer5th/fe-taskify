@@ -6,6 +6,7 @@ import {
 } from "./dom.js";
 
 const $TODO_ADD_BUTTON = document.querySelector("#todo__section .add__button");
+let isTodoAdding = false;
 
 const handleDeleteTodo = () => {
   alert("delete");
@@ -17,8 +18,12 @@ const handleEditTodo = () => {
 
 const handleCancel = (e) => {
   const target = e.target;
-  const $columnItem = target.closest(".column__item");
-  $columnItem.remove();
+  const $columnItem = target
+    .closest(".column__container")
+    .querySelector(".column__body");
+
+  $columnItem.firstChild.remove();
+  isTodoAdding = false;
 };
 
 const handleSubmit = (e) => {
@@ -60,6 +65,8 @@ const handleSubmit = (e) => {
 
   $textContainer.replaceChildren($newTextBox, $buttonContainer);
   $columnItem.replaceChild($userAgent, $columnItem.lastChild);
+
+  isTodoAdding = false;
 };
 
 const handleInputTitle = (e) => {
@@ -176,10 +183,19 @@ const createColumnItem = () => {
   return $columnItem;
 };
 
+const handleClickAdd = (e) => {
+  if (isTodoAdding) {
+    handleCancel(e);
+  } else {
+    addTodoItem();
+  }
+};
+
 const addTodoItem = () => {
   const $todoColumn = document.querySelector("#todo__section .column__body");
   const $columnItem = createColumnItem();
   $todoColumn.prepend($columnItem);
+  isTodoAdding = true;
 };
 
-$TODO_ADD_BUTTON.addEventListener("click", addTodoItem);
+$TODO_ADD_BUTTON.addEventListener("click", handleClickAdd);
