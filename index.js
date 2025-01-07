@@ -15,8 +15,10 @@ const handleEditTodo = () => {
   alert("edit");
 };
 
-const handleCancel = () => {
-  alert("cancel");
+const handleCancel = (e) => {
+  const target = e.target;
+  const $columnItem = target.closest(".column__item");
+  $columnItem.remove();
 };
 
 const handleSubmit = (e) => {
