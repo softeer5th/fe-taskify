@@ -25,8 +25,6 @@ const handleSubmit = (e) => {
   const $textContainer = $columnItem.querySelector(
     ".column__item__textContainer"
   );
-  const $textBox = $textContainer.querySelector(".column__item__textBox");
-
   const $titleInput = $columnItem.querySelector("#title");
   const $contentInput = $columnItem.querySelector("#content");
   const title = $titleInput.value;
@@ -53,12 +51,13 @@ const handleSubmit = (e) => {
   );
 
   const $buttonContainer = createEditButtonContainer();
+  const $newTextBox = document.createElement("div");
+  $newTextBox.classList.add("column__item__textBox");
+  $newTextBox.appendChild($title);
+  $newTextBox.appendChild($content);
 
-  // TODO: 개선 필요
-  $textBox.replaceChildren($title, $content);
-  $textContainer.appendChild($buttonContainer);
-  $columnItem.removeChild($columnItem.lastChild);
-  $columnItem.appendChild($userAgent);
+  $textContainer.replaceChildren($newTextBox, $buttonContainer);
+  $columnItem.replaceChild($userAgent, $columnItem.lastChild);
 };
 
 const handleInputTitle = (e) => {
