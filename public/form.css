@@ -1,0 +1,27 @@
+.card_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    input {
+        border: none;
+        outline: none;
+        margin-bottom: 8px;
+        &:last-of-type {
+            margin-bottom: 16px;
+        }
+    }
+
+    span {
+        display: flex;
+        justify-content: space-between;
+        button {
+            width: 140px;
+            height: 32px;
+        }
+    }
+
+    .disabled {
+        opacity: 30%;
+    }
+}
