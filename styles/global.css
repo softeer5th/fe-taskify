@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'pretendard-medium';
+    src: url('../assets/fonts/Pretendard-Medium.woff');
+}
+
+@font-face {
+    font-family: 'pretendard-bold';
+    src: url('../assets/fonts/Pretendard-Bold.woff');
+}
+
+:root {
+    --font-bold-l: 24px "pretendard-bold";
+    --font-bold-m: 16px "pretendard-bold";
+    --font-bold-r: 14px "pretendard-bold";
+    --font-bold-s: 12px "pretendard-bold";
+    --font-medium-m: 22px "pretendard-medium";
+    --font-medium-r: 14px "pretendard-medium";
+    --font-medium-s: 12px "pretendard-medium";
+
+    --color-white: #FFFFFF;
+    --color-grayscale-50: #FEFEFE;
+    --color-grayscale-100: #F7F7FC;
+    --color-grayscale-200: #EFF0F6;
+    --color-grayscale-300: #D9DBE9;
+    --color-grayscale-400: #BEC1D5;
+    --color-grayscale-500: #A0A3BD;
+    --color-grayscale-600: #6E7191;
+    --color-grayscale-700: #4E4B66;
+    --color-grayscale-800: #2A2A44;
+    --color-grayscale-900: #14142B;
+    --color-accent-blue: #007AFF;
+    --color-accent-red: #FF3B30;
+    --color-shadow: #628091;
+    
+    --color-text-strong: var(--color-grayscale-900);
+    --color-text-bold: var(--color-grayscale-700);
+    --color-text-default: var(--color-grayscale-600);
+    --color-text-weak: var(--color-grayscale-500);
+    --color-text-white-default: var(--color-grayscale-50);
+    --color-text-white-weak: var(--color-grayscale-100);
+    --color-text-brand: var(--color-accent-blue);
+    --color-text-danger: var(--color-accent-red);
+    --color-surface-default: var(--color-grayscale-50);
+    --color-surface-alt: var(--color-grayscale-100);
+    --color-surface-brand: var(--color-accent-blue);
+    --color-surface-danger: var(--color-accent-red);
+    --color-border-default: var(--color-grayscale-200);
+    --color-border-bord: var(--color-grayscale-400);
+    --color-bg: var(--color-grayscale-100);
+    
+    --shadow-normal: 0px 1px 4px var(--color-shadow);
+    --shadow-up: 0px 2px 8px var(--color-shadow);
+    --shadow-float: 0px 0px 4px var(--color-shadow) 0px 16px 16px var(--color-shadow);
+}
