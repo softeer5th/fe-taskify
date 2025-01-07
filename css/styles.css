@@ -1,0 +1,8 @@
+@import './theme/colors.css';
+@import './theme/fonts.css';
+@import './theme/sizes.css';
+@import './components/header.css';
+
+* {
+    box-sizing: border-box;
+}

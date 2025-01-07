@@ -1,0 +1,64 @@
+:root {
+    --bold: 700;
+    --medium: 500;
+    --size-l: 24px;
+    --size-m: 16px;
+    --size-r: 14px;
+    --size-s: 12px;
+}
+
+.display-bold24 {
+    font-weight: var(--bold);
+    font-size: var(--size-l);
+}
+
+.display-bold16 {
+    font-weight: var(--bold);
+    font-size: var(--size-m);
+}
+
+.display-bold14 {
+    font-weight: var(--bold);
+    font-size: var(--size-r);
+}
+
+.display-bold12 {
+    font-weight: var(--bold);
+    font-size: var(--size-s);
+}
+
+.display-medium16 {
+    font-weight: var(--medium);
+    font-size: var(--size-m);
+    line-height: 22;
+}
+
+.display-medium14 {
+    font-weight: var(--medium);
+    font-size: var(--size-r);
+}
+
+.display-medium12 {
+    font-weight: var(--medium);
+    font-size: var(--size-s);
+}
+
+.selected-bold16 {
+    font-weight: var(--bold);
+    font-size: var(--size-m);
+}
+
+.selected-bold14 {
+    font-weight: var(--bold);
+    font-size: var(--size-r);
+}
+
+.selected-medium16 {
+    font-weight: var(--medium);
+    font-size: var(--size-m);
+}
+
+.selected-medium14 {
+    font-weight: var(--medium);
+    font-size: var(--size-r);
+}
