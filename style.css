@@ -71,6 +71,7 @@ main {
   border-radius: 8px;
   background-color: rgba(254, 254, 254, 1);
   box-shadow: 0 1px 4px 0 rgba(110, 128, 145, 0.24);
+  margin: 16px 0 16px 0;
 
 }
 .task-title{

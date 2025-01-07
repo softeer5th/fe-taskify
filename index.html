@@ -14,14 +14,14 @@
 
     <main>
       <div class="task-lists">
-        <div class="column">
-          <div class="task-list">
+        <ol class="column">
+          <li class="task-list">
             <div class="column-title">해야할 일</div>
             <div class="column-count">카운트</div>
             <div class="add-btn" onclick="addTask()"> + </div>
             <div class="edit-btn"> x </div>
-          </div>
-          <div class = "task">
+          </li>
+          <li class = "task">
             <div class ="title-cont-au">
               <div class = "task-title">Github 공부하기</div>
               <div class = "task-body">내용</div>
@@ -31,24 +31,35 @@
               <div> x </div>
               <div> e </div>
             </div>
-          </div>
-        </div>
-        <div class="column">
-          <div class="task-list">
+          </li>
+          <li class = "task">
+            <div class ="title-cont-au">
+              <div class = "task-title">Github 공부하기</div>
+              <div class = "task-body">내용</div>
+              <div class = "task-author">작성자</div>
+            </div>
+            <div class = "delete-edit">
+              <div> x </div>
+              <div> e </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="column">
+          <li class="task-list">
             <div class="column-title">진행중인 일</div>
             <div class="column-count">카운트</div>
             <div class="add-btn" onclick="addTask()"> + </div>
             <div class="edit-btn"> x </div>
-          </div>
-        </div>
-        <div class ="column">
-          <div class="task-list">
+          </li>
+        </ol>
+        <ol class ="column">
+          <li class="task-list">
             <div class="column-title">완료한 일</div>
             <div class="column-count">카운트</div>
             <div class="add-btn" onclick="addTask()"> + </div>
             <div class="edit-btn"> x </div>
-          </div>
-        </div>
+          </li>
+        </ol>
       </div>
     </main>
 
