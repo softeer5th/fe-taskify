@@ -1,4 +1,9 @@
-import { createNode, createButtonNode, createTextareaNode } from "./dom.js";
+import {
+  createNode,
+  createButtonNode,
+  createTextareaNode,
+  createImgNode,
+} from "./dom.js";
 
 const $TODO_ADD_BUTTON = document.querySelector("#todo__section .add__button");
 
@@ -14,8 +19,45 @@ const handleCancel = () => {
   alert("cancel");
 };
 
-const handleSubmit = () => {
-  alert("submit");
+const handleSubmit = (e) => {
+  const $button = e.target;
+  const $columnItem = $button.closest(".column__item");
+  const $textContainer = $columnItem.querySelector(
+    ".column__item__textContainer"
+  );
+  const $textBox = $textContainer.querySelector(".column__item__textBox");
+
+  const $titleInput = $columnItem.querySelector("#title");
+  const $contentInput = $columnItem.querySelector("#content");
+  const title = $titleInput.value;
+  const content = $contentInput.value;
+
+  const $title = createNode(
+    "h3",
+    null,
+    "column__item__title display-bold14",
+    title
+  );
+  const $content = createNode(
+    "p",
+    null,
+    "column__item__content display-medium14",
+    content
+  );
+
+  const $userAgent = createNode(
+    "span",
+    null,
+    "userAgent display-medium12",
+    "author by web"
+  );
+
+  const $buttonContainer = createEditButtonContainer();
+
+  $textBox.replaceChildren($title, $content);
+  $textContainer.appendChild($buttonContainer);
+  $columnItem.removeChild($columnItem.lastChild);
+  $columnItem.appendChild($userAgent);
 };
 
 const handleInputTitle = (event) => {
@@ -60,6 +102,27 @@ const createTextBox = () => {
   return $textBox;
 };
 
+const createEditButtonContainer = () => {
+  const $buttonContainer = createNode(
+    "div",
+    null,
+    "column__item__buttonContainer"
+  );
+
+  const $deleteButton = createButtonNode(null, null, null, handleDeleteTodo);
+  const $deleteImg = createImgNode("./assets/icon/closed.svg", "닫기");
+  $deleteButton.appendChild($deleteImg);
+
+  const $editButton = createButtonNode(null, null, null, handleEditTodo);
+  const $editImg = createImgNode("./assets/icon/edit.svg", "수정");
+  $editButton.appendChild($editImg);
+
+  $buttonContainer.appendChild($deleteButton);
+  $buttonContainer.appendChild($editButton);
+
+  return $buttonContainer;
+};
+
 const createAddButtonContainer = () => {
   const $addButtonContainer = createNode(
     "div",
@@ -94,13 +157,14 @@ const createColumnItem = () => {
   $textContainer.appendChild($textBox);
   $columnItem.appendChild($textContainer);
   $columnItem.appendChild($addButtonContainer);
+
   return $columnItem;
 };
 
 const addTodoItem = () => {
   const $todoColumn = document.querySelector("#todo__section .column__body");
   const $columnItem = createColumnItem();
-  $todoColumn.appendChild($columnItem);
+  $todoColumn.prepend($columnItem);
 };
 
 $TODO_ADD_BUTTON.addEventListener("click", addTodoItem);
