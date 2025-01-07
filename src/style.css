@@ -9,6 +9,7 @@ html,
 body {
     height: 100%;
     font-family: Arial, sans-serif;
+    min-width: 400px;
 }
 
 body {
@@ -94,6 +95,7 @@ table {
     }
 }
 
+/* Body Style */
 .body {
     display: flex;
     flex-direction: row;
@@ -101,6 +103,7 @@ table {
     margin-top: 2.5rem;
 }
 
+/* Column Style */
 .column {
     align-items: center;
     display: flex;
@@ -115,6 +118,8 @@ table {
         width: 100%;
         align-items: center;
         justify-content: space-between;
+
+        padding: 0px 15px;
 
         .column__header--text {
             display: flex;
@@ -154,6 +159,75 @@ table {
                 font-size: 1.2rem;
                 color: #A0A3BD;
             }
+        }
+    }
+
+    .column__body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+}
+
+/* Card Style */
+.card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #FEFEFE;
+    box-shadow: 0px 1px 4px 0px #6E80913D;
+
+    .card__content {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+
+        .card__content--title {
+            font-family: 'Pretendard', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #14142B;
+        }
+
+        .card__content--description {
+            display: block;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #A0A3BD;
+            white-space: pre-line;
+        }
+
+        .card__content--device {
+            display: block;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #A0A3BD;
+        }
+    }
+
+    .card__button {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+
+        .card__button--edit {
+            width: 14px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #A0A3BD;
+        }
+
+        .card__button--delete {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #A0A3BD;
         }
     }
 }
