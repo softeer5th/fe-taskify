@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LocalStorage Test</title>
+</head>
+<body>
+<h1>LocalStorage Test</h1>
+<button onclick="testAddTask()">Test Add Task</button>
+<button onclick="testRemoveTask()">Test Remove Task</button>
+<button onclick="testEditTask()">Test Edit Task</button>
+<button onclick="testMoveTask()">Test Move Task</button>
+<button onclick="testAddColumn()">Test Add Column</button>
+<button onclick="testRemoveColumn()">Test Remove Column</button>
+<button onclick="testEditColumn()">Test Edit Column</button>
+<button onclick="testSetDefaultColumn()">Test Set Default Column</button>
+<script type="module">
+  import {
+    addTask,
+    removeTask,
+    editTask,
+    moveTask,
+    addColumn,
+    removeColumn,
+    editColumn,
+    setDefaultColumn,
+    getColumnTasks
+  } from './localStorage.js';
+
+  window.testAddTask = () => {
+    const task = { title: "Test Task", body: "Test Body", author: "Author", timestamp: Date.now() };
+    addTask('1', task);
+    console.log('Tasks in column1:', getColumnTasks('1'));
+  };
+
+  window.testRemoveTask = () => {
+    const task = { title: "Test Task", body: "Test Body", author: "Author", timestamp: Date.now() };
+    removeTask('1', 1736313976560);
+    console.log('Tasks in column1 after removal:', getColumnTasks('1'));
+  };
+
+  window.testEditTask = () => {
+    const task = {
+      title: "Test Task12",
+      body: "Test Body",
+      author: "Author",
+      timestamp: Date.now()
+    };
+    addTask('1', task);
+    const newTask = { ...task, title: "Updated Task" };
+    editTask('1', task.timestamp, newTask);
+    console.log('Tasks in column1 after edit:', getColumnTasks('1'));
+  };
+
+  window.testMoveTask = () => {
+    const task = { title: "Test Task", body: "Test Body", author: "Author", timestamp: Date.now() };
+    // addTask('column1', task);
+    moveTask(1736314053856, 1, 2);
+    console.log('Tasks in column1 after move:', getColumnTasks('1'));
+    console.log('Tasks in column2 after move:', getColumnTasks('2'));
+  };
+
+  window.testAddColumn = () => {
+    addColumn('Column is added!');
+    console.log('New column added:', localStorage.getItem('Column2'));
+  };
+
+  window.testRemoveColumn = () => {
+    removeColumn('10');
+    console.log(localStorage.getItem(10));
+  };
+
+  window.testEditColumn = () => {
+    editColumn('10', 'New Title!');
+    console.log('Column after edit:', localStorage.getItem('column10'));
+  };
+
+  window.testSetDefaultColumn = () => {
+    setDefaultColumn();
+    console.log('Default columns set:',
+      localStorage.getItem('column1'),
+      localStorage.getItem('column2'),
+      localStorage.getItem('column3'));
+  };
+</script>
+</body>
+</html>
