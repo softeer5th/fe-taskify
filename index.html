@@ -6,9 +6,31 @@
     <title>소프티어 태스크파이 과제</title>
     <link rel="stylesheet" href="./styles/base.css" />
     <link rel="stylesheet" href="./styles/components.css" />
-    <!-- <template id="test">
-      <div id="divv"></div>
-    </template> -->
+    <template id="column-template">
+      <section
+        id="column-section"
+        style="display: flex; flex-direction: column; gap: 10px"
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            padding: 0 var(--number-200);
+            gap: 8px;
+          "
+        >
+          <div style="width: 100%; display: flex; align-items: center; gap: 8px;">
+            <h2 class="display-bold16">해야할 일</h2>
+            <p>3</p>
+          </div>
+          <img src="./assets/icons/plus.svg" alt="add" />
+          <img src="./assets/icons/closed.svg" alt="close" />
+        </div>
+      </section>
+    </template>
+    <template id="card-template">
+      <div class="surface-default" style="width: 320px; height: 122px"></div>
+    </template>
   </head>
   <body
     style="
@@ -40,12 +62,15 @@
         "
       >
         <h1 class="text-strong">TASKIFY</h1>
-        <button style="margin: 5px">
+        <button>
           <img src="./assets/icons/icon.svg" alt="history" />
         </button>
       </header>
       <div style="width: 100%; height: 100%; padding: var(--number-400) 0">
-        <main class="surface-default" style="width: 100%; height: 100%"></main>
+        <main
+          id="main"
+          style="width: 100%; height: 100%; display: flex; gap: 10px"
+        ></main>
       </div>
     </div>
     <script type="module" src="./scripts/main.js"></script>
