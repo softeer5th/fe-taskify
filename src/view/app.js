@@ -16,7 +16,7 @@ export class App extends Component {
             },
             column: {
                 object: new Column(),
-                parentSelector: ".div",
+                parentSelector: "#header + .div",
             },
         };
     }
@@ -24,19 +24,17 @@ export class App extends Component {
     template() {
         return `
             <div id = "header"> </div>
-            <div class = "div">  </div>
+            <div class = "div"> </div>
         `;
     }
 
     render(parent) {
 
-        parent.innerHTML = this.template();
-        console.log("app");
-        console.log(this.template());
+        parent.innerHTML = this.template();4
 
         for (const key in this.children) {
-            const parent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(parent);
+            const childParent = document.querySelector(this.children[key].parentSelector);
+            this.children[key].object.render(childParent);
         }
 
         this.events.forEach(({ listenerName, callback }) => {

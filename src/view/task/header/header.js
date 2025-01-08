@@ -24,16 +24,14 @@ export class Header extends Component{
     }
 
     render(parent) {
-
+        
         parent.innerHTML = this.template();
     
 
-        // for (const key in this.children) {
-        //     const parent = document.querySelector(this.children[key].parentSelector);
-        //     console.log("header")
-        //     console.log(parent);
-        //     this.children[key].object.render(parent);
-        // }
+        for (const key in this.children) {
+            const childParent = document.querySelector(this.children[key].parentSelector);
+            this.children[key].object.render(childParent);
+        }
 
         this.events.forEach(({ listenerName, callback }) => {
             this.template.addEventListener(listenerName, callback);

@@ -18,12 +18,11 @@ export class Logo extends Component {
 
     render(parent) {
 
-        console.log(this.template());
         parent.innerHTML = this.template();
 
         for (const key in this.children) {
-            const parent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(parent);
+            const childParent = document.querySelector(this.children[key].parentSelector);
+            this.children[key].object.render(childParent);
         }
 
         this.events.forEach(({ listenerName, callback }) => {
