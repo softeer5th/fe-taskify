@@ -1,3 +1,5 @@
+import Button from "../Button/Button.js";
+import createImg from "../../utils/createImg.js";
 
 export default function Header() {
     const header = document.createElement('header');
@@ -7,14 +9,23 @@ export default function Header() {
     headerTitle.classList.add('header__title', 'display-bold24');
     headerTitle.textContent = 'TASKFY';
     
-    const historyButton = document.createElement('button');
-    historyButton.classList.add('header__button', 'button--history');
+    const historyClickHandler = () => {
+        console.log('History button clicked!');
+    };
+   
+    const historyButton = Button({
+        type: 'button',
+        size: 'midium',
+        format: 'icon',
+        style: 'default',
+        disabled: false,
+        onClick: historyClickHandler,
+        children: createImg({
+            src: '/assets/icons/clock.svg',
+            alt: 'history icon'
+        }),
+    });
 
-    const historyIcon = document.createElement('img');
-    historyIcon.src = '/assets/icons/clock.svg';
-    historyIcon.alt = 'history icon';
-
-    historyButton.appendChild(historyIcon);
     header.append(headerTitle, historyButton);
 
     return header;
