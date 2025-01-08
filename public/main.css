@@ -15,12 +15,13 @@ main {
     width: 320px;
     min-width: 320px;
     margin-right: 32px;
+
     &:last-of-type {
         margin: 0;
     }
 }
 
-.column > ol {
+.column>ol {
     list-style-type: none;
 }
 
@@ -28,6 +29,7 @@ main {
     display: flex;
     align-items: center;
     padding: 0 16px;
+
     span {
         display: flex;
 
@@ -69,6 +71,8 @@ main {
 
 .card_text_container {
     flex-grow: 1;
+    word-break: break-all;
+
     h4 {
         margin-bottom: 8px;
     }
