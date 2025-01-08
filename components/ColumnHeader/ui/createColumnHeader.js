@@ -1,4 +1,9 @@
-import { createElement, createButton, createImg } from "../../../dom.js";
+import {
+  createElement,
+  createButton,
+  createImg,
+  createDeleteSvg,
+} from "../../../dom.js";
 import { IMAGE } from "../../../assets/index.js";
 
 const createColumnHeader = ({ title, count, handleClickAdd }) => {
@@ -34,9 +39,12 @@ const createColumnHeader = ({ title, count, handleClickAdd }) => {
   const $closeButton = createButton({
     handleClick: () => alert("Close button"),
   });
-  const $closeImg = createImg({
-    src: IMAGE.closed,
-    alt: "닫기",
+  const $closeImg = createDeleteSvg({
+    className: "delete__img",
+    width: "24",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "none",
   });
 
   $closeButton.appendChild($closeImg);
