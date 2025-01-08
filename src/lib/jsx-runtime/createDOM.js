@@ -3,7 +3,7 @@
  * @returns {HTMLElement | Text | DocumentFragment} - 변환된 실제 DOM.
  */
 export const createDOM = (node) => {
-  if (node === null || node === undefined) {
+  if (!node || node === null || node === undefined) {
     return document.createDocumentFragment();
   }
 
@@ -15,6 +15,10 @@ export const createDOM = (node) => {
   Object.entries(node.props).forEach(([key, value]) => {
     element.setAttribute(key, value.toString());
   });
+  Object.entries(node.events).forEach(([key, value]) => {
+    element.addEventListener(key, value);
+  });
+
   node.children.forEach((child) => element.appendChild(createDOM(child)));
 
   return element;
