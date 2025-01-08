@@ -110,7 +110,7 @@ const initializeDragAndDrop = () => {
 const getDragAfterElement = (list, y) => {
     const draggableElements = [...list.querySelectorAll('.task-item:not(.dragging)')];
 
-    const result = draggableElements.reduce((closest, child) => {
+    return draggableElements.reduce((closest, child) => {
         const box = child.getBoundingClientRect();
         const offset = y - box.top - box.height / 2;
         if (offset < 0 && offset > closest.offset) {
@@ -119,8 +119,6 @@ const getDragAfterElement = (list, y) => {
             return closest;
         }
     }, { offset: Number.NEGATIVE_INFINITY }).element;
-
-    return result;
 };
 
 const toggleTaskBox = (listId, type) => {
