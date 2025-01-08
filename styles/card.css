@@ -4,12 +4,15 @@
 .card-contents-icons-box {
   display: flex;
   justify-content: space-between;
+  height: 42px;
+  margin-bottom: 16px;
 }
 .card {
   background-color: var(--surface-default);
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0px 1px 4px 0px #6e80913d;
+  margin-bottom: 10px;
 }
 
 .title {
@@ -52,4 +55,8 @@
 .add-btn {
   background-color: var(--surface-brand);
   color: var(--text-white-default);
+}
+
+.display-none {
+  display: none;
 }
