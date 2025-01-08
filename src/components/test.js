@@ -1,4 +1,4 @@
-import { parser } from "../lib/parser.js";
+import { parser } from "../lib/jsx-runtime/index.js";
 
 /**
  *

@@ -1,5 +1,5 @@
 import Test from "../components/test.js";
-import { parser } from "../lib/index.js";
+import { parser } from "../lib/jsx-runtime/index.js";
 
 // eslint-disable-next-line
 const App = () => {
