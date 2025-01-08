@@ -1,8 +1,11 @@
 import { createElement } from "../../dom.js";
 import getDevice from "../../utils/getDevice.js";
+import loadStyleSheet from "../../utils/loadStyleSheet.js";
 import createColumnInputItem from "./ui/createColumnItemInput.js";
 import createNewTextBox from "./ui/createNewTextBox.js";
 import createTextButtonContainer from "./ui/createTextButtonContainer.js";
+
+loadStyleSheet("/components/ColumnInputItem/styles.css");
 
 const ColumnInputItem = ({ store, handleCancel }) => {
   const handleInputTitle = (e) => {

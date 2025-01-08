@@ -1,0 +1,49 @@
+.column__item {
+  width: 32rem;
+  display: flex;
+  gap: 1.6rem;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-surface-default);
+  padding: 1.6rem;
+  border-radius: 0.8rem;
+  box-shadow: 0px 1px 4px 0px #6e80913d;
+}
+
+.column__item__textContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.column__item__buttonContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.column__item__title {
+  color: var(--color-text-strong);
+}
+
+.column__item__content {
+  color: var(--color-text-default);
+}
+
+.userAgent {
+  color: var(--color-text-weak);
+}
+
+.column__item__textBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  white-space: pre;
+
+  textarea#title {
+    color: var(--color-text-strong);
+  }
+
+  textarea#title::placeholder {
+    color: var(--color-text-strong);
+  }
+}
