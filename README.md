@@ -1,6 +1,7 @@
 # fe-taskify
 
 ### Directory Architecture
+
 ```
 /fe-taskify
 │
@@ -22,7 +23,6 @@
 │   └── `column.css`            # Column styles ( card lists )
 │
 ├── `js`                    # JavaScript files ( Can be divided into more directories )
-│   ├── storage          # Storage and history management functions (add, delete, edit, undo, redo, etc.)
 │   ├── card               # Card functions (add, delete, edit, drag, drop, etc.)
 │   ├── column          # Column management functions (add, delete, rename, etc.)
 │   ├── history         # History management functions (undo, redo, etc.)
@@ -30,30 +30,35 @@
 │   ├── fab                # FAB button functions (add column, delete column, undo, redo, etc.)
 │   └── main.js           # Main JavaScript file
 │
-├── `data`                      # Data storage files (e.g., `localStorage.js` if using local storage)
+├── `utils`                      # Data storage files (e.g. `localStorage.js` )
     
 ```
+
 ### Development Plan
-1. Super Simple Layout ✅
-2. Storage setting (add , delete, edit, redo ..,,etc )
-3. Task adding  
-4. Card Sorting
-5. Card editing ( + delete)
-6. Card moving
-7. History manager
-8. Column manager
-9. FAB button
-10. Design 
-11. Refactor
+
+0. Super Simple Layout ✅
+1. Storage setting (add , delete, edit, redo ..,,etc ) ✅
+2. Task adding
+3. Card Sorting
+4. Card editing ( + delete)
+5. Card moving
+6. History manager
+7. Column manager
+8. FAB button
+9. Design
+10. Refactor
+
 ---
 
-### Things to do 
+### Things to do
 
 - [x] Skeleton Layout
-  - [x] Header
-  - [x] Main
-  - [x] Footer
+    - [x] Header
+    - [x] Main
+    - [x] Footer
+
 ---
+
 - [ ] storage
     - [ ] Add
     - [ ] Delete
@@ -62,47 +67,54 @@
     - [ ] Undo
     - [ ] Redo
     - [ ] Make API
+
 ---
+
 - [ ] Header
-  - [ ] Logo
-  - [ ] History Modal
-    - [ ] Pop up
-    - [ ] List of Tasks
-    - [ ] Clear History
-      - [ ] Warning Modal
-    - [ ] Close Modal
-    - [ ] Animation
-    - [ ] Bold for important words
+    - [ ] Logo
+    - [ ] History Modal
+        - [ ] Pop up
+        - [ ] List of Tasks
+        - [ ] Clear History
+            - [ ] Warning Modal
+        - [ ] Close Modal
+        - [ ] Animation
+        - [ ] Bold for important words
+
 --- 
+
 - [ ] Main
-  - [ ] Card Move
-    - [ ] Drag
-    - [ ] Drop
-  - [ ] Sort
-    - [ ] 생성 순
-    - [ ] 최신 순
-    - [ ] animation
-  - [ ] Card
-    - [ ] delete
-      - [ ] warning modal
-    - [ ] edit
-      - [ ] edit modal
-  - [ ] CardList (Column)
-    - [ ] Skeleton 
-    - [ ] Count of Cards
-    - [ ] Add Card
-    - [ ] Delete Card
-    - [ ] Edit Column Name
-    - [ ] OverFlow Control
-      - [ ] Scroll
+    - [ ] Card Move
+        - [ ] Drag
+        - [ ] Drop
+    - [ ] Sort
+        - [ ] 생성 순
+        - [ ] 최신 순
+        - [ ] animation
+    - [ ] Card
+        - [ ] delete
+            - [ ] warning modal
+        - [ ] edit
+            - [ ] edit modal
+    - [ ] CardList (Column)
+        - [ ] Skeleton
+        - [ ] Count of Cards
+        - [ ] Add Card
+        - [ ] Delete Card
+        - [ ] Edit Column Name
+        - [ ] OverFlow Control
+            - [ ] Scroll
+
 ---
+
 - [ ] Footer
-  - [ ] FAB btn
-    - [ ] Add Column
-      - [ ] Add Column Modal
-    - [ ] Delete Column
-      - [ ] Warning Modal
-    - [ ] Undo
-    - [ ] Redo
+    - [ ] FAB btn
+        - [ ] Add Column
+            - [ ] Add Column Modal
+        - [ ] Delete Column
+            - [ ] Warning Modal
+        - [ ] Undo
+        - [ ] Redo
+
 ---
  
