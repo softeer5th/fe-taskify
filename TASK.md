@@ -28,7 +28,7 @@
   - component
     - header.js
     - column.js
-    - card.js
+    - task.js
     - history.js
     - modal.js
 - 데이터 구조
