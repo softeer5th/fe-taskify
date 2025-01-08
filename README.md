@@ -59,13 +59,12 @@
 
 ---
 
-- [ ] storage
+- [x] storage
     - [x] Add
     - [x] Delete
     - [x] Edit
     - [x] Move
-    - [ ] Undo
-    - [ ] Redo
+    - [x] History
 
 ---
 
