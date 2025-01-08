@@ -2,7 +2,7 @@ import { createElement, createImg } from "../dom.js";
 
 const Header = () => {
   const $header = createElement("header", { className: "header" });
-  const $title = createElement("span", {
+  const $title = createElement("h1", {
     className: "display-bold24",
     text: "TASKIFY",
   });
