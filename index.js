@@ -1,8 +1,8 @@
 import {
-  createNode,
-  createButtonNode,
-  createTextareaNode,
-  createImgNode,
+  createElement,
+  createButton,
+  createTextarea,
+  createImg,
 } from "./dom.js";
 
 const $TODO_ADD_BUTTON = document.querySelector("#todo__section .add__button");
@@ -37,25 +37,19 @@ const handleSubmit = (e) => {
   const title = $titleInput.value;
   const content = $contentInput.value;
 
-  const $title = createNode(
-    "h3",
-    null,
-    "column__item__title display-bold14",
-    title
-  );
-  const $content = createNode(
-    "p",
-    null,
-    "column__item__content display-medium14",
-    content
-  );
+  const $title = createElement("h3", {
+    className: "column__item__title display-bold14",
+    text: title,
+  });
+  const $content = createElement("p", {
+    className: "column__item__content display-medium14",
+    text: content,
+  });
 
-  const $userAgent = createNode(
-    "span",
-    null,
-    "userAgent display-medium12",
-    `author by ${getDeviceType()}`
-  );
+  const $userAgent = createElement("span", {
+    className: "userAgent display-medium12",
+    text: `author by ${getDeviceType()}`,
+  });
 
   const $buttonContainer = createEditButtonContainer();
   const $newTextBox = document.createElement("div");
@@ -102,15 +96,15 @@ const handleInputContent = (e) => {
 };
 
 const createTextBox = () => {
-  const $textBox = createNode("div", null, "column__item__textBox");
+  const $textBox = createElement("div", { className: "column__item__textBox" });
 
-  const $title = createTextareaNode({
+  const $title = createTextarea({
     id: "title",
     className: "column__item__title display-bold14",
     placeholder: "제목을 입력하세요",
     handleInput: handleInputTitle,
   });
-  const $content = createTextareaNode({
+  const $content = createTextarea({
     id: "content",
     className: "column__item__content display-medium14",
     placeholder: "내용을 입력하세요",
@@ -124,18 +118,16 @@ const createTextBox = () => {
 };
 
 const createEditButtonContainer = () => {
-  const $buttonContainer = createNode(
-    "div",
-    null,
-    "column__item__buttonContainer"
-  );
+  const $buttonContainer = createElement("div", {
+    className: "column__item__buttonContainer",
+  });
 
-  const $deleteButton = createButtonNode(null, null, null, handleDeleteTodo);
-  const $deleteImg = createImgNode("./assets/icon/closed.svg", "닫기");
+  const $deleteButton = createButton(null, null, null, handleDeleteTodo);
+  const $deleteImg = createImg("./assets/icon/closed.svg", "닫기");
   $deleteButton.appendChild($deleteImg);
 
-  const $editButton = createButtonNode(null, null, null, handleEditTodo);
-  const $editImg = createImgNode("./assets/icon/edit.svg", "수정");
+  const $editButton = createButton(null, null, null, handleEditTodo);
+  const $editImg = createImg("./assets/icon/edit.svg", "수정");
   $editButton.appendChild($editImg);
 
   $buttonContainer.appendChild($deleteButton);
@@ -145,18 +137,16 @@ const createEditButtonContainer = () => {
 };
 
 const createAddButtonContainer = () => {
-  const $addButtonContainer = createNode(
-    "div",
-    null,
-    "column__item__addButtonContainer"
-  );
-  const $closeButton = createButtonNode(
+  const $addButtonContainer = createElement("div", {
+    className: "column__item__addButtonContainer",
+  });
+  const $closeButton = createButton(
     null,
     "close__button",
     "취소",
     handleCancel
   );
-  const $submitButton = createButtonNode(
+  const $submitButton = createButton(
     null,
     "submit__button",
     "등록",
@@ -171,8 +161,10 @@ const createAddButtonContainer = () => {
 };
 
 const createColumnItem = () => {
-  const $columnItem = createNode("div", null, "column__item");
-  const $textContainer = createNode("div", null, "column__item__textContainer");
+  const $columnItem = createElement("div", { className: "column__item" });
+  const $textContainer = createElement("div", {
+    className: "column__item__textContainer",
+  });
   const $textBox = createTextBox();
   const $addButtonContainer = createAddButtonContainer();
 

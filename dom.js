@@ -1,43 +1,43 @@
-export const createNode = (tagName, id = null, className = null, text) => {
-  const node = document.createElement(tagName);
+export const createElement = (tagName, options = {}) => {
+  const element = document.createElement(tagName);
+  const { id, className, text, ...attributes } = options;
 
-  if (id) {
-    node.id = id;
+  if (id) element.id = id;
+  if (className)
+    className.split(" ").forEach((cls) => element.classList.add(cls));
+  if (text) element.textContent = text;
+  if (attributes) {
+    Object.entries(attributes).forEach(([key, value]) => {
+      element.setAttribute(key, value);
+    });
   }
 
-  className &&
-    className.split(" ").forEach((className) => {
-      node.classList.add(className);
-    });
-
-  node.textContent = text;
-
-  return node;
+  return element;
 };
 
-export const createButtonNode = (
+export const createButton = (
   id = null,
   className = null,
   text = "",
   handleClick,
   disabled
 ) => {
-  const $button = createNode("button", id, className, text);
+  const $button = createElement("button", { id, className, text });
   $button.disabled = disabled ?? false;
   $button.addEventListener("click", handleClick);
 
   return $button;
 };
 
-export const createImgNode = (src, alt) => {
-  const $img = createNode("img");
+export const createImg = (src, alt) => {
+  const $img = createElement("img");
   $img.src = src;
   $img.alt = alt;
 
   return $img;
 };
 
-export const createTextareaNode = ({
+export const createTextarea = ({
   id = null,
   className = null,
   handleChange,
@@ -45,7 +45,7 @@ export const createTextareaNode = ({
   placeholder = "",
   maxLength = 500,
 }) => {
-  const $textarea = createNode("textarea", id, className);
+  const $textarea = createElement("textarea", { id, className });
   $textarea.rows = 1;
   $textarea.maxLength = maxLength;
   $textarea.placeholder = placeholder ?? undefined;
