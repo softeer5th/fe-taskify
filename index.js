@@ -1,202 +1,206 @@
-import {
-  createElement,
-  createButton,
-  createTextarea,
-  createImg,
-} from "./dom.js";
+import Header from "./components/Header.js";
+// import {
+//   createElement,
+//   createButton,
+//   createTextarea,
+//   createImg,
+// } from "./dom.js";
 
-const $TODO_ADD_BUTTON = document.querySelector("#todo__section .add__button");
-let isTodoAdding = false;
+// const $TODO_ADD_BUTTON = document.querySelector("#todo__section .add__button");
+// let isTodoAdding = false;
 
-const handleDeleteTodo = () => {
-  alert("delete");
-};
+// const handleDeleteTodo = () => {
+//   alert("delete");
+// };
 
-const handleEditTodo = () => {
-  alert("edit");
-};
+// const handleEditTodo = () => {
+//   alert("edit");
+// };
 
-const handleCancel = (e) => {
-  const target = e.target;
-  const $columnItem = target
-    .closest(".column__container")
-    .querySelector(".column__body");
+// const handleCancel = (e) => {
+//   const target = e.target;
+//   const $columnItem = target
+//     .closest(".column__container")
+//     .querySelector(".column__body");
 
-  $columnItem.firstChild.remove();
-  isTodoAdding = false;
-};
+//   $columnItem.firstChild.remove();
+//   isTodoAdding = false;
+// };
 
-const handleSubmit = (e) => {
-  const $button = e.target;
-  const $columnItem = $button.closest(".column__item");
-  const $textContainer = $columnItem.querySelector(
-    ".column__item__textContainer"
-  );
-  const $titleInput = $columnItem.querySelector("#title");
-  const $contentInput = $columnItem.querySelector("#content");
-  const title = $titleInput.value;
-  const content = $contentInput.value;
+// const handleSubmit = (e) => {
+//   const $button = e.target;
+//   const $columnItem = $button.closest(".column__item");
+//   const $textContainer = $columnItem.querySelector(
+//     ".column__item__textContainer"
+//   );
+//   const $titleInput = $columnItem.querySelector("#title");
+//   const $contentInput = $columnItem.querySelector("#content");
+//   const title = $titleInput.value;
+//   const content = $contentInput.value;
 
-  const $title = createElement("h3", {
-    className: "column__item__title display-bold14",
-    text: title,
-  });
-  const $content = createElement("p", {
-    className: "column__item__content display-medium14",
-    text: content,
-  });
+//   const $title = createElement("h3", {
+//     className: "column__item__title display-bold14",
+//     text: title,
+//   });
+//   const $content = createElement("p", {
+//     className: "column__item__content display-medium14",
+//     text: content,
+//   });
 
-  const $userAgent = createElement("span", {
-    className: "userAgent display-medium12",
-    text: `author by ${getDeviceType()}`,
-  });
+//   const $userAgent = createElement("span", {
+//     className: "userAgent display-medium12",
+//     text: `author by ${getDeviceType()}`,
+//   });
 
-  const $buttonContainer = createEditButtonContainer();
-  const $newTextBox = document.createElement("div");
-  $newTextBox.classList.add("column__item__textBox");
-  $newTextBox.appendChild($title);
-  $newTextBox.appendChild($content);
+//   const $buttonContainer = createEditButtonContainer();
+//   const $newTextBox = document.createElement("div");
+//   $newTextBox.classList.add("column__item__textBox");
+//   $newTextBox.appendChild($title);
+//   $newTextBox.appendChild($content);
 
-  $textContainer.replaceChildren($newTextBox, $buttonContainer);
-  $columnItem.replaceChild($userAgent, $columnItem.lastChild);
+//   $textContainer.replaceChildren($newTextBox, $buttonContainer);
+//   $columnItem.replaceChild($userAgent, $columnItem.lastChild);
 
-  isTodoAdding = false;
-};
+//   isTodoAdding = false;
+// };
 
-const handleInputTitle = (e) => {
-  const $input = e.target;
-  $input.style.height = $input.scrollHeight + "px"; // 글의 길이에 맞춰 입력창 높이 조절
+// const handleInputTitle = (e) => {
+//   const $input = e.target;
+//   $input.style.height = $input.scrollHeight + "px"; // 글의 길이에 맞춰 입력창 높이 조절
 
-  const $column__item = $input.closest(".column__item");
-  const $submitButton = $column__item.querySelector(".submit__button");
-  const content = $input.nextElementSibling.value;
-  const title = e.target.value;
+//   const $column__item = $input.closest(".column__item");
+//   const $submitButton = $column__item.querySelector(".submit__button");
+//   const content = $input.nextElementSibling.value;
+//   const title = e.target.value;
 
-  if (title.length > 0 && content.length > 0) {
-    $submitButton.disabled = false;
-  } else {
-    $submitButton.disabled = true;
-  }
-};
+//   if (title.length > 0 && content.length > 0) {
+//     $submitButton.disabled = false;
+//   } else {
+//     $submitButton.disabled = true;
+//   }
+// };
 
-const handleInputContent = (e) => {
-  const $input = e.target;
-  $input.style.height = $input.scrollHeight + "px";
+// const handleInputContent = (e) => {
+//   const $input = e.target;
+//   $input.style.height = $input.scrollHeight + "px";
 
-  const $column__item = $input.closest(".column__item");
-  const $submitButton = $column__item.querySelector(".submit__button");
-  const title = $input.previousElementSibling.value;
-  const content = e.target.value;
+//   const $column__item = $input.closest(".column__item");
+//   const $submitButton = $column__item.querySelector(".submit__button");
+//   const title = $input.previousElementSibling.value;
+//   const content = e.target.value;
 
-  if (title.length > 0 && content.length > 0) {
-    $submitButton.disabled = false;
-  } else {
-    $submitButton.disabled = true;
-  }
-};
+//   if (title.length > 0 && content.length > 0) {
+//     $submitButton.disabled = false;
+//   } else {
+//     $submitButton.disabled = true;
+//   }
+// };
 
-const createTextBox = () => {
-  const $textBox = createElement("div", { className: "column__item__textBox" });
+// const createTextBox = () => {
+//   const $textBox = createElement("div", { className: "column__item__textBox" });
 
-  const $title = createTextarea({
-    id: "title",
-    className: "column__item__title display-bold14",
-    placeholder: "제목을 입력하세요",
-    handleInput: handleInputTitle,
-  });
-  const $content = createTextarea({
-    id: "content",
-    className: "column__item__content display-medium14",
-    placeholder: "내용을 입력하세요",
-    handleInput: handleInputContent,
-  });
+//   const $title = createTextarea({
+//     id: "title",
+//     className: "column__item__title display-bold14",
+//     placeholder: "제목을 입력하세요",
+//     handleInput: handleInputTitle,
+//   });
+//   const $content = createTextarea({
+//     id: "content",
+//     className: "column__item__content display-medium14",
+//     placeholder: "내용을 입력하세요",
+//     handleInput: handleInputContent,
+//   });
 
-  $textBox.appendChild($title);
-  $textBox.appendChild($content);
+//   $textBox.appendChild($title);
+//   $textBox.appendChild($content);
 
-  return $textBox;
-};
+//   return $textBox;
+// };
 
-const createEditButtonContainer = () => {
-  const $buttonContainer = createElement("div", {
-    className: "column__item__buttonContainer",
-  });
+// const createEditButtonContainer = () => {
+//   const $buttonContainer = createElement("div", {
+//     className: "column__item__buttonContainer",
+//   });
 
-  const $deleteButton = createButton({ handleClick: handleDeleteTodo });
-  const $deleteImg = createImg({
-    src: "./assets/icon/closed.svg",
-    alt: "닫기",
-  });
-  $deleteButton.appendChild($deleteImg);
+//   const $deleteButton = createButton({ handleClick: handleDeleteTodo });
+//   const $deleteImg = createImg({
+//     src: "./assets/icon/closed.svg",
+//     alt: "닫기",
+//   });
+//   $deleteButton.appendChild($deleteImg);
 
-  const $editButton = createButton({ handleClick: handleEditTodo });
-  const $editImg = createImg({ src: "./assets/icon/edit.svg", alt: "수정" });
-  $editButton.appendChild($editImg);
+//   const $editButton = createButton({ handleClick: handleEditTodo });
+//   const $editImg = createImg({ src: "./assets/icon/edit.svg", alt: "수정" });
+//   $editButton.appendChild($editImg);
 
-  $buttonContainer.appendChild($deleteButton);
-  $buttonContainer.appendChild($editButton);
+//   $buttonContainer.appendChild($deleteButton);
+//   $buttonContainer.appendChild($editButton);
 
-  return $buttonContainer;
-};
+//   return $buttonContainer;
+// };
 
-const createAddButtonContainer = () => {
-  const $addButtonContainer = createElement("div", {
-    className: "column__item__addButtonContainer",
-  });
-  const $closeButton = createButton({
-    className: "close__button",
-    text: "취소",
-    handleClick: handleCancel,
-  });
-  const $submitButton = createButton({
-    className: "submit__button",
-    text: "등록",
-    handleChange: handleSubmit,
-    disabled: true,
-  });
+// const createAddButtonContainer = () => {
+//   const $addButtonContainer = createElement("div", {
+//     className: "column__item__addButtonContainer",
+//   });
+//   const $closeButton = createButton({
+//     className: "close__button",
+//     text: "취소",
+//     handleClick: handleCancel,
+//   });
+//   const $submitButton = createButton({
+//     className: "submit__button",
+//     text: "등록",
+//     handleChange: handleSubmit,
+//     disabled: true,
+//   });
 
-  $addButtonContainer.appendChild($closeButton);
-  $addButtonContainer.appendChild($submitButton);
+//   $addButtonContainer.appendChild($closeButton);
+//   $addButtonContainer.appendChild($submitButton);
 
-  return $addButtonContainer;
-};
+//   return $addButtonContainer;
+// };
 
-const createColumnItem = () => {
-  const $columnItem = createElement("div", { className: "column__item" });
-  const $textContainer = createElement("div", {
-    className: "column__item__textContainer",
-  });
-  const $textBox = createTextBox();
-  const $addButtonContainer = createAddButtonContainer();
+// const createColumnItem = () => {
+//   const $columnItem = createElement("div", { className: "column__item" });
+//   const $textContainer = createElement("div", {
+//     className: "column__item__textContainer",
+//   });
+//   const $textBox = createTextBox();
+//   const $addButtonContainer = createAddButtonContainer();
 
-  $textContainer.appendChild($textBox);
-  $columnItem.appendChild($textContainer);
-  $columnItem.appendChild($addButtonContainer);
+//   $textContainer.appendChild($textBox);
+//   $columnItem.appendChild($textContainer);
+//   $columnItem.appendChild($addButtonContainer);
 
-  return $columnItem;
-};
+//   return $columnItem;
+// };
 
-const handleClickAdd = (e) => {
-  if (isTodoAdding) {
-    handleCancel(e);
-  } else {
-    addTodoItem();
-  }
-};
+// const handleClickAdd = (e) => {
+//   if (isTodoAdding) {
+//     handleCancel(e);
+//   } else {
+//     addTodoItem();
+//   }
+// };
 
-const addTodoItem = () => {
-  const $todoColumn = document.querySelector("#todo__section .column__body");
-  const $columnItem = createColumnItem();
-  $todoColumn.prepend($columnItem);
-  isTodoAdding = true;
-};
+// const addTodoItem = () => {
+//   const $todoColumn = document.querySelector("#todo__section .column__body");
+//   const $columnItem = createColumnItem();
+//   $todoColumn.prepend($columnItem);
+//   isTodoAdding = true;
+// };
 
-$TODO_ADD_BUTTON.addEventListener("click", handleClickAdd);
+// $TODO_ADD_BUTTON.addEventListener("click", handleClickAdd);
 
-const getDeviceType = () => {
-  if ("ontouchstart" in document.documentElement) {
-    return "mobile";
-  }
+// const getDeviceType = () => {
+//   if ("ontouchstart" in document.documentElement) {
+//     return "mobile";
+//   }
 
-  return "web";
-};
+//   return "web";
+// };
+
+const $ROOT = document.getElementById("root");
+$ROOT.appendChild(Header());
