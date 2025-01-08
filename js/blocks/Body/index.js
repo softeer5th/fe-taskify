@@ -27,7 +27,7 @@ function createSection(containerId, title, tasks) {
                 <button id="plus-${containerId}">
                     <img src="./assets/plus.svg" alt="plus">
                 </button>
-                <button>
+                <button id="clear-${containerId}">
                     <img src="./assets/closed.svg" alt="close">
                 </button>
             </div>
@@ -43,11 +43,27 @@ function createSection(containerId, title, tasks) {
         ulElement.style.height = `${ulElement.scrollHeight + 300}px`;
     });
 
+    document.getElementById(`clear-${containerId}`).addEventListener('click', () => {
+        clearTasks(containerId);
+    });
+
     tasks.filter(task => task.type === containerId).forEach(task => {
         const newTask = createTaskElement(task.type, task.title, task.content);
         ulElement.appendChild(newTask);
     });
 }
+
+const clearTasks = (containerId) => {
+    // TODO: 삭제 모달 추가
+    let tasks = loadTasksFromLocalStorage();
+    tasks = tasks.filter(task => task.type !== containerId);
+    saveTasksToLocalStorage(tasks);
+
+    const ulElement = document.getElementById(`list-${containerId}`);
+    while (ulElement.firstChild) {
+        ulElement.removeChild(ulElement.firstChild);
+    }
+};
 
 export const DOMLoaded = async () => {
     const tasks = await loadTasksFromJSON();
@@ -245,6 +261,7 @@ const createTaskElement = (type, title, content) => {
     closedImg.src = '/assets/closed.svg';
     closedImg.alt = 'closed';
 
+    // TODO: 삭제 모달 추가
     closedBtn.onclick = () => {
         task.remove();
     };
