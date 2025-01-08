@@ -1,31 +1,35 @@
-import Component from "../components/component.js";
-import { Header } from "./task/header/header.js";
-import { Column } from "./task/column/column.js";
+import Component from "../component.js";
 
-export class App extends Component {
+export class IconButton extends Component {
 
-    children = {};
+    children = {
+
+    };
+
     events = [];
 
-    constructor() {
+    constructor(iconRef, buttonType = "confirm-button") {
         super();
-        this.children = {
-            header: {
-                object: new Header(),
-                parentSelector: "#header",
-            },
-            column: {
-                object: new Column(),
-                parentSelector: "#header + .div",
-            },
-        };
+        this.iconRef = iconRef;
+        this.buttonType = buttonType;
     }
 
     template() {
+
+        let buttonStyle = this.buttonType;
+
+        let iconTemplate = '';
+        if (this.iconRef) {
+            iconTemplate = `<img src=${this.iconRef} alt="icon" class="button-icon" />`;
+        }
+
+        buttonStyle += ' button-background';
+
         return `
-            <div id = "header">  </div>
-            <div class = "div">  </div>
-        `;
+        <div class="${buttonStyle}"> 
+            ${iconTemplate}
+        </div>
+    `;
     }
 
     render(parent) {
@@ -46,4 +50,5 @@ export class App extends Component {
         this.events.push({ listenerName, callback });
 
     }
+
 }

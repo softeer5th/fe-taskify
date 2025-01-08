@@ -18,7 +18,7 @@ export class Logo extends Component {
 
     render(parent) {
 
-        parent.innerHTML = this.template();
+        parent.innerHTML += this.template();
 
         for (const key in this.children) {
             const childParent = document.querySelector(this.children[key].parentSelector);
