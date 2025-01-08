@@ -17,18 +17,18 @@
 <body id="root">
   <header class="header">
     <span class="display-bold24">TASKIFY</span>
-    <button>버튼</button>
+    <button><img src="./assets/icon/clock.svg" alt="사용자 활동 기록" /></button>
   </header>
   <main class="column__section">
-    <section class="column__container">
+    <section id="todo__section" class="column__container">
       <div class="column__header">
         <div class="column__header__titleContainer">
           <span class="column__title display-bold16">해야 할 일</span>
           <span class="column__count display-medium12">3</span>
         </div>
         <div class="column__header__buttonContainer">
-          <button>+</button>
-          <button>X</button>
+          <button class="add__button"><img src="./assets/icon/plus.svg" alt="추가" /></button>
+          <button><img src="./assets/icon/closed.svg" alt="닫기" /></button>
         </div>
       </div>
       <div class="column__body">
@@ -38,12 +38,12 @@
               <h3 class="column__item__title display-bold14">Github 공부하기</h3>
               <p class="column__item__content display-medium14">add, commit, push</p>
             </div>
-            <span class="userAgent display-medium12">author by web</span>
+            <div class="column__item__buttonContainer">
+              <button><img src="./assets/icon/closed.svg" alt="닫기" /></button>
+              <button><img src="./assets/icon/edit.svg" alt="수정" /></button>
+            </div>
           </div>
-          <div class="column__item__buttonContainer">
-            <button>X</button>
-            <button>edit</button>
-          </div>
+          <span class="userAgent display-medium12">author by web</span>
         </div>
         <div class="column__item">
           <div class="column__item__textContainer">
@@ -51,12 +51,12 @@
               <h3 class="column__item__title display-bold14">Github 공부하기</h3>
               <p class="column__item__content display-medium14">add, commit, push</p>
             </div>
-            <span class="userAgent display-medium12">author by web</span>
+            <div class="column__item__buttonContainer">
+              <button><img src="./assets/icon/closed.svg" alt="닫기" /></button>
+              <button><img src="./assets/icon/edit.svg" alt="수정" /></button>
+            </div>
           </div>
-          <div class="column__item__buttonContainer">
-            <button>X</button>
-            <button>edit</button>
-          </div>
+          <span class="userAgent display-medium12">author by web</span>
         </div>
         <div class="column__item">
           <div class="column__item__textContainer">
@@ -64,17 +64,17 @@
               <h3 class="column__item__title display-bold14">Github 공부하기</h3>
               <p class="column__item__content display-medium14">add, commit, push</p>
             </div>
-            <span class="userAgent display-medium12">author by web</span>
+            <div class="column__item__buttonContainer">
+              <button><img src="./assets/icon/closed.svg" alt="닫기" /></button>
+              <button><img src="./assets/icon/edit.svg" alt="수정" /></button>
+            </div>
           </div>
-          <div class="column__item__buttonContainer">
-            <button>X</button>
-            <button>edit</button>
-          </div>
+          <span class="userAgent display-medium12">author by web</span>
         </div>
       </div>
     </section>
 
-    <section class="column__container">
+    <section id="progress__section" class="column__container">
       <div class="column__header">
         <div class="column__header__titleContainer">
           <span class="column__title display-bold16">하고 있는 일</span>
@@ -82,7 +82,7 @@
         </div>
         <div class="column__header__buttonContainer">
           <button>+</button>
-          <button>X</button>
+          <button><img src="./assets/icon/closed.svg" alt="닫기" /></button>
         </div>
       </div>
       <div class="column__body">
@@ -95,15 +95,15 @@
             <span class="userAgent display-medium12">author by web</span>
           </div>
           <div class="column__item__buttonContainer">
-            <button>X</button>
-            <button>edit</button>
+            <button><img src="./assets/icon/closed.svg" alt="닫기" /></button>
+            <button><img src="./assets/icon/edit.svg" alt="수정" /></button>
           </div>
         </div>
       </div>
     </section>
 
 
-    <section class="column__container">
+    <section id="finished__section" class="column__container">
       <div class="column__header">
         <div class="column__header__titleContainer">
           <span class="column__title display-bold16">완료한 일</span>
@@ -111,12 +111,13 @@
         </div>
         <div class="column__header__buttonContainer">
           <button>+</button>
-          <button>X</button>
+          <button><img src="./assets/icon/closed.svg" alt="닫기" /></button>
         </div>
       </div>
       <div class="column__body"></div>
     </section>
   </main>
+  <script type="module" src="./index.js"></script>
 </body>
 
 </html>
