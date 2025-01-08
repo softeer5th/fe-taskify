@@ -1,4 +1,4 @@
-export const todoCardComponent = (title, content) => {
+export const cardComponent = (title, content) => {
   return /*html*/ `
       <li class="card">
           <div class="card-contents-icons-box">
