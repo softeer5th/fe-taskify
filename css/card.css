@@ -11,7 +11,6 @@
     max-width: 280px;
     display: flex;
     margin-top: 10px;
-    margin-right: 60px;
     box-shadow: 0 1px 4px 0 #6E80913D;
     border-radius: 5px;
     padding: 20px;
@@ -25,7 +24,20 @@
     max-width: 280px;
     display: block;
     margin-top: 10px;
-    margin-right: 60px;
+    box-shadow: 0 1px 4px 0 #6E80913D;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+
+.edit-card {
+    position: absolute;
+    background-color: #FEFEFE;;
+    width: 100%;
+    min-height: 80px;
+    max-width: 280px;
+    display: block;
+    margin-top: 10px;
     box-shadow: 0 1px 4px 0 #6E80913D;
     border-radius: 5px;
     padding: 20px;
@@ -94,6 +106,7 @@ button{
 .card-title{
     font-size: 14px;
     font-weight: bold;
+    white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -102,6 +115,7 @@ button{
     color: #6E7191;
     font-size: 14px;
     margin-top: 10px;
+    white-space: normal; 
     word-wrap: break-word;
     overflow-wrap: break-word;
 }

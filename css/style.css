@@ -10,11 +10,11 @@ header {
 }
 
 header h1 {
-    flex:1;
+    width: 100%;
     font-weight: 700;
 }
 
-header .material-icons {
+header .icon-button {
     margin: 0px 10px;
     color: #6E7191;
 }

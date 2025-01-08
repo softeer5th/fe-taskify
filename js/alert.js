@@ -1,4 +1,4 @@
-export let element = document.getElementById('overlay');
+export let overlay = document.getElementById('overlay');
 let alertArea = document.getElementById('alert-area');
 
 

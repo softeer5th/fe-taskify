@@ -26,12 +26,9 @@
     justify-content: space-between;
 }
 
-.history-dialog-header {
-    display: flex;
-    justify-content: space-between;
-}
 
 .history-dialog-title {
+    width: 100%;
     padding-top: 3px;
     font-weight: bold;
 }
@@ -50,6 +47,7 @@
 }
 
 .close-history div {
+    width: 32px;
     display: flex;
     font-size: 14px;
     align-self: center;
