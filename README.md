@@ -60,13 +60,12 @@
 ---
 
 - [ ] storage
-    - [ ] Add
-    - [ ] Delete
-    - [ ] Edit
-    - [ ] Move
+    - [x] Add
+    - [x] Delete
+    - [x] Edit
+    - [x] Move
     - [ ] Undo
     - [ ] Redo
-    - [ ] Make API
 
 ---
 

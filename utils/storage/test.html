@@ -16,17 +16,9 @@
 <button onclick="testEditColumn()">Test Edit Column</button>
 <button onclick="testSetDefaultColumn()">Test Set Default Column</button>
 <script type="module">
-  import {
-    addTask,
-    removeTask,
-    editTask,
-    moveTask,
-    addColumn,
-    removeColumn,
-    editColumn,
-    setDefaultColumn,
-    getColumnTasks
-  } from './localStorage.js';
+  import { addTask, removeTask, editTask, moveTask, getColumnTasks } from './taskManager.js';
+  import { addColumn, removeColumn, editColumn } from './columnManager.js';
+
 
   window.testAddTask = () => {
     const task = { title: "Test Task", body: "Test Body", author: "Author", timestamp: Date.now() };
@@ -75,14 +67,7 @@
     editColumn('10', 'New Title!');
     console.log('Column after edit:', localStorage.getItem('column10'));
   };
-
-  window.testSetDefaultColumn = () => {
-    setDefaultColumn();
-    console.log('Default columns set:',
-      localStorage.getItem('column1'),
-      localStorage.getItem('column2'),
-      localStorage.getItem('column3'));
-  };
+  
 </script>
 </body>
 </html>
