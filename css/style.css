@@ -38,8 +38,8 @@ ul {
 }
 
 
-#column-area li {
-    width: 25%;
+.column-id {
+    width: 30%;
     min-width: 120px;
     max-width: 320px;
     margin-right: 24px;

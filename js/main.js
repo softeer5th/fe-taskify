@@ -5,8 +5,9 @@ function adaptProps(component, templateId, props) {
     // props가 있는 경우에만
     if (Object.keys(props).length>0) {
         if (templateId==='column-template') {
-            component.querySelector('.column-idnum').className += props.id;
+            component.querySelector('#column-id').id += props.id;
             component.querySelector('.column-name').textContent = props.title || 'Default Title';
+            component.querySelector('#card-list').id += props.id;
             if (props.cardCount) {
                 if (parseInt(props.cardCount)>99) {
                     component.querySelector('.card-count').textContent = "99+";
@@ -16,6 +17,9 @@ function adaptProps(component, templateId, props) {
             } else {
                 component.querySelector('.card-count').textContent = props.cardCount || 0;
             }
+        } else if (templateId==='card-template') {
+            component.querySelector('.card-title').textContent = props.title;
+            component.querySelector('.card-content').textContent = props.content;
         }
     }
     return component;
@@ -48,7 +52,7 @@ async function loadTemplate(templateFile, templateId, props) {
 
 function adaptEventListener(targetId, props) {
     if (targetId==="column-area") {
-        const parentElement = document.querySelector('.column-idnum'+props.id);
+        const parentElement = document.querySelector('#column-id'+props.id);
         parentElement.querySelector('#add-card-button').addEventListener('click', (event)=> {
             addCard(props.id);
         });
