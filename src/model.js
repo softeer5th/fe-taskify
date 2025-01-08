@@ -1,62 +1,8 @@
-function Data() {
-  let columns = [];
-  let tasks = [];
-  let user = null;
-
-  function addColumn(newColumn) {
-    columns.push(newColumn);
-  }
-
-  function removeColumn(columnId) {
-    columns = columns.filter((column) => column.id !== columnId);
-  }
-
-  function getColumns() {
-    return columns;
-  }
-
-  function addTask(newTask) {
-    tasks.push(newTask);
-  }
-
-  function removeTask(taskId) {
-    tasks = tasks.filter((task) => task.id !== taskId);
-  }
-
-  function updateTask(taskId, newTask) {
-    tasks = tasks.map((task) => (task.id === taskId ? newTask : task));
-  }
-
-  function getTasks() {
-    return tasks;
-  }
-
-  function setUser(newUser) {
-    user = newUser;
-  }
-
-  function getUser() {
-    return user;
-  }
-
-  return {
-    addColumn,
-    removeColumn,
-    getColumns,
-    addTask,
-    removeTask,
-    updateTask,
-    getTasks,
-    setUser,
-    getUser,
-  };
-}
-
 function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-function Model() {
+export function Model() {
   let model = {
     history: [
       {
