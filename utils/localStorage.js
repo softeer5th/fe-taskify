@@ -31,16 +31,16 @@ export const setDefaultColumn = () =>  {
   setStorage('column1', '해야할 일');
   setStorage('column2', '진행중인 일');
   setStorage('column3', '완료한 일');
+  let columnCount = 4;
+  while (getStorage(`column${columnCount}`)){
+    removeStorage(`column${columnCount}`);
+  }
 }
 
-export const getColumnStorage = (key) => {
-  return getStorage(key) ? getStorage(key) : setDefaultColumn();
-}
-
-export const setColumnStorage = (key, value) => {
+export const setColumnStorage = (columntitle) => {
   let columnCount = 1;
   while (getStorage(`column${columnCount}`)){
     columnCount++;
   }
-  setStorage(`column${columnCount}`, value);
+  setStorage(`column${columnCount}`, columntitle);
 }
