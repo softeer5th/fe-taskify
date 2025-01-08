@@ -11,14 +11,8 @@ const DIRTY_SEPERATOR_REGEX_G = /(dirtyindex:\d+:)/g;
  * @returns {VDOM} - 생성된 가상 DOM
  */
 export const parser = (strings, ...args) => {
-  // 템플릿 리터럴 중 tagged templates 방식 사용.
-  // ${}를 이용한 값들은 차례로 args로 들어오고, 순수 텍스트 값들은 ${}를 기준으로 분리되어 들어옴. (배열)
   const templateString = strings
     .map((str, index) => {
-      // <div>hi${0}my${1}name${2}is Ham</div>
-      // args.length = 3
-      // <div>hidirtyindex:0:mydirtyindex:1:namedirtyindex:2:is Ham</div>
-      // 즉 args가 들어갈 자리 뒤에 dirtyindex:0: 이런식으로 붙임.
       const argsString = args.length > index ? `${DIRTY_PREFIX}${index}:` : "";
       return `${str}${argsString}`;
     })
@@ -35,7 +29,7 @@ export const parser = (strings, ...args) => {
   };
 
   /**
-   *
+   * 텍스트 노드에 붙인 dirty index를 찾아서 해당 인덱스의 args로 대체하여 반환합니다.
    * @param {string} text - 텍스트 노드
    * @returns {string | string[]} - 변환된 텍스트 노드
    */
@@ -46,11 +40,7 @@ export const parser = (strings, ...args) => {
       const dirtyIndex = findDirtyIndex(textPart);
       if (!dirtyIndex) return textPart || null;
 
-      const arg = args[Number(dirtyIndex)];
-      if (arg instanceof Array) {
-        return arg;
-      }
-      return arg;
+      return args[Number(dirtyIndex)];
     });
   };
 
@@ -77,7 +67,12 @@ export const parser = (strings, ...args) => {
 
     Array.from(element.childNodes || []).forEach((child) => {
       if (child.nodeType === Node.TEXT_NODE) {
-        children.push(...handleTextNode(child.nodeValue));
+        const formattedText = handleTextNode(child.nodeValue);
+        if (typeof formattedText === "string") {
+          children.push(formattedText);
+          return;
+        }
+        children.push(...formattedText);
       } else if (child.nodeType === Node.ELEMENT_NODE) {
         children.push(parseElement(child));
       }
