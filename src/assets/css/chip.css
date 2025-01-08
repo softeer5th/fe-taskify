@@ -1,0 +1,23 @@
+.chip {
+    border: 1px solid var(--color_border_bord);
+    border-radius: var(--number_100);
+    padding: var(--number_50), var(--number_100), var(--number_50), var(--number_100);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chip:hover{
+    cursor: pointer;
+}
+
+.chip-icon{
+    width: 16px;
+    height: 16px;
+    padding: var(--number_50);
+}
+
+.chip-text{
+    color: var(--color_text_bold);
+    padding: 0px var(--number_50) 0px var(--number_50);
+}

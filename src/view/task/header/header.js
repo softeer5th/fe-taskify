@@ -1,5 +1,6 @@
 import { Badge } from "../../../components/badge.js";
 import { IconButton} from "../../../components/Button/iconButton.js";
+import { Chip } from "../../../components/chip.js";
 import Component from "../../../components/component.js";
 import { Logo } from "./logo.js";
 
@@ -13,6 +14,10 @@ export class Header extends Component{
         },
         badge:{
             object: new Badge(1100),
+            parentSelector:".div"
+        },
+        chip:{
+            object: new Chip("최신순"),
             parentSelector:".div"
         }
     };

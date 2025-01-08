@@ -1,6 +1,6 @@
 import Component from "./component.js";
 
-export class Badge extends Component {
+export class Chip extends Component {
 
     children = {
 
@@ -8,23 +8,22 @@ export class Badge extends Component {
 
     events = [];
 
-    constructor(num) {
+    sortIconRef = "/assets/images/arrowBoth.svg"
+    constructor(sort) {
         super();
-        if(num > 99){
-            this.num = "99+";
-        }
-        else{
-            this.num = num;
-        }
+        this.currentSort = sort;
     }
 
     template() {
 
         return `
-        <div class="badge"> 
-            ${this.num}
-        </div>
-    `;
+        <div class="chip">
+            <img src=${this.sortIconRef} alt="icon" class="chip-icon" />
+            <div class = "chip-text">
+                ${this.currentSort}
+            </div>
+        </div >
+        `;
     }
 
     render(parent) {

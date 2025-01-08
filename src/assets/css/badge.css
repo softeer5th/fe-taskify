@@ -1,4 +1,4 @@
-.badge-background{
+.badge{
     border: 1px solid var(--color_border_default);
     border-radius: var(--number_100);
     padding: var(--number_50);
