@@ -161,3 +161,16 @@
   line-height: var(--line-height-auto);
   font-weight: var(--font-weight-medium);
 }
+
+/* etc */
+.radius-low {
+  border-radius: var(--number-100);
+}
+
+.radius-high {
+  border-radius: var(--number-200);
+}
+
+.radius-half {
+  border-radius: 50%;
+}
