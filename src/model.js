@@ -98,6 +98,7 @@ function Model() {
     const newHistory = {
       data: newData,
       action,
+      actionTime: Date.now(),
     };
     model.history.push(newHistory);
     model.currentPointer += 1;
