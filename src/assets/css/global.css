@@ -1,0 +1,89 @@
+/* global.css */
+
+/*typogrphy*/
+:root {
+    --Bold-L: 700 24px/auto ;
+    --Bold-M: 700 16px/auto ;
+    --Bold-R: 700 14px/auto ;
+    --Bold-S: 700 12px/auto ;
+    --Medium-M: 500 16px/22px ;
+    --Medium-R: 500 16px/auto ;
+    --Medium-S: 500 16px/auto ;
+}
+
+/*typogrphy system*/
+:root {
+    --display-bold24: var(--Bold-L);
+    --display-bold16: var(--Bold-M);
+    --display-bold14: var(--Bold-R);
+    --display-medium16:var(--Medium-M);
+    --display-mediym14: var(--Medium-R);
+    --display-mediym12: var(--Medium-S);
+    --selected-bold16:var(--Bold-M);
+    --selected-bold14:var(--Bold-R);
+    --available-medium16:var(--Bold-M);
+    --available-medium14:var(--Bold-R);
+}
+
+/*color */
+:root {
+    --grayscale-50: #FEFEFE;
+    --grayscale-100: #F7F7FC;
+    --grayscale-200: #EFF0F6;
+    --grayscale-300: #D9DBE9;
+    --grayscale-400: #BEC1D5;
+    --grayscale-500: #A0A3BD;
+    --grayscale-600: #6E7191;
+    --grayscale-700: #4E4B66;
+    --grayscale-800: #2A2A44;
+    --grayscale-900: #14142B;
+
+    --accent-blue: #007AFF;
+    --accent-red: #FF3B30;
+}
+
+/*color system*/
+
+:root {
+    --text-strong: var(--grayscale-900);
+    --text-bold: var(--grayscale-700);
+    --text-default: var(--grayscale-600);
+    --text-weak: var(--grayscale-500);
+    --text-white-default: var(--grayscale-50);
+    --text-white-weak: var(--grayscale-100);
+    --text-brand: var(--accent-blue);
+    --text-danger: var(--accent-red);
+  
+    --surface-default: var(--grayscale-50);
+    --surface-alt: var(--grayscale-100);
+    --surface-brand: var(--accent-blue);
+    --surface-danger: var(--accent-red);
+  
+    --border-default: var(--grayscale-200);
+    --border-bold: var(--grayscale-400);
+}
+
+/*Number system*/
+
+:root {
+    --Number-50:4px;
+    --Number-100:8px;
+    --Number-200:16px;
+    --Number-300:24px;
+    --Number-400:32px;
+    --Number-500:40px;
+    --Number-600:48px;
+    --Number-700:56px;
+    --Number-800:64x;
+    --Number-900:72px;
+}
+
+
+/*shadow box*/
+:root{
+    --shadow-nomal:  0px 1px 4px rgba(110, 128, 145, 0.24);
+    --shadow-up:   0px 2px 8px rgba(110, 128, 145, 0.32), 0 0 4px rgba(255, 255, 255, 0.5);
+    --shadow-floating:  0px 0px 4px rgba(110, 128, 145, 0.08), 0px 16px 16px rgba(110, 128, 145, 0.24);
+}
+
+
