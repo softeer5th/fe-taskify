@@ -35,19 +35,22 @@ const showCardForm = (formCard) => {
   formCard.classList.toggle("display-none");
 };
 
-document.querySelectorAll(".add-icon").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const sectionType = btn.dataset.section; // 'todo', 'doing', 'done'
-    const formCard = document.querySelector(`.${sectionType}-form-card`);
+const columnArea = document.querySelector(".column-area");
 
-    showCardForm(formCard);
-  });
+columnArea.addEventListener("click", (e) => {
+  const submitBtn = e.target.closest(".add-btn");
+  if (!submitBtn) return;
+
+  const sectionType = submitBtn.dataset.section;
+  const formCard = document.querySelector(`.${sectionType}-form-card`);
+  addCard(formCard);
 });
 
-document.querySelectorAll(".add-btn").forEach((submitBtn) => {
-  submitBtn.addEventListener("click", () => {
-    const sectionType = submitBtn.dataset.section; // 'todo', 'doing', 'done'
-    const formCard = document.querySelector(`.${sectionType}-form-card`);
-    addCard(formCard);
-  });
+columnArea.addEventListener("click", (e) => {
+  const submitBtn = e.target.closest(".add-icon");
+  if (!submitBtn) return;
+
+  const sectionType = submitBtn.dataset.section;
+  const formCard = document.querySelector(`.${sectionType}-form-card`);
+  showCardForm(formCard);
 });
