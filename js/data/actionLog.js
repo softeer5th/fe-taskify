@@ -1,6 +1,8 @@
-import { ObjectType, ActionType } from '../enums/actionLog';
-import { CANNOT_GENERATE_LOG } from '../enums/errorMessage';
+import { ACTION_LOG_ENUMS } from '../enums/actionLog.js';
+import { ErrorMessage } from '../enums/errorMessage.js';
 
+const { ObjectType, ActionType } = ACTION_LOG_ENUMS;
+const { CANNOT_GENERATE_LOG } = ErrorMessage;
 /**
  * @typedef {string} ActionLog
  */
