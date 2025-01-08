@@ -1,0 +1,9 @@
+.task-card {
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+    width: 320px;
+}
+
+.task-card__title {
+    color: var(--accent-red);
+}

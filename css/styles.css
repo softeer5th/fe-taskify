@@ -2,7 +2,13 @@
 @import './theme/fonts.css';
 @import './theme/sizes.css';
 @import './components/header.css';
+@import './components/button.css';
+@import './components/task-card.css';
 
 * {
     box-sizing: border-box;
+}
+
+body {
+    margin: 0 10rem;
 }
