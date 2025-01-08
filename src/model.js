@@ -140,6 +140,7 @@ function Model() {
       title: addedColumnName,
     });
     pushHistory(data, { type: "addColumn", addedColumnName: addedColumnName });
+    notify();
   }
 
   function removeColumn(columnId) {
@@ -148,11 +149,7 @@ function Model() {
     data.column = data.column.filter((column) => column.id !== columnId);
     data.task = data.task.filter((task) => task.columnId !== columnId);
     pushHistory(data, { type: "removeColumn", removedColumnName: removedColumn.title });
-  }
-
-  function getColumn(columnId) {
-    const data = getCurrentData();
-    return data.column.find((column) => column.id === columnId);
+    notify();
   }
 
   function addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
@@ -167,9 +164,36 @@ function Model() {
     };
     data.task.push(addedTask);
     pushHistory(data, { type: "addTask", addedTask: addedTask });
+    notify();
   }
 
-  function DEBUG_getCurrentData() {
+  function removeTask(taskId) {
+    const data = getCurrentData();
+    const removedTask = data.task.find((task) => task.id === taskId);
+    data.task = data.task.filter((task) => task.id !== taskId);
+    pushHistory(data, { type: "removeTask", removedTaskName: removedTask.name });
+    notify();
+  }
+
+  function editTask(taskId, updatedTaskName, updatedTaskDescription, updatedTaskDevice) {
+    const data = getCurrentData();
+    const updatedTask = data.task.find((task) => task.id === taskId);
+    updatedTask.name = updatedTaskName;
+    updatedTask.description = updatedTaskDescription;
+    updatedTask.device = updatedTaskDevice;
+    pushHistory(data, { type: "updateTask", updatedTask: updatedTask });
+    notify();
+  }
+
+  function moveTask(taskId, destinationColumnId) {
+    const data = getCurrentData();
+    const movedTask = data.task.find((task) => task.id === taskId);
+    movedTask.columnId = destinationColumnId;
+    pushHistory(data, { type: "moveTask", movedTask: movedTask, sourceColumnId: movedTask.columnId, destinationColumnId: destinationColumnId });
+    notify();
+  }
+
+  function getCurrentData() {
     return { data: getCurrentData(), state: deepCopy(model.state) };
   }
 
@@ -181,10 +205,10 @@ function Model() {
     redo,
     addColumn,
     removeColumn,
-    getColumn,
     addTask,
-
-    // For debugging
-    DEBUG_getCurrentData,
+    removeTask,
+    editTask,
+    moveTask,
+    getCurrentData,
   };
 }
