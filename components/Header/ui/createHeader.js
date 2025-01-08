@@ -1,7 +1,7 @@
-import { IMAGE } from "../assets/index.js";
-import { createElement, createImg } from "../dom.js";
+import { IMAGE } from "../../../assets/index.js";
+import { createElement, createImg } from "../../../dom.js";
 
-const Header = () => {
+const createHeader = () => {
   const $header = createElement("header", { className: "header" });
   const $title = createElement("h1", {
     className: "display-bold24",
@@ -20,4 +20,4 @@ const Header = () => {
   return $header;
 };
 
-export default Header;
+export default createHeader;

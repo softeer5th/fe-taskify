@@ -1,33 +1,7 @@
-import { IMAGE } from "../assets/index.js";
-import { createElement, createButton, createImg } from "../dom.js";
-import ColumnItemInput from "./ColumnItemInput.js";
+import { createElement, createButton, createImg } from "../../../dom.js";
+import { IMAGE } from "../../../assets/index.js";
 
-const ColumnHeader = ({ id, title, items, store }) => {
-  const handleCancel = (e) => {
-    const target = e.target;
-    const $columnItem = target
-      .closest(".column__container")
-      .querySelector(".column__body");
-
-    $columnItem.firstChild.remove();
-    store.isTodoAdding = false;
-  };
-
-  const handleClickAdd = (e) => {
-    if (store.isTodoAdding) {
-      handleCancel(e);
-    } else {
-      addColumnItemInput({ store });
-    }
-  };
-
-  const addColumnItemInput = ({ store }) => {
-    const $columnBody = document.querySelector(`#${id} .column__body`);
-    const $columnItemInput = ColumnItemInput({ store, handleCancel });
-    $columnBody.prepend($columnItemInput);
-    store.isTodoAdding = true;
-  };
-
+const createColumnHeader = ({ title, count, handleClickAdd }) => {
   const $columnHeader = createElement("div", { className: "column__header" });
 
   const $titleContainer = createElement("div", {
@@ -39,8 +13,9 @@ const ColumnHeader = ({ id, title, items, store }) => {
   });
   const $count = createElement("span", {
     className: "column__count display-medium12",
-    text: items.length,
+    text: count,
   });
+
   $titleContainer.append($title, $count);
 
   const $buttonContainer = createElement("div", {
@@ -71,4 +46,4 @@ const ColumnHeader = ({ id, title, items, store }) => {
   return $columnHeader;
 };
 
-export default ColumnHeader;
+export default createColumnHeader;
