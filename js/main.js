@@ -1,4 +1,4 @@
-import {setStorage,getStorage,editStorage,removeStorage} from '../data/localStorage.js';
+import {setStorage,getStorage,editStorage,removeStorage} from '../utils/localStorage.js';
 
 const addTask = (parentColumn) => {
   const newTask = document.createElement('li');
@@ -47,7 +47,6 @@ document.querySelectorAll('.add-btn').forEach(button => {
   });
 });
 
-
 //x 버튼
 document.querySelectorAll('.edit-btn').forEach(button => {
   button.addEventListener('click', () => {
@@ -58,7 +57,6 @@ document.querySelectorAll('.edit-btn').forEach(button => {
 });
 
 document.getElementById('task-add-can-btn').addEventListener('click',deleteTask )
-
 
 document.getElementById('task-add-add-btn').addEventListener('click',setStorage() )
 

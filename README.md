@@ -22,7 +22,6 @@
 │   └── `column.css`            # Column styles ( card lists )
 │
 ├── `js`                    # JavaScript files ( Can be divided into more directories )
-│   ├── storage          # Storage and history management functions (add, delete, edit, undo, redo, etc.)
 │   ├── card               # Card functions (add, delete, edit, drag, drop, etc.)
 │   ├── column          # Column management functions (add, delete, rename, etc.)
 │   ├── history         # History management functions (undo, redo, etc.)
@@ -30,7 +29,7 @@
 │   ├── fab                # FAB button functions (add column, delete column, undo, redo, etc.)
 │   └── main.js           # Main JavaScript file
 │
-├── `data`                      # Data storage files (e.g., `localStorage.js` if using local storage)
+├── `utils`                      # Data storage files (e.g. `localStorage.js` )
     
 ```
 ### Development Plan
