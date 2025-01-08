@@ -1,4 +1,20 @@
-function createSection(containerId, title) {
+const saveTasksToLocalStorage = (tasks) => {
+    console.log(tasks);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+};
+
+const loadTasksFromLocalStorage = () => {
+    const tasks = localStorage.getItem('tasks');
+    return tasks ? JSON.parse(tasks) : [];
+};
+
+async function loadTasksFromJSON () {
+    const tasks = loadTasksFromLocalStorage();
+    return tasks;
+};
+
+
+function createSection(containerId, title, tasks) {
     const container = document.querySelector('main');
 
     const section = document.createElement('section');
@@ -23,15 +39,22 @@ function createSection(containerId, title) {
     const ulElement = document.getElementById(`list-${containerId}`);
 
     document.getElementById(`plus-${containerId}`).addEventListener('click', () => {
-        toggleTaskBox(`list-${containerId}`, title);
+        toggleTaskBox(`list-${containerId}`, containerId);
         ulElement.style.height = `${ulElement.scrollHeight + 300}px`;
+    });
+
+    tasks.filter(task => task.type === containerId).forEach(task => {
+        const newTask = createTaskElement(task.type, task.title, task.content);
+        ulElement.appendChild(newTask);
     });
 }
 
-export const DOMLoaded = () => {
-    createSection('todo', '해야할 일');
-    createSection('doing', '하고 있는 일');
-    createSection('done', '완료한 일');
+export const DOMLoaded = async () => {
+    const tasks = await loadTasksFromJSON();
+
+    createSection('todo', '해야할 일', tasks);
+    createSection('doing', '하고 있는 일', tasks);
+    createSection('done', '완료한 일', tasks);
 
     initializeDragAndDrop();
 };
@@ -67,6 +90,18 @@ const initializeDragAndDrop = () => {
                 }
                 console.log(list.scrollHeight);
                 list.style.height = `${list.scrollHeight + 300}px`;
+
+                const tasks = loadTasksFromLocalStorage();
+                const updatedTasks = tasks.map(task => {
+                    if (task.title === draggable.querySelector('h3').innerText) {
+                        return {
+                            ...task,
+                            type: list.id.replace('list-', '')
+                        };
+                    }
+                    return task;
+                });
+                saveTasksToLocalStorage(updatedTasks);
             }
         });
     });
@@ -134,10 +169,30 @@ const createTaskBox = (type, list, task = null) => {
             task.querySelector('h3').innerText = titleInput.value;
             task.querySelector('p').innerText = contentInput.value;
             taskBox.replaceWith(task);
+
+            const tasks = loadTasksFromLocalStorage();
+
+            const updatedTasks = [...tasks];
+
+            const taskIndex = tasks.findIndex(task => task.title === draggable.querySelector('h3').innerText);
+            if (taskIndex !== -1) {
+                const updatedTask = {
+                    ...tasks[taskIndex],
+                    type: list.id.replace('list-', '')
+                };
+                updatedTasks.splice(taskIndex, 1); // 기존 위치에서 제거
+                updatedTasks.push(updatedTask); // 배열의 맨 뒤로 추가
+            }
+
+            saveTasksToLocalStorage(updatedTasks);
         } else {
             const newTask = createTaskElement(type, titleInput.value, contentInput.value);
             list.insertBefore(newTask, list.firstChild);
             taskBox.remove();
+
+            const tasks = loadTasksFromLocalStorage();
+            tasks.push({ id: tasks.length+1, type, title: titleInput.value, content: contentInput.value });
+            saveTasksToLocalStorage(tasks);
         }
     };
 
@@ -162,24 +217,46 @@ const createTaskElement = (type, title, content) => {
     const task = document.createElement('li');
     task.className = 'task-item';
     task.draggable = true;
+    task.id = `task-${title}`;
 
+    const taskWrapper = document.createElement('div');
     const taskTitle = document.createElement('h3');
     taskTitle.innerText = title;
 
     const taskContent = document.createElement('p');
     taskContent.innerText = content;
 
+    taskWrapper.appendChild(taskTitle);
+    taskWrapper.appendChild(taskContent);
+
+    const btnWrapper = document.createElement('div');
     const editBtn = document.createElement('button');
-    editBtn.innerText = '수정';
+    const editImg = document.createElement('img');
+    editImg.src = '/assets/edit.svg';
+    editImg.alt = 'edit';
+
     editBtn.onclick = () => {
         const list = task.parentElement;
         const taskBox = createTaskBox(type, list, task);
         task.replaceWith(taskBox);
     };
+    editBtn.appendChild(editImg);
 
-    task.appendChild(taskTitle);
-    task.appendChild(taskContent);
-    task.appendChild(editBtn);
+    const closedBtn = document.createElement('button');
+    const closedImg = document.createElement('img');
+    closedImg.src = '/assets/closed.svg';
+    closedImg.alt = 'closed';
+
+    closedBtn.onclick = () => {
+        task.remove();
+    };
+    closedBtn.appendChild(closedImg);
+
+    btnWrapper.appendChild(editBtn);
+    btnWrapper.appendChild(closedBtn);
+
+    task.appendChild(taskWrapper);
+    task.appendChild(btnWrapper);
 
     return task;
 };
