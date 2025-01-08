@@ -5,6 +5,14 @@ import { createTask } from './task.js';
 
 export function createTaskForm(columnIdx) {
     const cardFormArea = document.getElementsByClassName("card_add")[columnIdx];
+    
+    // 이미 Form이 존재하는 경우, + 버튼으로 존재하는 Form을 닫기
+    const isCardFormExists = cardFormArea.children.length !== 0;
+    if(isCardFormExists) {
+        cardFormArea.removeChild(cardFormArea.children[0])
+        return;
+    }
+
     cardFormArea.innerHTML = CardForm();
     const forms = document.getElementsByClassName('card_form');
     

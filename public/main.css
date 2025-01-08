@@ -41,7 +41,24 @@ main {
 
 .column_button_container {
     margin-left: auto;
+
+    >button {
+        &:first-of-type {
+            &:hover {
+                filter: invert(34%) sepia(33%) saturate(6685%) hue-rotate(200deg) brightness(102%) contrast(106%);
+            }
+
+        }
+
+        &:last-of-type {
+            &:hover {
+                filter: invert(35%) sepia(50%) saturate(6582%) hue-rotate(343deg) brightness(110%) contrast(99%);
+            }
+        }
+    }
 }
+
+
 
 .card {
     display: flex;
