@@ -1,0 +1,20 @@
+.text-strong {
+  color: var(--text-strong);
+}
+.text-bold {
+  color: var(--text-bold);
+  font-weight: bold;
+}
+
+.text-weak {
+  color: var(--text-weak);
+}
+.text-default {
+  color: var(--text-default);
+}
+.text-white-default {
+  color: var(--text-white-default);
+}
+.text-danger {
+  color: var(--text-danger);
+}

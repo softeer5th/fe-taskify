@@ -1,0 +1,55 @@
+.card-container {
+  padding-top: 10px;
+}
+.card-contents-icons-box {
+  display: flex;
+  justify-content: space-between;
+}
+.card {
+  background-color: var(--surface-default);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0px 1px 4px 0px #6e80913d;
+}
+
+.title {
+  font-size: 14px;
+  line-height: 16.41px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.content {
+  font-size: 14px;
+  line-height: 16.41px;
+  font-weight: 500;
+  color: var(--text-default);
+}
+
+.name-of-device {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14.32px;
+}
+
+.card-btn-box {
+  display: flex;
+  justify-content: space-between;
+}
+.card-btn-box button {
+  width: 50%;
+  border: none;
+  padding: 4px;
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 7.5px 0px;
+}
+
+.cancel-btn {
+  background-color: var(--surface-alt);
+  color: var(--text-default);
+  margin-right: 8px;
+}
+.add-btn {
+  background-color: var(--surface-brand);
+  color: var(--text-white-default);
+}

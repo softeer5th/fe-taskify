@@ -1,0 +1,12 @@
+:root {
+  --surface-alt: #f7f7fc;
+  --text-strong: #14142b;
+  --text-bold: #4e4b66;
+  --text-weak: #a0a3bd;
+  --text-default: #6e7191;
+  --text-white-default: #fefefe;
+  --surface-brand: #007aff;
+  --text-danger: #ff3b30;
+  --border-default: #eff0f6;
+  --surface-default: #fefefe;
+}
