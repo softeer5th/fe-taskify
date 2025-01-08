@@ -9,8 +9,8 @@ export function addCard(id) {
     newDiv.className = 'new-card';
     newDiv.innerHTML = `
         <div class="card-info">
-            <input id="title-input" class="card-title" type="text" placeholder="제목을 입력하세요" />
-            <input id="content-input" class="card-content" type="text" placeholder="내용을 입력하세요" />
+            <textarea id="title-input" class="card-title" maxlength="500" rows="1" placeholder="제목을 입력하세요"></textarea>
+            <textarea id="content-input" class="card-content" maxlength="500" rows="1" placeholder="내용을 입력하세요" /></textarea>
         </div>
         <div class="action-buttons">
             <button class="cancel-button">
@@ -34,10 +34,10 @@ export function addCard(id) {
     });
     newDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
-    })
+    });
     newDiv.querySelector('#content-input').addEventListener('input', (event)=>{
         checkCardInput();
-    })
+    });
 
     let newCard = childElement.querySelector('.new-card');
     if (newCard) {

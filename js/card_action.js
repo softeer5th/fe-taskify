@@ -7,6 +7,10 @@ export function checkCardInput() {
     const contentInput = document.getElementById('content-input');
     const contentValue = contentInput.value.trim();
     const confirmBtn = document.querySelector('.confirm-button');
+    titleInput.style.height = 'auto';
+    titleInput.style.height = `${titleInput.scrollHeight}px`;
+    contentInput.style.height = 'auto';
+    contentInput.style.height = `${contentInput.scrollHeight}px`;
     if (titleValue!=='' && contentValue!=='') {
         confirmBtn.disabled = false;
     } else {
@@ -41,4 +45,69 @@ export function delCard(columnId, cardId) {
             column.removeChild(card);
         }
     });
+}
+
+
+export function editCard(columnId, cardId) {
+    let column = document.getElementById("card-list"+columnId);
+    let card = column.querySelector("#card-id"+cardId);
+    const tempMemory = [...card.children];
+    
+    card.style.display = "block";
+
+    let curTitle = card.querySelector(".card-title").textContent;
+    let curContent = card.querySelector(".card-content").textContent;
+
+    const newInfoDiv = document.createElement('div');
+    newInfoDiv.className = 'card-info';
+    newInfoDiv.innerHTML = `
+        <textarea id="title-input" class="card-title" maxlength="500" rows="1">${curTitle}</textarea>
+        <textarea id="content-input" class="card-content" maxlength="500" rows="1"/>${curContent}</textarea>
+    `;
+    const newActionDiv = document.createElement('div');
+    newActionDiv.className = 'action-buttons';
+    newActionDiv.innerHTML = `
+        <button class="cancel-button">
+            취소
+        </button>
+        <div style="width:10px"></div>
+        <button class="confirm-button">
+            등록    
+        </button>
+    `;
+
+    newActionDiv.querySelector('.confirm-button').addEventListener('click', (event)=> {
+        const titleInput = document.getElementById('title-input');
+        const titleValue = titleInput.value.trim();
+        const contentInput = document.getElementById('content-input');
+        const contentValue = contentInput.value.trim();
+        renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:cardId, title:titleValue, content:contentValue,});
+        let card = column.querySelector("#card-id"+cardId);
+        card.parentNode.removeChild(card);
+    });
+    newActionDiv.querySelector('.cancel-button').addEventListener('click', (event)=> {
+        let card = column.querySelector("#card-id"+cardId);
+        card.style.display = "flex";
+        [...card.children].forEach(element => {
+            card.removeChild(element);
+        });
+        [...tempMemory].forEach(element => {
+            card.appendChild(element);
+        });
+    });
+    newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
+        checkCardInput();
+    });
+    newInfoDiv.querySelector('#content-input').addEventListener('input', (event)=>{
+        checkCardInput();
+    });
+
+    [...tempMemory].forEach(element => {
+        card.removeChild(element);
+    });
+
+    card.appendChild(newInfoDiv);
+    card.appendChild(newActionDiv);
+
+
 }

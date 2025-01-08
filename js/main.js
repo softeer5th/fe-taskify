@@ -1,5 +1,5 @@
 import { addCard, delAllCard  } from "./column_action.js";
-import { delCard } from "./card_action.js";
+import { editCard, delCard } from "./card_action.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -66,7 +66,7 @@ function adaptEventListener(targetId, props) {
         const parentElement = document.querySelector('#card-list'+props.columnId);
         const childElement = parentElement.querySelector("#card-id"+props.cardId);
         childElement.querySelector('#edit-card-button').addEventListener('click', (event)=> {
-            addCard(props.cardId);
+            editCard(props.columnId, props.cardId);
         });
         childElement.querySelector('#del-card-button').addEventListener('click', (event)=> {
             delCard(props.columnId, props.cardId);

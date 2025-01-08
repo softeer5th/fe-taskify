@@ -32,17 +32,21 @@
 }
 
 
-.new-card input{
+textarea{
     border: none;
     background-color: transparent;
     width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    resize: none;
+    scrollbar-color: transparent;
 }
 
-.new-card .action-buttons {
+.action-buttons {
     margin-top: 10px;
 }
 
-.new-card button{
+button{
     border:  none;
     flex: 1;
     border-radius: 5px;
@@ -90,12 +94,16 @@
 .card-title{
     font-size: 14px;
     font-weight: bold;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .card-content{
     color: #6E7191;
     font-size: 14px;
     margin-top: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 #del-card-button:hover {
