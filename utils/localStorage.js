@@ -53,12 +53,11 @@ export const editTask = (key, taskTimestamp, newTask) => {
   addTask(key, newTask);
 }
 
-export const moveTask = (key, taskTimestamp, columnNow, columnTogo) => {
-  const task = getTaskByTimestamp(taskTimestamp);
+export const moveTask = (taskTimestamp, columnNow, columnTogo) => {
+  const task = getTaskByTimestamp(columnNow, taskTimestamp);
   removeTask(columnNow, taskTimestamp);
   addTask(columnTogo, task);
 }
-
 
 export const addColumn = (columnTitle) => {
   let columnCount = 1;
