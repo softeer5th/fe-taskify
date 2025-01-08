@@ -5,5 +5,5 @@ const root = document.getElementById("root");
 const header = Header();
 const body = Body();
 
-root.innerHTML += `${header}`;
-root.innerHTML += `${body}`;
+root.appendChild(header);
+root.appendChild(body);
