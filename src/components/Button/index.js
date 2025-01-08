@@ -15,7 +15,7 @@ export const Button = ({
   type = "contained",
   onClick,
 }) => parser`
-<button onClick=${onClick}>
+<button onClick=${onClick} class="container">
     ${showIcon && "아이콘"}
     ${label}
 </button>`;
