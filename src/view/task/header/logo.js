@@ -18,6 +18,7 @@ export class Logo extends Component {
 
     render(parent) {
 
+        console.log(this.template());
         parent.innerHTML = this.template();
 
         for (const key in this.children) {

@@ -7,7 +7,7 @@ export class Header extends Component{
     children = {
         logo: {
             object: new Logo(),
-            selector: "#logo",
+            parentSelector: ".div",
         }
     };
 
@@ -19,18 +19,21 @@ export class Header extends Component{
 
     template() {
         return `
-            <div id ="logo"> ${this.children.logo.object.template()}</div>
+            <div class = "div"> </div>
         `;
     }
 
     render(parent) {
 
         parent.innerHTML = this.template();
+    
 
-        for (const key in this.children) {
-            const parent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(parent);
-        }
+        // for (const key in this.children) {
+        //     const parent = document.querySelector(this.children[key].parentSelector);
+        //     console.log("header")
+        //     console.log(parent);
+        //     this.children[key].object.render(parent);
+        // }
 
         this.events.forEach(({ listenerName, callback }) => {
             this.template.addEventListener(listenerName, callback);

@@ -13,7 +13,7 @@ export class Column extends Component{
 
     template() {
         return `
-            <div>Column</div>
+            <div class = "div">Column</div>
         `;
     }
 

@@ -16,21 +16,23 @@ export class App extends Component {
             },
             column: {
                 object: new Column(),
-                parentSelector: "#column",
+                parentSelector: ".div",
             },
         };
     }
 
     template() {
         return `
-            <div id = "header"> ${this.children.header.object.template()}</div>
-            <div id = "column">  ${this.children.column.object.template()}</div>
+            <div id = "header"> </div>
+            <div class = "div">  </div>
         `;
     }
 
     render(parent) {
 
         parent.innerHTML = this.template();
+        console.log("app");
+        console.log(this.template());
 
         for (const key in this.children) {
             const parent = document.querySelector(this.children[key].parentSelector);
