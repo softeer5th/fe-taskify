@@ -45,16 +45,15 @@ export const parser = (strings, ...args) => {
   };
 
   /**
-   *
-   * @param {ChildNode} element - 파싱할 HTML 요소
-   * @returns {VDOM} - 생성된 가상 DOM
+   * dirty index를 포함하여 변환했던 속성들을 다시 객체로 변환합니다.
+   * @param {NamedNodeMap} attributes - 속성 객체
+   * @returns {{ [key: string]: unknown }} - 변환된 속성 객체
    */
-  const parseElement = (element) => {
-    const type = element.tagName.toLowerCase();
+  const getProps = (attributes) => {
     const props = {};
-    const children = [];
+    if (!attributes) return props;
 
-    Array.from(element.attributes || []).forEach((attr) => {
+    Array.from(attributes).forEach((attr) => {
       const { name, value } = attr;
       if (!value.includes(DIRTY_PREFIX)) {
         props[name] = value;
@@ -64,19 +63,40 @@ export const parser = (strings, ...args) => {
       const arg = args[dirtyIndex];
       props[name] = arg;
     });
+    return props;
+  };
 
-    Array.from(element.childNodes || []).forEach((child) => {
-      if (child.nodeType === Node.TEXT_NODE) {
+  /**
+   * 자식 노드들을 파싱하여 자식 VDOM 배열로 변환합니다.
+   * @param {any} childNodes - 자식 노드들
+   * @param {Function} callback - VDOM으로 변환할 콜백 함수
+   * @returns {VDOM[]} - 변환된 자식 노드들
+   */
+  const getChildren = (childNodes, callback) => {
+    const children = [];
+    if (!childNodes) return children;
+    Array.from(childNodes).forEach((child) => {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        children.push(callback(child));
+      } else if (child.nodeType === Node.TEXT_NODE) {
         const formattedText = handleTextNode(child.nodeValue);
         if (typeof formattedText === "string") {
           children.push(formattedText);
-          return;
-        }
-        children.push(...formattedText);
-      } else if (child.nodeType === Node.ELEMENT_NODE) {
-        children.push(parseElement(child));
+        } else children.push(...formattedText);
       }
     });
+    return children;
+  };
+
+  /**
+   *
+   * @param {ChildNode} element - 파싱할 HTML 요소
+   * @returns {VDOM} - 생성된 가상 DOM
+   */
+  const parseElement = (element) => {
+    const type = element.tagName.toLowerCase();
+    const props = getProps(element.attributes);
+    const children = getChildren(element.childNodes, parseElement);
 
     return createElement(type, props, ...children);
   };
