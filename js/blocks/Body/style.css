@@ -16,6 +16,7 @@ section {
     > .menu {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 3rem;
 
         > div > button {
@@ -33,16 +34,21 @@ section {
 
 .task-item {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     background: #FFFFFF;
     border-radius: 8px;
     padding: 12px;
     margin-bottom: 8px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
 }
 
-.task-item button {
+/* .task-item button {
     background: var(--accent-blue);
     color: white;
     border: none;
@@ -50,11 +56,11 @@ section {
     padding: 6px 12px;
     cursor: pointer;
     font-size: 12px;
-}
+} */
 
-.task-item button:hover {
+/* .task-item button:hover {
     background: var(--accent-blue);
-}
+} */
 
 .task-box {
     display: flex;
@@ -82,9 +88,32 @@ section {
         display: flex;
         justify-content:space-between;
         gap: 8px;
+
+        button {
+            width: 140px;
+            height: 32px;
+        }
+    
+        button:first-child {
+            background-color: #F7F7FC;
+        }
+    
+        button:nth-child(2):disabled {
+            color: white;
+            background-color: #007AFF;
+            opacity: 0.3;
+        }
+        button:nth-child(2):not(:disabled) {
+            color: white;
+            background-color: #007AFF;
+        }
     }
 }
 
 .list {
     min-height: 300px;
+}
+
+.btn-wrapper {
+    
 }
