@@ -57,6 +57,7 @@
 │   │    ├── Card
 │   │    ├── Modal
 │   │    ├── Button
+│   │    ├── Column
 │   ├── utils
 │   ├── index.js
 │   └── app.js
@@ -74,9 +75,9 @@
 ### 2. 레이아웃 UI 구현
 
 - header
-    - [ ] layout 설정 및 헤더에는 로고와 활동기록 UI
+    - [x] layout 설정 및 헤더에는 로고와 활동기록 UI
 - column layout
-    - [ ] layout 설정 
+    - [x] layout 설정 
 
 ### 3. 컴포넌트 UI 구현
 
