@@ -122,12 +122,15 @@ const createEditButtonContainer = () => {
     className: "column__item__buttonContainer",
   });
 
-  const $deleteButton = createButton(null, null, null, handleDeleteTodo);
-  const $deleteImg = createImg("./assets/icon/closed.svg", "닫기");
+  const $deleteButton = createButton({ handleClick: handleDeleteTodo });
+  const $deleteImg = createImg({
+    src: "./assets/icon/closed.svg",
+    alt: "닫기",
+  });
   $deleteButton.appendChild($deleteImg);
 
-  const $editButton = createButton(null, null, null, handleEditTodo);
-  const $editImg = createImg("./assets/icon/edit.svg", "수정");
+  const $editButton = createButton({ handleClick: handleEditTodo });
+  const $editImg = createImg({ src: "./assets/icon/edit.svg", alt: "수정" });
   $editButton.appendChild($editImg);
 
   $buttonContainer.appendChild($deleteButton);
@@ -140,19 +143,17 @@ const createAddButtonContainer = () => {
   const $addButtonContainer = createElement("div", {
     className: "column__item__addButtonContainer",
   });
-  const $closeButton = createButton(
-    null,
-    "close__button",
-    "취소",
-    handleCancel
-  );
-  const $submitButton = createButton(
-    null,
-    "submit__button",
-    "등록",
-    handleSubmit,
-    true
-  );
+  const $closeButton = createButton({
+    className: "close__button",
+    text: "취소",
+    handleClick: handleCancel,
+  });
+  const $submitButton = createButton({
+    className: "submit__button",
+    text: "등록",
+    handleChange: handleSubmit,
+    disabled: true,
+  });
 
   $addButtonContainer.appendChild($closeButton);
   $addButtonContainer.appendChild($submitButton);

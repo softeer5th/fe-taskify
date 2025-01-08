@@ -1,27 +1,28 @@
 export const createElement = (tagName, options = {}) => {
-  const element = document.createElement(tagName);
+  const $element = document.createElement(tagName);
   const { id, className, text, ...attributes } = options;
 
-  if (id) element.id = id;
+  if (id) $element.id = id;
   if (className)
-    className.split(" ").forEach((cls) => element.classList.add(cls));
-  if (text) element.textContent = text;
+    className.split(" ").forEach((cls) => $element.classList.add(cls));
+  if (text) $element.textContent = text;
+
   if (attributes) {
     Object.entries(attributes).forEach(([key, value]) => {
-      element.setAttribute(key, value);
+      $element.setAttribute(key, value);
     });
   }
 
-  return element;
+  return $element;
 };
 
-export const createButton = (
+export const createButton = ({
   id = null,
   className = null,
   text = "",
   handleClick,
-  disabled
-) => {
+  disabled,
+}) => {
   const $button = createElement("button", { id, className, text });
   $button.disabled = disabled ?? false;
   $button.addEventListener("click", handleClick);
@@ -29,10 +30,13 @@ export const createButton = (
   return $button;
 };
 
-export const createImg = (src, alt) => {
+export const createImg = ({ src, alt = "" }) => {
   const $img = createElement("img");
   $img.src = src;
-  $img.alt = alt;
+
+  if (alt) {
+    $img.alt = alt;
+  }
 
   return $img;
 };
