@@ -1,42 +1,53 @@
-import { todoCardComponent } from "./component/card.js";
+import { cardComponent } from "./component/card.js";
 const todoAddButton = document.querySelector(".todo-add-icon");
 const todoTitle = document.querySelector(".todo-title");
 const todoContent = document.querySelector(".todo-content");
 const todoSubmitBtn = document.querySelector(".todo-add-btn");
 const todoFormCard = document.querySelector(".new-card");
 
-const todoFormInit = () => {
+const todoFormInit = (formCard) => {
   // form 초기화
-  todoFormCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록.
-  todoTitle.value = "";
-  todoContent.value = "";
+  formCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록.
+  formCard.querySelector(".title").value = "";
+  formCard.querySelector(".content").value = "";
 };
 
-const addCard = () => {
-  const todoTitleText = todoTitle.value;
-  const todoContentText = todoContent.value;
+const addCard = (formCard) => {
+  const titleText = formCard.querySelector(".title").value;
+  const contentText = formCard.querySelector(".content").value;
 
   const parser = new DOMParser();
 
-  const todoCardDocument = parser.parseFromString(
-    todoCardComponent(todoTitleText, todoContentText),
+  const cardDocument = parser.parseFromString(
+    cardComponent(titleText, contentText),
     "text/html"
   );
 
-  const todoCardElement = todoCardDocument.body.firstChild;
+  const cardElement = cardDocument.body.firstChild;
 
   // newform 카드 바로 뒤에 추가
-  todoFormCard.after(todoCardElement);
+  formCard.after(cardElement);
 
-  todoFormInit(); // 입력했던 값을 다시 빈 문자열로 초기화.
+  todoFormInit(formCard); // 입력했던 값을 다시 빈 문자열로 초기화.
 };
 
-const showCardForm = () => {
-  todoFormCard.classList.toggle("display-none");
+const showCardForm = (formCard) => {
+  formCard.classList.toggle("display-none");
 };
 
-todoAddButton.addEventListener("click", showCardForm);
+document.querySelectorAll(".add-icon").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const sectionType = btn.dataset.section; // 'todo', 'doing', 'done'
+    const formCard = document.querySelector(`.${sectionType}-form-card`);
 
-todoSubmitBtn.addEventListener("click", addCard);
+    showCardForm(formCard);
+  });
+});
 
-// next > new 제목과 내용 입력이 다 되면 등록 버튼 활성화. 이전에는 disabled.
+document.querySelectorAll(".add-btn").forEach((submitBtn) => {
+  submitBtn.addEventListener("click", () => {
+    const sectionType = submitBtn.dataset.section; // 'todo', 'doing', 'done'
+    const formCard = document.querySelector(`.${sectionType}-form-card`);
+    addCard(formCard);
+  });
+});

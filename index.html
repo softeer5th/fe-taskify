@@ -31,14 +31,14 @@
       </header>
       <main class="column-area">
         <section class="todo-wrapper">
-          <!-- 카드 추가하는 부분 -->
+          <!-- 카드를 추가하는 버튼 -->
           <div class="add-container">
             <div class="add-container-text">
               <div class="container-title text-bold">해야할 일</div>
               <div class="card-count text-weak">2</div>
             </div>
             <div class="add-container-icon">
-              <button class="add-icon todo-add-icon">
+              <button class="add-icon todo-add-icon" data-section="todo">
                 <img src="./assets/icons/add.svg" alt="" />
               </button>
               <button class="delete-icon">
@@ -46,9 +46,10 @@
               </button>
             </div>
           </div>
-          <!-- 카드 부분 -->
+
           <article class="card-container todo-card-container">
-            <li class="new-card card display-none">
+            <!-- 카드 form 부분 -->
+            <li class="todo-form-card card display-none">
               <div class="card-contents-icons-box">
                 <div class="card-texts">
                   <input
@@ -61,38 +62,11 @@
                     aria-placeholder="내용" />
                 </div>
               </div>
-              <!-- card-btn-box 은 + 버튼 누르면 보이는 영역 -->
               <div class="card-btn-box">
                 <button class="cancel-btn">취소</button>
-                <button class="add-btn todo-add-btn">등록</button>
-              </div>
-            </li>
-            <li class="card">
-              <div class="card-contents-icons-box">
-                <div class="card-texts">
-                  <div class="title text-strong" aria-placeholder="제목">
-                    모던 자바스크립트 예제 실습
-                  </div>
-                  <div class="content text-default" aria-placeholder="내용">
-                    1장 예제 내용 실습 후, 커밋까지
-                  </div>
-                </div>
-                <div class="card-icons">
-                  <!-- x 아이콘 -->
-                  <div class="card-delete-icon">
-                    <img src="./assets/icons/delete.svg" alt="" />
-                  </div>
-                  <!-- 편집 아이콘 -->
-                  <div class="card-edit-icon">
-                    <img src="./assets/icons/edit.svg" alt="" />
-                  </div>
-                </div>
-              </div>
-              <!-- card-btn-box 은 + 버튼 누르면 보이는 영역 -->
-              <div class="name-of-device text-weak">author by web</div>
-              <div class="card-btn-box">
-                <button class="cancel-btn">취소</button>
-                <button class="add-btn">등록</button>
+                <button class="add-btn todo-add-btn" data-section="todo">
+                  등록
+                </button>
               </div>
             </li>
           </article>
@@ -105,42 +79,32 @@
               <div class="card-count text-weak">1</div>
             </div>
             <div class="add-container-icon">
-              <div class="add-icon">
+              <button class="add-icon" data-section="doing">
                 <img src="./assets/icons/add.svg" alt="" />
-              </div>
-              <div class="delete-icon">
+              </button>
+              <button class="delete-icon">
                 <img src="./assets/icons/delete.svg" alt="" />
-              </div>
+              </button>
             </div>
           </div>
           <!-- 카드 부분 -->
           <article class="card-container">
-            <li class="card">
+            <li class="doing-form-card card display-none">
               <div class="card-contents-icons-box">
                 <div class="card-texts">
-                  <div class="title" aria-placeholder="제목">
-                    HTML/CSS 공부하기
-                  </div>
-                  <div class="content" aria-placeholder="내용">
-                    input 태그 실습
-                  </div>
-                </div>
-                <div class="card-icons">
-                  <!-- x 아이콘 -->
-                  <div class="card-delete-icon">
-                    <img src="./assets/icons/delete.svg" alt="" />
-                  </div>
-                  <!-- 편집 아이콘 -->
-                  <div class="card-edit-icon">
-                    <img src="./assets/icons/edit.svg" alt="" />
-                  </div>
+                  <input
+                    class="title text-strong todo-title"
+                    placeholder="제목을 입력하세요"
+                    aria-placeholder="제목" />
+                  <input
+                    class="content text-default todo-content"
+                    placeholder="내용을 입력하세요"
+                    aria-placeholder="내용" />
                 </div>
               </div>
-              <!-- card-btn-box 은 + 버튼 누르면 보이는 영역 -->
-              <div class="name-of-device text-weak">author by web</div>
               <div class="card-btn-box">
                 <button class="cancel-btn">취소</button>
-                <button class="add-btn">등록</button>
+                <button class="add-btn" data-section="doing">등록</button>
               </div>
             </li>
           </article>
@@ -153,38 +117,32 @@
               <div class="card-count text-weak">0</div>
             </div>
             <div class="add-container-icon">
-              <div class="add-icon">
+              <button class="add-icon" data-section="done">
                 <img src="./assets/icons/add.svg" alt="" />
-              </div>
-              <div class="delete-icon">
+              </button>
+              <button class="delete-icon">
                 <img src="./assets/icons/delete.svg" alt="" />
-              </div>
+              </button>
             </div>
           </div>
           <!-- 카드 부분 -->
           <article class="card-container">
-            <li class="card">
+            <li class="done-form-card card display-none">
               <div class="card-contents-icons-box">
                 <div class="card-texts">
-                  <div class="title" aria-placeholder="제목"></div>
-                  <div class="content" aria-placeholder="내용"></div>
-                </div>
-                <div class="card-icons">
-                  <!-- x 아이콘 -->
-                  <div class="card-delete-icon">
-                    <img src="./assets/icons/delete.svg" alt="" />
-                  </div>
-                  <!-- 편집 아이콘 -->
-                  <div class="card-edit-icon">
-                    <img src="./assets/icons/edit.svg" alt="" />
-                  </div>
+                  <input
+                    class="title text-strong todo-title"
+                    placeholder="제목을 입력하세요"
+                    aria-placeholder="제목" />
+                  <input
+                    class="content text-default todo-content"
+                    placeholder="내용을 입력하세요"
+                    aria-placeholder="내용" />
                 </div>
               </div>
-              <!-- card-btn-box 은 + 버튼 누르면 보이는 영역 -->
-              <div class="name-of-device text-weak">author by web</div>
               <div class="card-btn-box">
                 <button class="cancel-btn">취소</button>
-                <button class="add-btn">등록</button>
+                <button class="add-btn" data-section="done">등록</button>
               </div>
             </li>
           </article>
