@@ -6,79 +6,39 @@
     <title>TASKIFY</title>
     <meta name="description" content="소프티어 부트캠프 2주차 - 태스키파이">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/dialog.css">
+    <link rel="stylesheet" href="./css/card.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+    <!-- 다이얼로그 -->
+    <div id="history-dialog" class="history-dialog">
+        <div class="history-dialog-header">
+            <div class="history-dialog-title">사용자 활동 기록</div>
+            <button class="icon-button close-history">
+                <span class="material-icons">
+                close
+                </span>
+                <div>닫기</div>
+            </button>
+        </div>
+    </div>
+        
     <header>
         <h1>TASKIFY</h1>
-        <button class="icon-button">
-          <span class="material-icons">schedule</span>
+        <button id="history-button" class="icon-button">
+            <span class="material-icons">schedule</span>
         </button>
     </header>
 
     <main>
-        <ul class="column-area">
-            <li>
-                <div class="column-header">
-                    <div class="column-header-left">
-                        <div class="column-name">해야할 일</div>
-                        <div class="card-count">0</div>
-                    </div>
-                    <div class="column-header-right">
-                        <button class="icon-button material-icons">
-                            add
-                        </button>
-                        <button class="icon-button material-icons">
-                            close
-                        </button>
-                    </div>
-                </div>
-                <div class="card-list">
-
-                </div>
-            </li>
-            <li>
-                <div class="column-header">
-                    <div class="column-header-left">
-                        <div class="column-name">하고 있는 일</div>
-                        <div class="card-count">0</div>
-                    </div>
-                    <div class="column-header-right">
-                        <button class="icon-button material-icons">
-                            add
-                        </button>
-                        <button class="icon-button material-icons">
-                            close
-                        </button>
-                    </div>
-                </div>
-                <div class="card-list">
-                    
-                </div>
-            </li>
-            <li>
-                <div class="column-header">
-                    <div class="column-header-left">
-                        <div class="column-name">완료한 일</div>
-                        <div class="card-count">0</div>
-                    </div>
-                    <div class="column-header-right">
-                        <button class="icon-button material-icons">
-                            add
-                        </button>
-                        <button class="icon-button material-icons">
-                            close
-                        </button>
-                    </div>
-                </div>
-                <div class="card-list">
-                    
-                </div>
-            </li>
+        <ul id="column-area">
         </ul>
     </main>
 
 
-    <script src="script.js"></script>
+    <script type="module" src="./js/main.js"></script>
+    <script src="./js/history.js"></script>
+
 </body>
 </html>

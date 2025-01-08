@@ -19,20 +19,26 @@ header .material-icons {
     color: #6E7191;
 }
 
+ul {
+    padding-inline-start: 0;
+}
+
+
 .icon-button {
     border: none;
     background: transparent;
 }
 
 
-.column-area {
+#column-area {
     list-style: none;
     display: flex;
     width: 100%;
+    height: 100%;
 }
 
 
-.column-area li {
+#column-area li {
     width: 25%;
     min-width: 120px;
     max-width: 320px;
@@ -48,6 +54,7 @@ header .material-icons {
 
 .column-header-left {
     display: flex;
+    margin-left: 20px;
 }
 
 .column-name {
@@ -61,10 +68,15 @@ header .material-icons {
 
 .column-header-right {
     display: flex;
+    margin-right: 20px;
 }
 
 .column-header-right .material-icons {
     color: #A0A3BD;
+}
+
+#delete-cards-button:hover {
+    color: red;
 }
 
 .card-count {

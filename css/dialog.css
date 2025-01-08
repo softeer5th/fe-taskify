@@ -1,0 +1,59 @@
+/* 다이얼로그 기본 스타일 */
+.action-buttons{
+    display: flex;
+}
+
+.history-dialog {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 10px 16px #6E80913D, 0 0 4px #6E80913D;
+    width: 360px;
+    box-shadow: 0 16 16 0 #6E80913D;
+    border-radius: 10px;
+    border: none;
+    padding: 20px;
+    display: none;
+}
+
+.history-dialog.visible {
+    display: block;
+}
+
+.history-dialog-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.history-dialog-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.history-dialog-title {
+    padding-top: 3px;
+    font-weight: bold;
+}
+
+
+.history-dialog .material-icons {
+    margin: 0px 5px;
+    color: #6E7191;
+    font-size: 14px;
+    align-self: center;
+}
+
+.close-history {
+    padding: 0px;
+    display: flex;
+}
+
+.close-history div {
+    display: flex;
+    font-size: 14px;
+    align-self: center;
+    padding-top: 2px;
+    color: #6E7191;
+    font-weight: bold;
+}

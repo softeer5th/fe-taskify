@@ -1,0 +1,88 @@
+#card-list {
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
+}
+
+#card-list li {
+    width: 100%;
+    min-height: 80px;
+    max-width: 280px;
+    display: flex;
+    margin-top: 10px;
+    margin-right: 60px;
+    box-shadow: 0 1px 4px 0 #6E80913D;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+
+.new-card {
+    width: 100%;
+    min-height: 80px;
+    max-width: 280px;
+    display: block;
+    margin-top: 10px;
+    margin-right: 60px;
+    box-shadow: 0 1px 4px 0 #6E80913D;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+
+.new-card input{
+    border: none;
+    background-color: transparent;
+    width: 100%;
+}
+
+.new-card .action-buttons {
+    margin-top: 10px;
+}
+
+.new-card button{
+    border:  none;
+    flex: 1;
+    border-radius: 5px;
+    padding: 7px 0;
+}
+
+.cancel-button {
+    font-weight: bold;
+    background-color: #F7F7FC;
+    color: #6E7191;
+    opacity: 0.3;
+}
+
+.confirm-button {
+    background-color: #007AFF;
+    color: #FEFEFE;
+    opacity: 0.3;
+}
+
+.card-actions button{
+    display: block;
+    color: #A0A3BD;
+    font-size: 24px;
+    padding-top: 0;
+}
+
+.card-info {
+    flex: 1;
+    padding-top: 5px;
+}
+
+.card-title{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.card-content{
+    color: #6E7191;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+#del-card-button:hover {
+    color: red;
+}
