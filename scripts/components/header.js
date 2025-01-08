@@ -1,11 +1,14 @@
 const Header = () => {
-  const header = document.createElement("header");
+  
+  // const clone = document.getElementById('test').content.cloneNode(true);
 
-  header.innerHTML = `
-      <h1>header</h1>
-  `;
+  // const element = document.createElement('p')
+  // element.textContent = '하이'
 
-  return header;
+  // clone.getElementById('divv').appendChild(element);
+
+
+  // return clone;
 };
 
 export default Header;

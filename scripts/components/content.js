@@ -1,9 +1,22 @@
 const Content = () => {
-  const content = document.createElement("content");
+  // const myContent = document.createElement('div');
+  // myContent.style.backgroundColor = 'red';
+  // myContent.style.padding = '10px';
 
-  content.innerHTML = ` <h1>content</h1> `;
+  // const child = document.createElement('a');
+  // child.textContent = 'grapes';
+  // child.href = 'https://en.wikipedia.org/wiki/Grape';
+  // child.title = 'Wikipedia page on grapes';
 
-  return content;
+  // myContent.appendChild(child);
+
+  // const clone = document.getElementById('test').content.cloneNode(true);
+
+  // // clone.appendChild(child);
+
+  // clone.appendChild(myContent);
+
+  // return clone;
 };
 
 export default Content;

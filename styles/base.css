@@ -174,3 +174,15 @@
 .radius-half {
   border-radius: 50%;
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
