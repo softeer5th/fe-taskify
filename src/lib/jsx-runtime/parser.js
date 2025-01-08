@@ -11,12 +11,28 @@ const DIRTY_SEPERATOR_REGEX_G = /(dirtyindex:\d+:)/g;
  * @returns {VDOM} - 생성된 가상 DOM
  */
 export const parser = (strings, ...args) => {
+  // 템플릿 리터럴 중 tagged templates 방식 사용.
+  // ${}를 이용한 값들은 차례로 args로 들어오고, 순수 텍스트 값들은 ${}를 기준으로 분리되어 들어옴. (배열)
   const templateString = strings
     .map((str, index) => {
+      // <div>hi${0}my${1}name${2}is Ham</div>
+      // args.length = 3
+      // <div>hidirtyindex:0:mydirtyindex:1:namedirtyindex:2:is Ham</div>
+      // 즉 args가 들어갈 자리 뒤에 dirtyindex:0: 이런식으로 붙임.
       const argsString = args.length > index ? `${DIRTY_PREFIX}${index}:` : "";
       return `${str}${argsString}`;
     })
     .join("");
+
+  /**
+   *
+   * @param {string} text - dirty index가 있는 텍스트 노드
+   * @returns {number | null} - dirty index
+   */
+  const findDirtyIndex = (text) => {
+    const match = DIRTY_REGEX.exec(text);
+    return match ? Number(match[1]) : null;
+  };
 
   /**
    *
@@ -25,10 +41,9 @@ export const parser = (strings, ...args) => {
    */
   const handleTextNode = (text) => {
     if (!text.includes(DIRTY_PREFIX)) return text || null;
-
     const texts = text.split(DIRTY_SEPERATOR_REGEX_G);
     return texts.map((textPart) => {
-      const dirtyIndex = DIRTY_REGEX.exec(textPart)?.[1];
+      const dirtyIndex = findDirtyIndex(textPart);
       if (!dirtyIndex) return textPart || null;
 
       const arg = args[Number(dirtyIndex)];
@@ -49,29 +64,21 @@ export const parser = (strings, ...args) => {
     const props = {};
     const children = [];
 
-    // 속성 처리
     Array.from(element.attributes || []).forEach((attr) => {
       const { name, value } = attr;
-      if (value.includes(DIRTY_PREFIX)) {
-        const match = DIRTY_REGEX.exec(value);
-        if (match) {
-          const arg = args[Number(match[1])];
-          props[name] = arg; // DIRTY_PREFIX 처리된 값 치환
-        } else {
-          props[name] = value; // 치환되지 않은 값도 유지
-        }
-      } else {
-        props[name] = value; // DIRTY_PREFIX가 없는 일반 속성 처리
+      if (!value.includes(DIRTY_PREFIX)) {
+        props[name] = value;
+        return;
       }
+      const dirtyIndex = findDirtyIndex(value);
+      const arg = args[dirtyIndex];
+      props[name] = arg;
     });
 
-    // 자식 노드 처리
     Array.from(element.childNodes || []).forEach((child) => {
       if (child.nodeType === Node.TEXT_NODE) {
-        // 텍스트 노드 처리
         children.push(...handleTextNode(child.nodeValue));
       } else if (child.nodeType === Node.ELEMENT_NODE) {
-        // 자식 엘리먼트를 재귀적으로 처리
         children.push(parseElement(child));
       }
     });
