@@ -97,14 +97,38 @@ ul {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 20px;
+    color: #6E7191;
     border: 1px solid #ccc;
+    border-radius: 10px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+    text-align: center;
+}
+
+.modal p {
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .modal button {
     margin: 5px;
+    width: 172px;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 0;
+}
+
+.modal-confirm-button {
+    background-color: #FF3B30;
+    color: #FEFEFE;
+    font-weight: bold;
+}
+
+.modal-cancel-button {
+    background-color: #F7F7FC;
+    color: #6E7191;
+    font-weight: bold;
 }
 
 .overlay {

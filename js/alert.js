@@ -7,8 +7,8 @@ delAllCardAlertDiv.className = 'modal';
 delAllCardAlertDiv.id = 'deleteAllCardAlert';
 delAllCardAlertDiv.innerHTML = `
     <p class="delObj"></p>
-    <button id="cancel-delete-all-button">취소</button>
-    <button id="confirm-delete-all-button">확인</button>
+    <button id="cancel-delete-all-button" class="modal-cancel-button">취소</button>
+    <button id="confirm-delete-all-button" class="modal-confirm-button">확인</button>
 `;
 
 
@@ -17,8 +17,8 @@ delCardAlertDiv.className = 'modal';
 delCardAlertDiv.id = 'deleteCardAlert';
 delCardAlertDiv.innerHTML = `
     <p class="delObj"></p>
-    <button id="cancel-delete-card-button">취소</button>
-    <button id="confirm-delete-card-button">확인</button>
+    <button id="cancel-delete-card-button" class="modal-cancel-button">취소</button>
+    <button id="confirm-delete-card-button" class="modal-confirm-button">확인</button>
 `;
 
 
