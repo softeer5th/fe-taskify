@@ -1,3 +1,4 @@
+import { IMAGE } from "../assets/index.js";
 import { createElement, createButton, createImg } from "../dom.js";
 import ColumnItemInput from "./ColumnItemInput.js";
 
@@ -50,7 +51,7 @@ const ColumnHeader = ({ id, title, items, store }) => {
     handleClick: handleClickAdd,
   });
   const $addImg = createImg({
-    src: "./assets/icon/plus.svg",
+    src: IMAGE.plus,
     alt: "추가",
   });
   $addButton.appendChild($addImg);
@@ -59,9 +60,10 @@ const ColumnHeader = ({ id, title, items, store }) => {
     handleClick: () => alert("Close button"),
   });
   const $closeImg = createImg({
-    src: "./assets/icon/closed.svg",
+    src: IMAGE.closed,
     alt: "닫기",
   });
+
   $closeButton.appendChild($closeImg);
   $buttonContainer.append($addButton, $closeButton);
   $columnHeader.append($titleContainer, $buttonContainer);

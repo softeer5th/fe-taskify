@@ -1,3 +1,4 @@
+import { IMAGE } from "../assets/index.js";
 import { createElement, createImg } from "../dom.js";
 
 const Header = () => {
@@ -8,7 +9,7 @@ const Header = () => {
   });
   const $historyButton = createElement("button");
   const $img = createImg({
-    src: "./assets/icon/clock.svg",
+    src: IMAGE.clock,
     alt: "사용자 활동 기록",
   });
 
