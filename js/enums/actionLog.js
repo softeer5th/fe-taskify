@@ -1,17 +1,14 @@
-const ObjectType = {
-    CARD,
-    COLUMN
-}
+const ObjectType = Object.freeze({
+    CARD: 'CARD',
+    COLUMN: 'COLUMN'
+});
 
-const ActionType = {
-    CREATE,
-    DELETE,
-    UPDATE,
-    MOVE
-}
-
-Object.freeze(ObjectType);
-Object.freeze(ActionType);
+const ActionType = Object.freeze({
+    CREATE: 'CREATE',
+    DELETE: 'DELETE',
+    UPDATE: 'UPDATE',
+    MOVE: 'MOVE'
+});
 
 export const ACTION_LOG_ENUMS = {
     ObjectType,
