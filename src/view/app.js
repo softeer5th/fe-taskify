@@ -4,46 +4,37 @@ import { Column } from "./task/column/column.js";
 
 export class App extends Component {
 
-    children = {};
+    children = {
+        // header: {
+        //     object: new Header(),
+        //     parentSelector: "#header",
+        // },
+        column: {
+            object: new Column(),
+            parentSelector: "#header + .div",
+        },
+    };
     events = [];
 
     constructor() {
         super();
-        this.children = {
-            header: {
-                object: new Header(),
-                parentSelector: "#header",
-            },
-            column: {
-                object: new Column(),
-                parentSelector: "#header + .div",
-            },
-        };
     }
 
     template() {
         return `
-            <div id = "header">  </div>
-            <div class = "div">  </div>
+            <div id = "${this.rootId}">
+                <div id = "header">  </div>
+                <div class = "div">  </div>
+            </div>
         `;
     }
 
     render(parent) {
+        super.render(parent);
 
-        parent.innerHTML += this.template();
-
-        for (const key in this.children) {
-            const childParent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-
-        this.events.forEach(({ listenerName, callback }) => {
-            parent.addEventListener(listenerName, callback);
-        });
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
-
+        super.addEvent(listenerName, callback);
     }
 }

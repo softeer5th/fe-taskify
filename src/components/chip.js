@@ -17,7 +17,7 @@ export class Chip extends Component {
     template() {
 
         return `
-        <div class="chip">
+        <div id = "${this.rootId}" class="chip">
             <img src=${this.sortIconRef} alt="icon" class="chip-icon" />
             <div class = "chip-text">
                 ${this.currentSort}
@@ -27,21 +27,11 @@ export class Chip extends Component {
     }
 
     render(parent) {
-
-        parent.innerHTML += this.template();
-
-        for (const key in this.children) {
-            const childParent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-
-        this.events.forEach(({ listenerName, callback }) => {
-            parent.addEventListener(listenerName, callback);
-        });
+        super.render(parent);
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
+        super.addEvent(listenerName, callback);
 
     }
 

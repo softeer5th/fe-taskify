@@ -26,32 +26,21 @@ export class Button extends Component {
 
         buttonStyle += ' button-background';
         return `
-        <div class="${buttonStyle}"> 
-            ${iconTemplate}
-            <div class = "button-text">
-               ${this.text}
+            <div id = "${this.rootId}" class="${buttonStyle}"> 
+                ${iconTemplate}
+                <div class = "button-text">
+                    ${this.text}
+                </div>
             </div>
-        </div>
-    `;
+        `;
     }
 
     render(parent) {
-
-        parent.innerHTML += this.template();
-
-        for (const key in this.children) {
-            const childParent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-
-        this.events.forEach(({ listenerName, callback }) => {
-            this.template.addEventListener(listenerName, callback);
-        });
+        super.render(parent);
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
-
+        super.addEvent( listenerName, callback );
     }
 
 }
