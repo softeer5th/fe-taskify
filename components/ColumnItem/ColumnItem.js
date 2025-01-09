@@ -6,13 +6,25 @@ import createTextBox from "./ui/createTextBox.js";
 
 loadStyleSheet("/components/ColumnItem/styles.css");
 
-const ColumnItem = ({ id, title = "", content = "", author = "web" }) => {
-  const $columnItem = createElement("div", { className: "column__item" });
+const ColumnItem = ({
+  sectionId,
+  id,
+  title = "",
+  content = "",
+  author = "web",
+}) => {
+  const $columnItem = createElement("div", {
+    className: "column__item",
+    "data-id": id,
+  });
 
   const $textContainer = createElement("div", {
     className: "column__item__textContainer",
   });
-  const $itemButtonContainer = createItemButtonContainer({ itemId: id });
+  const $itemButtonContainer = createItemButtonContainer({
+    sectionId,
+    itemId: id,
+  });
   const $textBox = createTextBox({ title, content });
   $textContainer.append($textBox, $itemButtonContainer);
 

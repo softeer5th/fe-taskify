@@ -6,14 +6,13 @@ import {
   createImg,
 } from "../../../dom.js";
 
-function createModal({ title = "", content = "", itemId }) {
+const createModal = ({ title = "", content = "", sectionId, itemId }) => {
   const $modalContainer = document.getElementById("modal-container");
   const $modal = document.createElement("div");
-  $modal.classList.add("modal");
-  $modal.classList.add("shadow-up");
 
   $modal.innerHTML = /*html*/ `
-    <div class="modal__wrapper">
+    <div class="modal__dimmed"></div>
+    <div class="modal modal__wrapper shadow-up">
       ${title ? `<p class="modal__title display-bold16">${title}</p>` : ""}
       ${
         content
@@ -28,7 +27,7 @@ function createModal({ title = "", content = "", itemId }) {
   `;
 
   $modal.querySelector(".delete__button").addEventListener("click", () => {
-    // onConfirm(cardId);
+    deleteCard({ sectionId, itemId });
     $modal.remove();
   });
 
@@ -37,11 +36,19 @@ function createModal({ title = "", content = "", itemId }) {
   });
 
   $modalContainer.appendChild($modal);
-}
+};
 
-const createItemButtonContainer = ({ itemId }) => {
+const deleteCard = ({ sectionId, itemId }) => {
+  const $item = document.querySelector(
+    `#${sectionId} .column__item[data-id="${itemId}"]`
+  );
+
+  $item.remove();
+};
+
+const createItemButtonContainer = ({ sectionId, itemId }) => {
   const handleClickDelete = () => {
-    createModal({ content: "선택한 카드를 삭제할까요?", itemId });
+    createModal({ content: "선택한 카드를 삭제할까요?", sectionId, itemId });
   };
 
   const $itemButtonContainer = createElement("div", {

@@ -8,7 +8,7 @@ const createColumnSection = ({ id, title, items, store }) => {
     className: "column__container",
   });
   const $columnHeader = ColumnHeader({ id, title, items, store });
-  const $columnBody = ColumnBody({ items });
+  const $columnBody = ColumnBody({ sectionId: id, items });
 
   $columnSection.append($columnHeader, $columnBody);
 

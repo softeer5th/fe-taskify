@@ -66,6 +66,16 @@
   z-index: 10;
 }
 
+.modal__dimmed {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: gray;
+  opacity: 0.5;
+  z-index: 1;
+}
+
 .modal__wrapper {
   display: flex;
   flex-direction: column;
