@@ -1,7 +1,5 @@
 # fe-taskify
 
-볼드처리된 목록이 브랜치 단위
-
 ## Foundation
 
 - [x]  **디자인 토큰 주입하기**
@@ -10,10 +8,10 @@
 ## Components
 
 - [ ]  **Core** (Base가 되는 컴포넌트)
-- [ ]  **Buttons**
+- [x]  **Buttons**
 - [ ]  **FAB**
-- [ ]  **Badge**
-- [ ]  **Chip**
+- [x]  **Badge**
+- [x]  **Chip**
 - [ ]  **Card**
     - [ ]  글자수 제한
     - [ ]  글자수에 따른 반응형
