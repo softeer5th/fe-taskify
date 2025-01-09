@@ -1,37 +1,51 @@
+import { DefaultCard } from "../../../components/Card/card.js";
+import { EditCard } from "../../../components/Card/editCard.js";
 import Component from "../../../components/component.js";
 
 export class Logo extends Component {
 
-    children = {};
+    children = {
+        default:{
+            object: new DefaultCard("title", "body", "author",
+                 () => {
+                console.log("close cliek!!");
+            }, 
+            ()=>{
+                console.log("edit click!!");
+            }),
+            parentSelector: `#${this.rootId}`
+        },
+        edit:{
+            object: new EditCard("title", "body", "author", () => {
+                console.log("confirm cliek!!");
+            }, ()=>{
+                console.log("dismiss click!!");
+            }),
+            parentSelector:`#${this.rootId}`
+        }
+    };
 
     events = [];
 
     constructor() {
         super();
+        // this.children.edit.object.addEvent("click", () => {
+        //     console.log("edit card clicked!!");
+        // });
     }
 
     template() {
         return `
-            <div>Logo</div>
+            <div id = "${this.rootId}">Logo</div>
         `;
     }
 
     render(parent) {
-
-        parent.innerHTML += this.template();
-
-        for (const key in this.children) {
-            const childParent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-
-        this.events.forEach(({ listenerName, callback }) => {
-            this.template.addEventListener(listenerName, callback);
-        });
+        super.render(parent);
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
+       super.addEvent( listenerName, callback );
 
     }
 

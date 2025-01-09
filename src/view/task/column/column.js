@@ -1,9 +1,19 @@
+import { Button } from "../../../components/Button/button.js";
 import Component from "../../../components/component.js";
 
 export class Column extends Component{
 
 
-    children = {};
+    children = {
+        dismiss:{
+            object: new Button("취소", null, "dismiss-button"),
+            parentSelector: `#${this.rootId}`
+        },
+        confirm:{
+            object: new Button("저장", null, "confirm-button"),
+            parentSelector: `#${this.rootId}`
+        },
+    };
 
     events = []; 
 
@@ -13,26 +23,20 @@ export class Column extends Component{
 
     template() {
         return `
-            <div>Column</div>
+            <div id = "${this.rootId}">Column</div>
         `;
     }
 
     render(parent) {
 
-        parent.innerHTML += this.template();
 
-        for (const key in this.children) {
-            const childParent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-
-        this.events.forEach(({ listenerName, callback }) => {
-            this.template.addEventListener(listenerName, callback);
-        });
+        this.children.confirm.object.addEvent("click", this.onConfirm);
+        this.children.dismiss.object.addEvent("click", this.onDismiss);
+        super.render(parent);
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({listenerName, callback});
+        super.addEvent(listenerName, callback);
 
     }
     

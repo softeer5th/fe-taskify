@@ -21,29 +21,18 @@ export class Badge extends Component {
     template() {
 
         return `
-        <div class="badge"> 
-            ${this.num}
-        </div>
-    `;
+            <div id = "${this.rootId}" class="badge"> 
+                ${this.num}
+            </div>
+         `;
     }
 
     render(parent) {
-
-        parent.innerHTML += this.template();
-
-        for (const key in this.children) {
-            const childParent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-
-        this.events.forEach(({ listenerName, callback }) => {
-            parent.addEventListener(listenerName, callback);
-        });
+        super.render(parent);
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
-
+        super.addEvent( listenerName, callback );
     }
 
 }

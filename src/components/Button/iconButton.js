@@ -26,28 +26,18 @@ export class IconButton extends Component {
         buttonStyle += ' button-background';
 
         return `
-        <div class="${buttonStyle}"> 
+        <div id = "${this.rootId}" class="${buttonStyle}"> 
             ${iconTemplate}
         </div>
     `;
     }
 
     render(parent) {
-
-        parent.innerHTML += this.template();
-
-        for (const key in this.children) {
-            const childParent = document.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-
-        this.events.forEach(({ listenerName, callback }) => {
-            parent.addEventListener(listenerName, callback);
-        });
+        super.render(parent);
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
+        super.addEvent( listenerName, callback );
 
     }
 
