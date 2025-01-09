@@ -1,13 +1,17 @@
 import { createElement } from "../../dom.js";
 import getDevice from "../../utils/getDevice.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
+import {
+  loadLocalStorage,
+  saveLocalStorage,
+} from "../../utils/localStorage.js";
 import createColumnInputItem from "./ui/createColumnItemInput.js";
 import createNewTextBox from "./ui/createNewTextBox.js";
 import createTextButtonContainer from "./ui/createTextButtonContainer.js";
 
 loadStyleSheet("/components/ColumnInputItem/styles.css");
 
-const ColumnInputItem = ({ store, handleCancel }) => {
+const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
   const handleInputTitle = (e) => {
     const $input = e.target;
     $input.style.height = $input.scrollHeight + "px"; // 글의 길이에 맞춰 입력창 높이 조절
@@ -48,8 +52,9 @@ const ColumnInputItem = ({ store, handleCancel }) => {
     );
     const $titleInput = $columnItem.querySelector("#title");
     const $contentInput = $columnItem.querySelector("#content");
-    const title = $titleInput.value;
-    const content = $contentInput.value;
+
+    const title = $titleInput.value.trim();
+    const content = $contentInput.value.trim();
 
     const $userAgent = createElement("span", {
       className: "userAgent display-medium12",
@@ -63,6 +68,29 @@ const ColumnInputItem = ({ store, handleCancel }) => {
     $columnItem.replaceChild($userAgent, $columnItem.lastChild);
 
     store.isTodoAdding = false;
+
+    const newCard = {
+      id: Number($columnItem.closest(".column__body").lastChild.dataset.id) + 1,
+      title,
+      content,
+      author: getDevice(),
+    };
+
+    console.log(newCard);
+
+    const todoList = loadLocalStorage();
+
+    const newTodoList = todoList.map((section) => {
+      if (section.id === sectionId) {
+        return {
+          ...section,
+          items: [...section.items, newCard],
+        };
+      }
+      return section;
+    });
+
+    saveLocalStorage(newTodoList);
   };
 
   return createColumnInputItem({

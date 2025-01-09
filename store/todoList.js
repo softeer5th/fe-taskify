@@ -1,4 +1,4 @@
-export const todoList = [
+export const initialTodoList = [
   {
     id: "todo__section",
     title: "해야 할 일",
