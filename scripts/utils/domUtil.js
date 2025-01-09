@@ -1,25 +1,28 @@
+import { storeData, loadData } from "./storageUtil.js"
+
 const elements = []
 
-export const createDomElement = (identifier, parent, classNames = [], attributes = {}) => {
+export const createDomElement = (templateId, parent, attributes = {}) => {
     if (!parent) throw new Error(`Parent is ${parent}`)
 
-    const element = document.createElement(tagName)
-    for (const className of classNames) {
-        element.classList.add(className)
-    }
-    for (const key in attributes) { 
-        element.setAttribute(key, attributes[key])
-    }
-    parent.appendChild(element)
+    const templateTag = document.getElementById(templateId)
+    const component = document.importNode(templateTag.content, true)
+    const firstTag = component.firstElementChild
+    const identifier = generateId()
+    firstTag.id = identifier
 
-    elements.push({identifier: identifier, element: element})
-    return element
+    elements.push({ identifier: identifier, element: component })
+    return { identifier: identifier, element: component }
 }
 
 export const findDomElement = (id) => {
     return document.getElementById(id)
 }
 
-export const removeDomElement = (element) => {
-    element.remove()
+export const removeDomElement = (id) => {}
+
+const generateId = () => {
+    const prevId = loadData("elementId") ?? 0
+    storeData("elementId", prevId + 1)
+    return prevId + 1
 }

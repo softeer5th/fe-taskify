@@ -1,20 +1,31 @@
-import { setState, getState } from "../utils/stateUtil";
-import { storeData, loadData } from "../utils/storageUtil";
-import { createDomElement } from "../utils/domUtil";
+import { setState, getState } from "../utils/stateUtil"
+import { storeData, loadData } from "../utils/storageUtil"
+import { createDomElement } from "../utils/domUtil"
 
-// setState("isCreatingTodo", false)
+setState("isCreatingTodo", false)
+
 let isCreatingTodo = false
 
-const initTodo = () => {
+const initTodo = () => {}
 
+export const addTodoItem = (category, title, content, author) => {
+    const { identifier, element } = createDomElement("todo-item-template")
+    element.querySelector(".delete-btn").addEventListener("click", () => {
+        removeTodoItem(identifier)
+    })
+    element.querySelector(".edit-btn").addEventListener("click", () => {
+        editTodoItem(identifier)
+    })
 }
 
-const addTodo = (title, content, author) => {
-    const todoTemplate = document.querySelector(".todo-item-template")
-    const component = todoTemplate.content.cloneNode(true)
-    
+const onAddTodoButtonClick = () => {}
+
+// const createCategory = (categoryName) => {}
+
+const removeTodoItem = (identifier) => {
+    console.log(`removing todo - ${identifier}`)
 }
 
-const onAddTodoButtonClick = () => {
-
+const editTodoItem = (identifier) => {
+    console.log(`editing todo - ${identifier}`)
 }
