@@ -66,18 +66,19 @@ jobs:
               console.log(`PR #${node.number} 처리 시작`);
               console.log(`PR node 정보: ${JSON.stringify(node, null, 2)}`);
 
-              if (node.baseRefName === "main" || !node.labels.nodes.length) {
+              //if (node.baseRefName === "main" || !node.labels.nodes.length) {
+                if (node.baseRefName === "main") {
                 console.log(`PR #${node.number}: main 브랜치이거나 라벨이 없음`);
                 try {
                   await github.rest.issues.createComment({
                       owner: context.repo.owner,
                       repo: context.repo.repo,
                       issue_number: node.number,
-                      body: "main 브랜치로 병합 시도 || 적절한 라벨이 있는지 확인해 주세요."
+                      body: "main 브랜치로 병합 시도"
                   });
-                  console.log(`PR #${node.number}에 main브랜치 || 라벨없음 코멘트 추가 완료`);
+                  console.log(`PR #${node.number}에 main브랜치 코멘트 추가 완료`);
                 } catch (e) {
-                  console.log(`PR #${node.number}에 main브랜치 || 라벨없음 코멘트 추가 실패:`, e);
+                  console.log(`PR #${node.number}에 main브랜치 코멘트 추가 실패:`, e);
                 }
                 continue;
               }
