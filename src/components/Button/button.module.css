@@ -22,3 +22,7 @@
     background-color: transparent;
     color: var(--text-default);
 }
+
+.button-full {
+    width: 100%;
+}
