@@ -33,21 +33,21 @@
     --border-default: var(--grayscale-200);
     --border-bold: var(--grayscale-400);
 
-    --gap-50: 4;
-    --gap-100: 8;
-    --gap-200: 16;
-    --gap-300: 24;
-    --gap-400: 32;
-    --gap-500: 40;
-    --gap-600: 48;
-    --gap-700: 56;
-    --gap-800: 64;
-    --gap-900: 72;
+    --gap-50: 4px;
+    --gap-100: 8px;
+    --gap-200: 16px;
+    --gap-300: 24px;
+    --gap-400: 32px;
+    --gap-500: 40px;
+    --gap-600: 48px;
+    --gap-700: 56px;
+    --gap-800: 64px;
+    --gap-900: 72px;
 
-    --lg: 24;
-    --md: 16;
-    --re: 14;
-    --sm: 12;
+    --lg: 24px;
+    --md: 16px;
+    --re: 14px;
+    --sm: 12px;
 
     --bold: 700;
     --medium: 500;
