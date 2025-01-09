@@ -95,7 +95,7 @@
         - [ ] edit
             - [ ] edit modal
     - [ ] CardList (Column)
-        - [ ] Count of Cards
+        - [x] Count of Cards
         - [x] Add Card
         - [ ] Delete Card
         - [ ] Edit Column Name
