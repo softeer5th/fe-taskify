@@ -41,9 +41,13 @@ const enableAddTodoForm = () => {
     formElement
         .querySelector(`.${classNames.todoAddFormSubmitBtn}`)
         .addEventListener('click', () => {
-            const title = document.querySelector('.add-form__title').value
-            const content = document.querySelector('.add-form__content').value
-            const author = document.querySelector('.add-form__author').value
+            const title = formElement.querySelector(
+                `.${classNames.todoAddFormInputTitle}`
+            ).value
+            const content = formElement.querySelector(
+                `.${classNames.todoAddFormInputContent}`
+            ).value
+            const author = 'author'
             addTodoItem(title, content, author)
             removeDomElement(formId)
             setState(TODO_FORM_DOM_ID_KEY, null)
