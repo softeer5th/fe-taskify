@@ -37,43 +37,32 @@
                         </button>
                     </div>
                 </div>
-                <div class="todos__add-form">
-                    <input
-                        class="todos__add-form__input-title"
-                        type="text"
-                        placeholder="제목을 입력하세요"
-                    />
-                    <input
-                        class="todos__add-form__input-content"
-                        type="text"
-                        placeholder="내용을 입력하세요"
-                    />
-                    <div class="todos__add-form__button-container">
-                        <button
-                            class="todos__add-form__cancel-btn"
-                            type="button"
-                        >취소</button>
-                        <button
-                            class="todos__add-form__submit-btn"
-                            type="button"
-                        >등록</button>
-                    </div>
-                </div>
-                <ul class="todos__body">
-                </ul>
+                <ul class="todos__body"></ul>
             </section>
         </main>
     </body>
 
     <template id="todo-item-add-form-template">
-        <div class="todos__body__item__left-container">
-            <div>
-                <div class="todos__body__item__title">GitHub 공부하기</div>
-                <div class="todos__body__item__content">
-                    add, commit, push
-                </div>
+        <section class="todos__add-form">
+            <input
+                class="todos__add-form__input-title"
+                type="text"
+                placeholder="제목을 입력하세요"
+            />
+            <input
+                class="todos__add-form__input-content"
+                type="text"
+                placeholder="내용을 입력하세요"
+            />
+            <div class="todos__add-form__button-container">
+                <button class="todos__add-form__cancel-btn" type="button">
+                    취소
+                </button>
+                <button class="todos__add-form__submit-btn" type="button">
+                    등록
+                </button>
             </div>
-        <div class="todos__body__item__author">author by web</div>
+        </section>
     </template>
 
     <template id="todo-item-template">

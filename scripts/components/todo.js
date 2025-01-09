@@ -8,14 +8,57 @@ import {
 import { classNames, templateNames } from '../strings.js'
 
 const TODO_LIST_STORAGE_KEY = 'todoList'
+const TODO_FORM_DOM_ID_KEY = 'isCreatingTodo'
 
 const initTodo = () => {
-    setState('isCreatingTodo', false)
+    setState(TODO_FORM_DOM_ID_KEY, false)
     const storedTodoList = loadData(TODO_LIST_STORAGE_KEY)
     storeData(TODO_LIST_STORAGE_KEY, [])
     storedTodoList?.forEach((todo) => {
         addTodoItem(todo.values.title, todo.values.content, todo.values.author)
     })
+}
+
+export const toggleAddTodoButton = () => {
+    const isCreatingTodo = getState(TODO_FORM_DOM_ID_KEY)
+    if (isCreatingTodo) {
+        disableAddTodoForm()
+    } else {
+        enableAddTodoForm()
+    }
+}
+
+const enableAddTodoForm = () => {
+    const parentDomElement = document.querySelector('.todos__body')
+    const formId = createDomElement(
+        templateNames.todoItemAddForm,
+        parentDomElement,
+        false
+    )
+
+    setState(TODO_FORM_DOM_ID_KEY, formId)
+    const formElement = findDomElement(formId)
+    formElement
+        .querySelector(`.${classNames.todoAddFormSubmitBtn}`)
+        .addEventListener('click', () => {
+            const title = document.querySelector('.add-form__title').value
+            const content = document.querySelector('.add-form__content').value
+            const author = document.querySelector('.add-form__author').value
+            addTodoItem(title, content, author)
+            removeDomElement(formId)
+            setState(TODO_FORM_DOM_ID_KEY, null)
+        })
+    formElement
+        .querySelector(`.${classNames.todoAddFormCancelBtn}`)
+        .addEventListener('click', () => {
+            removeDomElement(formId)
+            setState(TODO_FORM_DOM_ID_KEY, null)
+        })
+}
+
+const disableAddTodoForm = () => {
+    removeDomElement(getState(TODO_FORM_DOM_ID_KEY))
+    setState(TODO_FORM_DOM_ID_KEY, null)
 }
 
 export const addTodoItem = (title, content, author) => {
