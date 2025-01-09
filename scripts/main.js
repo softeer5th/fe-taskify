@@ -7,8 +7,11 @@ const App = () => {
   main.appendChild(Column('하고 있는 일'));
   main.appendChild(Column('완료한 일'));
 
-  document.querySelector('header button').addEventListener('click', (e) => {
+  document.querySelector('#history').addEventListener('click', (e) => {
     console.log('view archived columns');
+  });
+  document.querySelector('header div button').addEventListener('click', (e) => {
+    console.log('convert to sort mode');
   });
 };
 

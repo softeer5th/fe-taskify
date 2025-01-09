@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="./styles/base.css" />
     <link rel="stylesheet" href="./styles/components.css" />
     <template id="column-template">
-      <ul
-        style="display: flex; flex-direction: column; gap: 10px"
-      >
+      <ul style="display: flex; flex-direction: column; gap: 10px">
         <div
           style="
             display: flex;
@@ -21,11 +19,11 @@
           <div
             style="width: 100%; display: flex; align-items: center; gap: 8px"
           >
-            <h2 class="display-bold16">해야할 일</h2>
+            <h2 class="display-bold16">
             <p>3</p>
           </div>
           <button id="add-card">
-            <img src="./assets/icons/plus.svg" alt="add" />
+            <img src="./assets/icons/plus-small.svg" alt="add" />
           </button>
           <button id="close-column">
             <img src="./assets/icons/closed.svg" alt="close" />
@@ -66,8 +64,14 @@
           align-items: center;
         "
       >
-        <h1 class="text-strong">TASKIFY</h1>
-        <button>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 16px;">
+          <h1 class="text-strong">TASKIFY</h1>
+          <button class="border-bord" style="height: 24px; display: flex; justify-content: center; align-items: center; padding: var(--number-100); border-radius: var(--number-100);">
+            <img src="./assets/icons/arrowBoth.svg" alt="arrow" />
+            <p class="display-medium12">생성 순</p>
+          </button>
+        </div>
+        <button id="history">
           <img src="./assets/icons/icon.svg" alt="history" />
         </button>
       </header>
@@ -75,6 +79,26 @@
         <main
           style="width: 100%; height: 100%; display: flex; gap: 24px"
         ></main>
+        <div
+          style="
+            position: fixed;
+            bottom: 48px;
+            right: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+          "
+        >
+          <button class="floating-button surface-default">
+            <img src="./assets/icons/undo.svg" alt="undo" />
+          </button>
+          <button class="floating-button surface-default"> 
+            <img src="./assets/icons/redo.svg" alt="redo" />
+          </button>
+          <button class="floating-button surface-brand">
+            <img src="./assets/icons/plus-large.svg" alt="plus" />
+          </button>
+        </div>
       </div>
     </div>
     <script type="module" src="./scripts/main.js"></script>
