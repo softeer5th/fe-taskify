@@ -1,4 +1,8 @@
 export const classNames = {
+    todoHeader: 'todos__header',
+    todoHeaderTitle: 'todos__header__title',
+    todoHeaderTodoCount: 'todos__header__todo-count',
+
     todoItemTitle: 'todos__body__item__title',
     todoItemContent: 'todos__body__item__content',
     todoItemAuthor: 'todos__body__item__author',
@@ -24,6 +28,7 @@ export const classNames = {
 }
 
 export const templateNames = {
+    todoHeader: 'todo-header-template',
     todoItem: 'todo-item-template',
     todoCategory: 'todo-category-template',
     todoItemAddForm: 'todo-item-form-template',

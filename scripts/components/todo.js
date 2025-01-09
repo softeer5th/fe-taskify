@@ -12,7 +12,25 @@ import { TodoItem } from '../domain/todoItem.js'
 const TODO_LIST_STORAGE_KEY = 'todoList'
 const TODO_FORM_DOM_ID_KEY = 'isCreatingTodo'
 
-const initTodo = () => {
+const mockedUpCategories = ['해야할 일', '하고 있는 일', '완료한 일']
+
+export const initTodo = () => {
+    const todoHeaderParentElement = document.querySelector('.main')
+    mockedUpCategories.forEach((category) => {
+        const headerId = createDomElementAsChild(
+            templateNames.todoHeader,
+            todoHeaderParentElement
+        )
+        const element = findDomElement(headerId)
+        element.querySelector(`.${classNames.todoHeaderTitle}`).textContent =
+            category
+        element
+            .querySelector(`.${classNames.addButton}`)
+            .addEventListener('click', () => {
+                onAddTodoButtonClick()
+            })
+    })
+
     setState(TODO_FORM_DOM_ID_KEY, false)
     const storedTodoList = loadData(TODO_LIST_STORAGE_KEY)
     storeData(TODO_LIST_STORAGE_KEY, [])
@@ -202,5 +220,3 @@ const findTodoItem = (identifier) => {
     )
     return { index: index, value: todoList[targetIdx] }
 }
-
-initTodo()
