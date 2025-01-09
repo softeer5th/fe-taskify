@@ -15,7 +15,7 @@ export const createDOM = (node) => {
    * @returns {HTMLElement | SVGElement} - 생성된 DOM 요소.
    */
   const createElement = () => {
-    if (node.type === "svg" || node.namespace === "http://www.w3.org/2000/svg") {
+    if (node.type === "svg" || node.type === "path") {
       return document.createElementNS("http://www.w3.org/2000/svg", node.type);
     }
     return document.createElement(node.type);
