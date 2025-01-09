@@ -11,12 +11,30 @@ const DIRTY_SEPERATOR_REGEX_G = /(dirtyindex:\d+:)/g;
  * @returns {VDOM} - 생성된 가상 DOM
  */
 export const parser = (strings, ...args) => {
-  const templateString = strings
-    .map((str, index) => {
-      const argsString = args.length > index ? `${DIRTY_PREFIX}${index}:` : "";
-      return `${str}${argsString}`;
-    })
-    .join("");
+  /**
+   *
+   */
+  const getRootElement = () => {
+    /**
+     * @returns {string} - 템플릿 문자열
+     */
+    const getTemplateString = () => {
+      if (typeof strings === "string" && strings.trim().startsWith("<svg")) {
+        return [strings, "image/svg+xml"];
+      }
+      return [strings
+        .map((str, index) => {
+          const argsString = args.length > index ? `${DIRTY_PREFIX}${index}:` : "";
+          return `${str}${argsString}`;
+        })
+        .join(""), "text/html"];
+    };
+
+    const domParser = new DOMParser();
+    const [template, type] = getTemplateString();
+    const doc = domParser.parseFromString(template, type);
+    return doc.body ? doc.body.firstChild : doc.firstChild;
+  };
 
   /**
    *
@@ -38,7 +56,7 @@ export const parser = (strings, ...args) => {
     const texts = text.split(DIRTY_SEPERATOR_REGEX_G);
     return texts.map((textPart) => {
       const dirtyIndex = findDirtyIndex(textPart);
-      if (!dirtyIndex) return textPart || null;
+      if (dirtyIndex === undefined || dirtyIndex === null) return textPart || null;
 
       return args[Number(dirtyIndex)];
     });
@@ -53,15 +71,27 @@ export const parser = (strings, ...args) => {
     const props = {};
     if (!attributes) return props;
 
-    Array.from(attributes).forEach((attr) => {
-      const { name, value } = attr;
-      if (!value.includes(DIRTY_PREFIX)) {
-        props[name] = value;
-        return;
-      }
+    /**
+     *
+     * @param {string} value - 속성 값
+     * @returns {string} - 변환된 속성 값
+     */
+    const formatAttributes = (value) => {
+      if (!value.includes(DIRTY_PREFIX)) return value;
+
       const dirtyIndex = findDirtyIndex(value);
       const arg = args[dirtyIndex];
-      props[name] = arg;
+      return arg;
+    };
+
+    Array.from(attributes).forEach((attr) => {
+      const { name, value } = attr;
+      if (name === "class") {
+        const classes = value.split(" ").map((className) => formatAttributes(className)).join(" ");
+        props[name] = classes;
+        return;
+      }
+      props[name] = formatAttributes(value);
     });
     return props;
   };
@@ -101,9 +131,6 @@ export const parser = (strings, ...args) => {
     return createElement(type, props, ...children);
   };
 
-  const domParser = new DOMParser();
-  const doc = domParser.parseFromString(templateString, "text/html");
-  const rootElement = doc.body.firstChild;
-
+  const rootElement = getRootElement();
   return parseElement(rootElement);
 };

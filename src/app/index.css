@@ -1,0 +1,125 @@
+@import url("../components//Button/button.module.css");
+@import url("./reset.css");
+
+:root {
+    --grayscale-50: #FEFEFE;
+    --grayscale-100: #F7F7FC;
+    --grayscale-200: #EFF0F6;
+    --grayscale-300: #D9DBE9;
+    --grayscale-400: #BEC1D5;
+    --grayscale-500: #A0A3BD;
+    --grayscale-600: #6E7191;
+    --grayscale-700: #4E4B66;
+    --grayscale-800: #2A2A44;
+    --grayscale-900: #14142B;
+
+    --accent-blue: #007AFF;
+    --accent-red: #FF3B30;
+
+    --text-strong: var(--grayscale-900);
+    --text-bold: var(--grayscale-700);
+    --text-default: var(--grayscale-600);
+    --text-weak: var(--grayscale-500);
+    --text-white-default: var(--grayscale-50);
+    --text-white-weak: var(--grayscale-100);
+    --text-brand: var(--accent-blue);
+    --text-danger: var(--accent-red);
+
+    --surface-default: var(--grayscale-50);
+    --surface-alt: var(--grayscale-100);
+    --surface-brand: var(--accent-blue);
+    --surface-danger: var(--accent-red);
+
+    --border-default: var(--grayscale-200);
+    --border-bold: var(--grayscale-400);
+
+    --gap-50: 4px;
+    --gap-100: 8px;
+    --gap-200: 16px;
+    --gap-300: 24px;
+    --gap-400: 32px;
+    --gap-500: 40px;
+    --gap-600: 48px;
+    --gap-700: 56px;
+    --gap-800: 64px;
+    --gap-900: 72px;
+
+    --lg: 24px;
+    --md: 16px;
+    --re: 14px;
+    --sm: 12px;
+
+    --bold: 700;
+    --medium: 500;
+
+    --pretendard: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+
+.display-bold24 {
+    font-family: var(--pretendard);
+    font-size: var(--lg);
+    font-weight: var(--bold);
+}
+
+.display-bold16 {
+    font-family: var(--pretendard);
+    font-size: var(--md);
+    font-weight: var(--bold);
+}
+
+.display-bold14 {
+    font-family: var(--pretendard);
+    font-size: var(--re);
+    font-weight: var(--bold);
+}
+
+.display-bold12 {
+    font-family: var(--pretendard);
+    font-size: var(--sm);
+    font-weight: var(--bold);
+}
+
+.display-medium16 {
+    font-family: var(--pretendard);
+    font-size: var(--md);
+    font-weight: var(--medium);
+    line-height: 22;
+}
+
+.display-medium14 {
+    font-family: var(--pretendard);
+    font-size: var(--re);
+    font-weight: var(--medium);
+}
+
+.display-medium12 {
+    font-family: var(--pretendard);
+    font-size: var(--sm);
+    font-weight: var(--medium);
+}
+
+.selected-bold16 {
+    font-family: var(--pretendard);
+    font-size: var(--md);
+    font-weight: var(--bold);
+}
+
+.selected-bold14 {
+    font-family: var(--pretendard);
+    font-size: var(--re);
+    font-weight: var(--bold);
+}
+
+.selected-medium16 {
+    font-family: var(--pretendard);
+    font-size: var(--md);
+    font-weight: var(--medium);
+    line-height: 22;
+}
+
+.selected-medium14 {
+    font-family: var(--pretendard);
+    font-size: var(--re);
+    font-weight: var(--medium);
+}
