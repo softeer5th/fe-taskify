@@ -1,5 +1,6 @@
 import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
+import { Chip } from "../components/Chip/index.js";
 import { parser } from "../lib/jsx-runtime/index.js";
 
 // eslint-disable-next-line
@@ -26,6 +27,8 @@ const App = () => {
   const badge = Badge({ text: "1" });
   const badge2 = Badge({ text: "10" });
 
+  const chip = Chip({ label: "Chip" });
+
   return (
     parser`
         <div>
@@ -35,6 +38,7 @@ const App = () => {
             ${ghost}
             ${badge}
             ${badge2}
+            ${chip}
         </div>`
   );
 };
