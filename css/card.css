@@ -1,16 +1,16 @@
-#card-list {
+.card-list {
     list-style: none;
     padding-left: 0;
     width: 100%;
 }
 
-#card-list li {
+.card-list li {
+    background-color: #FEFEFE;;
     width: 100%;
     min-height: 80px;
     max-width: 280px;
     display: flex;
     margin-top: 10px;
-    margin-right: 60px;
     box-shadow: 0 1px 4px 0 #6E80913D;
     border-radius: 5px;
     padding: 20px;
@@ -18,29 +18,47 @@
 
 
 .new-card {
+    background-color: #FEFEFE;;
     width: 100%;
     min-height: 80px;
     max-width: 280px;
     display: block;
     margin-top: 10px;
-    margin-right: 60px;
     box-shadow: 0 1px 4px 0 #6E80913D;
     border-radius: 5px;
     padding: 20px;
 }
 
 
-.new-card input{
+.edit-card {
+    position: absolute;
+    background-color: #FEFEFE;;
+    width: 100%;
+    min-height: 80px;
+    max-width: 280px;
+    display: block;
+    margin-top: 10px;
+    box-shadow: 0 1px 4px 0 #6E80913D;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+
+textarea{
     border: none;
     background-color: transparent;
     width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    resize: none;
+    scrollbar-color: transparent;
 }
 
-.new-card .action-buttons {
+.action-buttons {
     margin-top: 10px;
 }
 
-.new-card button{
+button{
     border:  none;
     flex: 1;
     border-radius: 5px;
@@ -51,20 +69,33 @@
     font-weight: bold;
     background-color: #F7F7FC;
     color: #6E7191;
-    opacity: 0.3;
 }
 
-.confirm-button {
+.confirm-button:enabled {
+    background-color: #007AFF;
+    color: #FEFEFE;
+    opacity: 1;
+}
+
+.confirm-button:disabled {
     background-color: #007AFF;
     color: #FEFEFE;
     opacity: 0.3;
 }
 
 .card-actions button{
-    display: block;
+    display: flex;
     color: #A0A3BD;
+    width: 30px;
     font-size: 24px;
-    padding-top: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#edit-card-button {
+    font-size: 20px;
+    padding-top:4px;
+    padding-left: 6px;
 }
 
 .card-info {
@@ -75,12 +106,18 @@
 .card-title{
     font-size: 14px;
     font-weight: bold;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .card-content{
     color: #6E7191;
     font-size: 14px;
     margin-top: 10px;
+    white-space: normal; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 #del-card-button:hover {

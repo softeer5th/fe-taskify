@@ -1,5 +1,111 @@
 import renderTemplate from "./main.js";
+import { overlay, delCardAlert } from "./alert.js";
 
-function confirmAddCard(){
-    renderTemplate('./html/card_template.html', 'card-template', 'card-list', {id:0, title:"해야할 일", cardCount:"0",});
+export function checkCardInput() {
+    const titleInput = document.getElementById('title-input');
+    const titleValue = titleInput.value.trim();
+    const contentInput = document.getElementById('content-input');
+    const contentValue = contentInput.value.trim();
+    const confirmBtn = document.querySelector('.confirm-button');
+    titleInput.style.height = 'auto';
+    titleInput.style.height = `${titleInput.scrollHeight}px`;
+    contentInput.style.height = 'auto';
+    contentInput.style.height = `${contentInput.scrollHeight}px`;
+    if (titleValue!=='' && contentValue!=='') {
+        confirmBtn.disabled = false;
+    } else {
+        confirmBtn.disabled = true;
+    }
+}
+
+export function confirmAddCard(columnId){
+    const titleInput = document.getElementById('title-input');
+    const titleValue = titleInput.value.trim();
+    const contentInput = document.getElementById('content-input');
+    const contentValue = contentInput.value.trim();
+    const newCardId = document.getElementById('card-list'+columnId).childElementCount;
+    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:newCardId, title:titleValue, content:contentValue,});
+}
+
+
+export function delCard(columnId, cardId) {
+    overlay.style.display = "block";
+    delCardAlert.style.display = "block";
+    let column = document.getElementById("card-list"+columnId);
+    let card = column.querySelector("#card-id"+cardId);
+    delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
+    delCardAlert.querySelector('#cancel-delete-card-button').addEventListener('click',(event)=>{
+        overlay.style.display = "none";
+        delCardAlert.style.display = "none";
+    });
+    delCardAlert.querySelector('#confirm-delete-card-button').addEventListener('click',(event)=>{
+        overlay.style.display = "none";
+        delCardAlert.style.display = "none";
+        if (column.contains(card)) {
+            column.removeChild(card);
+        }
+    });
+}
+
+
+export function editCard(columnId, cardId) {
+    let column = document.getElementById("card-list"+columnId);
+    let card = column.querySelector("#card-id"+cardId);
+    const tempMemory = [...card.children];
+    
+    card.style.display = "block";
+
+    let curTitle = card.querySelector(".card-title").textContent;
+    let curContent = card.querySelector(".card-content").textContent;
+
+    const newInfoDiv = document.createElement('div');
+    newInfoDiv.className = 'card-info';
+    newInfoDiv.innerHTML = `
+        <textarea id="title-input" class="card-title" maxlength="500" rows="1">${curTitle}</textarea>
+        <textarea id="content-input" class="card-content" maxlength="500" rows="1"/>${curContent}</textarea>
+    `;
+    const newActionDiv = document.createElement('div');
+    newActionDiv.className = 'action-buttons';
+    newActionDiv.innerHTML = `
+        <button class="cancel-button">
+            취소
+        </button>
+        <div style="width:10px"></div>
+        <button class="confirm-button">
+            등록    
+        </button>
+    `;
+
+    newActionDiv.querySelector('.confirm-button').addEventListener('click', (event)=> {
+        const titleInput = document.getElementById('title-input');
+        const titleValue = titleInput.value.trim();
+        const contentInput = document.getElementById('content-input');
+        const contentValue = contentInput.value.trim();
+        renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:cardId, title:titleValue, content:contentValue,});
+        let card = column.querySelector("#card-id"+cardId);
+        card.parentNode.removeChild(card);
+    });
+    newActionDiv.querySelector('.cancel-button').addEventListener('click', (event)=> {
+        let card = column.querySelector("#card-id"+cardId);
+        card.style.display = "flex";
+        [...card.children].forEach(element => {
+            card.removeChild(element);
+        });
+        [...tempMemory].forEach(element => {
+            card.appendChild(element);
+        });
+    });
+    newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
+        checkCardInput();
+    });
+    newInfoDiv.querySelector('#content-input').addEventListener('input', (event)=>{
+        checkCardInput();
+    });
+
+    [...tempMemory].forEach(element => {
+        card.removeChild(element);
+    });
+
+    card.appendChild(newInfoDiv);
+    card.appendChild(newActionDiv);
 }
