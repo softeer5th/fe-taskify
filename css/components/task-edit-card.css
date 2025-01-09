@@ -1,0 +1,35 @@
+.task-edit-card {
+    border-radius: 8px;
+    width: 320px;
+    background-color: var(--gray-50);
+    padding: 16px;
+    box-shadow: 0px 1px 4px 0px rgba(110, 128, 145, 0.2);
+    margin: 10px 0;
+}
+
+.task-edit-card__title,
+.task-edit-card__content {
+    border: none;
+    outline: none;
+    width: 288px;
+}
+
+.task-edit-card__title::placeholder {
+    color: var(--gray-900);
+}
+
+.task-edit-card__content {
+    resize: none;
+    overflow: hidden;
+}
+
+.task-edit-card__content::placeholder {
+    color: var(--gray-600);
+}
+
+.task-edit-card__buttons-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
