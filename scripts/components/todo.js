@@ -21,7 +21,7 @@ const initTodo = () => {
     })
 }
 
-export const toggleAddTodoButton = () => {
+export const onAddTodoButtonClick = () => {
     const isCreatingTodo = getState(TODO_FORM_DOM_ID_KEY)
     if (isCreatingTodo) {
         disableAddTodoForm()
@@ -129,12 +129,12 @@ const editTodoItem = (identifier) => {
     const targetIdx = todoList.findIndex(
         (todo) => todo.identifier === identifier
     )
-    const todoItem = todoList[targetIdx]
+    const originTodoItem = todoList[targetIdx]
     const {
         title: originTitle,
         content: originContent,
         author: originAuthor,
-    } = todoItem.values
+    } = originTodoItem.values
 
     const originTodoElement = findDomElement(identifier)
     const formId = replaceDomElement(
@@ -172,18 +172,26 @@ const editTodoItem = (identifier) => {
             const editedTodoElement = findDomElement(editedTodoElementId)
             initTodoItem(editedTodoElement, newTodoItem)
 
-            todoList[targetIdx] = TodoItem(
-                editedTodoElementId,
-                title,
-                content,
-                author
-            )
+            todoList[targetIdx] = newTodoItem
             storeData(TODO_LIST_STORAGE_KEY, todoList)
         })
     formElement
         .querySelector(`.${classNames.todoEditFormCancelBtn}`)
         .addEventListener('click', () => {
-            replaceDomElement(templateNames.todoItem, formElement)
+            const abortedTodoItemId = replaceDomElement(
+                templateNames.todoItem,
+                formElement
+            )
+            const abortedTodoItemElement = findDomElement(abortedTodoItemId)
+            const abortedTodoItem = TodoItem(
+                abortedTodoItemId,
+                originTitle,
+                originContent,
+                originAuthor
+            )
+            initTodoItem(abortedTodoItemElement, abortedTodoItem)
+            todoList[targetIdx] = abortedTodoItem
+            storeData(TODO_LIST_STORAGE_KEY, todoList)
         })
 }
 
