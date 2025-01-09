@@ -129,6 +129,12 @@ table {
 *::after {
   box-sizing: border-box;
 }
+button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
 
 body {
   min-height: 100vh;
