@@ -105,8 +105,74 @@ textarea {
 
 /* Column Style */
 
+.column {
+    width: 320px;
+    height: auto;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.column__title {
+    width: 320px;
+    height: auto;
+    padding: 0px 16px;
+    gap: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+.column__textarea {
+    width: 100%;
+    height: auto;
+    gap: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.column__textarea-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--grayscale-700)
+}
+
+.column__textarea-task-count {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--grayscale-200);
+    padding: 0px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column__textarea-task-count span {
+    width: 16px;
+    height: 17px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--grayscale-500);
+    text-align: center;
+}
+
+.column__add-button,
+.column__close-button {
+    width: 24px;
+    height: 24px;
+    display: block;
+    color: var(--grayscale-500);
+}
+
+.column__add-button svg,
+.column__close-button svg {
+    width: 24px;
+    height: 24px;
+}
 
 /* task Style */
+
 .task {
     width: 320px;
     height: auto;
@@ -173,9 +239,6 @@ textarea {
     width: 24px;
     display: flex;
     flex-direction: column;
-    padding: 0;
-    gap: 0;
-    border: 0;
 }
 
 .task__iconButton-icon {
