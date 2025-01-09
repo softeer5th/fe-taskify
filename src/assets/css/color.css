@@ -1,0 +1,48 @@
+.grayscale50 {
+    background-color: var(--grayscale-50);
+}
+
+.grayscale100 {
+    background-color: var(--grayscale-100);
+}
+
+.grayscale200 {
+    background-color: var(--grayscale-200);
+}
+
+.grayscale300 {
+    background-color: var(--grayscale-300);
+}
+
+.grayscale400 {
+    background-color: var(--grayscale-400);
+}
+
+.grayscale500 {
+    background-color: var(--grayscale-500);
+}
+
+.grayscale600 {
+    background-color: var(--grayscale-600);
+}
+
+.grayscale700 {
+    background-color: var(--grayscale-700);
+}
+
+.grayscale800 {
+    background-color: var(--grayscale-800);
+}
+
+.grayscale900 {
+    background-color: var(--grayscale-900);
+}
+
+.accentBlue {
+    background-color: var(--accent-blue);
+}
+
+.accentRed {
+    background-color: var(--accent-red);
+}
+
