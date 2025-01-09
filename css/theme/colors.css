@@ -5,7 +5,7 @@
     --gray-300: #d9dbe9;
     --gray-400: #bec1d5;
     --gray-500: #a0a3bd;
-    --grays-600: #6c7191;
+    --grays-600: #6e7191;
     --gray-700: #4e4b66;
     --gray-800: #2a2a44;
     --gray-900: #14142b;
@@ -49,6 +49,10 @@
     background-color: var(--gray-50);
 }
 
+.surface-alt {
+    background-color: var(--gray-100);
+}
+
 .surface-brand {
     background-color: var(--accent-blue);
 }
@@ -58,9 +62,11 @@
 }
 
 .border-default {
-    border-color: var(--gray-200);
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
 }
 
 .border-bold {
-    border-color: var(--gray-400);
+    border-radius: 8px;
+    border: 1px solid var(--gray-400);
 }
