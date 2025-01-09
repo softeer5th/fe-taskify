@@ -1,28 +1,26 @@
+import { addCardButtons, addCardShadow } from '../utils/helpers/cardHelper.js';
 import Button from './button.js';
 
 /**
  * 카드 컴포넌트
- * @param {'add' | 'edit' | 'delete'} mode 
- * @returns 
+ * @param {'default' | 'add' | 'drag' | 'place'} mode
+ * @returns
  */
 const Card = (mode) => {
   const card = document.getElementById('card-template').content.cloneNode(true);
+  const cardElement = card.querySelector('li');
 
-  card.querySelector('li').addEventListener('click', (e) => {
+  
+  cardElement.addEventListener('click', (e) => {
     console.log('card click');
   });
 
-  card.querySelector('#buttons-area').appendChild(Button('cancle'));
-  switch (mode) {
-    case 'add':
-      card.querySelector('#buttons-area').appendChild(Button('add'));
-      break;
-    case 'edit':
-      card.querySelector('#buttons-area').appendChild(Button('edit', true));
-      break;
-    case 'delete':
-      card.querySelector('#buttons-area').appendChild(Button('delete'));
-      break;
+  
+  addCardShadow(cardElement, mode);
+  addCardButtons(cardElement, mode, true, false);
+  
+  if (mode == 'place') {
+    cardElement.style.opacity = '0.3';
   }
 
   return card;

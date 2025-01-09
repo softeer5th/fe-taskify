@@ -7,9 +7,10 @@ const Column = (columnTitle) => {
 
   column.querySelector('h2').textContent = columnTitle;
 
-  column.querySelector('ul').appendChild(Card('delete'));
+  column.querySelector('ul').appendChild(Card('default'));
   column.querySelector('ul').appendChild(Card('add'));
-  column.querySelector('ul').appendChild(Card('edit'));
+  column.querySelector('ul').appendChild(Card('drag'));
+  column.querySelector('ul').appendChild(Card('place'));
 
 
   column.querySelector('#add-card').addEventListener('click', (e) => {
