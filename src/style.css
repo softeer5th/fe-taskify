@@ -93,11 +93,76 @@ textarea {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 18px 80px;
 }
 
 
 /* Header Style */
+
+.header {
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 80px;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--grayscale-900);
+    position: absolute;
+    left: 80px;
+}
+
+.header__button--sort {
+    width: auto;
+    height: 24px;
+    display: flex;
+    flex-direction: row;
+    padding: 0px 8px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid var(--grayscale-400);
+    position: absolute;
+    left: 194px;
+    white-space: nowrap;
+}
+
+.header__button--sort svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    color: var(--grayscale-600);
+}
+
+.header__button--sort span {
+    width: auto;
+    height: 17px;
+    padding: 0px 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--grayscale-700);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__button--history {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    position: absolute;
+    right: 80px;
+}
+
+.header__button--history svg {
+    width: 24px;
+    height: 24px;
+    color: var(--grayscale-600);
+}
 
 
 /* Column List Style */
