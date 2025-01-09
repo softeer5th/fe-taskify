@@ -3,17 +3,34 @@ import { storeData, loadData } from '../utils/storageUtil.js'
 import { createDomElement } from '../utils/domUtil.js'
 import { classNames, templateNames } from '../strings.js'
 
-setState('isCreatingTodo', false)
+const initTodo = () => {
+    setState('isCreatingTodo', false)
+    const storedTodoList = loadData(`todoList`)
+    if (storedTodoList === null) {
+        storeData(`todoList`, [])
+        return
+    }
+    storedTodoList.forEach((todo) => {
+        addTodoItem(todo.values.title, todo.values.content, todo.values.author)
+    })
+}
 
-const initTodo = () => {}
+const renderTodos = () => {}
 
-export const addTodoItem = (title, content, author) => {
+export const addTodoItem = (title, content, author, store = false) => {
     // TODO: 하드코딩된 부모 클래스명 변경
     const parentDomElement = document.querySelector('.todos__body')
     const identifier = createDomElement(
         templateNames.todoItem,
         parentDomElement
     )
+
+    const prevTodoList = loadData(`todoList`)
+    prevTodoList.push({
+        identifier: identifier,
+        values: { title, content, author },
+    })
+    store && storeData(`todoList`, prevTodoList)
 
     const element = document.querySelector(`#${identifier}`)
     element.querySelector(`.${classNames.todoItemTitle}`).textContent = title
@@ -44,3 +61,5 @@ const removeTodoItem = (identifier) => {
 const editTodoItem = (identifier) => {
     console.log(`editing todo - ${identifier}`)
 }
+
+initTodo()
