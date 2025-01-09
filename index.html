@@ -6,6 +6,7 @@
     <title>소프티어 태스크파이 과제</title>
     <link rel="stylesheet" href="./styles/base.css" />
     <link rel="stylesheet" href="./styles/components.css" />
+    <!-- 카드들을 담고있는 컬럼 템플릿 -->
     <template id="column-template">
       <ul style="display: flex; flex-direction: column; gap: 10px">
         <div
@@ -28,10 +29,10 @@
                 justify-content: center;
                 align-items: center;
                 border-radius: var(--number-100);
-                padding: 0 var(--number-100);
+                padding: 0 var(--number-50);
               "
             >
-            300
+              <p>30</p>
             </div>
           </div>
           <button id="add-card">
@@ -43,8 +44,34 @@
         </div>
       </ul>
     </template>
+    <!-- 카드 템플릿 -->
     <template id="card-template">
-      <li class="surface-default" style="width: 320px; height: 122px"></li>
+      <li
+        class="surface-default"
+        style="
+          width: 320px;
+          padding: var(--number-200);
+          border-radius: var(--number-100);
+          gap: var(--number-200);
+        "
+      >
+        <div id="buttons-area" style="display: flex; gap: 8px"></div>
+      </li>
+    </template>
+    <!-- 버튼 템플릿 -->
+    <template id="button-template">
+      <button
+        class="display-bold14"
+        style="
+          width: 100%;
+          height: 32px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: var(--number-100);
+          border-radius: var(--number-100);
+        "
+      ></button>
     </template>
   </head>
   <body
@@ -70,7 +97,7 @@
       <header
         style="
           width: 100%;
-          height: var(--number-800);
+          height: 64px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -97,7 +124,7 @@
             "
           >
             <img src="./assets/icons/arrowBoth.svg" alt="arrow" />
-            <p class="display-medium12">생성 순</p>
+            <p class="display-medium12 text-bold">생성 순</p>
           </button>
         </div>
         <button id="history">

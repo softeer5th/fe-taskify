@@ -181,10 +181,11 @@
   border-radius: 50%;
 }
 
-*,
-*::before,
-*::after {
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: 'Pretendard'
 }
 
 button {
@@ -194,21 +195,21 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  transition: opacity 0.2s ease;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0;
+button:hover {
+  opacity: 0.8;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  padding: 0 4px;
 }
 
 ul, ol {
   list-style: none; /* 기본 글머리 기호나 번호 제거 */
-  padding: 0;
-  margin: 0;
 }
