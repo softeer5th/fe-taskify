@@ -1,9 +1,4 @@
 import { cardComponent } from "./component/card.js";
-const todoAddButton = document.querySelector(".todo-add-icon");
-const todoTitle = document.querySelector(".todo-title");
-const todoContent = document.querySelector(".todo-content");
-const todoSubmitBtn = document.querySelector(".todo-add-btn");
-const todoFormCard = document.querySelector(".new-card");
 
 const todoFormInit = (formCard) => {
   // form 초기화
