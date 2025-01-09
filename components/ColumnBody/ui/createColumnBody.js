@@ -104,5 +104,32 @@ const updateTodoList = (sectionId, itemId, dropIndex) => {
     return section;
   });
 
+  updateCount(finalList);
   saveLocalStorage(finalList);
+};
+
+const updateCount = (todoList) => {
+  const $columnSection = document.querySelector(".column__section");
+
+  const $todoCount = $columnSection
+    .querySelector("#todo__section")
+    .querySelector(".column__count");
+
+  const $progressCount = $columnSection
+    .querySelector("#progress__section")
+    .querySelector(".column__count");
+
+  const $finishedCount = $columnSection
+    .querySelector("#finished__section")
+    .querySelector(".column__count");
+
+  todoList.forEach((section) => {
+    if (section.id === "todo__section") {
+      $todoCount.textContent = section.items.length;
+    } else if (section.id === "progress__section") {
+      $progressCount.textContent = section.items.length;
+    } else if (section.id === "finished__section") {
+      $finishedCount.textContent = section.items.length;
+    }
+  });
 };
