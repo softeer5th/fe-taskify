@@ -11,4 +11,5 @@ export const classNames = {
 export const templateNames = {
     todoItem: 'todo-item-template',
     todoCategory: 'todo-category-template',
+    todoItemAddForm: 'todo-item-add-form-template',
 }

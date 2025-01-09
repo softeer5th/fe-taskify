@@ -175,6 +175,57 @@
     right: -6px;
 }
 
+.todos__add-form {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface-default);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 5px 0px;
+    box-shadow: var(--shadow-normal);
+}
+
+.todos__add-form__input-title {
+    border: none;
+    background-color: var(--color-surface-default);
+    outline: none;
+    padding: 0px 0px 8px 0px;
+    font: var(--font-bold-r);
+}
+.todos__add-form__input-content {
+    border: none;
+    background-color: var(--color-surface-default);
+    outline: none;
+    font: var(--font-medium-r);
+}
+.todos__add-form__button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 16px 0px 0px 0px;
+}
+.todos__add-form__submit-btn {
+    width: 140px;
+    height: 32px;
+    border: none;
+    background-color: var(--color-surface-brand);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--color-text-white-default);
+    font: var(--font-medium-r);
+}
+.todos__add-form__cancel-btn {
+    width: 140px;
+    height: 32px;
+    border: none;
+    background-color: var(--color-surface-alt);
+    margin: 0px 8px 0px 0px;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--color-text-default);
+    font: var(--font-medium-r);
+}
+
 .btn {
     width: 24px;
     height: 24px;
