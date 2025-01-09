@@ -58,3 +58,59 @@
     --todo-number-800 : 64px;
     --todo-number-900 : 72px;
 }
+
+/* Typography System Classes */
+.display-bold24 {
+    font-weight: var(--todo-font-weight-bold);
+    font-size: var(--todo-font-size-large);
+}
+
+.display-bold16 {
+    font-weight: var(--todo-font-weight-bold);
+    font-size: var(--todo-font-size-medium);
+}
+
+.display-bold14 {
+    font-weight: var(--todo-font-weight-bold);
+    font-size: var(--todo-font-size-regular);
+}
+
+.display-bold12 {
+    font-weight: var(--todo-font-weight-bold);
+    font-size: var(--todo-font-size-small);
+}
+
+.display-medium16 {
+    font-weight: var(--todo-font-weight-medium);
+    font-size: var(--todo-font-size-medium);
+}
+
+.display-medium14 {
+    font-weight: var(--todo-font-weight-medium);
+    font-size: var(--todo-font-size-regular);
+}
+
+.display-medium12 {
+    font-weight: var(--todo-font-weight-medium);
+    font-size: var(--todo-font-size-small);
+}
+
+.selected-bold16 {
+    font-weight: var(--todo-font-weight-bold);
+    font-size: var(--todo-font-size-medium);
+}
+
+.selected-bold14 {
+    font-weight: var(--todo-font-weight-bold);
+    font-size: var(--todo-font-size-regular);
+}
+
+.available-medium16 {
+    font-weight: var(--todo-font-weight-medium);
+    font-size: var(--todo-font-size-medium);
+}
+
+.available-medium14 {
+    font-weight: var(--todo-font-weight-medium);
+    font-size: var(--todo-font-size-regular);
+}

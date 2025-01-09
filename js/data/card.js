@@ -15,6 +15,6 @@ export const createCard = () => {
     title: '',
     content: '',
     date: new Date(),
-    author: ''
+    author: '박준혁'
   };
 }
