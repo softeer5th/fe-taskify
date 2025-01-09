@@ -73,9 +73,11 @@ table {
 input {
     border: none;
     outline: none;
+    font-family: inherit;
 
     &::placeholder {
         color: inherit;
+        font-family: inherit;
     }
 }
 
@@ -83,9 +85,11 @@ textarea {
     border: none;
     outline: none;
     resize: none;
+    font-family: inherit;
 
     &::placeholder {
         color: inherit;
+        font-family: inherit;
     }
 }
 
