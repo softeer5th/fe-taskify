@@ -15,7 +15,16 @@ const ColumnItem = ({
   const $columnItem = createElement("div", {
     className: "column__item",
     "data-id": id,
+    draggable: true,
   });
+
+  const handleDragStart = (e) => {
+    e.target.classList.add("dragging");
+  };
+
+  const handleDragEnd = (e) => {
+    e.target.classList.remove("dragging");
+  };
 
   const $textContainer = createTextContainer({
     sectionId,
@@ -26,6 +35,9 @@ const ColumnItem = ({
 
   const $author = createAuthor({ author });
   $columnItem.append($textContainer, $author);
+
+  $columnItem.addEventListener("dragstart", handleDragStart);
+  $columnItem.addEventListener("dragend", handleDragEnd);
 
   return $columnItem;
 };
