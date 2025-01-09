@@ -6,13 +6,51 @@ import {
   createImg,
 } from "../../../dom.js";
 
-const createItemButtonContainer = () => {
+function createModal({ title = "", content = "", itemId }) {
+  const $modalContainer = document.getElementById("modal-container");
+  const $modal = document.createElement("div");
+  $modal.classList.add("modal");
+  $modal.classList.add("shadow-up");
+
+  $modal.innerHTML = /*html*/ `
+    <div class="modal__wrapper">
+      ${title ? `<p class="modal__title display-bold16">${title}</p>` : ""}
+      ${
+        content
+          ? `<p class="modal__content display-medium16">${content}</p>`
+          : ""
+      }
+      <div class="modal__buttonContainer">
+      <button class="cancel__button display-bold14">취소</button>
+        <button class="delete__button display-bold14">삭제</button>
+      </div>
+    </div>
+  `;
+
+  $modal.querySelector(".delete__button").addEventListener("click", () => {
+    // onConfirm(cardId);
+    $modal.remove();
+  });
+
+  $modal.querySelector(".cancel__button").addEventListener("click", () => {
+    $modal.remove();
+  });
+
+  $modalContainer.appendChild($modal);
+}
+
+const createItemButtonContainer = ({ itemId }) => {
+  const handleClickDelete = () => {
+    createModal({ content: "선택한 카드를 삭제할까요?", itemId });
+  };
+
   const $itemButtonContainer = createElement("div", {
     className: "column__item__buttonContainer",
   });
 
   const $deleteButton = createButton({
-    handleClick: () => alert("Delete button clicked"),
+    className: "delete__button",
+    handleClick: handleClickDelete,
   });
 
   const $deleteImg = createDeleteSvg({
@@ -26,6 +64,7 @@ const createItemButtonContainer = () => {
   $deleteButton.appendChild($deleteImg);
 
   const $editButton = createButton({
+    className: "edit__button",
     handleClick: () => alert("Edit button clicked"),
   });
   const $editImg = createImg({

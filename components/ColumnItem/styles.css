@@ -54,3 +54,47 @@
     height: 3.2rem;
   }
 }
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 3.2rem 2.4rem 2.4rem 2.4rem;
+  border-radius: 0.8rem;
+  z-index: 10;
+}
+
+.modal__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.2rem;
+}
+
+.modal__content {
+  color: var(--color-text-default);
+}
+
+.modal__buttonContainer {
+  display: flex;
+  gap: 0.8rem;
+  height: 3.2rem;
+
+  button {
+    padding: 0.75rem 0;
+    width: 17.2rem;
+    border-radius: 0.8rem;
+  }
+
+  .cancel__button {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-default);
+  }
+
+  .delete__button {
+    background-color: var(--color-surface-danger);
+    color: var(--color-text-white-default);
+  }
+}

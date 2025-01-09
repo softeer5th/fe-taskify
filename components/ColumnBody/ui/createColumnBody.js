@@ -4,8 +4,8 @@ import ColumnItem from "../../ColumnItem/ColumnItem.js";
 const createColumnBody = ({ items }) => {
   const $columnBody = createElement("div", { className: "column__body" });
 
-  items.forEach(({ title, content, author }) => {
-    const $columnItem = ColumnItem({ title, content, author });
+  items.forEach(({ id, title, content, author }) => {
+    const $columnItem = ColumnItem({ id, title, content, author });
     $columnBody.appendChild($columnItem);
   });
 
