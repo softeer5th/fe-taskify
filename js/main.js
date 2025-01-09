@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   columns.forEach(column => {
     const columnKey = column.getAttribute('data-column-key');
     const tasks = getColumnTasks(columnKey);
+    if (!tasks) return;
     tasks.forEach(task => {
       makeCard(task, column);
     });
@@ -16,9 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('click', (e) => {
+  console.log(e.target);
   const parentColumn = e.target.closest('.column');
-
-  if (e.target.classList.contains('add-btn')) { // + 버튼 클릭시
+  console.log(parentColumn);
+  if (e.target.closest('.add-btn')) { // + 버튼 클릭시
     popupCardModal(parentColumn);
   } else if (e.target.classList.contains('task-add-add-btn')) { // 등록 버튼 클릭시
     const title = parentColumn.querySelector("input").value;
