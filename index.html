@@ -82,32 +82,6 @@
                     </li>
                 </ul>
             </section>
-            <section class="activity-history">
-                <div class="activity-history__header">
-                    <h2 class="activity-history__title">사용자 활동 기록</h2>
-                    <button class="activity-history__close-container">
-                        <img src="./assets/icon/closed.png" />
-                        <h3 class="activity-history__close-label">닫기</h3>
-                    </button>
-                </div>
-                <ul class="activity-history__body">
-                    <li class="activity-history__item">
-                        <img
-                            class="activity-history__item__profile"
-                            src="./assets/icon/plus.png"
-                        />
-                        <div>
-                            <h3 class="activity-history__item__nickname">
-                                @멋진삼
-                            </h3>
-                            <h3 class="activity-history__item__content">
-                                내용내용내용내용내용내용내용내용내용내용
-                            </h3>
-                            <h3 class="activity-history__item__time">3분 전</h3>
-                        </div>
-                    </li>
-                </ul>
-            </section>
         </main>
     </body>
     <template id="todo-item-template">
@@ -130,5 +104,33 @@
                 </button>
             </div>
         </li>
+    </template>
+    <template id="acativity-history-template">
+        <section class="activity-history">
+            <div class="activity-history__header">
+                <h2 class="activity-history__title">사용자 활동 기록</h2>
+                <button class="activity-history__close-container">
+                    <img src="./assets/icon/closed.png" />
+                    <h3 class="activity-history__close-label">닫기</h3>
+                </button>
+            </div>
+            <ul class="activity-history__body">
+                <li class="activity-history__item">
+                    <img
+                        class="activity-history__item__profile"
+                        src="./assets/icon/plus.png"
+                    />
+                    <div>
+                        <h3 class="activity-history__item__nickname">
+                            @멋진삼
+                        </h3>
+                        <h3 class="activity-history__item__content">
+                            내용내용내용내용내용내용내용내용내용내용
+                        </h3>
+                        <h3 class="activity-history__item__time">3분 전</h3>
+                    </div>
+                </li>
+            </ul>
+        </section>
     </template>
 </html>
