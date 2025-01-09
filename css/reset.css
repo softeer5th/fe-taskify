@@ -129,6 +129,10 @@ table {
 *::after {
   box-sizing: border-box;
 }
+input:disabled,
+textarea:disabled {
+  background-color: transparent;
+}
 button {
   background: transparent;
   border: none;

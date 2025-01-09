@@ -1,56 +1,61 @@
-import { cardComponent } from "./component/card.js";
-const todoAddButton = document.querySelector(".todo-add-icon");
-const todoTitle = document.querySelector(".todo-title");
-const todoContent = document.querySelector(".todo-content");
-const todoSubmitBtn = document.querySelector(".todo-add-btn");
-const todoFormCard = document.querySelector(".new-card");
+import { cardContainer } from "../components/cardContainer.js";
+import { cardForm } from "../components/cardForm.js";
+import { cardNavbar } from "../components/cardNavbar.js";
+import { eachColumn } from "../components/eachColumn.js";
+import { header } from "../components/header.js";
+import { loadData } from "../store/workList.js";
+import { card } from "../components/card.js";
 
-const todoFormInit = (formCard) => {
-  // form 초기화
-  formCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록.
-  formCard.querySelector(".title").value = "";
-  formCard.querySelector(".content").value = "";
+const SECTION_TYPE = ["todo", "doing", "done"];
+const workList = loadData();
+
+const eachColumnRender = () => {
+  SECTION_TYPE.forEach((type) => {
+    const column = eachColumn(type);
+    const navbar = cardNavbar(type);
+    const container = cardContainer();
+    const form = cardForm(type);
+
+    container.appendChild(form);
+
+    column.appendChild(navbar);
+    column.appendChild(container);
+
+    document.querySelector(".column-area").append(column);
+  });
 };
 
-const addCard = (formCard) => {
-  const titleText = formCard.querySelector(".title").value;
-  const contentText = formCard.querySelector(".content").value;
+const initRender = () => {
+  const root = document.querySelector("#root");
+  // root 바로 뒤에 헤더 추가
+  root.append(header());
 
-  const parser = new DOMParser();
+  const columnArea = document.createElement("main");
+  columnArea.classList.add("column-area");
+  root.appendChild(columnArea); // 전체 칼럼 영역.
 
-  const cardDocument = parser.parseFromString(
-    cardComponent(titleText, contentText),
-    "text/html"
-  );
-
-  const cardElement = cardDocument.body.firstChild;
-
-  // newform 카드 바로 뒤에 추가
-  formCard.after(cardElement);
-
-  todoFormInit(formCard); // 입력했던 값을 다시 빈 문자열로 초기화.
+  eachColumnRender();
+  loadPreviousCard();
 };
 
-const showCardForm = (formCard) => {
-  formCard.classList.toggle("display-none");
+const loadPreviousCard = () => {
+  const fragment = new DocumentFragment();
+  SECTION_TYPE.forEach((type) => {
+    if (workList[type].length > 0) {
+      workList[type].reverse(); //  최신순으로 default를 두어야할 것임. > 나중에 정렬 기능할 때 적용!
+
+      workList[type].forEach(({ title, content, id }) => {
+        const cardDoc = card(id, title, content);
+        cardDoc.querySelector(".title").disabled = true;
+        cardDoc.querySelector(".content").disabled = true;
+
+        fragment.appendChild(cardDoc);
+      });
+
+      const cardForm = document.querySelector(`.${type}-form-card`);
+      cardForm.after(fragment);
+    }
+  });
 };
 
-const columnArea = document.querySelector(".column-area");
-
-columnArea.addEventListener("click", (e) => {
-  const submitBtn = e.target.closest(".add-btn");
-  if (!submitBtn) return;
-
-  const sectionType = submitBtn.dataset.section;
-  const formCard = document.querySelector(`.${sectionType}-form-card`);
-  addCard(formCard);
-});
-
-columnArea.addEventListener("click", (e) => {
-  const submitBtn = e.target.closest(".add-icon");
-  if (!submitBtn) return;
-
-  const sectionType = submitBtn.dataset.section;
-  const formCard = document.querySelector(`.${sectionType}-form-card`);
-  showCardForm(formCard);
-});
+initRender();

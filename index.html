@@ -11,146 +11,17 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 
-    <link rel="stylesheet" href="./styles/reset.css" />
-    <link rel="stylesheet" href="./styles/palette.css" />
-    <link rel="stylesheet" href="./styles/font.css" />
-    <link rel="stylesheet" href="./styles/style.css" />
-    <link rel="stylesheet" href="./styles/card.css" />
-    <link rel="stylesheet" href="./styles/globalStyles.css" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/palette.css" />
+    <link rel="stylesheet" href="./css/font.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/card.css" />
+    <link rel="stylesheet" href="./css/globalStyles.css" />
   </head>
   <body>
-    <div class="total-wrapper">
-      <header>
-        <div class="service-title">
-          <div class="service-name text-strong">TASKIFY</div>
-          <div class="sort-method"></div>
-        </div>
-        <div class="service-history">
-          <img src="./assets/icons/history.svg" alt="" />
-        </div>
-      </header>
-      <main class="column-area">
-        <section class="todo-wrapper">
-          <!-- 카드를 추가하는 버튼 -->
-          <div class="add-container">
-            <div class="add-container-text">
-              <div class="container-title text-bold">해야할 일</div>
-              <div class="card-count text-weak">2</div>
-            </div>
-            <div class="add-container-icon">
-              <button class="add-icon todo-add-icon" data-section="todo">
-                <img src="./assets/icons/add.svg" alt="" />
-              </button>
-              <button class="delete-icon">
-                <img src="./assets/icons/delete.svg" alt="" />
-              </button>
-            </div>
-          </div>
-
-          <div class="card-container todo-card-container">
-            <!-- 카드 form 부분 -->
-            <li class="todo-form-card card display-none">
-              <div class="card-contents-icons-box">
-                <div class="card-texts">
-                  <input
-                    class="title text-strong todo-title"
-                    placeholder="제목을 입력하세요"
-                    aria-placeholder="제목" />
-                  <input
-                    class="content text-default todo-content"
-                    placeholder="내용을 입력하세요"
-                    aria-placeholder="내용" />
-                </div>
-              </div>
-              <div class="card-btn-box">
-                <button class="cancel-btn">취소</button>
-                <button class="add-btn todo-add-btn" data-section="todo">
-                  등록
-                </button>
-              </div>
-            </li>
-          </div>
-        </section>
-        <section class="doing-wrapper">
-          <!-- 카드 추가하는 부분 -->
-          <div class="add-container">
-            <div class="add-container-text">
-              <div class="container-title text-bold">하고 있는 일</div>
-              <div class="card-count text-weak">1</div>
-            </div>
-            <div class="add-container-icon">
-              <button class="add-icon" data-section="doing">
-                <img src="./assets/icons/add.svg" alt="" />
-              </button>
-              <button class="delete-icon">
-                <img src="./assets/icons/delete.svg" alt="" />
-              </button>
-            </div>
-          </div>
-          <!-- 카드 부분 -->
-
-          <div class="card-container">
-            <li class="doing-form-card card display-none">
-              <div class="card-contents-icons-box">
-                <div class="card-texts">
-                  <input
-                    class="title text-strong todo-title"
-                    placeholder="제목을 입력하세요"
-                    aria-placeholder="제목" />
-                  <input
-                    class="content text-default todo-content"
-                    placeholder="내용을 입력하세요"
-                    aria-placeholder="내용" />
-                </div>
-              </div>
-              <div class="card-btn-box">
-                <button class="cancel-btn">취소</button>
-                <button class="add-btn" data-section="doing">등록</button>
-              </div>
-            </li>
-          </div>
-        </section>
-        <section class="done-wrapper">
-          <!-- 카드 추가하는 부분 -->
-          <div class="add-container">
-            <div class="add-container-text">
-              <div class="container-title text-bold">완료한 일</div>
-              <div class="card-count text-weak">0</div>
-            </div>
-            <div class="add-container-icon">
-              <button class="add-icon" data-section="done">
-                <img src="./assets/icons/add.svg" alt="" />
-              </button>
-              <button class="delete-icon">
-                <img src="./assets/icons/delete.svg" alt="" />
-              </button>
-            </div>
-          </div>
-          <!-- 카드 부분 -->
-
-          <div class="card-container">
-            <li class="done-form-card card display-none">
-              <div class="card-contents-icons-box">
-                <div class="card-texts">
-                  <input
-                    class="title text-strong todo-title"
-                    placeholder="제목을 입력하세요"
-                    aria-placeholder="제목" />
-                  <input
-                    class="content text-default todo-content"
-                    placeholder="내용을 입력하세요"
-                    aria-placeholder="내용" />
-                </div>
-              </div>
-              <div class="card-btn-box">
-                <button class="cancel-btn">취소</button>
-                <button class="add-btn" data-section="done">등록</button>
-              </div>
-            </li>
-          </div>
-        </section>
-      </main>
-    </div>
+    <div id="root" class="total-wrapper"></div>
     <script type="module" src="./js/index.js"></script>
+    <script type="module" src="./js/makingCard.js"></script>
+    <script type="module" src="./js/editCard.js"></script>
   </body>
 </html>
