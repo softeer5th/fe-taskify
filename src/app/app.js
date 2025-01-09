@@ -1,5 +1,6 @@
 import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
+import { Card } from "../components/Card/index.js";
 import { Chip } from "../components/Chip/index.js";
 import { parser } from "../lib/jsx-runtime/index.js";
 
@@ -29,6 +30,9 @@ const App = () => {
 
   const chip = Chip({ label: "Chip" });
 
+  const card = Card({ title: "TITLE", body: "BODY", caption: "author by web" });
+  const addCard = Card({ title: "TITLE", body: "BODY", type: "add-edit" });
+
   return (
     parser`
         <div>
@@ -39,6 +43,8 @@ const App = () => {
             ${badge}
             ${badge2}
             ${chip}
+            ${card}
+            ${addCard}
         </div>`
   );
 };

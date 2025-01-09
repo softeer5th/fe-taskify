@@ -2,6 +2,7 @@
 @import url("../components//Badge/badge.module.css");
 @import url("../components/Chip/chip.module.css");
 @import url("../components/Text/text.module.css");
+@import url("../components/Card/card.module.css");
 @import url("./reset.css");
 
 :root {
