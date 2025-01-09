@@ -1,5 +1,6 @@
-export const cardComponent = (title, content) => {
-  return /*html*/ `
+import { parseToDoc } from "../utils/parseToDoc.js";
+export const card = (title = "", content = "") => {
+  const cardHTML = /*html*/ `
       <li class="card">
           <div class="card-contents-icons-box">
           <div class="card-texts">
@@ -22,4 +23,5 @@ export const cardComponent = (title, content) => {
          
       </li>
       `;
+  return parseToDoc(cardHTML);
 };
