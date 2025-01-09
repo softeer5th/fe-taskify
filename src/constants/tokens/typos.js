@@ -1,4 +1,4 @@
-export const typo = {
+export const typos = {
   display: {
     bold: {
       24: "display-bold24",
