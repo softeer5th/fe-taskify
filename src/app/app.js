@@ -1,9 +1,9 @@
+import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
 import { parser } from "../lib/jsx-runtime/index.js";
 
 // eslint-disable-next-line
 const App = () => {
-  const container = "hihi";
   const button = Button({
     label: "Button",
     // eslint-disable-next-line
@@ -23,18 +23,18 @@ const App = () => {
     type: "ghost",
   });
 
+  const badge = Badge({ text: "1" });
+  const badge2 = Badge({ text: "10" });
+
   return (
     parser`
-        <div class=${container}>
-            <div>
-                <h1>HI!!!</h1>
-                <h2>My name is Hamm</h2>
-            </div>
-            <div>hello</div>
+        <div>
             ${button}
             ${iconButton}
             ${icon}
             ${ghost}
+            ${badge}
+            ${badge2}
         </div>`
   );
 };

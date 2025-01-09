@@ -1,0 +1,16 @@
+.badge-container {
+    min-width: 24px;
+    height: 24px;
+    padding: var(--gap-50);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border-default);
+    border-radius: var(--gap-100);
+
+    color: var(--text-weak);
+
+    text-align: center;
+}
