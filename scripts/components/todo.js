@@ -68,6 +68,32 @@ const disableAddTodoForm = () => {
     setState(TODO_FORM_DOM_ID_KEY, null)
 }
 
+const initTodoItem = (todoElement, todoItem) => {
+    const {
+        identifier,
+        values: { title, content, author },
+    } = todoItem
+
+    todoElement.querySelector(`.${classNames.todoItemTitle}`).textContent =
+        title
+    todoElement.querySelector(`.${classNames.todoItemContent}`).textContent =
+        content
+    todoElement.querySelector(
+        `.${classNames.todoItemAuthor}`
+    ).textContent = `author by ${author}`
+
+    todoElement
+        .querySelector(`.${classNames.deleteButton}`)
+        .addEventListener('click', () => {
+            removeTodoItem(identifier)
+        })
+    todoElement
+        .querySelector(`.${classNames.editButton}`)
+        .addEventListener('click', () => {
+            editTodoItem(identifier)
+        })
+}
+
 const addTodoItem = (title, content, author) => {
     // TODO: 하드코딩된 부모 클래스명 변경
     const parentDomElement = document.querySelector('.todos__body')
@@ -83,23 +109,7 @@ const addTodoItem = (title, content, author) => {
     storeData(TODO_LIST_STORAGE_KEY, prevTodoList)
 
     const element = findDomElement(identifier)
-    element.querySelector(`.${classNames.todoItemTitle}`).textContent = title
-    element.querySelector(`.${classNames.todoItemContent}`).textContent =
-        content
-    element.querySelector(
-        `.${classNames.todoItemAuthor}`
-    ).textContent = `author by ${author}`
-
-    element
-        .querySelector(`.${classNames.deleteButton}`)
-        .addEventListener('click', () => {
-            removeTodoItem(identifier)
-        })
-    element
-        .querySelector(`.${classNames.editButton}`)
-        .addEventListener('click', () => {
-            editTodoItem(identifier)
-        })
+    initTodoItem(element, todoItem)
 }
 
 // const createCategory = (categoryName) => {}
@@ -152,16 +162,15 @@ const editTodoItem = (identifier) => {
                 templateNames.todoItem,
                 formElement
             )
+
+            const newTodoItem = TodoItem(
+                editedTodoElementId,
+                title,
+                content,
+                author
+            )
             const editedTodoElement = findDomElement(editedTodoElementId)
-            editedTodoElement.querySelector(
-                `.${classNames.todoItemTitle}`
-            ).textContent = title
-            editedTodoElement.querySelector(
-                `.${classNames.todoItemContent}`
-            ).textContent = content
-            editedTodoElement.querySelector(
-                `.${classNames.todoItemAuthor}`
-            ).textContent = `author by ${author}`
+            initTodoItem(editedTodoElement, newTodoItem)
 
             todoList[targetIdx] = TodoItem(
                 editedTodoElementId,
