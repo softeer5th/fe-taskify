@@ -16,7 +16,7 @@ const initTodo = () => {
     setState(TODO_FORM_DOM_ID_KEY, false)
     const storedTodoList = loadData(TODO_LIST_STORAGE_KEY)
     storeData(TODO_LIST_STORAGE_KEY, [])
-    storedTodoList?.forEach((todo) => {
+    storedTodoList?.reverse().forEach((todo) => {
         addTodoItem(todo.values.title, todo.values.content, todo.values.author)
     })
 }
