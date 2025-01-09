@@ -1,26 +1,35 @@
 // import { storeData, loadData } from './storageUtil.js'
 import { setState, getState } from './stateUtil.js'
 
-export const createDomElement = (
+export const createDomElementAsChild = (
     templateId,
     parentDomElement,
     appendRear = true
 ) => {
     if (!parentDomElement) throw new Error(`Parent is ${parentDomElement}`)
 
-    const templateElement = document.getElementById(templateId)
-    const component = document.importNode(templateElement.content, true)
-    const firstTag = component.firstElementChild
-    const identifier = `id-${generateId()}`
-    firstTag.id = identifier
-
+    const { identifier, component } = createDomElement(templateId)
     if (appendRear) {
         parentDomElement.appendChild(component)
     } else {
         parentDomElement.prepend(component)
     }
-
     return identifier
+}
+
+export const replaceDomElement = (templateId, originDomElement) => {
+    const { identifier, component } = createDomElement(templateId)
+    originDomElement.replaceWith(component)
+    return identifier
+}
+
+export const createDomElement = (templateId) => {
+    const templateElement = document.getElementById(templateId)
+    const component = document.importNode(templateElement.content, true)
+    const firstTag = component.firstElementChild
+    const identifier = `id-${generateId()}`
+    firstTag.id = identifier
+    return { identifier: identifier, component: component }
 }
 
 export const findDomElement = (id) => {

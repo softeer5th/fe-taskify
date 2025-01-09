@@ -10,6 +10,13 @@ export const classNames = {
     todoAddFormCancelBtn: 'todos__add-form__cancel-btn',
     todoAddFormSubmitBtn: 'todos__add-form__submit-btn',
 
+    todoEditForm: 'todos__add-form',
+    todoEditFormInputTitle: 'todos__add-form__input-title',
+    todoEditFormInputContent: 'todos__add-form__input-content',
+    todoEditFormButtonContainer: 'todos__add-form__button-container',
+    todoEditFormCancelBtn: 'todos__add-form__cancel-btn',
+    todoEditFormSubmitBtn: 'todos__add-form__submit-btn',
+
     button: 'btn',
     addButton: 'add-btn',
     deleteButton: 'delete-btn',
@@ -19,5 +26,6 @@ export const classNames = {
 export const templateNames = {
     todoItem: 'todo-item-template',
     todoCategory: 'todo-category-template',
-    todoItemAddForm: 'todo-item-add-form-template',
+    todoItemAddForm: 'todo-item-form-template',
+    todoItemEditForm: 'todo-item-form-template',
 }
