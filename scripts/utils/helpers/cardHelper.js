@@ -26,12 +26,29 @@ const addCardButtons = (cardElement, mode, isEditing, isDisabled) => {
   }
 
   const buttonsArea = cardElement.querySelector('#buttons-area');
-  buttonsArea.appendChild(Button('cancle'));
+  buttonsArea.appendChild(
+    Button({
+      type: 'cancle',
+      onClick: () => console.log('cancle button clicked'),
+    })
+  );
 
   if (isEditing) {
-    buttonsArea.appendChild(Button('edit', isDisabled));
+    buttonsArea.appendChild(
+      Button({
+        type: 'edit',
+        isDisabled,
+        onClick: () => console.log('edit button clicked'),
+      })
+    );
   } else {
-    buttonsArea.appendChild(Button('add', isDisabled));
+    buttonsArea.appendChild(
+      Button({
+        type: 'add',
+        isDisabled,
+        onClick: () => console.log('add button clicked'),
+      })
+    );
   }
 };
 

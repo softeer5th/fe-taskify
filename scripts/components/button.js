@@ -1,10 +1,12 @@
 /**
  * 버튼 컴포넌트
- * @param {'add' | 'cancle' | 'delete' | 'edit'} type - 버튼 타입
- * @param {boolean} isDisabled - 버튼 활성화 여부
- * @returns DocumentFragment
+ * @param {Object} options - 옵션 객체
+ * @param {'add' | 'cancle' | 'delete' | 'edit'} options.type - 버튼 타입
+ * @param {boolean} [options.isDisabled=false] - 버튼 활성화 여부 (기본값: false)
+ * @param {function} [options.onClick] - 클릭 이벤트 핸들러
+ * @returns {DocumentFragment} - 버튼 요소를 포함하는 DocumentFragment
  */
-const Button = (type, isDisabled) => {
+const Button = ({ type, isDisabled = false, onClick }) => {
   /**
    * @type {DocumentFragment}
    */
@@ -35,8 +37,10 @@ const Button = (type, isDisabled) => {
       console.warn(`Unknown button type: ${type}`);
   }
 
-  if (isDisabled) {
-    buttonElement.disabled = true;
+  buttonElement.disabled = isDisabled;
+
+  if (onClick) {
+    buttonElement.addEventListener('click', onClick);
   }
 
   return button;
