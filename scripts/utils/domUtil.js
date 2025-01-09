@@ -1,8 +1,10 @@
 import { storeData, loadData } from './storageUtil.js'
 
-const elements = []
-
-export const createDomElement = (templateId, parentDomElement) => {
+export const createDomElement = (
+    templateId,
+    parentDomElement,
+    appendRear = true
+) => {
     if (!parentDomElement) throw new Error(`Parent is ${parentDomElement}`)
 
     const templateElement = document.getElementById(templateId)
@@ -11,9 +13,12 @@ export const createDomElement = (templateId, parentDomElement) => {
     const identifier = `id-${generateId()}`
     firstTag.id = identifier
 
-    parentDomElement.appendChild(component)
+    if (appendRear) {
+        parentDomElement.appendChild(component)
+    } else {
+        parentDomElement.insertBefore(component, parentDomElement.firstChild)
+    }
 
-    elements.push({ identifier: identifier, element: component })
     return identifier
 }
 
@@ -21,7 +26,10 @@ export const findDomElement = (id) => {
     return document.querySelector(`#${id}`)
 }
 
-export const removeDomElement = (id) => {}
+export const removeDomElement = (id) => {
+    const element = findDomElement(id)
+    element.remove()
+}
 
 const generateId = () => {
     const prevId = loadData('elementId') ?? 0

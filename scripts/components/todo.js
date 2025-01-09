@@ -1,6 +1,10 @@
 import { setState, getState } from '../utils/stateUtil.js'
 import { storeData, loadData } from '../utils/storageUtil.js'
-import { createDomElement, findDomElement } from '../utils/domUtil.js'
+import {
+    createDomElement,
+    findDomElement,
+    removeDomElement,
+} from '../utils/domUtil.js'
 import { classNames, templateNames } from '../strings.js'
 
 const TODO_LIST_STORAGE_KEY = 'todoList'
@@ -19,11 +23,12 @@ export const addTodoItem = (title, content, author) => {
     const parentDomElement = document.querySelector('.todos__body')
     const identifier = createDomElement(
         templateNames.todoItem,
-        parentDomElement
+        parentDomElement,
+        false
     )
 
     const prevTodoList = loadData(TODO_LIST_STORAGE_KEY)
-    prevTodoList.push({
+    prevTodoList.unshift({
         identifier: identifier,
         values: { title, content, author },
     })
@@ -55,8 +60,7 @@ const removeTodoItem = (identifier) => {
         (todo) => todo.identifier === identifier
     )
     prevTodoList.splice(targetIdx, 1)
-    const element = findDomElement(identifier)
-    element.remove()
+    removeDomElement(identifier)
     storeData(TODO_LIST_STORAGE_KEY, prevTodoList)
 }
 

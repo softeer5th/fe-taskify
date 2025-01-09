@@ -6,6 +6,6 @@ document
     .querySelector('.todos__header')
     .querySelector('.add-btn')
     .addEventListener('click', () => {
-        addTodoItem('title', 'content', 'author', true)
+        addTodoItem('title', 'content', 'author')
         setState('isCreatingTodo', !getState('isCreatingTodo'))
     })
