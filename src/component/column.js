@@ -1,6 +1,6 @@
-import Card from "./card.js";
+import task from "./task.js";
 
-export default function Column({ id, title, tasks }, addCard = false) {
+export default function Column({ id, title, tasks }, addtask = false) {
   const column = document.createElement("div");
   column.className = "column";
   column.dataset.columnId = id;
@@ -42,13 +42,13 @@ export default function Column({ id, title, tasks }, addCard = false) {
   const body = document.createElement("div");
   body.className = "column__body";
 
-  if (addCard) {
-    const editableCard = Card({}, true);
-    body.appendChild(editableCard);
+  if (addtask) {
+    const editabletask = task({}, true);
+    body.appendChild(editabletask);
   }
 
   tasks.forEach((task) => {
-    body.appendChild(Card(task));
+    body.appendChild(task(task));
   });
 
   column.appendChild(header);

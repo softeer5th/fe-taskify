@@ -189,8 +189,8 @@ textarea {
     }
 }
 
-/* Card Style */
-.card {
+/* task Style */
+.task {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -199,20 +199,20 @@ textarea {
     background-color: #FEFEFE;
     box-shadow: 0px 1px 4px 0px #6E80913D;
 
-    .card__content {
+    .task__content {
         display: flex;
         flex-direction: column;
         gap: 5px;
         width: 100%;
 
-        .card__content--title {
+        .task__content--title {
             font-family: 'Pretendard', sans-serif;
             font-size: .875rem;
             font-weight: 700;
             color: #14142B;
         }
 
-        .card__content--description {
+        .task__content--description {
             display: block;
             font-family: 'Pretendard', sans-serif;
             font-size: 0.75rem;
@@ -221,7 +221,7 @@ textarea {
             white-space: pre-line;
         }
 
-        .card__content--device {
+        .task__content--device {
             display: block;
             font-family: 'Pretendard', sans-serif;
             font-size: 0.75rem;
@@ -229,7 +229,7 @@ textarea {
             color: #A0A3BD;
         }
 
-        .card__content--editor {
+        .task__content--editor {
             width: 100%;
             display: flex;
             flex-direction: row;
@@ -237,7 +237,7 @@ textarea {
             align-items: center;
             justify-content: center;
 
-            .card__content--editor--save {
+            .task__content--editor--save {
                 width: 50%;
                 height: 25px;
                 border-radius: 8px;
@@ -251,7 +251,7 @@ textarea {
                 justify-content: center;
             }
 
-            .card__content--editor--cancel {
+            .task__content--editor--cancel {
                 width: 50%;
                 height: 25px;
                 border-radius: 8px;
@@ -267,20 +267,20 @@ textarea {
         }
     }
 
-    .card__button {
+    .task__button {
         display: flex;
         flex-direction: column;
         cursor: pointer;
         gap: 5px;
 
-        .card__button--edit {
+        .task__button--edit {
             width: 14px;
             cursor: pointer;
             font-size: 1.2rem;
             color: #A0A3BD;
         }
 
-        .card__button--delete {
+        .task__button--delete {
             cursor: pointer;
             font-size: 1.2rem;
             color: #A0A3BD;
