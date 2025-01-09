@@ -1,24 +1,26 @@
-import { setState, getState } from "../utils/stateUtil"
-import { storeData, loadData } from "../utils/storageUtil"
-import { createDomElement } from "../utils/domUtil"
+import { setState, getState } from '../utils/stateUtil.js'
+import { storeData, loadData } from '../utils/storageUtil.js'
+import { createDomElement } from '../utils/domUtil.js'
 
-setState("isCreatingTodo", false)
-
-let isCreatingTodo = false
+setState('isCreatingTodo', false)
 
 const initTodo = () => {}
 
-export const addTodoItem = (category, title, content, author) => {
-    const { identifier, element } = createDomElement("todo-item-template")
-    element.querySelector(".delete-btn").addEventListener("click", () => {
+export const addTodoItem = (title, content, author) => {
+    const parentDomElement = document.querySelector('.todos')
+    alert(parentDomElement)
+    const { identifier, element } = createDomElement(
+        'todo-item-template',
+        parentDomElement
+    )
+    element.querySelector('.delete-btn').addEventListener('click', () => {
         removeTodoItem(identifier)
     })
-    element.querySelector(".edit-btn").addEventListener("click", () => {
+    element.querySelector('.edit-btn').addEventListener('click', () => {
         editTodoItem(identifier)
     })
+    alert(`${identifier}, ${title}, ${content}, ${author}`)
 }
-
-const onAddTodoButtonClick = () => {}
 
 // const createCategory = (categoryName) => {}
 

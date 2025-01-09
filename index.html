@@ -1,100 +1,134 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <title>TASKIFY</title>
-    <link rel="stylesheet" type="text/css" href="./styles/reset.css">
-    <link rel="stylesheet" type="text/css" href="./styles/global.css">
-    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
-    <script type="module" src="./scripts/index.js" defer></script>
-</head>
-<body class="body">
-    <header class="header">
-        <h1 class="header__title">TASKIFY</h1>
-        <button class="btn activity-history__toggle-btn">
-            <img class="icon" src="./assets/icon/history.png">
-        </button>
-    </header>
-    <main class="main">
-        <section class="todos">
-            <div class="todos__header">
-                <div class="todos__header__left-container">
-                    <div class="todos__header__title">해야할 일</div>
-                    <div class="todos__header__todo-count">0</div>
+    <head>
+        <title>TASKIFY</title>
+        <link rel="stylesheet" type="text/css" href="./styles/reset.css" />
+        <link rel="stylesheet" type="text/css" href="./styles/global.css" />
+        <link rel="stylesheet" type="text/css" href="./styles/styles.css" />
+        <script type="module" src="./scripts/index.js" defer></script>
+    </head>
+    <body class="body">
+        <header class="header">
+            <h1 class="header__title">TASKIFY</h1>
+            <button class="btn activity-history__toggle-btn">
+                <img class="icon" src="./assets/icon/history.png" />
+            </button>
+        </header>
+        <main class="main">
+            <section class="todos">
+                <div class="todos__header">
+                    <div class="todos__header__left-container">
+                        <div class="todos__header__title">해야할 일</div>
+                        <div class="todos__header__todo-count">0</div>
+                    </div>
+                    <div class="todos__header__right-container">
+                        <button
+                            class="btn add-btn todos__header__add-btn"
+                            type="button"
+                        >
+                            <img class="icon" src="./assets/icon/plus.png" />
+                        </button>
+                        <button
+                            class="btn delete-btn todos__header__delete-btn"
+                            type="button"
+                        >
+                            <img class="icon" src="./assets/icon/closed.png" />
+                        </button>
+                    </div>
                 </div>
-                <div class="todos__header__right-container">
-                    <button class="btn add-btn todos__header__add-btn" type="button">
-                        <img class="icon" src="./assets/icon/plus.png">
-                    </button>
-                    <button class="btn delete-btn todos__header__delete-btn" type="button">
-                        <img class="icon" src="./assets/icon/closed.png">
-                    </button>
-                </div>
-            </div>
-            <ul class="todos__body">
-                <li class="todos__add-container">
-                    <input class="todos__add-container__input" type="text" placeholder="할 일을 입력해주세요">
-                    <button class="btn todos__add-container__add-btn" type="button">
-                        <img class="icon" src="./assets/icon/plus.png">
-                    </button>
-                </li>
-                <li class="todos__body__item">
-                    <div class="todos__body__item__left-container">
-                        <div>
-                            <div class="todos__body__item__title">GitHub 공부하기</div>
-                            <div class="todos__body__item__content">add, commit, push</div>
+                <ul class="todos__body">
+                    <li class="todos__add-container">
+                        <input
+                            class="todos__add-container__input"
+                            type="text"
+                            placeholder="할 일을 입력해주세요"
+                        />
+                        <button
+                            class="btn todos__add-container__add-btn"
+                            type="button"
+                        >
+                            <img class="icon" src="./assets/icon/plus.png" />
+                        </button>
+                    </li>
+                    <li class="todos__body__item">
+                        <div class="todos__body__item__left-container">
+                            <div>
+                                <div class="todos__body__item__title">
+                                    GitHub 공부하기
+                                </div>
+                                <div class="todos__body__item__content">
+                                    add, commit, push
+                                </div>
+                            </div>
+                            <div class="todos__body__item__author">
+                                author by web
+                            </div>
                         </div>
-                        <div class="todos__body__item__author">author by web</div>
+                        <div class="todos__body__item__right-container">
+                            <button class="btn delete-btn" type="button">
+                                <img
+                                    class="icon"
+                                    src="./assets/icon/closed.png"
+                                />
+                            </button>
+                            <button class="btn edit-btn" type="button">
+                                <img
+                                    class="icon"
+                                    src="./assets/icon/edit.png"
+                                />
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section class="activity-history">
+                <div class="activity-history__header">
+                    <h2 class="activity-history__title">사용자 활동 기록</h2>
+                    <button class="activity-history__close-container">
+                        <img src="./assets/icon/closed.png" />
+                        <h3 class="activity-history__close-label">닫기</h3>
+                    </button>
+                </div>
+                <ul class="activity-history__body">
+                    <li class="activity-history__item">
+                        <img
+                            class="activity-history__item__profile"
+                            src="./assets/icon/plus.png"
+                        />
+                        <div>
+                            <h3 class="activity-history__item__nickname">
+                                @멋진삼
+                            </h3>
+                            <h3 class="activity-history__item__content">
+                                내용내용내용내용내용내용내용내용내용내용
+                            </h3>
+                            <h3 class="activity-history__item__time">3분 전</h3>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </body>
+    <template id="todo-item-template">
+        <li class="todos__body__item">
+            <div class="todos__body__item__left-container">
+                <div>
+                    <div class="todos__body__item__title">GitHub 공부하기</div>
+                    <div class="todos__body__item__content">
+                        add, commit, push
                     </div>
-                    <div class="todos__body__item__right-container">
-                        <button class="btn delete-btn" type="button">
-                            <img class="icon" src="./assets/icon/closed.png">
-                        </button>
-                        <button class="btn edit-btn" type="button">
-                            <img class="icon" src="./assets/icon/edit.png">
-                        </button>
-                    </div>
-                </li>
-            </ul>
-        </section>
-        <section class="activity-history">
-            <div class="activity-history__header">
-                <h2 class="activity-history__title">사용자 활동 기록</h2>
-                <button class="activity-history__close-container">
-                    <img src="./assets/icon/closed.png">
-                    <h3 class="activity-history__close-label">닫기</h3>
+                </div>
+                <div class="todos__body__item__author">author by web</div>
+            </div>
+            <div class="todos__body__item__right-container">
+                <button class="btn delete-btn" type="button">
+                    <img class="icon" src="./assets/icon/closed.png" />
+                </button>
+                <button class="btn edit-btn" type="button">
+                    <img class="icon" src="./assets/icon/edit.png" />
                 </button>
             </div>
-            <ul class="activity-history__body">
-                <li class="activity-history__item">
-                    <img class="activity-history__item__profile" src="./assets/icon/plus.png">
-                    <div>
-                        <h3 class="activity-history__item__nickname">@멋진삼</h3>
-                        <h3 class="activity-history__item__content">내용내용내용내용내용내용내용내용내용내용</h3>
-                        <h3 class="activity-history__item__time">3분 전</h3>
-                    </div>
-                </li>
-            </ul>
-        </section>
-    </main>
-</body>
-<template class="todo-item-template">
-    <li class="todos__body__item">
-        <div class="todos__body__item__left-container">
-            <div>
-                <div class="todos__body__item__title">GitHub 공부하기</div>
-                <div class="todos__body__item__content">add, commit, push</div>
-            </div>
-            <div class="todos__body__item__author">author by web</div>
-        </div>
-        <div class="todos__body__item__right-container">
-            <button class="btn delete-btn" type="button">
-                <img class="icon" src="./assets/icon/closed.png">
-            </button>
-            <button class="btn edit-btn" type="button">
-                <img class="icon" src="./assets/icon/edit.png">
-            </button>
-        </div>
-    </li>
-</template>
+        </li>
+    </template>
 </html>
