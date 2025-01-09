@@ -56,7 +56,7 @@ export const parser = (strings, ...args) => {
     const texts = text.split(DIRTY_SEPERATOR_REGEX_G);
     return texts.map((textPart) => {
       const dirtyIndex = findDirtyIndex(textPart);
-      if (!dirtyIndex) return textPart || null;
+      if (dirtyIndex === undefined || dirtyIndex === null) return textPart || null;
 
       return args[Number(dirtyIndex)];
     });
