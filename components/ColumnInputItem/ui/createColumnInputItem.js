@@ -1,6 +1,6 @@
 import { createElement } from "../../../dom.js";
 import createAddButtonContainer from "./createAddButtonContainer.js";
-import createInputTextContainer from "./createInputTextContainer.js";
+import createInputContainer from "./createInputContainer.js";
 
 const createColumnInputItem = ({
   handleInputTitle,
@@ -9,7 +9,7 @@ const createColumnInputItem = ({
   handleSubmit,
 }) => {
   const $columnInputItem = createElement("div", { className: "column__item" });
-  const $inputTextContainer = createInputTextContainer({
+  const $inputContainer = createInputContainer({
     handleInputTitle,
     handleInputContent,
   });
@@ -18,7 +18,7 @@ const createColumnInputItem = ({
     handleSubmit,
   });
 
-  $columnInputItem.append($inputTextContainer, $addButtonContainer);
+  $columnInputItem.append($inputContainer, $addButtonContainer);
 
   return $columnInputItem;
 };

@@ -1,7 +1,7 @@
 import { createElement } from "../../../dom.js";
 import createInputBox from "./createInputBox.js";
 
-const createInputTextContainer = ({ handleInputTitle, handleInputContent }) => {
+const createInputContainer = ({ handleInputTitle, handleInputContent }) => {
   const $inputTextContainer = createElement("div", {
     className: "column__item__textContainer",
   });
@@ -12,4 +12,4 @@ const createInputTextContainer = ({ handleInputTitle, handleInputContent }) => {
   return $inputTextContainer;
 };
 
-export default createInputTextContainer;
+export default createInputContainer;

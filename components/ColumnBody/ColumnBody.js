@@ -3,8 +3,8 @@ import createColumnBody from "./ui/createColumnBody.js";
 
 loadStyleSheet("/components/ColumnBody/styles.css");
 
-const ColumnBody = ({ items }) => {
-  return createColumnBody({ items });
+const ColumnBody = ({ sectionId, items }) => {
+  return createColumnBody({ sectionId, items });
 };
 
 export default ColumnBody;

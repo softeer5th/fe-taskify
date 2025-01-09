@@ -5,14 +5,33 @@ import {
   createElement,
   createImg,
 } from "../../../dom.js";
+import createEditModal from "../../Modal/createEditModal.js";
+import createModal from "../../Modal/createModal.js";
 
-const createItemButtonContainer = () => {
+const createItemButtonContainer = ({ sectionId, itemId }) => {
+  const handleClickDelete = () => {
+    createModal({ content: "선택한 카드를 삭제할까요?", sectionId, itemId });
+  };
+
+  const handleClickEdit = () => {
+    const title = $itemButtonContainer.parentElement.querySelector(
+      ".column__item__title"
+    ).textContent;
+
+    const content = $itemButtonContainer.parentElement.querySelector(
+      ".column__item__content"
+    ).textContent;
+
+    createEditModal({ title, content, sectionId, itemId });
+  };
+
   const $itemButtonContainer = createElement("div", {
     className: "column__item__buttonContainer",
   });
 
   const $deleteButton = createButton({
-    handleClick: () => alert("Delete button clicked"),
+    className: "delete__button",
+    handleClick: handleClickDelete,
   });
 
   const $deleteImg = createDeleteSvg({
@@ -26,7 +45,8 @@ const createItemButtonContainer = () => {
   $deleteButton.appendChild($deleteImg);
 
   const $editButton = createButton({
-    handleClick: () => alert("Edit button clicked"),
+    className: "edit__button",
+    handleClick: handleClickEdit,
   });
   const $editImg = createImg({
     src: IMAGE.edit,

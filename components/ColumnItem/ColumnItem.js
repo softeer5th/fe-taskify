@@ -1,23 +1,43 @@
 import { createElement } from "../../dom.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
 import createAuthor from "./ui/createAuthor.js";
-import createItemButtonContainer from "./ui/createItemButtonContainer.js";
-import createTextBox from "./ui/createTextBox.js";
+import createTextContainer from "./ui/createTextContainer.js";
 
 loadStyleSheet("/components/ColumnItem/styles.css");
 
-const ColumnItem = ({ title = "", content = "", author = "web" }) => {
-  const $columnItem = createElement("div", { className: "column__item" });
-
-  const $textContainer = createElement("div", {
-    className: "column__item__textContainer",
+const ColumnItem = ({
+  sectionId,
+  id,
+  title = "",
+  content = "",
+  author = "web",
+}) => {
+  const $columnItem = createElement("div", {
+    className: "column__item",
+    "data-id": id,
+    draggable: true,
   });
-  const $itemButtonContainer = createItemButtonContainer();
-  const $textBox = createTextBox({ title, content });
-  $textContainer.append($textBox, $itemButtonContainer);
+
+  const handleDragStart = (e) => {
+    e.target.classList.add("dragging");
+  };
+
+  const handleDragEnd = (e) => {
+    e.target.classList.remove("dragging");
+  };
+
+  const $textContainer = createTextContainer({
+    sectionId,
+    itemId: id,
+    title,
+    content,
+  });
 
   const $author = createAuthor({ author });
   $columnItem.append($textContainer, $author);
+
+  $columnItem.addEventListener("dragstart", handleDragStart);
+  $columnItem.addEventListener("dragend", handleDragEnd);
 
   return $columnItem;
 };

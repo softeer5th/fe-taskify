@@ -25,7 +25,11 @@ const ColumnHeader = ({ id, title, items, store }) => {
 
   const addColumnItemInput = ({ store }) => {
     const $columnBody = document.querySelector(`#${id} .column__body`);
-    const $columnItemInput = ColumnInputItem({ store, handleCancel });
+    const $columnItemInput = ColumnInputItem({
+      sectionId: id,
+      store,
+      handleCancel,
+    });
     $columnBody.prepend($columnItemInput);
     store.isTodoAdding = true;
   };
