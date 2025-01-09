@@ -38,7 +38,7 @@
 
 0. Super Simple Layout ✅
 1. Storage setting (add , delete, edit, redo ..,,etc ) ✅
-2. Task adding
+2. Card adding
 3. Card Sorting
 4. Card editing ( + delete)
 5. Card moving
