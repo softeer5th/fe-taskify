@@ -2,13 +2,13 @@
 
 /*typogrphy*/
 :root {
-    --Bold-L: 700 24px/auto ;
-    --Bold-M: 700 16px/auto ;
-    --Bold-R: 700 14px/auto ;
-    --Bold-S: 700 12px/auto ;
+    --Bold-L: 700 24px auto ;
+    --Bold-M: 700 16px auto ;
+    --Bold-R: 700 14px auto ;
+    --Bold-S: 700 12px auto ;
     --Medium-M: 500 16px/22px ;
-    --Medium-R: 500 16px/auto ;
-    --Medium-S: 500 16px/auto ;
+    --Medium-R: 500 16px auto ;
+    --Medium-S: 500 16px auto ;
 }
 
 /*typogrphy system*/
