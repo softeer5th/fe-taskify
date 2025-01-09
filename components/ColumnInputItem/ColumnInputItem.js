@@ -76,19 +76,25 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
       author: getDevice(),
     };
 
-    console.log(newCard);
-
     const todoList = loadLocalStorage();
 
-    const newTodoList = todoList.map((section) => {
-      if (section.id === sectionId) {
-        return {
-          ...section,
-          items: [...section.items, newCard],
-        };
-      }
-      return section;
-    });
+    const newTodoList = todoList.map((section) =>
+      section.id === sectionId
+        ? {
+            ...section,
+            items: [...section.items, newCard],
+          }
+        : section
+    );
+
+    const itemLength = newTodoList.find((section) => section.id === sectionId)
+      .items.length;
+
+    const $columnCount = $columnItem
+      .closest(".column__container")
+      .querySelector(".column__count");
+
+    $columnCount.textContent = itemLength;
 
     saveLocalStorage(newTodoList);
   };

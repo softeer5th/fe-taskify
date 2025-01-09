@@ -12,7 +12,7 @@ const init = () => {
 
 init();
 
-const todoList = loadLocalStorage() || initialTodoList;
+const todoList = loadLocalStorage();
 
 const $ROOT = document.getElementById("root");
 const app = new App($ROOT, todoList);
