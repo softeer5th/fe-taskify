@@ -1,63 +1,41 @@
-import {setStorage,getStorage,editStorage,removeStorage} from '../utils/localStorage.js';
+import { closeCardModal, makeCard, popupCardModal } from './addCard.js';
+import { getColumnTasks } from '../utils/storage/taskManager.js';
 
-const addTask = (parentColumn) => {
-  const newTask = document.createElement('li');
-  newTask.className = 'task'
-  newTask.innerHTML = `
-    <div class ="task-add-modal">
-      <div class ="title-cont-au" >
-       <input class = "task-title" placeholder="제목을 입력하세요">
-       <input placeholder="내용을 입력하세요">
-      </div>
-      <div class = "add-can-btn">
-       <div class = "task-add-can-btn"> 취소 </div>
-       <div class = "task-add-add-btn" style="opacity: 30%"> 등록 </div>
-      </div>
-    </div>
-  `;
-  parentColumn.appendChild(newTask);
-}
+import { getColumn, setDefaultColumn } from './setColumn.js';
 
-//delete Task 구현해야함
+document.addEventListener('DOMContentLoaded', () => {
+  setDefaultColumn();
 
-const deleteTask = (parentColumn) => {
-  const newTask = document.createElement('li');
-  newTask.className = 'task'
-  newTask.innerHTML = `
-    <div class ="task-add-modal">
-      <div class ="title-cont-au" >
-       <input class = "input-title" placeholder="제목을 입력하세요">
-       <input class = "input-body" placeholder="내용을 입력하세요">
-      </div>
-      <div class = "add-can-btn">
-       <div class = "task-add-can-btn" id = "task-add-can-btn"> 취소 </div>
-       <div class = "task-add-add-btn" id = "task-add-add-btn" style="opacity: 30%"> 등록 </div>
-      </div>
-    </div>
-  `;
-  parentColumn.appendChild(newTask);
-}
-
-//add 버튼
-document.querySelectorAll('.add-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const parentColumn = button.closest('.column');
-    addTask(parentColumn);
-    setStorage('task', 'hihi');
+  const columns = document.querySelectorAll('.column');
+  columns.forEach(column => {
+    const columnKey = column.getAttribute('data-column-key');
+    const tasks = getColumnTasks(columnKey);
+    if (!tasks) return;
+    tasks.forEach(task => {
+      makeCard(task, column);
+    });
   });
 });
 
-//x 버튼
-document.querySelectorAll('.edit-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const parentColumn = button.closest('.column');
-    deleteTask(parentColumn);
-    console.log(getStorage('task'));
-  });
+document.addEventListener('click', (e) => {
+  console.log(e.target);
+  const parentColumn = e.target.closest('.column');
+  console.log(parentColumn);
+  if (e.target.closest('.add-btn')) { // + 버튼 클릭시
+    popupCardModal(parentColumn);
+  } else if (e.target.classList.contains('task-add-add-btn')) { // 등록 버튼 클릭시
+    const title = parentColumn.querySelector("input").value;
+    const body = parentColumn.querySelector('input:last-child').value;
+    const task = { title: title, body: body, author: 'me', timestamp: Date.now() };
+    makeCard(task, parentColumn);
+  } else if (e.target.classList.contains('task-add-can-btn')) { // 취소 버튼 클릭시
+    closeCardModal(parentColumn);
+  }
 });
 
-document.getElementById('task-add-can-btn').addEventListener('click',deleteTask )
 
-document.getElementById('task-add-add-btn').addEventListener('click',setStorage() )
+
+
+
 
 
