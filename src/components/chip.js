@@ -1,18 +1,28 @@
-import Component from "../../../components/component.js";
+import Component from "./component.js";
 
-export class Logo extends Component {
+export class Chip extends Component {
 
-    children = {};
+    children = {
+
+    };
 
     events = [];
 
-    constructor() {
+    sortIconRef = "/assets/images/arrowBoth.svg"
+    constructor(sort) {
         super();
+        this.currentSort = sort;
     }
 
     template() {
+
         return `
-            <div>Logo</div>
+        <div class="chip">
+            <img src=${this.sortIconRef} alt="icon" class="chip-icon" />
+            <div class = "chip-text">
+                ${this.currentSort}
+            </div>
+        </div >
         `;
     }
 
@@ -26,7 +36,7 @@ export class Logo extends Component {
         }
 
         this.events.forEach(({ listenerName, callback }) => {
-            this.template.addEventListener(listenerName, callback);
+            parent.addEventListener(listenerName, callback);
         });
     }
 

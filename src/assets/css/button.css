@@ -1,0 +1,49 @@
+.confirm-button{
+    background-color: var(--color_surface_brand);
+    color: #ffffff;
+}
+
+.dismiss-button{
+    background-color: var(--color_surface_alt);
+    color: #000000;
+}
+
+.alert-button{
+    background-color: var(--color_surface_danger);
+    color: #ffffff;
+}
+
+.fab-button{
+    border-radius: var(--border_radius_50);
+    box-shadow: var(--shadow_floating);
+    background-color: var(--color_surface_brand);
+    color: #ffffff;
+}
+
+.button-background{
+    border-radius: var(--number_100);
+    padding: var(--number_100);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-background:hover {
+    opacity: 80%;
+    cursor: pointer;
+}
+
+.button-background[disabled] {
+    opacity: 30%;
+    cursor: not-allowed;
+}
+
+.button-icon{
+    width: 16px;
+    height: 16px;
+    padding: var(--number_50);
+}
+
+.button-text{
+    padding: 0px var(--number_50) 0px var(--number_50);
+}

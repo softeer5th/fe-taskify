@@ -1,19 +1,30 @@
-import Component from "../../../components/component.js";
+import Component from "./component.js";
 
-export class Logo extends Component {
+export class Badge extends Component {
 
-    children = {};
+    children = {
+
+    };
 
     events = [];
 
-    constructor() {
+    constructor(num) {
         super();
+        if(num > 99){
+            this.num = "99+";
+        }
+        else{
+            this.num = num;
+        }
     }
 
     template() {
+
         return `
-            <div>Logo</div>
-        `;
+        <div class="badge"> 
+            ${this.num}
+        </div>
+    `;
     }
 
     render(parent) {
@@ -26,7 +37,7 @@ export class Logo extends Component {
         }
 
         this.events.forEach(({ listenerName, callback }) => {
-            this.template.addEventListener(listenerName, callback);
+            parent.addEventListener(listenerName, callback);
         });
     }
 
