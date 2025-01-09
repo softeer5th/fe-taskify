@@ -43,6 +43,25 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
     }
   };
 
+  const createNewColumnItem = ({ id, title, content, author, sectionId }) => {
+    const $userAgent = createElement("span", {
+      className: "userAgent display-medium12",
+      text: `author by ${author}`,
+    });
+
+    const $newColumnItem = ColumnItem({
+      id,
+      title,
+      content,
+      author,
+      sectionId,
+    });
+
+    $newColumnItem.replaceChild($userAgent, $newColumnItem.lastChild);
+
+    return $newColumnItem;
+  };
+
   const handleSubmit = (e) => {
     const $button = e.target;
     const $columnItem = $button.closest(".column__item");
@@ -50,11 +69,7 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
     const title = $columnItem.querySelector("#title").value.trim();
     const content = $columnItem.querySelector("#content").value.trim();
 
-    const $userAgent = createElement("span", {
-      className: "userAgent display-medium12",
-      text: `author by ${getDevice()}`,
-    });
-
+    // 카드 생성
     const lastId =
       $columnItem.closest(".column__body").lastChild.dataset.id ?? 0;
 
@@ -65,16 +80,15 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
       author: getDevice(),
     };
 
-    const $newColumnItem = ColumnItem({
+    const $newColumnItem = createNewColumnItem({
       ...newCard,
       sectionId,
     });
 
-    $newColumnItem.replaceChild($userAgent, $newColumnItem.lastChild);
-
     const $columnBody = $columnItem.closest(".column__body");
     $columnBody.replaceChild($newColumnItem, $columnBody.firstChild);
 
+    // 카드 저장
     const todoList = loadLocalStorage();
 
     const newTodoList = todoList.map((section) =>
