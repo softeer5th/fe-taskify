@@ -11,12 +11,30 @@ const DIRTY_SEPERATOR_REGEX_G = /(dirtyindex:\d+:)/g;
  * @returns {VDOM} - 생성된 가상 DOM
  */
 export const parser = (strings, ...args) => {
-  const templateString = strings
-    .map((str, index) => {
-      const argsString = args.length > index ? `${DIRTY_PREFIX}${index}:` : "";
-      return `${str}${argsString}`;
-    })
-    .join("");
+  /**
+   *
+   */
+  const getRootElement = () => {
+    /**
+     * @returns {string} - 템플릿 문자열
+     */
+    const getTemplateString = () => {
+      if (typeof strings === "string" && strings.trim().startsWith("<svg")) {
+        return [strings, "image/svg+xml"];
+      }
+      return [strings
+        .map((str, index) => {
+          const argsString = args.length > index ? `${DIRTY_PREFIX}${index}:` : "";
+          return `${str}${argsString}`;
+        })
+        .join(""), "text/html"];
+    };
+
+    const domParser = new DOMParser();
+    const [template, type] = getTemplateString();
+    const doc = domParser.parseFromString(template, type);
+    return doc.body ? doc.body.firstChild : doc.firstChild;
+  };
 
   /**
    *
@@ -113,9 +131,6 @@ export const parser = (strings, ...args) => {
     return createElement(type, props, ...children);
   };
 
-  const domParser = new DOMParser();
-  const doc = domParser.parseFromString(templateString, "text/html");
-  const rootElement = doc.body.firstChild;
-
+  const rootElement = getRootElement();
   return parseElement(rootElement);
 };

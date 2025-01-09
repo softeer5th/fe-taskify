@@ -11,7 +11,17 @@ export const createDOM = (node) => {
     return document.createTextNode(node);
   }
 
-  const element = document.createElement(node.type);
+  /**
+   * @returns {HTMLElement | SVGElement} - 생성된 DOM 요소.
+   */
+  const createElement = () => {
+    if (node.type === "svg" || node.namespace === "http://www.w3.org/2000/svg") {
+      return document.createElementNS("http://www.w3.org/2000/svg", node.type);
+    }
+    return document.createElement(node.type);
+  };
+
+  const element = createElement();
   Object.entries(node.props).forEach(([key, value]) => {
     element.setAttribute(key, value.toString());
   });
