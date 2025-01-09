@@ -7,3 +7,8 @@ export const classNames = {
     deleteButton: 'delete-btn',
     editButton: 'edit-btn',
 }
+
+export const templateNames = {
+    todoItem: 'todo-item-template',
+    todoCategory: 'todo-category-template',
+}
