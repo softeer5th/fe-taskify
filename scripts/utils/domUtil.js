@@ -8,13 +8,13 @@ export const createDomElement = (templateId, parentDomElement) => {
     const templateElement = document.getElementById(templateId)
     const component = document.importNode(templateElement.content, true)
     const firstTag = component.firstElementChild
-    const identifier = generateId()
+    const identifier = `id-${generateId()}`
     firstTag.id = identifier
 
     parentDomElement.appendChild(component)
 
     elements.push({ identifier: identifier, element: component })
-    return { identifier: identifier, element: component }
+    return identifier
 }
 
 export const findDomElement = (id) => {
