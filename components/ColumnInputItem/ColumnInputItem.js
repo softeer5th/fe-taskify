@@ -69,8 +69,10 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
 
     store.isTodoAdding = false;
 
+    const lastId =
+      $columnItem.closest(".column__body").lastChild.dataset.id ?? 0;
     const newCard = {
-      id: Number($columnItem.closest(".column__body").lastChild.dataset.id) + 1,
+      id: Number(lastId) + 1,
       title,
       content,
       author: getDevice(),
