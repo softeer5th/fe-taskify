@@ -5,6 +5,7 @@
     align-items: center;
     padding:var(--Number-100); 
     border-radius: var(--Number-100);
+    flex-grow: 1;
 }
 
 .primary-button:hover {    
