@@ -1,3 +1,28 @@
+// DTO: Data Type Object
+// Not used, just for reference
+/*
+{
+  column: [{
+    id: Number,
+    title: string,
+  }];
+
+  task: [{
+    id: Number,
+    name: string,
+    description: string,
+    createdAt: Number,
+    device: string,
+    columnId: Number,
+  }];
+
+  user: {
+    name: string,
+    thumbnailUrl: string,
+  };
+}
+*/
+
 function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
@@ -140,7 +165,7 @@ export function Model() {
     notify();
   }
 
-  function getCurrentData() {
+  function getCurrentDataState() {
     return { data: getCurrentData(), state: deepCopy(model.state) };
   }
 
@@ -156,6 +181,6 @@ export function Model() {
     removeTask,
     editTask,
     moveTask,
-    getCurrentData,
+    getCurrentDataState,
   };
 }
