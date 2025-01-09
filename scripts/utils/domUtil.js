@@ -18,7 +18,7 @@ export const createDomElement = (templateId, parentDomElement) => {
 }
 
 export const findDomElement = (id) => {
-    return document.getElementById(id)
+    return document.querySelector(`#${id}`)
 }
 
 export const removeDomElement = (id) => {}
