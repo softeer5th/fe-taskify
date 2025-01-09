@@ -1,62 +1,33 @@
-function Data() {
-  let columns = [];
-  let tasks = [];
-  let user = null;
+// DTO: Data Type Object
+// Not used, just for reference
+/*
+{
+  column: [{
+    id: Number,
+    title: string,
+  }];
 
-  function addColumn(newColumn) {
-    columns.push(newColumn);
-  }
+  task: [{
+    id: Number,
+    name: string,
+    description: string,
+    createdAt: Number,
+    device: string,
+    columnId: Number,
+  }];
 
-  function removeColumn(columnId) {
-    columns = columns.filter((column) => column.id !== columnId);
-  }
-
-  function getColumns() {
-    return columns;
-  }
-
-  function addTask(newTask) {
-    tasks.push(newTask);
-  }
-
-  function removeTask(taskId) {
-    tasks = tasks.filter((task) => task.id !== taskId);
-  }
-
-  function updateTask(taskId, newTask) {
-    tasks = tasks.map((task) => (task.id === taskId ? newTask : task));
-  }
-
-  function getTasks() {
-    return tasks;
-  }
-
-  function setUser(newUser) {
-    user = newUser;
-  }
-
-  function getUser() {
-    return user;
-  }
-
-  return {
-    addColumn,
-    removeColumn,
-    getColumns,
-    addTask,
-    removeTask,
-    updateTask,
-    getTasks,
-    setUser,
-    getUser,
+  user: {
+    name: string,
+    thumbnailUrl: string,
   };
 }
+*/
 
 function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-function Model() {
+export function Model() {
   let model = {
     history: [
       {
@@ -76,7 +47,7 @@ function Model() {
       editingTaskId: -1,
       editingColumnId: -1,
       movingTaskId: -1,
-      order: "asc",
+      order: "latest",
       isHistoryOpen: false,
     },
   };
@@ -98,6 +69,7 @@ function Model() {
     const newHistory = {
       data: newData,
       action,
+      actionTime: Date.now(),
     };
     model.history.push(newHistory);
     model.currentPointer += 1;
@@ -105,6 +77,31 @@ function Model() {
   }
 
   // Public method
+
+  function setEditingTaskId(taskId) {
+    model.state.editingTaskId = taskId;
+    notify();
+  }
+
+  function setEditingColumnId(columnId) {
+    model.state.editingColumnId = columnId;
+    notify();
+  }
+
+  function setMovingTaskId(taskId) {
+    model.state.movingTaskId = taskId;
+    notify();
+  }
+
+  function toggleOrder() {
+    model.state.order = model.state.order === "latest" ? "oldest" : "latest";
+    notify();
+  }
+
+  function toggleHistory() {
+    model.state.isHistoryOpen = !model.state.isHistoryOpen;
+    notify();
+  }
 
   function addListener(listener) {
     listeners.push(listener);
@@ -140,6 +137,7 @@ function Model() {
       title: addedColumnName,
     });
     pushHistory(data, { type: "addColumn", addedColumnName: addedColumnName });
+    notify();
   }
 
   function removeColumn(columnId) {
@@ -148,11 +146,7 @@ function Model() {
     data.column = data.column.filter((column) => column.id !== columnId);
     data.task = data.task.filter((task) => task.columnId !== columnId);
     pushHistory(data, { type: "removeColumn", removedColumnName: removedColumn.title });
-  }
-
-  function getColumn(columnId) {
-    const data = getCurrentData();
-    return data.column.find((column) => column.id === columnId);
+    notify();
   }
 
   function addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
@@ -167,9 +161,36 @@ function Model() {
     };
     data.task.push(addedTask);
     pushHistory(data, { type: "addTask", addedTask: addedTask });
+    notify();
   }
 
-  function DEBUG_getCurrentData() {
+  function removeTask(taskId) {
+    const data = getCurrentData();
+    const removedTask = data.task.find((task) => task.id === taskId);
+    data.task = data.task.filter((task) => task.id !== taskId);
+    pushHistory(data, { type: "removeTask", removedTaskName: removedTask.name });
+    notify();
+  }
+
+  function editTask(taskId, updatedTaskName, updatedTaskDescription, updatedTaskDevice) {
+    const data = getCurrentData();
+    const updatedTask = data.task.find((task) => task.id === taskId);
+    updatedTask.name = updatedTaskName;
+    updatedTask.description = updatedTaskDescription;
+    updatedTask.device = updatedTaskDevice;
+    pushHistory(data, { type: "updateTask", updatedTask: updatedTask });
+    notify();
+  }
+
+  function moveTask(taskId, destinationColumnId) {
+    const data = getCurrentData();
+    const movedTask = data.task.find((task) => task.id === taskId);
+    movedTask.columnId = destinationColumnId;
+    pushHistory(data, { type: "moveTask", movedTask: movedTask, sourceColumnId: movedTask.columnId, destinationColumnId: destinationColumnId });
+    notify();
+  }
+
+  function getCurrentDataState() {
     return { data: getCurrentData(), state: deepCopy(model.state) };
   }
 
@@ -179,12 +200,17 @@ function Model() {
     removeListener,
     undo,
     redo,
+    setEditingTaskId,
+    setEditingColumnId,
+    setMovingTaskId,
+    toggleOrder,
+    toggleHistory,
     addColumn,
     removeColumn,
-    getColumn,
     addTask,
-
-    // For debugging
-    DEBUG_getCurrentData,
+    removeTask,
+    editTask,
+    moveTask,
+    getCurrentDataState,
   };
 }
