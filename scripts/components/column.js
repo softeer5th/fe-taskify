@@ -7,10 +7,11 @@ const Column = (columnTitle) => {
 
   column.querySelector('h2').textContent = columnTitle;
 
-  for (let i = 0; i < 3; i++) {
-    column.querySelector('ul').appendChild(Card());
-  }
-  
+  column.querySelector('ul').appendChild(Card('delete'));
+  column.querySelector('ul').appendChild(Card('add'));
+  column.querySelector('ul').appendChild(Card('edit'));
+
+
   column.querySelector('#add-card').addEventListener('click', (e) => {
     console.log('add card');
   });

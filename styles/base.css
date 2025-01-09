@@ -195,6 +195,19 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: opacity 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  padding: 0 4px;
 }
 
 ul, ol {
