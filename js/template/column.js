@@ -1,25 +1,26 @@
-import { createCardHTMLs } from "./card.js"
+import { loadCardHTMLs } from "./card.js"
 
 const columnTemplate = (column, index) => {
-    const { title, contentNum, cards } = column;
+    const { title, cards } = column;
+    const cardCount = cards.length;
     return `<div class="column-template">
                 <div class="column-header">
                     <div class="column-header-left">
                         <div class="column-header-title">${title}</div>
-                        <div class="column-header-content-num">${contentNum}</div>
+                        <div class="column-header-content-num">${cardCount}</div>
                     </div>
                     <div>
-                        <button class="column-header-plus-button">
+                        <button class="column-header-plus-button normal-button">
                             <img src="./assets/icons/normal/plus.svg"></img>
                         </button>
-                        <button class="column-header-content-delete-button">
+                        <button class="column-header-content-delete-button normal-button">
                             <img src="./assets/icons/normal/closed.svg"></img>
                         </button>
                     </div>
                 </div>
-                <ul id=${"list-" + index}>
-                    ${createCardHTMLs(index, cards)}
-                </ul>
+                <ol id=${"list-" + index} class="column-card-list">
+                    ${loadCardHTMLs(index, cards)}
+                </ol>
             </div>`
 }
 
