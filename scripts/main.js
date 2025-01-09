@@ -1,10 +1,11 @@
-import Header from "./components/header.js";
-import Content from "./components/content.js";
+import Column from './components/column.js';
 
 const App = () => {
-  const app = document.querySelector("#app");
-  app.appendChild(Header());
-  app.appendChild(Content())
+  const main = document.getElementById('main');
+
+  main.appendChild(Column());
+  main.appendChild(Column());
+  main.appendChild(Column());
 };
 
 App();
