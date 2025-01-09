@@ -1,19 +1,24 @@
 import Card from './card.js';
 
-const Column = () => {
-  const wrapper = document.createElement('div');
-
+const Column = (columnTitle) => {
   const column = document
     .getElementById('column-template')
     .content.cloneNode(true);
 
+  column.querySelector('h2').textContent = columnTitle;
+
   for (let i = 0; i < 3; i++) {
-    column.getElementById('column-section').appendChild(Card());
+    column.querySelector('ul').appendChild(Card());
   }
+  
+  column.querySelector('#add-card').addEventListener('click', (e) => {
+    console.log('add card');
+  });
+  column.querySelector('#close-column').addEventListener('click', (e) => {
+    console.log('close column');
+  });
 
-  wrapper.appendChild(column);
-
-  return wrapper;
+  return column;
 };
 
 export default Column;

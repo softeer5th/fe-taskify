@@ -200,3 +200,9 @@ h6,
 p {
   margin: 0;
 }
+
+ul, ol {
+  list-style: none; /* 기본 글머리 기호나 번호 제거 */
+  padding: 0;
+  margin: 0;
+}

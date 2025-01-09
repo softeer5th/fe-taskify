@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="./styles/base.css" />
     <link rel="stylesheet" href="./styles/components.css" />
     <template id="column-template">
-      <section
-        id="column-section"
+      <ul
         style="display: flex; flex-direction: column; gap: 10px"
       >
         <div
@@ -22,20 +21,20 @@
           <div
             style="width: 100%; display: flex; align-items: center; gap: 8px"
           >
-            <h2 id="title" class="display-bold16">해야할 일</h2>
+            <h2 class="display-bold16">해야할 일</h2>
             <p>3</p>
           </div>
-          <button>
+          <button id="add-card">
             <img src="./assets/icons/plus.svg" alt="add" />
           </button>
-          <button>
+          <button id="close-column">
             <img src="./assets/icons/closed.svg" alt="close" />
           </button>
         </div>
-      </section>
+      </ul>
     </template>
     <template id="card-template">
-      <div class="surface-default" style="width: 320px; height: 122px"></div>
+      <li class="surface-default" style="width: 320px; height: 122px"></li>
     </template>
   </head>
   <body
@@ -74,7 +73,6 @@
       </header>
       <div style="width: 100%; height: 100%; padding: 32px 0">
         <main
-          id="main"
           style="width: 100%; height: 100%; display: flex; gap: 24px"
         ></main>
       </div>
