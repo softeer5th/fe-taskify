@@ -49,6 +49,10 @@ export const makeCard = (task, parentColumn) => {
 
   parentColumn.appendChild(newTask);
   const columnKey = parentColumn.getAttribute('data-column-key');
-  if (!getTaskByTimestamp(columnKey, task.timestamp))
+  if (!getTaskByTimestamp(columnKey, task.timestamp)) {
     addTask(columnKey, task);
+    parentColumn.querySelector('.column-count').textContent++;
+  }
+
+
 }

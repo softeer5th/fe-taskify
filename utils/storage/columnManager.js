@@ -56,7 +56,6 @@ export const setDefaultColumn = () => {
   });
 }
 
-
 export const addColumn = (columnTitle) => {
   let columnCount = 1;
   while (localStorage.getItem(`column${columnCount}`)) {
