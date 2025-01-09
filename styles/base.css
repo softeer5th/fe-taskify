@@ -36,6 +36,12 @@
   --number-700: 56px;
   --number-800: 64px;
   --number-900: 72px;
+
+  /* Box Shadow Default Value */
+  --shadow-normal: 0px 1px 4px #6e80913d;
+  --shadow-up: 0px 2px 8px #6e809152;
+  --shadow-background-blur: 0px 4px 8px #6e809152;
+  --shadow-floating: 0px 0px 4px #6e809114, 0px 16px 16px #6e80913d;
 }
 
 /* Color System */
@@ -88,11 +94,11 @@
 }
 
 .border-default {
-  border-color: var(--grayscale-200);
+  border: 1px solid var(--grayscale-200);
 }
 
 .border-bord {
-  border-color: var(--grayscale-400);
+  border: 1px solid var(--grayscale-400);
 }
 
 /* Typography System */
@@ -175,10 +181,11 @@
   border-radius: 50%;
 }
 
-*,
-*::before,
-*::after {
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: 'Pretendard'
 }
 
 button {
@@ -188,15 +195,21 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  transition: opacity 0.2s ease;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0;
+button:hover {
+  opacity: 0.8;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  padding: 0 4px;
+}
+
+ul, ol {
+  list-style: none; /* 기본 글머리 기호나 번호 제거 */
 }
