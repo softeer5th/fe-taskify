@@ -175,7 +175,7 @@ const toggleTaskBox = (listId, type) => {
     }
 };
 
-const createTaskBox = (type, list, task = null) => {
+const createTaskBox = (type, list, id = null, task = null) => {
     const taskBox = document.createElement('div');
     taskBox.className = 'task-box';
 
@@ -205,7 +205,6 @@ const createTaskBox = (type, list, task = null) => {
     addBtn.innerText = task ? '저장' : '등록';
     addBtn.disabled = !titleInput.value || !contentInput.value;
     addBtn.onclick = () => {
-        // TODO: 수정일 때의 로직 변경
         if (task) {
             task.querySelector('h3').innerText = titleInput.value;
             task.querySelector('p').innerText = contentInput.value;
@@ -213,16 +212,24 @@ const createTaskBox = (type, list, task = null) => {
 
             const tasks = loadTasksFromLocalStorage();
 
-            const updatedTasks = [...tasks];
-            const taskIndex = tasks.findIndex(task => task.title === draggable.querySelector('h3').innerText);
-            if (taskIndex !== -1) {
-                const updatedTask = {
-                    ...tasks[taskIndex],
-                    type: list.id.replace('list-', '')
-                };
-                updatedTasks.splice(taskIndex, 1); // 기존 위치에서 제거
-                updatedTasks.push(updatedTask); // 배열의 맨 뒤로 추가
+            const updatedTasks = tasks.map(task => {
+                if (task.type === type) {
+                    return {
+                        type: task.type,
+                        list: task.list.map(t => {
+                            if (t.id === id) {
+                                t.title = titleInput.value;
+                                t.content = contentInput.value;
+                            }
+                            return t;
+                        }
+                        )
+
+                    } 
+                }
+                return task;
             }
+            );
 
             saveTasksToLocalStorage(updatedTasks);
         } else {
@@ -285,7 +292,7 @@ const createTaskElement = (type, id, title, content) => {
 
     editBtn.onclick = () => {
         const list = task.parentElement;
-        const taskBox = createTaskBox(type, list, task);
+        const taskBox = createTaskBox(type, list, id, task);
         task.replaceWith(taskBox);
     };
     editBtn.appendChild(editImg);
