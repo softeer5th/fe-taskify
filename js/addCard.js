@@ -1,4 +1,4 @@
-import { addTask } from '../utils/storage/taskManager.js';
+import { addTask, getTaskByTimestamp } from '../utils/storage/taskManager.js';
 
 export const popupCardModal = (parentColumn) => {
   const newTask = document.createElement('li');
@@ -49,5 +49,6 @@ export const makeCard = (task, parentColumn) => {
 
   parentColumn.appendChild(newTask);
   const columnKey = parentColumn.getAttribute('data-column-key');
-  addTask(columnKey, task);
+  if (!getTaskByTimestamp(columnKey, task.timestamp))
+    addTask(columnKey, task);
 }

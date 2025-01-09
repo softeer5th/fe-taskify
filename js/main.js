@@ -1,5 +1,19 @@
 import { closeCardModal, makeCard, popupCardModal } from './addCard.js';
+import { getColumnTasks } from '../utils/storage/taskManager.js';
+import { getColumn, setDefaultColumn } from '../utils/storage/columnManager.js';
 
+document.addEventListener('DOMContentLoaded', async () => {
+  await setDefaultColumn();
+  
+  const columns = document.querySelectorAll('.column');
+  columns.forEach(column => {
+    const columnKey = column.getAttribute('data-column-key');
+    const tasks = getColumnTasks(columnKey);
+    tasks.forEach(task => {
+      makeCard(task, column);
+    });
+  })
+});
 
 document.addEventListener('click', (e) => {
   const parentColumn = e.target.closest('.column');
@@ -15,6 +29,7 @@ document.addEventListener('click', (e) => {
     closeCardModal(parentColumn);
   }
 });
+
 
 
 
