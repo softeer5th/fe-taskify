@@ -5,9 +5,8 @@ import {
   loadLocalStorage,
   saveLocalStorage,
 } from "../../utils/localStorage.js";
-import createColumnInputItem from "./ui/createColumnItemInput.js";
-import createNewTextBox from "./ui/createNewTextBox.js";
-import createTextButtonContainer from "./ui/createTextButtonContainer.js";
+import ColumnItem from "../ColumnItem/ColumnItem.js";
+import createColumnInputItem from "./ui/createColumnInputItem.js";
 
 loadStyleSheet("/components/ColumnInputItem/styles.css");
 
@@ -47,36 +46,34 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
   const handleSubmit = (e) => {
     const $button = e.target;
     const $columnItem = $button.closest(".column__item");
-    const $textContainer = $columnItem.querySelector(
-      ".column__item__textContainer"
-    );
-    const $titleInput = $columnItem.querySelector("#title");
-    const $contentInput = $columnItem.querySelector("#content");
 
-    const title = $titleInput.value.trim();
-    const content = $contentInput.value.trim();
+    const title = $columnItem.querySelector("#title").value.trim();
+    const content = $columnItem.querySelector("#content").value.trim();
 
     const $userAgent = createElement("span", {
       className: "userAgent display-medium12",
       text: `author by ${getDevice()}`,
     });
 
-    const $buttonContainer = createTextButtonContainer();
-    const $newTextBox = createNewTextBox({ title, content });
-
-    $textContainer.replaceChildren($newTextBox, $buttonContainer);
-    $columnItem.replaceChild($userAgent, $columnItem.lastChild);
-
-    store.isTodoAdding = false;
-
     const lastId =
       $columnItem.closest(".column__body").lastChild.dataset.id ?? 0;
+
     const newCard = {
       id: Number(lastId) + 1,
       title,
       content,
       author: getDevice(),
     };
+
+    const $newColumnItem = ColumnItem({
+      ...newCard,
+      sectionId,
+    });
+
+    $newColumnItem.replaceChild($userAgent, $newColumnItem.lastChild);
+
+    const $columnBody = $columnItem.closest(".column__body");
+    $columnBody.replaceChild($newColumnItem, $columnBody.firstChild);
 
     const todoList = loadLocalStorage();
 
@@ -92,13 +89,14 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
     const itemLength = newTodoList.find((section) => section.id === sectionId)
       .items.length;
 
-    const $columnCount = $columnItem
+    const $columnCount = $columnBody
       .closest(".column__container")
       .querySelector(".column__count");
 
     $columnCount.textContent = itemLength;
 
     saveLocalStorage(newTodoList);
+    store.isTodoAdding = false;
   };
 
   return createColumnInputItem({
