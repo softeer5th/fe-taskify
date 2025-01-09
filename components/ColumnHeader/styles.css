@@ -1,0 +1,39 @@
+.column__header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  justify-content: space-between;
+  padding: 0 1.6rem;
+}
+
+.column__header__titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.column__title {
+  color: var(--color-text-bold);
+}
+
+.column__count {
+  padding: 0.5rem 0.8rem;
+  color: var(--color-text-weak);
+  border: 0.1rem solid var(--color-border-default);
+  border-radius: 0.8rem;
+}
+
+.column__header__buttonContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  .add__button {
+    border-radius: 50%;
+    transition: background-color 0.2s;
+  }
+
+  .add__button:hover {
+    background-color: var(--grayscale200);
+  }
+}
