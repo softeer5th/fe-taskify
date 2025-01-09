@@ -50,7 +50,7 @@ export const makeCard = (task, parentColumn) => {
   if (document.querySelector('.sort-btn').getAttribute('card-sort') === '1') {
     parentColumn.appendChild(newTask);
   } else {
-    parentColumn.prependTo(newTask);
+    parentColumn.insertBefore(newTask, parentColumn.querySelector('.task'));
   }
 
   const columnKey = parentColumn.getAttribute('data-column-key');
