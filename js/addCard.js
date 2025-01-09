@@ -37,17 +37,22 @@ export const makeCard = (task, parentColumn) => {
 
   newTask.innerHTML = `
     <div class="title-cont-au">
-            <div class="task-title">${task.title}</div>
-            <div class="task-body">${task.body}</div>
-            <div class="task-author">author by me</div>
-          </div>
-          <div class="delete-edit">
-            <div> x</div>
-            <div> e</div>
-          </div>
+      <div class="task-title">${task.title}</div>
+      <div class="task-body">${task.body}</div>
+      <div class="task-author">author by me</div>
+    </div>
+    <div class="delete-edit">
+      <div> x</div>
+      <div> e</div>
+    </div>
   `;
 
-  parentColumn.appendChild(newTask);
+  if (document.querySelector('.sort-btn').getAttribute('card-sort') === '1') {
+    parentColumn.appendChild(newTask);
+  } else {
+    parentColumn.prependTo(newTask);
+  }
+
   const columnKey = parentColumn.getAttribute('data-column-key');
   if (!getTaskByTimestamp(columnKey, task.timestamp)) {
     addTask(columnKey, task);
