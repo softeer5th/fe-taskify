@@ -1,13 +1,7 @@
 import { Icon } from "../../constants/icons/index.js";
 import { colors, typos } from "../../constants/tokens/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
-
-/**
- *
- * @param {string} label - 버튼에 표시할 라벨
- * @returns {VDOM} - 생성된 텍스트 가상돔
- */
-const Text = (label) => parser`<span class="button-text">${label}</span>`;
+import { Text } from "../Text/index.js";
 
 /**
  *
@@ -27,8 +21,8 @@ export const Button = ({
   const buttonType = `button-${type}`;
 
   return parser`
-<button onClick=${onClick} class="${buttonType} ${typos.selected.bold[16]}">
+<button onClick=${onClick} class="${buttonType}">
     ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })}
-    ${label && Text(label)}
+    ${label && Text({ text: label, typo: typos.selected.bold[16] })}
 </button>`;
 };

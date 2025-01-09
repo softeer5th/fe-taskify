@@ -22,7 +22,3 @@
     background-color: transparent;
     color: var(--text-default);
 }
-
-.button-text {
-    padding: 0 var(--gap-50) 0 var(--gap-50);
-}

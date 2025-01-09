@@ -1,5 +1,6 @@
 import { typos } from "../../constants/tokens/typos.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
+import { Text } from "../Text/index.js";
 
 /**
  *
@@ -19,7 +20,7 @@ export const Badge = ({ text }) => {
   };
 
   return parser`
-    <span class="badge-container ${typos.display.medium[12]}">
-        ${formatText()}
+    <span class="badge-container">
+        ${Text({ text: formatText(), typo: typos.display.medium[12] })}
     </span>`;
 };

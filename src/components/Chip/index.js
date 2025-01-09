@@ -1,7 +1,7 @@
 import { Icon } from "../../constants/icons/index.js";
-import { colors } from "../../constants/tokens/colors.js";
-import { typos } from "../../constants/tokens/typos.js";
+import { colors, typos } from "../../constants/tokens/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
+import { Text } from "../Text/index.js";
 
 /**
  *
@@ -10,7 +10,8 @@ import { parser } from "../../lib/jsx-runtime/index.js";
  * @returns {VDOM}
  */
 export const Chip = ({ label }) => parser`
-    <span class="chip-container ${typos.display.medium[12]}">
-        ${Icon({ name: "arrowBoth", size: "md", strokeColor: colors.text.default })} ${label}
+    <span class="chip-container">
+        ${Icon({ name: "arrowBoth", size: "md", strokeColor: colors.text.default })}
+        ${Text({ text: label, typo: typos.display.medium[12] })}
     </span>
     `;
