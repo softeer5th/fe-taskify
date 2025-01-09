@@ -1,3 +1,20 @@
+/* Color Default Value */
+
+:root {
+    --grayscale-50: #FEFEFE;
+    --grayscale-100: #FCFCF7;
+    --grayscale-200: #EFF0F6;
+    --grayscale-300: #D9DBE9;
+    --grayscale-400: #BEC1D5;
+    --grayscale-500: #A0A3BD;
+    --grayscale-600: #6E7191;
+    --grayscale-700: #4E4B66;
+    --grayscale-800: #2A2A44;
+    --grayscale-900: #14142B;
+    --accent-blue: #007AFF;
+    --accent-red: #FF3B30;
+}
+
 /* Reset CSS */
 * {
     margin: 0;
@@ -10,11 +27,11 @@ body {
     height: 100%;
     font-family: 'Pretendard', sans-serif;
     min-width: 400px;
+    background-color: var(--grayscale-100);
 }
 
 body {
     line-height: 1.6;
-    background-color: #F7F7FC;
 }
 
 ul,
@@ -69,183 +86,6 @@ textarea {
     padding: 18px 80px;
 }
 
-/* Typography System */
-
-.display-bold24 {
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.display-bold16 {
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.display-bold14 {
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.display-bold12 {
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.display-medium16 {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 22px;
-}
-
-.display-medium14 {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.display-medium12 {
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.selected-bold16 {
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.selected-bold14 {
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.available-medium16 {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 22px;
-}
-
-.available-medium14 {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-/* Color Default Value */
-
-:root {
-    --grayscale-50: #FEFEFE;
-    --grayscale-100: #FCFCF7;
-    --grayscale-200: #EFF0F6;
-    --grayscale-300: #D9DBE9;
-    --grayscale-400: #BEC1D5;
-    --grayscale-500: #A0A3BD;
-    --grayscale-600: #6E7191;
-    --grayscale-700: #4E4B66;
-    --grayscale-800: #2A2A44;
-    --grayscale-900: #14142B;
-    --accent-blue: #007AFF;
-    --accent-red: #FF3B30;
-}
-
-/* Color System */
-
-.text-strong {
-    color: var(--grayscale-900);
-}
-
-.text-bold {
-    color: var(--grayscale-700);
-}
-
-.text-default {
-    color: var(--grayscale-600)
-}
-
-.text-week {
-    color: var(--grayscale-500);
-}
-
-.text-white-default {
-    color: var(--grayscale-50);
-}
-
-.text-white-week {
-    color: var(--grayscale-100);
-}
-
-.text-brand {
-    color: var(--accent-blue);
-}
-
-.text-danger {
-    color: var(--accent-red);
-}
-
-.surface-default {
-    background-color: var(--grayscale-50);
-}
-
-.surface-week {
-    background-color: var(--grayscale-100);
-}
-
-.surface-brand {
-    background-color: var(--accent-blue);
-}
-
-.surface-danger {
-    background-color: var(--accent-red);
-}
-
-.border-default {
-    border-color: var(--grayscale-200);
-}
-
-.border-bold {
-    border-color: var(--grayscale-400);
-}
-
-/* Number System */
-
-:root {
-    --number-50: 4px;
-    --number-100: 8px;
-    --number-200: 16px;
-    --number-300: 24px;
-    --number-400: 32px;
-    --number-500: 40px;
-    --number-600: 48px;
-    --number-700: 56px;
-    --number-800: 64px;
-    --number-900: 72px;
-}
-
-/* Object Style */
-
-.radius-8 {
-    border-radius: 8px;
-}
-
-.radius-16 {
-    border-radius: 16px;
-}
-
-.radius-1\/2 {
-    border-radius: 50%;
-}
-
-.shadow-normal {
-    box-shadow: 0px 1px 4px 0px rgba(110, 128, 145, 0.24);
-}
-
-.shadow-up {
-    box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.32);
-    backdrop-filter: blur(4px)
-}
-
-.shadow-floating {
-    box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
-    box-shadow: 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
-
-}
 
 /* Header Style */
 .header {
@@ -295,185 +135,41 @@ textarea {
 }
 
 /* Body Style */
-.body {
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    margin-top: 2.5rem;
-}
+
 
 /* Column Style */
-.column {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 250px;
-    min-width: 250px;
 
-    .column__header {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0px 15px;
-
-        .column__header--text {
-            display: flex;
-            flex-direction: row;
-            font-family: 'Pretendard',
-                sans-serif;
-            line-height: 24px;
-            gap: 10px;
-
-            .column__header--title {
-                font-size: 1rem;
-                font-weight: 700;
-                color: #4E4B66;
-            }
-
-            .column__header--count {
-                font-size: 0.75rem;
-                font-weight: 500;
-                color: #BEC1D5;
-            }
-        }
-
-        .column__header--button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            gap: 15px;
-
-            .column__header--button--add {
-                cursor: pointer;
-                font-size: 1.2rem;
-                color: #A0A3BD;
-            }
-
-            .column__header--button--delete {
-                cursor: pointer;
-                font-size: 1.2rem;
-                color: #A0A3BD;
-            }
-        }
-    }
-
-    .column__body {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-    }
-}
 
 /* task Style */
 .task {
+    width: 320px;
+    height: auto;
+    min-height: 104px;
+    padding: 0px 16px;
+    border-radius: 8px;
+    background-color: var(--grayscale-50);
+    gap: 4px;
     display: flex;
     flex-direction: row;
+}
+
+.task--edit {
+    gap: 16px;
+    flex-direction: column;
+}
+
+.task--move {
+    opacity: 0.3;
+}
+
+.task--drag {
+    box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
+
+    box-shadow: 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+
+}
+
+.task__textarea {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #FEFEFE;
-    box-shadow: 0px 1px 4px 0px #6E80913D;
-
-    .task__content {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        width: 100%;
-
-        .task__content--title {
-            font-family: 'Pretendard',
-                sans-serif;
-            font-size: .875rem;
-            font-weight: 700;
-            color: #14142B;
-        }
-
-        .task__content--description {
-            display: block;
-            font-family: 'Pretendard',
-                sans-serif;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #A0A3BD;
-            white-space: pre-line;
-        }
-
-        .task__content--device {
-            display: block;
-            font-family: 'Pretendard',
-                sans-serif;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #A0A3BD;
-        }
-
-        .task__content--editor {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            gap: 5px;
-            align-items: center;
-            justify-content: center;
-
-            .task__content--editor--save {
-                width: 50%;
-                height: 25px;
-                border-radius: 8px;
-                font-family: 'Pretendard Variable',
-                    sans-serif;
-                color: #FEFEFE;
-                font-size: .875rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                background-color: #007AFF;
-                justify-content: center;
-            }
-
-            .task__content--editor--cancel {
-                width: 50%;
-                height: 25px;
-                border-radius: 8px;
-                font-family: 'Pretendard Variable',
-                    sans-serif;
-                color: #6E7191;
-                font-size: .875rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                background-color: #F7F7FC;
-                justify-content: center;
-            }
-        }
-    }
-
-    .task__button {
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
-        gap: 5px;
-
-        .task__button--edit {
-            width: 14px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #A0A3BD;
-        }
-
-        .task__button--delete {
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #A0A3BD;
-
-            &:hover {
-                color: #FF3B30;
-            }
-        }
-    }
+    height: auto;
 }
