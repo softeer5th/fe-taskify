@@ -1,7 +1,5 @@
 import Header from "./components/Header/Header.js";
-import TaskCard from "./components/TaskCard/TaskCard.js";
-const $app = document.querySelector('#app');
-$app.classList.add('surface-default');
+import Main from "./components/Main/Main.js";
 
-$app.appendChild(Header());
-$app.appendChild(TaskCard());
+const $app = document.querySelector("#app");
+$app.append(Header(), Main());
