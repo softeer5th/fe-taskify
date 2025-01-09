@@ -2,7 +2,7 @@
 
 :root {
     --grayscale-50: #FEFEFE;
-    --grayscale-100: #FCFCF7;
+    --grayscale-100: #F7F7FC;
     --grayscale-200: #EFF0F6;
     --grayscale-300: #D9DBE9;
     --grayscale-400: #BEC1D5;
@@ -88,51 +88,7 @@ textarea {
 
 
 /* Header Style */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    width: 100%;
-    height: 6.25%;
 
-    .header__title {
-        font-family: 'Pretendard',
-            sans-serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 28.64px;
-        color: #14142B;
-    }
-
-    .header__button--sort {
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        width: auto;
-        height: 24px;
-        margin-left: 20px;
-        padding: 3px 10px;
-        gap: 3px;
-        border: 1px solid #BEC1D5;
-        border-radius: 8px;
-        font-family: 'Pretendard Variable',
-            sans-serif;
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: #4E4B66;
-        overflow: visible;
-        white-space: nowrap;
-    }
-
-    .header__button--history {
-        width: auto;
-        height: 24px;
-        right: 20px;
-        margin-left: auto
-    }
-}
 
 /* Body Style */
 
