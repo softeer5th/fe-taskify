@@ -5,11 +5,9 @@ import { columns, handleDrag } from "./index.js";
 import { createModalChildren } from "./modal.js";
 import { setLog } from "./logScript.js";
 
-export function createDeleteModal(task) {
+export function createDeleteModal(message, callback) {
     const body = document.getElementsByTagName("body")[0];
-    const modalElement = createModalChildren("선택한 카드를 삭제할까요?", () =>
-        deleteTask(task)
-    );
+    const modalElement = createModalChildren(message, callback);
     const modal = Modal(modalElement);
     body.appendChild(modal);
 }
@@ -67,6 +65,6 @@ export function taskHTML({ title, content }) {
 export function taskEventHandler(cardElement, task) {
     const buttons = cardElement.getElementsByTagName("button");
     const [deleteButton, editButton] = buttons;
-    deleteButton.addEventListener("click", () => createDeleteModal(task));
+    deleteButton.addEventListener("click", () => createDeleteModal("선택한 카드를 삭제할까요?", ()=>deleteTask(task)));
     editButton.addEventListener("click", () => editTask(cardElement, task));
 }

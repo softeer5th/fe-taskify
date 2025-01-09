@@ -71,3 +71,9 @@ export function LogHTML(log) {
             </div>
     `;
 }
+
+export function DeleteLogHTML() {
+    return `
+            <button class="display-bold14 text-danger">기록 전체 삭제</button>
+        `;
+}

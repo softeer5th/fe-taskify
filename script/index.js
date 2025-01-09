@@ -1,7 +1,6 @@
-import LogLayerHTML, { EmptyLogHTML } from "../components/log.js";
-import { generateLogsHTML, getLogs, setLog } from "./logScript.js";
+import { createLogLayerElement, setLog } from "./logScript.js";
 import { createTaskForm, renderTasks } from "./column.js";
-import { taskHTML } from "./task.js";
+import {  taskHTML } from "./task.js";
 
 let dragged = null;
 let draggedElement = null;
@@ -117,34 +116,15 @@ function handleDragLeave(e) {
     }
 }
 
-function logOpen() {
+function handleLogOpen() {
     const existLayer = document.body.querySelector('#log_layer');
     //log layer가 이미 존재한다면 제거
     if(existLayer) {
         document.body.removeChild(existLayer);
         return;
     }
+    const logLayer = createLogLayerElement();
 
-    const logLayer = document.createElement('div');
-    logLayer.setAttribute('id', 'log_layer');
-    logLayer.setAttribute('class', 'surface-default rounded-200 shadow-floating');
-
-    logLayer.innerHTML = LogLayerHTML();
-    const logListElement = logLayer.querySelector('#log_layer_list');
-
-    const userLogs = getLogs();
-
-    if(userLogs.length === 0) {
-        const logElement = document.createElement('li');
-        logElement.setAttribute('id', 'log_layer_empty');
-        logElement.innerHTML = EmptyLogHTML();
-        logListElement.appendChild(logElement)
-    }
-    else {
-        const logFragmentElement = generateLogsHTML(userLogs);
-
-        logListElement.appendChild(logFragmentElement)
-    }
     document.body.appendChild(logLayer);
 }
 
@@ -175,7 +155,7 @@ function init() {
     }
 
     const logButton = document.querySelector('#log_button');
-    logButton.addEventListener('click', logOpen)
+    logButton.addEventListener('click', handleLogOpen)
 
     for (let i = 0; i < 3; i++) {
         columns.push([]);

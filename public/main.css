@@ -93,6 +93,21 @@ main {
     padding: 8px;
 }
 
+#log_layer_footer {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 8px;
+    
+    > button {
+        display: block;
+        margin: 8px ;
+        padding: 0 4px;
+        text-align: center;
+    }
+}
+
 #log_layer_header {
     display: flex;
     align-items: center;
@@ -100,8 +115,6 @@ main {
     flex-direction: row;
     padding: 8px;
     padding-left: 16px;
-
-    margin-bottom: 8px;
 
     button {
         display: flex;
@@ -111,6 +124,9 @@ main {
 
 }
 
+#log_layer_list {
+    margin: 8px 0;
+}
 
 #log_layer_list>li {
     padding: 16px;
