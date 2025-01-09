@@ -1,8 +1,7 @@
 import { createElement } from "../../dom.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
 import createAuthor from "./ui/createAuthor.js";
-import createItemButtonContainer from "./ui/createItemButtonContainer.js";
-import createTextBox from "./ui/createTextBox.js";
+import createTextContainer from "./ui/createTextContainer.js";
 
 loadStyleSheet("/components/ColumnItem/styles.css");
 
@@ -18,15 +17,12 @@ const ColumnItem = ({
     "data-id": id,
   });
 
-  const $textContainer = createElement("div", {
-    className: "column__item__textContainer",
-  });
-  const $itemButtonContainer = createItemButtonContainer({
+  const $textContainer = createTextContainer({
     sectionId,
     itemId: id,
+    title,
+    content,
   });
-  const $textBox = createTextBox({ title, content });
-  $textContainer.append($textBox, $itemButtonContainer);
 
   const $author = createAuthor({ author });
   $columnItem.append($textContainer, $author);
