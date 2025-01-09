@@ -10,6 +10,8 @@ const createTextContainer = ({ sectionId, itemId, title, content }) => {
   const $itemButtonContainer = createItemButtonContainer({
     sectionId,
     itemId,
+    title,
+    content,
   });
 
   const $textBox = createTextBox({ title, content });

@@ -50,4 +50,13 @@
     background-color: var(--color-surface-danger);
     color: var(--color-text-white-default);
   }
+
+  .edit__button {
+    background-color: var(--color-surface-brand);
+    color: var(--color-text-white-default);
+  }
+}
+
+.modal__wrapper textarea {
+  text-align: center;
 }

@@ -5,11 +5,16 @@ import {
   createElement,
   createImg,
 } from "../../../dom.js";
+import createEditModal from "../../Modal/createEditModal.js";
 import createModal from "../../Modal/createModal.js";
 
-const createItemButtonContainer = ({ sectionId, itemId }) => {
+const createItemButtonContainer = ({ sectionId, itemId, title, content }) => {
   const handleClickDelete = () => {
     createModal({ content: "선택한 카드를 삭제할까요?", sectionId, itemId });
+  };
+
+  const handleClickEdit = () => {
+    createEditModal({ title, content, sectionId, itemId });
   };
 
   const $itemButtonContainer = createElement("div", {
@@ -33,7 +38,7 @@ const createItemButtonContainer = ({ sectionId, itemId }) => {
 
   const $editButton = createButton({
     className: "edit__button",
-    handleClick: () => alert("Edit button clicked"),
+    handleClick: handleClickEdit,
   });
   const $editImg = createImg({
     src: IMAGE.edit,

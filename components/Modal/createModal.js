@@ -9,6 +9,9 @@ loadStyleSheet("/components/Modal/styles.css");
 const createModal = ({ title = "", content = "", sectionId, itemId }) => {
   const $modalContainer = document.getElementById("modal-container");
   const $modal = document.createElement("div");
+  const handleClose = () => {
+    $modal.remove();
+  };
 
   $modal.innerHTML = /*html*/ `
       <div class="modal__dimmed"></div>
@@ -26,18 +29,16 @@ const createModal = ({ title = "", content = "", sectionId, itemId }) => {
       </div>
     `;
 
-  $modal.querySelector(".modal__dimmed").addEventListener("click", () => {
-    $modal.remove();
-  });
+  $modal.querySelector(".modal__dimmed").addEventListener("click", handleClose);
 
   $modal.querySelector(".delete__button").addEventListener("click", () => {
     deleteCard({ sectionId, itemId });
-    $modal.remove();
+    handleClose();
   });
 
-  $modal.querySelector(".cancel__button").addEventListener("click", () => {
-    $modal.remove();
-  });
+  $modal
+    .querySelector(".cancel__button")
+    .addEventListener("click", handleClose);
 
   $modalContainer.appendChild($modal);
 };
