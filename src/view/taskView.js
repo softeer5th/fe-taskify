@@ -3,27 +3,27 @@ import { edit } from "../../public/edit.js";
 
 export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
   const taskElement = document.createElement("div");
-  taskElement.className = "task";
+  taskElement.classList.add("task");
   taskElement.id = task.id;
 
   if (state === "editing") {
-    taskElement.className += " task--edit";
+    taskElement.classList.add("task--edit");
 
     const contentBody = document.createElement("div");
-    contentBody.className = "task__content-body";
+    contentBody.classList.add("task__content-body");
 
     const contentTitle = document.createElement("input");
-    contentTitle.className = "task__content-title";
+    contentTitle.classList.add("task__content-title");
     contentTitle.placeholder = "제목을 입력하세요";
     contentTitle.value = task.name;
 
     const contentDescription = document.createElement("textarea");
-    contentDescription.className = "task__content-description";
+    contentDescription.classList.add("task__content-description");
     contentDescription.placeholder = "내용을 입력하세요";
     contentDescription.value = task.description;
 
     const editorButton = document.createElement("div");
-    editorButton.className = "task__editorButton";
+    editorButton.classList.add("task__editorButton");
 
     const cancelButton = document.createElement("button");
     cancelButton.textContent = "취소";
@@ -43,24 +43,24 @@ export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClic
     taskElement.appendChild(contentBody);
   } else {
     const content = document.createElement("div");
-    content.className = "task__content";
+    content.classList.add("task__content");
 
     const contentBody = document.createElement("div");
-    contentBody.className = "task__content-body";
+    contentBody.classList.add("task__content-body");
 
     const contentTitle = document.createElement("div");
-    contentTitle.className = "task__content-title";
+    contentTitle.classList.add("task__content-title");
     contentTitle.textContent = task.name;
 
     const contentDescription = document.createElement("div");
-    contentDescription.className = "task__content-description";
+    contentDescription.classList.add("task__content-description");
     contentDescription.textContent = task.description;
 
     contentBody.appendChild(contentTitle);
     contentBody.appendChild(contentDescription);
 
     const contentDevice = document.createElement("span");
-    contentDevice.className = "task__content-device";
+    contentDevice.classList.add("task__content-device");
     contentDevice.textContent = `author by ${task.device}`;
 
     content.appendChild(contentBody);
@@ -69,15 +69,15 @@ export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClic
     taskElement.appendChild(content);
 
     const buttonGroup = document.createElement("div");
-    buttonGroup.className = "task__iconButton";
+    buttonGroup.classList.add("task__iconButton");
 
     const firstButton = document.createElement("button");
-    firstButton.className = "task__iconButton-icon";
+    firstButton.classList.add("task__iconButton-icon");
     firstButton.innerHTML = closed;
     firstButton.addEventListener("click", onFirstButtonClicked);
 
     const secondButton = document.createElement("button");
-    secondButton.className = "task__iconButton-icon";
+    secondButton.classList.add("task__iconButton-icon");
     secondButton.innerHTML = edit;
     secondButton.addEventListener("click", onSecondButtonClicked);
 
@@ -88,9 +88,9 @@ export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClic
   }
 
   if (state === "moving") {
-    taskElement.className += " task--move";
+    taskElement.classList.add("task--move");
   } else if (state === "dragging") {
-    taskElement.className += " task--drag";
+    taskElement.classList.add("task--drag");
   }
 
   return taskElement;
