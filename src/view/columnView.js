@@ -4,6 +4,7 @@ import { closed } from "../../public/closed.js";
 export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleClicked }) {
   const columnElement = document.createElement("div");
   columnElement.classList.add("column");
+  columnElement.id = column.id;
 
   if (state === "default") {
     const columnTitle = document.createElement("div");
