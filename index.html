@@ -19,8 +19,20 @@
           <div
             style="width: 100%; display: flex; align-items: center; gap: 8px"
           >
-            <h2 class="display-bold16">
-            <p>3</p>
+            <h2 class="display-bold16 text-bold"></h2>
+            <div
+              class="border-default display-medium12 text-weak"
+              style="
+                height: 24px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: var(--number-100);
+                padding: 0 var(--number-100);
+              "
+            >
+            300
+            </div>
           </div>
           <button id="add-card">
             <img src="./assets/icons/plus-small.svg" alt="add" />
@@ -64,9 +76,26 @@
           align-items: center;
         "
       >
-        <div style="display: flex; justify-content: center; align-items: center; gap: 16px;">
-          <h1 class="text-strong">TASKIFY</h1>
-          <button class="border-bord" style="height: 24px; display: flex; justify-content: center; align-items: center; padding: var(--number-100); border-radius: var(--number-100);">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+          "
+        >
+          <h1 class="text-strong ">TASKIFY</h1>
+          <button
+            class="border-bord"
+            style="
+              height: 24px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: var(--number-100);
+              border-radius: var(--number-100);
+            "
+          >
             <img src="./assets/icons/arrowBoth.svg" alt="arrow" />
             <p class="display-medium12">생성 순</p>
           </button>
@@ -92,7 +121,7 @@
           <button class="floating-button surface-default">
             <img src="./assets/icons/undo.svg" alt="undo" />
           </button>
-          <button class="floating-button surface-default"> 
+          <button class="floating-button surface-default">
             <img src="./assets/icons/redo.svg" alt="redo" />
           </button>
           <button class="floating-button surface-brand">
