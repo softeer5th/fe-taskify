@@ -1,16 +1,31 @@
 import { getColumnTasks } from './taskManager.js';
 
+export const getColumn = () => {
+  let columnCount = 1;
+  const columns = [];
 
-export const setDefaultColumn = async () => {
-  const columns = await getColumn();
+  while (localStorage.getItem(`column${columnCount}`)) {
+    columns.push(JSON.parse(localStorage.getItem(`column${columnCount}`)));
+    columnCount++;
+  }
+  
+  return columns;
+}
+
+export const setDefaultColumn = () => {
+  const columns = getColumn();
   console.log(columns);
   if (!columns.length) { //innerhtml 로 각각의 기본 column 추가
     addColumn('해야할 일');
     addColumn('진행중인 일');
     addColumn('완료한 일');
+    columns.push('해야할 일');
+    columns.push('진행중인 일');
+    columns.push('완료한 일');
   }
-  let dataColumnKey = 1;
 
+
+  let dataColumnKey = 1;
   columns.forEach(column => {
     const newColumn = document.createElement('ol');
     newColumn.className = 'column';
@@ -28,17 +43,6 @@ export const setDefaultColumn = async () => {
   });
 }
 
-export const getColumn = async () => {
-  return new Promise((resolve) => {
-    let columnCount = 1;
-    const columns = [];
-    while (localStorage.getItem(`column${columnCount}`)) {
-      columns.push(JSON.parse(localStorage.getItem(`column${columnCount}`)));
-      columnCount++;
-    }
-    resolve(columns);
-  });
-}
 
 export const addColumn = (columnTitle) => {
   let columnCount = 1;
