@@ -47,14 +47,14 @@
 
 /* Number System 설정 */
 :root {
-    --todo-number-50 : 4;
-    --todo-number-100 : 8;
-    --todo-number-200 : 16;
-    --todo-number-300 : 24;
-    --todo-number-400 : 32;
-    --todo-number-500 : 40;
-    --todo-number-600 : 48;
-    --todo-number-700 : 56;
-    --todo-number-800 : 64;
-    --todo-number-900 : 72;
+    --todo-number-50 : 4px;
+    --todo-number-100 : 8px;
+    --todo-number-200 : 16px;
+    --todo-number-300 : 24px;
+    --todo-number-400 : 32px;
+    --todo-number-500 : 40px;
+    --todo-number-600 : 48px;
+    --todo-number-700 : 56px;
+    --todo-number-800 : 64px;
+    --todo-number-900 : 72px;
 }
