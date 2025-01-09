@@ -1,4 +1,4 @@
-import { createDOM } from "../lib/createDOM.js";
+import { createDOM } from "../lib/jsx-runtime/index.js";
 
 import App from "./app.js";
 

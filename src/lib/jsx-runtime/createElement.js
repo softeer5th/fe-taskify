@@ -20,14 +20,19 @@
  */
 export const createElement = (type, config, ...children) => {
   const props = {};
+  const events = {};
 
   for (const propName in config) {
-    props[propName] = config[propName];
+    if (propName.startsWith("on")) {
+      const eventName = propName.slice(2).toLowerCase();
+      events[eventName] = config[propName];
+    } else props[propName] = config[propName];
   }
 
   return {
     type,
     props,
+    events,
     children,
   };
 };
