@@ -18,6 +18,10 @@ const App = () => {
   const icon = Button({
     showIcon: true,
   });
+  const ghost = Button({
+    label: "Button",
+    type: "ghost",
+  });
 
   return (
     parser`
@@ -30,6 +34,7 @@ const App = () => {
             ${button}
             ${iconButton}
             ${icon}
+            ${ghost}
         </div>`
   );
 };

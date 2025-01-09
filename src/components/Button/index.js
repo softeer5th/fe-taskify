@@ -23,8 +23,12 @@ export const Button = ({
   label,
   type = "contained",
   onClick,
-}) => parser`
-<button onClick=${onClick} class="button-container ${typos.selected.bold[16]}">
+}) => {
+  const buttonType = `button-${type}`;
+
+  return parser`
+<button onClick=${onClick} class="${buttonType} ${typos.selected.bold[16]}">
     ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })}
     ${label && Text(label)}
 </button>`;
+};

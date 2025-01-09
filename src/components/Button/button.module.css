@@ -1,4 +1,4 @@
-.button-container {
+.button-contained, .button-ghost {
     padding: var(--gap-100);
 
     display: flex;
@@ -10,15 +10,19 @@
     border-radius: var(--gap-100);
 }
 
-.button-container:hover {
+.button-contained:hover, .button-ghost:hover {
     opacity: 80%;
 }
 
-.button-container:disabled {
+.button-contained:disabled, .button-ghost:hover {
     opacity: 30%;
+}
+
+.button-ghost {
+    background-color: transparent;
+    color: var(--text-default);
 }
 
 .button-text {
     padding: 0 var(--gap-50) 0 var(--gap-50);
 }
-
