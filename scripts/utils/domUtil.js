@@ -1,4 +1,5 @@
-import { storeData, loadData } from './storageUtil.js'
+// import { storeData, loadData } from './storageUtil.js'
+import { setState, getState } from './stateUtil.js'
 
 export const createDomElement = (
     templateId,
@@ -16,7 +17,7 @@ export const createDomElement = (
     if (appendRear) {
         parentDomElement.appendChild(component)
     } else {
-        parentDomElement.insertBefore(component, parentDomElement.firstChild)
+        parentDomElement.prepend(component)
     }
 
     return identifier
@@ -32,7 +33,7 @@ export const removeDomElement = (id) => {
 }
 
 const generateId = () => {
-    const prevId = loadData('elementId') ?? 0
-    storeData('elementId', prevId + 1)
+    const prevId = getState('elementId') ?? 0
+    setState('elementId', prevId + 1)
     return prevId + 1
 }
