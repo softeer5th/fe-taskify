@@ -1,6 +1,6 @@
 import { Icon } from "../../constants/icons/index.js";
 import { typos, colors } from "../../constants/tokens/index.js";
-import { useState, useRef } from "../../lib/HamReact/hooks/index.js";
+import { useState } from "../../lib/HamReact/hooks/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { checkUserAgent } from "../../utils/checkUserAgent.js";
 import { Button } from "../Button/index.js";
