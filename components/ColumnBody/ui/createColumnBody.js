@@ -38,8 +38,9 @@ const createColumnBody = ({ sectionId, items }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     const draggedElement = document.querySelector(".dragging");
+    const siblingElements = Array.from($columnBody.children);
+    const dropIndex = siblingElements.indexOf(shadowElement);
 
-    // shadowElement 앞에 draggedElement 삽입 & shadowElement 제거
     if (shadowElement && draggedElement) {
       $columnBody.insertBefore(draggedElement, shadowElement);
       shadowElement.remove();
@@ -49,7 +50,7 @@ const createColumnBody = ({ sectionId, items }) => {
     const newSectionId = $columnBody.closest(".column__container").id;
     const itemId = Number(draggedElement.dataset.id);
 
-    updateTodoList(newSectionId, itemId);
+    updateTodoList(newSectionId, itemId, dropIndex);
   };
 
   const handleDragLeave = (e) => {
@@ -74,27 +75,30 @@ const createColumnBody = ({ sectionId, items }) => {
 
 export default createColumnBody;
 
-// drag drop 했을 때 DOM 업데이트
-// 어떤 section의 어떤 아이템인지 특정
-const updateTodoList = (newSectionId, itemId) => {
+// drag drop 한 순서 DB에 반영
+const updateTodoList = (sectionId, itemId, dropIndex) => {
   const todoList = loadLocalStorage();
-  const section = todoList.find((section) => section.id === newSectionId);
-  const draggedItem = section.items.find((item) => item.id === itemId);
 
-  const updatedList = todoList.map((section) =>
-    draggedItem
-      ? {
-          ...section,
-          items: section.items.filter((item) => item.id !== itemId),
-        }
-      : section
-  );
+  let draggedItem = null;
 
-  const finalList = updatedList.map((section) => {
-    if (section.id === newSectionId && draggedItem) {
+  const filteredList = todoList.map((section) => {
+    if (section.items.some((item) => item.id === itemId)) {
+      draggedItem = section.items.find((item) => item.id === itemId);
       return {
         ...section,
-        items: [...section.items, draggedItem],
+        items: section.items.filter((item) => item.id !== itemId),
+      };
+    }
+    return section;
+  });
+
+  const finalList = filteredList.map((section) => {
+    if (section.id === sectionId && draggedItem) {
+      const updatedItems = [...section.items];
+      updatedItems.splice(dropIndex, 0, draggedItem); // 드롭된 위치에 삽입
+      return {
+        ...section,
+        items: updatedItems,
       };
     }
     return section;
