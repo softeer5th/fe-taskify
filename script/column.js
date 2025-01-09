@@ -1,5 +1,4 @@
-import CardForm, { onChange, onSubmit } from '../components/cardForm.js';
-import { onCancel } from '../components/cardForm.js';
+import createFormElement from '../script/formScript.js';
 import { columns } from './index.js';
 import { createTask } from './task.js';
 
@@ -13,14 +12,9 @@ export function createTaskForm(columnIdx) {
         return;
     }
 
-    cardFormArea.innerHTML = CardForm();
-    const forms = document.getElementsByClassName('card_form');
-    
-    for(let form of forms) {
-        form.addEventListener('submit', (e)=>onSubmit(e, columnIdx));
-        form.addEventListener('change', (e)=>onChange(e));
-        form.getElementsByTagName('button')[0].addEventListener('click', (e)=>onCancel(e))
-    }
+    const formElement = createFormElement(undefined, columnIdx);
+
+    cardFormArea.appendChild(formElement)
 }
 
 

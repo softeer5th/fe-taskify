@@ -1,14 +1,13 @@
-import CardForm, { onCancelEdit, onEdit } from "../components/cardForm.js";
+import createFormElement from "../script/formScript.js";
 import Modal from "../components/modal.js";
 import { renderTasks } from "./column.js";
 import { columns, handleDrag } from "./index.js";
 import { createModalChildren } from "./modal.js";
+import { setLog } from "./logScript.js";
 
-export function createDeleteModal(task) {
+export function createDeleteModal(message, callback) {
     const body = document.getElementsByTagName("body")[0];
-    const modalElement = createModalChildren("선택한 카드를 삭제할까요?", () =>
-        deleteTask(task)
-    );
+    const modalElement = createModalChildren(message, callback);
     const modal = Modal(modalElement);
     body.appendChild(modal);
 }
@@ -18,7 +17,10 @@ export function createTask(task) {
 
     // 새 카드 컴포넌트 생성
     const newCard = document.createElement("li");
-    newCard.setAttribute("class", "card surface-default shadow-normal rounded-100");
+    newCard.setAttribute(
+        "class",
+        "card surface-default shadow-normal rounded-100"
+    );
     newCard.setAttribute("draggable", "true");
     newCard.innerHTML = taskHTML({ title, content });
     newCard.addEventListener("dragstart", (e) => handleDrag(e, task));
@@ -31,23 +33,16 @@ export function createTask(task) {
 export function deleteTask(task) {
     const { title, content, created, column } = task;
     columns[column] = columns[column].filter((el) => el != task);
+    
+    setLog({task: task, type:'remove', updated: new Date() })
+
     renderTasks(column);
 }
 
 export function editTask(cardElement, task) {
-    const { title, content, created, column } = task;
-    cardElement.innerHTML = CardForm();
-    const inputs = cardElement.getElementsByTagName("input");
-    const [titleInput, contentInput] = inputs;
-    titleInput.value = title;
-    contentInput.value = content;
-    const form = cardElement.getElementsByTagName("form")[0];
-    form.addEventListener("submit", (e) => {
-        onEdit(e, task);
-    });
-    form.getElementsByTagName("button")[0].addEventListener("click", () =>
-        onCancelEdit(task, cardElement)
-    );
+    const formElement = createFormElement(task, undefined);
+    const parentNode = cardElement.parentNode;
+    parentNode.replaceChild(formElement, cardElement);
 }
 
 export function taskHTML({ title, content }) {
@@ -70,6 +65,6 @@ export function taskHTML({ title, content }) {
 export function taskEventHandler(cardElement, task) {
     const buttons = cardElement.getElementsByTagName("button");
     const [deleteButton, editButton] = buttons;
-    deleteButton.addEventListener("click", () => createDeleteModal(task));
+    deleteButton.addEventListener("click", () => createDeleteModal("선택한 카드를 삭제할까요?", ()=>deleteTask(task)));
     editButton.addEventListener("click", () => editTask(cardElement, task));
 }

@@ -1,5 +1,6 @@
+import { createLogLayerElement, setLog } from "./logScript.js";
 import { createTaskForm, renderTasks } from "./column.js";
-import { createTask, taskHTML } from "./task.js";
+import {  taskHTML } from "./task.js";
 
 let dragged = null;
 let draggedElement = null;
@@ -34,6 +35,14 @@ function handleDrop(e) {
 
     columns[currentIdx] = columns[currentIdx].filter((el) => el != dragged);
     columns[columnIdx].push({ ...dragged, column: columnIdx });
+
+    setLog({
+        task: dragged,
+        type: 'move',
+        updated: new Date(),
+        destination: columnIdx
+    });
+
     dragged = null;
     draggedElement = null;
 
@@ -107,6 +116,18 @@ function handleDragLeave(e) {
     }
 }
 
+function handleLogOpen() {
+    const existLayer = document.body.querySelector('#log_layer');
+    //log layer가 이미 존재한다면 제거
+    if(existLayer) {
+        document.body.removeChild(existLayer);
+        return;
+    }
+    const logLayer = createLogLayerElement();
+
+    document.body.appendChild(logLayer);
+}
+
 // 초기 이벤트 등록 및 mock 데이터 생성
 function init() {
     const columnElements = document.getElementsByClassName("column");
@@ -133,6 +154,9 @@ function init() {
         addButton.addEventListener("click", () => createTaskForm(i));
     }
 
+    const logButton = document.querySelector('#log_button');
+    logButton.addEventListener('click', handleLogOpen)
+
     for (let i = 0; i < 3; i++) {
         columns.push([]);
     }
@@ -141,7 +165,7 @@ function init() {
         title: "제목1",
         content: "내용1",
         column: 0,
-        created: "test",
+        created: new Date(),
     });
     renderTasks(0);
 }

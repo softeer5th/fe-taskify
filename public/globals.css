@@ -12,6 +12,7 @@ button {
 }
 
 body {
+    position: relative;
     font-family: "Pretendard";
 }
 
@@ -79,10 +80,12 @@ body {
 }
 
 .border-default {
+    border: 1px solid;
     border-color: var(--grayscale_200);
 }
 
 .border-bord {
+    border: 1px solid;
     border-color: var(--grayscale_400);
 }
 
@@ -139,8 +142,7 @@ body {
 }
 
 .shadow-floating {
-    box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
-    box-shadow: 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+    box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24), 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
 }
 
 .rounded-100 {

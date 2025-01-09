@@ -84,3 +84,94 @@ main {
     flex-direction: column;
     padding: 3px;
 }
+
+#log_layer {
+    position: absolute;
+    top: 64px;
+    right: 62px;
+    width: 320px;
+    padding: 8px;
+}
+
+#log_layer_footer {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 8px;
+    
+    > button {
+        display: block;
+        margin: 8px ;
+        padding: 0 4px;
+        text-align: center;
+    }
+}
+
+#log_layer_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 8px;
+    padding-left: 16px;
+
+    button {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+    }
+
+}
+
+#log_layer_list {
+    margin: 8px 0;
+}
+
+#log_layer_list>li {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid;
+    border-color: var(--grayscale_200);
+
+    >:first-child {
+
+        margin-right: 16px;
+
+        .log_profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+    }
+
+    >:last-child {
+        width: 100%;
+
+        p:nth-of-type(2) {
+            margin-top: 8px;
+            margin-bottom: 8px;
+
+            span {
+                color: var(--grayscale_700);
+                font-size: 14px;
+                line-height: auto;
+                font-weight: 700;
+            }
+        }
+    }
+
+    &:last-of-type {
+        border: none;
+    }
+}
+
+#log_layer_empty {
+    padding: 16px;
+
+    p {
+        width: 100%;
+        text-align: center;
+    }
+}
