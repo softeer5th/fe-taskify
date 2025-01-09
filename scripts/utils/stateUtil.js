@@ -1,9 +1,9 @@
-const state = {}
+const states = {}
 
 export const setState = (key, value) => {
-    state[key] = value
+    states[key] = value
 }
 
 export const getState = (key) => {
-    return state[key]
+    return states[key]
 }
