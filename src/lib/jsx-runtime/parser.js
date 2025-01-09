@@ -53,15 +53,27 @@ export const parser = (strings, ...args) => {
     const props = {};
     if (!attributes) return props;
 
-    Array.from(attributes).forEach((attr) => {
-      const { name, value } = attr;
-      if (!value.includes(DIRTY_PREFIX)) {
-        props[name] = value;
-        return;
-      }
+    /**
+     *
+     * @param {string} value - 속성 값
+     * @returns {string} - 변환된 속성 값
+     */
+    const formatAttributes = (value) => {
+      if (!value.includes(DIRTY_PREFIX)) return value;
+
       const dirtyIndex = findDirtyIndex(value);
       const arg = args[dirtyIndex];
-      props[name] = arg;
+      return arg;
+    };
+
+    Array.from(attributes).forEach((attr) => {
+      const { name, value } = attr;
+      if (name === "class") {
+        const classes = value.split(" ").map((className) => formatAttributes(className)).join(" ");
+        props[name] = classes;
+        return;
+      }
+      props[name] = formatAttributes(value);
     });
     return props;
   };
