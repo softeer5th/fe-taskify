@@ -1,5 +1,5 @@
 import { card } from "../components/card.js";
-import { savedData, loadData } from "../store/workData.js";
+import { savedData, loadData } from "../store/workList.js";
 const todoFormInit = (formCard) => {
   // form 초기화
   formCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록.
@@ -7,10 +7,10 @@ const todoFormInit = (formCard) => {
   formCard.querySelector(".content").value = "";
 };
 
-const addToStorage = (sectionType, title, content) => {
+const addStorage = (sectionType, title, content, CARD_ID) => {
   const workList = loadData();
   workList[sectionType].push({
-    id: Date.now(),
+    id: CARD_ID,
     createdDate: new Date().toISOString(),
     title,
     content,
@@ -21,13 +21,15 @@ const addToStorage = (sectionType, title, content) => {
 const addCard = (formCard, sectionType) => {
   const titleText = formCard.querySelector(".title").value;
   const contentText = formCard.querySelector(".content").value;
-  const cardDoc = card(titleText, contentText);
+
+  const CARD_ID = Date.now();
+  const cardDoc = card(CARD_ID, titleText, contentText);
   cardDoc.querySelector(".title").disabled = true;
   cardDoc.querySelector(".content").disabled = true;
   // newform 카드 바로 뒤에 추가
   formCard.after(cardDoc);
 
-  addToStorage(sectionType, titleText, contentText);
+  addStorage(sectionType, titleText, contentText, CARD_ID);
   todoFormInit(formCard); // 입력했던 값을 다시 빈 문자열로 초기화.
 };
 

@@ -5,14 +5,14 @@ export const cardForm = (sectionType) => {
     <li class="${sectionType}-form-card card display-none">
     <div class="card-contents-icons-box">
       <div class="card-texts">
-        <input
+        <textarea
           class="title text-strong"
           placeholder="제목을 입력하세요"
-          aria-placeholder="제목" />
-        <input
+          aria-placeholder="제목"></textarea>
+        <textarea
           class="content text-default"
           placeholder="내용을 입력하세요"
-          aria-placeholder="내용" />
+          aria-placeholder="내용"></textarea>
       </div>
     </div>
     <div class="card-btn-box">

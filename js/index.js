@@ -3,15 +3,14 @@ import { cardForm } from "../components/cardForm.js";
 import { cardNavbar } from "../components/cardNavbar.js";
 import { eachColumn } from "../components/eachColumn.js";
 import { header } from "../components/header.js";
-import { loadData } from "../store/workData.js";
+import { loadData } from "../store/workList.js";
 import { card } from "../components/card.js";
 
+const SECTION_TYPE = ["todo", "doing", "done"];
 const workList = loadData();
 
 const eachColumnRender = () => {
-  const sectionType = ["todo", "doing", "done"];
-
-  sectionType.forEach((type) => {
+  SECTION_TYPE.forEach((type) => {
     const column = eachColumn(type);
     const navbar = cardNavbar(type);
     const container = cardContainer();
@@ -40,14 +39,13 @@ const initRender = () => {
 };
 
 const loadPreviousCard = () => {
-  const sectionsTypes = ["todo", "doing", "done"];
   const fragment = new DocumentFragment();
-  sectionsTypes.forEach((type) => {
+  SECTION_TYPE.forEach((type) => {
     if (workList[type].length > 0) {
       workList[type].reverse(); //  최신순으로 default를 두어야할 것임. > 나중에 정렬 기능할 때 적용!
 
-      workList[type].forEach(({ title, content }) => {
-        const cardDoc = card(title, content);
+      workList[type].forEach(({ title, content, id }) => {
+        const cardDoc = card(id, title, content);
         cardDoc.querySelector(".title").disabled = true;
         cardDoc.querySelector(".content").disabled = true;
 
