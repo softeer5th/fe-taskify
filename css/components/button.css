@@ -1,0 +1,49 @@
+.button {
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button__large {
+    height: 56px;
+}
+
+.button__medium {
+    height: 32px;
+    width: 140px;
+    font-size: 14px;
+}
+
+.button__small {
+    height: 24px;
+}
+
+.button__icon {
+    background-color: transparent;
+    height: 24px;
+    width: 24px;
+    margin: 0;
+}
+
+.button--primary {
+    background-color: var(--accent-blue);
+}
+
+.button--secondary {
+    background-color: var(--gray-100);
+}
+
+.button--danger {
+    background-color: var(--accent-red);
+}
+
+.button:hover {
+    opacity: .8;
+}
+
+.button:disabled {
+    opacity: .3;
+}

@@ -2,7 +2,17 @@
 @import './theme/fonts.css';
 @import './theme/sizes.css';
 @import './components/header.css';
+@import './components/button.css';
+@import './components/task-card.css';
+@import './components/task-edit-card.css';
+@import './components/task-column.css';
+@import './components/main.css';
 
 * {
     box-sizing: border-box;
+}
+
+body {
+    margin: 1rem 8rem;
+    background-color: var(--gray-100);
 }
