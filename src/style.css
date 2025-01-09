@@ -100,8 +100,15 @@ textarea {
 /* Header Style */
 
 
-/* Body Style */
-
+/* Column List Style */
+.column-list {
+    width: 1280px;
+    margin-top: 32px;
+    margin-left: 80px;
+    gap: 24px;
+    display: flex;
+    flex-direction: row;
+}
 
 /* Column Style */
 
