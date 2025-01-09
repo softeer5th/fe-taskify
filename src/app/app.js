@@ -14,7 +14,7 @@ const App = () => {
             </div>
             <div>hello</div>
             ${Button({
-      label: "버튼",
+      label: "Button",
       showIcon: false,
       // eslint-disable-next-line
       onClick: () => {

@@ -1,3 +1,6 @@
+@import url("../components//Button/button.module.css");
+@import url("./reset.css");
+
 :root {
     --grayscale-50: #FEFEFE;
     --grayscale-100: #F7F7FC;
@@ -119,15 +122,4 @@
     font-family: var(--pretendard);
     font-size: var(--re);
     font-weight: var(--medium);
-}
-
-.container {
-    padding: var(--gap-100);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background-color: var(--surface-brand);
-    color: var(--text-white-default);
 }

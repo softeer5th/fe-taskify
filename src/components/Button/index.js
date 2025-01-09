@@ -1,3 +1,4 @@
+import { typo } from "../../constants/tokens/typo.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 
 /**
@@ -15,7 +16,7 @@ export const Button = ({
   type = "contained",
   onClick,
 }) => parser`
-<button onClick=${onClick} class="container">
+<button onClick=${onClick} class="button-container ${typo.selected.bold[16]}">
     ${showIcon && "아이콘"}
     ${label}
 </button>`;
