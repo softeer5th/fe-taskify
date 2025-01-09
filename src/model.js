@@ -47,7 +47,7 @@ export function Model() {
       editingTaskId: -1,
       editingColumnId: -1,
       movingTaskId: -1,
-      order: "asc",
+      order: "latest",
       isHistoryOpen: false,
     },
   };
@@ -77,6 +77,31 @@ export function Model() {
   }
 
   // Public method
+
+  function setEditingTaskId(taskId) {
+    model.state.editingTaskId = taskId;
+    notify();
+  }
+
+  function setEditingColumnId(columnId) {
+    model.state.editingColumnId = columnId;
+    notify();
+  }
+
+  function setMovingTaskId(taskId) {
+    model.state.movingTaskId = taskId;
+    notify();
+  }
+
+  function toggleOrder() {
+    model.state.order = model.state.order === "latest" ? "oldest" : "latest";
+    notify();
+  }
+
+  function toggleHistory() {
+    model.state.isHistoryOpen = !model.state.isHistoryOpen;
+    notify();
+  }
 
   function addListener(listener) {
     listeners.push(listener);
@@ -175,6 +200,11 @@ export function Model() {
     removeListener,
     undo,
     redo,
+    setEditingTaskId,
+    setEditingColumnId,
+    setMovingTaskId,
+    toggleOrder,
+    toggleHistory,
     addColumn,
     removeColumn,
     addTask,
