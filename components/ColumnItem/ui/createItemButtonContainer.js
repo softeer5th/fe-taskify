@@ -8,12 +8,20 @@ import {
 import createEditModal from "../../Modal/createEditModal.js";
 import createModal from "../../Modal/createModal.js";
 
-const createItemButtonContainer = ({ sectionId, itemId, title, content }) => {
+const createItemButtonContainer = ({ sectionId, itemId }) => {
   const handleClickDelete = () => {
     createModal({ content: "선택한 카드를 삭제할까요?", sectionId, itemId });
   };
 
   const handleClickEdit = () => {
+    const title = $itemButtonContainer.parentElement.querySelector(
+      ".column__item__title"
+    ).textContent;
+
+    const content = $itemButtonContainer.parentElement.querySelector(
+      ".column__item__content"
+    ).textContent;
+
     createEditModal({ title, content, sectionId, itemId });
   };
 
