@@ -47,7 +47,11 @@ const loadPreviousCard = () => {
       workList[type].reverse(); //  최신순으로 default를 두어야할 것임. > 나중에 정렬 기능할 때 적용!
 
       workList[type].forEach(({ title, content }) => {
-        fragment.appendChild(card(title, content));
+        const cardDoc = card(title, content);
+        cardDoc.querySelector(".title").disabled = true;
+        cardDoc.querySelector(".content").disabled = true;
+
+        fragment.appendChild(cardDoc);
       });
 
       const cardForm = document.querySelector(`.${type}-form-card`);

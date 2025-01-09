@@ -21,9 +21,11 @@ const addToStorage = (sectionType, title, content) => {
 const addCard = (formCard, sectionType) => {
   const titleText = formCard.querySelector(".title").value;
   const contentText = formCard.querySelector(".content").value;
-
+  const cardDoc = card(titleText, contentText);
+  cardDoc.querySelector(".title").disabled = true;
+  cardDoc.querySelector(".content").disabled = true;
   // newform 카드 바로 뒤에 추가
-  formCard.after(card(titleText, contentText));
+  formCard.after(cardDoc);
 
   addToStorage(sectionType, titleText, contentText);
   todoFormInit(formCard); // 입력했던 값을 다시 빈 문자열로 초기화.
