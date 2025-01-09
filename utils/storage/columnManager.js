@@ -1,21 +1,23 @@
 import { getColumnTasks } from './taskManager.js';
 
-let dataColumnKey = 1;
 
-export const setDefaultColumn = () => {
-  const columns = getColumn();
+export const setDefaultColumn = async () => {
+  const columns = await getColumn();
+  console.log(columns);
   if (!columns.length) { //innerhtml 로 각각의 기본 column 추가
     addColumn('해야할 일');
     addColumn('진행중인 일');
     addColumn('완료한 일');
   }
+  let dataColumnKey = 1;
+
   columns.forEach(column => {
     const newColumn = document.createElement('ol');
     newColumn.className = 'column';
     newColumn.setAttribute('data-column-key', `${dataColumnKey++}`);
     newColumn.innerHTML = `
       <li class="task-list">
-         <div class="column-title">${column.title}</div>
+         <div class="column-title">${column}</div>
          <div class="column-count">카운트</div>
          <div class="add-btn"> +</div>
         <div class="edit-btn"> x</div>
@@ -26,14 +28,16 @@ export const setDefaultColumn = () => {
   });
 }
 
-export const getColumn = () => {
-  let columnCount = 1;
-  const column = [];
-  while (localStorage.getItem(`column${columnCount}`)) {
-    columnCount++;
-    column.push(localStorage.getItem(`column${columnCount}`));
-  }
-  return column;
+export const getColumn = async () => {
+  return new Promise((resolve) => {
+    let columnCount = 1;
+    const columns = [];
+    while (localStorage.getItem(`column${columnCount}`)) {
+      columns.push(JSON.parse(localStorage.getItem(`column${columnCount}`)));
+      columnCount++;
+    }
+    resolve(columns);
+  });
 }
 
 export const addColumn = (columnTitle) => {

@@ -4,7 +4,7 @@ import { getColumn, setDefaultColumn } from '../utils/storage/columnManager.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await setDefaultColumn();
-  
+
   const columns = document.querySelectorAll('.column');
   columns.forEach(column => {
     const columnKey = column.getAttribute('data-column-key');
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     tasks.forEach(task => {
       makeCard(task, column);
     });
-  })
+  });
 });
 
 document.addEventListener('click', (e) => {
