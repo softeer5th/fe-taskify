@@ -4,6 +4,20 @@ import { parser } from "../lib/jsx-runtime/index.js";
 // eslint-disable-next-line
 const App = () => {
   const container = "hihi";
+  const button = Button({
+    label: "Button",
+    // eslint-disable-next-line
+    onClick: () => {
+      console.log("버튼 클릭");
+    },
+  });
+  const iconButton = Button({
+    label: "Button",
+    showIcon: true,
+  });
+  const icon = Button({
+    showIcon: true,
+  });
 
   return (
     parser`
@@ -13,14 +27,9 @@ const App = () => {
                 <h2>My name is Hamm</h2>
             </div>
             <div>hello</div>
-            ${Button({
-      label: "Button",
-      showIcon: false,
-      // eslint-disable-next-line
-      onClick: () => {
-        console.log("버튼 클릭");
-      },
-    })}
+            ${button}
+            ${iconButton}
+            ${icon}
         </div>`
   );
 };

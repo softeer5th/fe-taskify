@@ -7,4 +7,18 @@
 
     background-color: var(--surface-brand);
     color: var(--text-white-default);
+    border-radius: var(--gap-100);
 }
+
+.button-container:hover {
+    opacity: 80%;
+}
+
+.button-container:disabled {
+    opacity: 30%;
+}
+
+.button-text {
+    padding: 0 var(--gap-50) 0 var(--gap-50);
+}
+

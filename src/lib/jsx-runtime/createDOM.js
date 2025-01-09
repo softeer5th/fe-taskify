@@ -23,7 +23,9 @@ export const createDOM = (node) => {
 
   const element = createElement();
   Object.entries(node.props).forEach(([key, value]) => {
-    element.setAttribute(key, value.toString());
+    if (element.nodeName === "path" && (key === "stroke" || key === "fill")) {
+      element.setAttribute(key, "current");
+    } else element.setAttribute(key, value.toString());
   });
   Object.entries(node.events).forEach(([key, value]) => {
     element.addEventListener(key, value);
