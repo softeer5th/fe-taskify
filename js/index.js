@@ -1,4 +1,4 @@
-import { cardComponent } from "./component/card.js";
+import { cardComponent } from "../components/card.js";
 
 const todoFormInit = (formCard) => {
   // form 초기화
