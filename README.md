@@ -38,7 +38,7 @@
 
 0. Super Simple Layout ✅
 1. Storage setting (add , delete, edit, redo ..,,etc ) ✅
-2. Task adding
+2. Card adding ✅
 3. Card Sorting
 4. Card editing ( + delete)
 5. Card moving
@@ -95,9 +95,8 @@
         - [ ] edit
             - [ ] edit modal
     - [ ] CardList (Column)
-        - [ ] Skeleton
-        - [ ] Count of Cards
-        - [ ] Add Card
+        - [x] Count of Cards
+        - [x] Add Card
         - [ ] Delete Card
         - [ ] Edit Column Name
         - [ ] OverFlow Control

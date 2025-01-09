@@ -22,6 +22,14 @@ header {
   font-size: 24px;
   font-weight: 700;
   color: rgba(20, 20, 43, 1);
+  display: flex;
+
+  gap: 8px;
+
+}
+
+.sort-btn {
+  
 }
 
 main {
@@ -45,25 +53,29 @@ main {
 }
 
 .column-title {
+  font-weight: 700;
+  color: rgba(78, 75, 102, 1);
   margin-right: 9px;
 }
-.add-btn{
+
+.add-btn {
   width: 24px;
   height: 24px;
   position: absolute;
   right: 40px;
 }
-.edit-btn{
+
+.edit-btn {
   width: 24px;
   height: 24px;
   position: absolute;
   right: 9px;
 }
 
-.task{
+.task {
   display: flex;
   justify-content: space-between;
-  width : 320px;
+  width: 320px;
   height: 104px;
   padding: 16px;
   border-color: black;
@@ -74,7 +86,7 @@ main {
   margin: 16px 0 16px 0;
 }
 
-.task-title{
+.task-title {
   font-family: 'Pretendard Variable';
   font-size: 14px;
   line-height: 16.41px;
@@ -85,7 +97,7 @@ main {
   color: rgba(20, 20, 43, 1);
 }
 
-.task-body{
+.task-body {
   font-family: 'Pretendard Variable';
   font-size: 14px;
   line-height: 16.41px;
@@ -95,7 +107,8 @@ main {
   font-weight: 500;
   color: rgba(110, 113, 145, 1);
 }
-.task-author{
+
+.task-author {
   font-family: 'Pretendard Variable';
   font-size: 12px;
   line-height: 14.32px;
@@ -106,14 +119,14 @@ main {
   color: rgba(160, 163, 189, 1);
 }
 
-.add-can-btn{
+.add-can-btn {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 13px;
 }
 
-.task-add-can-btn{
+.task-add-can-btn {
   width: 140px;
   height: 32px;
   border-radius: 8px;
@@ -124,7 +137,7 @@ main {
   color: rgba(110, 113, 145, 1);
 }
 
-.task-add-add-btn{
+.task-add-add-btn {
   width: 140px;
   height: 32px;
   border-radius: 8px;
