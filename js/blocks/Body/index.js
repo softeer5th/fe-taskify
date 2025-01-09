@@ -5,14 +5,13 @@ const saveTasksToLocalStorage = (tasks) => {
 
 const loadTasksFromLocalStorage = () => {
     const tasks = localStorage.getItem('tasks');
-    return tasks ? JSON.parse(tasks) : [];
+    return tasks ? JSON.parse(tasks) : [{ type: 'todo', list: [] }, { type: 'doing', list: [] }, { type: 'done', list: [] }];
 };
 
 async function loadTasksFromJSON () {
     const tasks = loadTasksFromLocalStorage();
     return tasks;
 };
-
 
 function createSection(containerId, title, tasks) {
     const container = document.querySelector('main');
@@ -47,10 +46,13 @@ function createSection(containerId, title, tasks) {
         clearTasks(containerId);
     });
 
-    tasks.filter(task => task.type === containerId).forEach(task => {
-        const newTask = createTaskElement(task.type, task.title, task.content);
-        ulElement.appendChild(newTask);
-    });
+    tasks.filter(task => task.type === containerId).forEach(({ type, list }) => {
+        list.forEach(({id, title, content}) => {
+            const newTask = createTaskElement(type, id, title, content);
+
+            ulElement.appendChild(newTask);
+        });
+    }); 
 }
 
 const clearTasks = (containerId) => {
@@ -97,26 +99,42 @@ const initializeDragAndDrop = () => {
             e.preventDefault();
 
             const afterElement = getDragAfterElement(list, e.clientY);
-            const draggable = document.querySelector('.dragging');
+            const draggable = document.querySelector('.dragging'); // 드래그 요소
             if (draggable) {
+                const previousParentId = draggable.parentElement.id;
+
                 if (afterElement) {
                     list.insertBefore(draggable, afterElement);
                 } else {
                     list.appendChild(draggable);
                 }
-                console.log(list.scrollHeight);
                 list.style.height = `${list.scrollHeight + 300}px`;
 
+                const parentElementId = afterElement ? afterElement.parentElement.id : previousParentId;
+                const targetListId = list.id;
+
+                console.log(parentElementId, targetListId); // 기존의 섹션 id, 이동된 섹션 id
+                console.log('draggable', draggable); // 이동된 요소 id
+                console.log('item', e.target); // drop된 위치 (ul, li 둘 중 하나)
+                
                 const tasks = loadTasksFromLocalStorage();
                 const updatedTasks = tasks.map(task => {
-                    if (task.title === draggable.querySelector('h3').innerText) {
-                        return {
-                            ...task,
-                            type: list.id.replace('list-', '')
-                        };
+                    // 기존 섹션에서 삭제
+                    if(task.type === parentElementId.replace('list-', '')) {
+                        task.list = task.list.filter(t => {
+
+                            return t.id !== parseInt(draggable.id.split('-')[1]);
+                        });
                     }
+
+                    // 이동된 섹션에서 추가
+                    if(task.type === targetListId.replace('list-', '')) {
+                        task.list.push({ id: parseInt(draggable.id.split('-')[1]), title: draggable.querySelector('h3').innerText, content: draggable.querySelector('p').innerText });
+                    }
+
                     return task;
                 });
+
                 saveTasksToLocalStorage(updatedTasks);
             }
         });
@@ -187,7 +205,6 @@ const createTaskBox = (type, list, task = null) => {
             const tasks = loadTasksFromLocalStorage();
 
             const updatedTasks = [...tasks];
-
             const taskIndex = tasks.findIndex(task => task.title === draggable.querySelector('h3').innerText);
             if (taskIndex !== -1) {
                 const updatedTask = {
@@ -200,12 +217,19 @@ const createTaskBox = (type, list, task = null) => {
 
             saveTasksToLocalStorage(updatedTasks);
         } else {
-            const newTask = createTaskElement(type, titleInput.value, contentInput.value);
+
+            const tasks = loadTasksFromLocalStorage();
+            const totalCount = tasks.reduce((sum, item) => sum + item.list.length, 0);
+            const newTask = createTaskElement(type, totalCount+1, titleInput.value, contentInput.value);
             list.insertBefore(newTask, list.firstChild);
             taskBox.remove();
 
-            const tasks = loadTasksFromLocalStorage();
-            tasks.push({ id: tasks.length+1, type, title: titleInput.value, content: contentInput.value });
+            const nextId = tasks.reduce((sum, item) => sum + item.list.length, 0);
+            tasks.forEach(task => {
+                if (task.type === type) {
+                    task.list.unshift({ id: nextId + 1, title: titleInput.value, content: contentInput.value });
+                }
+            });
             saveTasksToLocalStorage(tasks);
         }
     };
@@ -227,11 +251,12 @@ const createTaskBox = (type, list, task = null) => {
     return taskBox;
 };
 
-const createTaskElement = (type, title, content) => {
+const createTaskElement = (type, id, title, content) => {
+    console.log(type, title, content);
     const task = document.createElement('li');
     task.className = 'task-item';
     task.draggable = true;
-    task.id = `task-${title}`;
+    task.id = `task-${id}`;
 
     const taskWrapper = document.createElement('div');
     const taskTitle = document.createElement('h3');
