@@ -3,6 +3,7 @@ import Modal from "../components/modal.js";
 import { renderTasks } from "./column.js";
 import { columns, handleDrag } from "./index.js";
 import { createModalChildren } from "./modal.js";
+import { setLog } from "./logScript.js";
 
 export function createDeleteModal(task) {
     const body = document.getElementsByTagName("body")[0];
@@ -34,6 +35,9 @@ export function createTask(task) {
 export function deleteTask(task) {
     const { title, content, created, column } = task;
     columns[column] = columns[column].filter((el) => el != task);
+    
+    setLog({task: task, type:'remove', updated: new Date() })
+
     renderTasks(column);
 }
 

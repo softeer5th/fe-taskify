@@ -2,6 +2,7 @@ import FormHTML from "../components/Form.js";
 import { renderTasks } from "../script/column.js";
 import { columns } from "../script/index.js";
 import { taskEventHandler, taskHTML } from "../script/task.js";
+import { setLog } from "./logScript.js";
 
 export default function createFormElement(task, columnIdx) {
     const cardElement = document.createElement("li");
@@ -49,6 +50,12 @@ function onEdit(e, task) {
 
     columns[column][idx] = newTask;
 
+    setLog({
+        task: task,
+        type: 'update',
+        updated: new Date(),
+    })
+
     renderTasks(column);
 }
 
@@ -91,12 +98,20 @@ function onSubmit(e, columnIdx) {
 
     self.parentNode.removeChild(self);
 
+    const created = new Date();
+
     const newTask = {
         title: title,
         content: content,
-        created: new Date(),
+        created: created,
         column: columnIdx,
     };
+
+    setLog({
+        task: newTask,
+        type: 'add',
+        updated: created
+    })
 
     // columns 상태에 새 task 추가
     columns[columnIdx].push(newTask);
