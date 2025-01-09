@@ -110,7 +110,7 @@ const initializeDragAndDrop = () => {
                 }
                 list.style.height = `${list.scrollHeight + 300}px`;
 
-                const parentElementId = afterElement ? afterElement.parentElement.id : previousParentId;
+                const parentElementId = previousParentId;
                 const targetListId = list.id;
 
                 console.log(parentElementId, targetListId); // 기존의 섹션 id, 이동된 섹션 id
@@ -118,18 +118,26 @@ const initializeDragAndDrop = () => {
                 console.log('item', e.target); // drop된 위치 (ul, li 둘 중 하나)
                 
                 const tasks = loadTasksFromLocalStorage();
+                const draggableId = parseInt(draggable.id.split('-')[1]);
+                const draggableTitle = draggable.querySelector('h3').innerText;
+                const draggableContent = draggable.querySelector('p').innerText;
+
                 const updatedTasks = tasks.map(task => {
                     // 기존 섹션에서 삭제
-                    if(task.type === parentElementId.replace('list-', '')) {
-                        task.list = task.list.filter(t => {
-
-                            return t.id !== parseInt(draggable.id.split('-')[1]);
-                        });
+                    if (task.type === parentElementId.replace('list-', '')) {
+                        task.list = task.list.filter(t => t.id !== draggableId);
                     }
 
                     // 이동된 섹션에서 추가
-                    if(task.type === targetListId.replace('list-', '')) {
-                        task.list.push({ id: parseInt(draggable.id.split('-')[1]), title: draggable.querySelector('h3').innerText, content: draggable.querySelector('p').innerText });
+                    if (task.type === targetListId.replace('list-', '')) {
+                        const newTask = { id: draggableId, title: draggableTitle, content: draggableContent };
+                        if (afterElement) {
+                            const afterElementId = parseInt(afterElement.id.split('-')[1]);
+                            const afterElementIndex = task.list.findIndex(t => t.id === afterElementId);
+                            task.list.splice(afterElementIndex, 0, newTask);
+                        } else {
+                            task.list.push(newTask);
+                        }
                     }
 
                     return task;
@@ -197,6 +205,7 @@ const createTaskBox = (type, list, task = null) => {
     addBtn.innerText = task ? '저장' : '등록';
     addBtn.disabled = !titleInput.value || !contentInput.value;
     addBtn.onclick = () => {
+        // TODO: 수정일 때의 로직 변경
         if (task) {
             task.querySelector('h3').innerText = titleInput.value;
             task.querySelector('p').innerText = contentInput.value;
