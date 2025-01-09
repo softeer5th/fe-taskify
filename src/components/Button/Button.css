@@ -1,0 +1,24 @@
+.primary-button{
+    display:flex;
+    height: 32px;
+    gap:4px;
+    align-items: center;
+    padding:var(--Number-100); 
+    border-radius: var(--Number-100);
+    flex-grow: 1;
+}
+
+.primary-button:hover {    
+    opacity: 0.8;
+}
+  
+.primary-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.button-content{
+    padding:0 4px;
+    font:var(--display-bold14);
+}
+

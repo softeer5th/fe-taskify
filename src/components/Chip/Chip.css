@@ -1,0 +1,16 @@
+.chip-container{
+    display: inline-flex;  
+    align-items: center;
+    width:auto;
+    gap:4px;
+    height: 24px;
+    border-radius: var(--Number-100);
+    border:1px solid var(--border-default);
+    padding:0px 8px;
+    
+}
+
+.chip-content{
+    color:var(--text-bold);
+    font:var(--display-mediym12);
+}

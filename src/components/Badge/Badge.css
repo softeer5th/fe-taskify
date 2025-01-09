@@ -1,0 +1,14 @@
+.badge-container{
+    display: inline-flex;  
+    width:auto;
+    height: 24px;
+    border-radius: var(--Number-100);
+    border:1px solid var(--border-default);
+    padding:5px 8px;
+    
+}
+
+.badge-content{
+    color:var(--text-weak);
+    font:var(--display-mediym12);
+}
