@@ -53,6 +53,4 @@ export const makeCard = (task, parentColumn) => {
     addTask(columnKey, task);
     parentColumn.querySelector('.column-count').textContent++;
   }
-
-
 }

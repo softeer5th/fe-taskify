@@ -1,6 +1,7 @@
 import { closeCardModal, makeCard, popupCardModal } from './addCard.js';
 import { getColumnTasks } from '../utils/storage/taskManager.js';
-import { getColumn, setDefaultColumn } from '../utils/storage/columnManager.js';
+
+import { getColumn, setDefaultColumn } from './setColumn.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   setDefaultColumn();
