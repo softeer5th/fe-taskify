@@ -206,11 +206,11 @@ const editTodoItem = (identifier) => {
             component
                 .querySelector(`.${classNames.todoEditFormSubmitBtn}`)
                 .addEventListener('click', () => {
-                    const element = findDomElement(identifier)
-                    const title = element.querySelector(
+                    const editFormElement = findDomElement(identifier)
+                    const title = editFormElement.querySelector(
                         `.${classNames.todoEditFormInputTitle}`
                     ).value
-                    const content = element.querySelector(
+                    const content = editFormElement.querySelector(
                         `.${classNames.todoEditFormInputContent}`
                     ).value
                     // TODO: author 정보 동적으로 가져오기
@@ -218,7 +218,7 @@ const editTodoItem = (identifier) => {
 
                     replaceDomElement(
                         templateNames.todoItem,
-                        element,
+                        editFormElement,
                         (identifier, component) => {
                             const editedTodoItem = TodoItem(
                                 identifier,

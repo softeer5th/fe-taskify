@@ -44,7 +44,7 @@
         </section>
     </template>
 
-    <template id="todo-item-form-template">
+    <template id="todo-item-add-form-template">
         <section class="todos__add-form">
             <input
                 class="todos__add-form__input-title"
@@ -62,6 +62,29 @@
                 </button>
                 <button class="todos__add-form__submit-btn" type="button">
                     등록
+                </button>
+            </div>
+        </section>
+    </template>
+
+    <template id="todo-item-edit-form-template">
+        <section class="todos__add-form">
+            <input
+                class="todos__add-form__input-title"
+                type="text"
+                placeholder="제목을 입력하세요"
+            />
+            <input
+                class="todos__add-form__input-content"
+                type="text"
+                placeholder="내용을 입력하세요"
+            />
+            <div class="todos__add-form__button-container">
+                <button class="todos__add-form__cancel-btn" type="button">
+                    취소
+                </button>
+                <button class="todos__add-form__submit-btn" type="button">
+                    저장
                 </button>
             </div>
         </section>

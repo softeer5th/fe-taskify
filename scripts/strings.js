@@ -33,6 +33,6 @@ export const templateNames = {
     todoHeader: 'todo-header-template',
     todoItem: 'todo-item-template',
     todoCategory: 'todo-category-template',
-    todoItemAddForm: 'todo-item-form-template',
-    todoItemEditForm: 'todo-item-form-template',
+    todoItemAddForm: 'todo-item-add-form-template',
+    todoItemEditForm: 'todo-item-edit-form-template',
 }
