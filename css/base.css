@@ -72,6 +72,8 @@ main {
 
 .column {
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .column-title {
@@ -121,6 +123,7 @@ main {
   box-shadow: 0 1px 4px 0 rgba(110, 128, 145, 0.24);
   margin: 16px 0 0 0;
   word-break: break-all;
+  order: 1;
 }
 
 .title-cont-au {
@@ -203,9 +206,7 @@ footer {
 }
 
 .fab-plusicon {
-  width: 32px;
-  height: 32px;
-  color: rgba(255, 255, 255, 1);
-  margin: 12px;
+  background: none;
+  border: none;
 }
 

@@ -86,8 +86,8 @@
         - [ ] Drag
         - [ ] Drop
     - [ ] Sort
-        - [ ] 생성 순
-        - [ ] 최신 순
+        - [x] 생성 순
+        - [x] 최신 순
         - [ ] animation
     - [ ] Card
         - [ ] delete

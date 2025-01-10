@@ -34,7 +34,7 @@ export const makeCard = (task, parentColumn) => {
 
   const newTask = document.createElement('li');
   newTask.className = 'task';
-
+  newTask.setAttribute('data-timestamp', task.timestamp);
   newTask.innerHTML = `
     <div class="title-cont-au">
       <div class = "content-author-divider">
