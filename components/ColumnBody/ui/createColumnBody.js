@@ -38,11 +38,9 @@ const createColumnBody = ({ sectionId, items }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     const draggedElement = document.querySelector(".dragging");
-    const siblingElements = Array.from($columnBody.children);
-    const dropIndex = siblingElements.indexOf(shadowElement);
 
     if (shadowElement && draggedElement) {
-      $columnBody.insertBefore(draggedElement, shadowElement);
+      $columnBody.replaceChild(draggedElement, shadowElement);
       shadowElement.remove();
       shadowElement = null;
     }
@@ -50,7 +48,7 @@ const createColumnBody = ({ sectionId, items }) => {
     const newSectionId = $columnBody.closest(".column__container").id;
     const itemId = Number(draggedElement.dataset.id);
 
-    updateTodoList(newSectionId, itemId, dropIndex);
+    updateTodoList(newSectionId, itemId);
   };
 
   const handleDragLeave = (e) => {
@@ -75,8 +73,12 @@ const createColumnBody = ({ sectionId, items }) => {
 
 export default createColumnBody;
 
-// drag drop 한 순서 DB에 반영
-const updateTodoList = (sectionId, itemId, dropIndex) => {
+// 1. drop한 시점에 $columnBody에 있는 shadowElement를 draggedElement로 교체
+// 2. 요소를 drop한 section id와 해당 요소의 id를 넘겨준다.
+// 칼럼 이동: 이전 칼럼에서 제거하고, 새로운 칼럼에 추가
+// - 첫 진입 시 어차피 생성 순으로 정렬되므로 최하단에 추가
+// TODO: 배열 메서드로 개선 필요
+const updateTodoList = (sectionId, itemId) => {
   const todoList = loadLocalStorage();
 
   let draggedItem = null;
@@ -94,11 +96,9 @@ const updateTodoList = (sectionId, itemId, dropIndex) => {
 
   const finalList = filteredList.map((section) => {
     if (section.id === sectionId && draggedItem) {
-      const updatedItems = [...section.items];
-      updatedItems.splice(dropIndex, 0, draggedItem); // 드롭된 위치에 삽입
       return {
         ...section,
-        items: updatedItems,
+        items: [...section.items, draggedItem],
       };
     }
     return section;
