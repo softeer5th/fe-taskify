@@ -1,0 +1,28 @@
+.columnHeader{
+    padding: 0px var(--number_200) 0px var(--number_200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--number_100);
+}
+
+.columnHeader-textArea{
+    width: auto;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--number_100);
+}
+
+.columnHeader-icons{
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--number_100);
+}
+
+.columnHeader-icon{
+    padding: 5px;
+}

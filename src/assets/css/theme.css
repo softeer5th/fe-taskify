@@ -1,5 +1,10 @@
 :root {
     margin: 0 auto;
+    width: 100vw;
+    height: 100vh;
+
+    --content-vertical-padding: 18px;
+    --content-horizontal-padding: 80px;
 
     --color_text_strong: #14142B;
     --color_text_bold: #4E4B66;
@@ -36,6 +41,15 @@
     --shadow_floating:0px 1px 4px rgba(110, 128, 145, 0.08),
         0px 16px 16px rgba(110, 128, 145, 0.24),
 
+}
+
+body{
+    background-color: var(--color_surface_alt);
+}
+
+div{
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .display-bold24 {

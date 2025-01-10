@@ -29,14 +29,14 @@ export class Logo extends Component {
 
     constructor() {
         super();
-        // this.children.edit.object.addEvent("click", () => {
-        //     console.log("edit card clicked!!");
-        // });
+        this.children.edit.object.addEvent("click", () => {
+            console.log("edit card clicked!!");
+        });
     }
 
     template() {
         return `
-            <div id = "${this.rootId}">Logo</div>
+            <div>Logo</div>
         `;
     }
 

@@ -21,7 +21,6 @@ export class EditCard extends Component {
 
     constructor(title, body, author,
          onConfirm = () => {
-        console.log("!!!1");
      }, onDismiss = () => { }) {
         super();
         this.title = title;
@@ -59,7 +58,6 @@ export class EditCard extends Component {
 
         super.render(parent);
         
-
     }
 
     addEvent(listenerName, callback) {

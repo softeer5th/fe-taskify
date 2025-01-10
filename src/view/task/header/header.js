@@ -8,45 +8,39 @@ import { Logo } from "./logo.js";
 export class Header extends Component {
 
     children = {
-        // button: {
-        //     object: new IconButton("/assets/images/plus.svg",),
-        //     parentSelector: `#${this.rootId}`,
-        // },
-        badge: {
-            object: new Badge(4400),
-            parentSelector: `#${this.rootId}`,
-        },
-        // chip: {
-        //     object: new Chip("최신순"),
-        //     parentSelector: `#${this.rootId}`,
-        // },
-        logo: {
-            object: new Logo(),
-            parentSelector: `#${this.rootId}`,
-        }
     };
 
     events = [];
 
-    constructor() {
+    constructor(onHistoryClick = () => {}) {
         super();
+        this.onHistoryClick = onHistoryClick;
     }
+
+    historyIconRef ="/assets/images/clock.svg"
 
     template() {
         return `
-            <div id = "${this.rootId}" class = "div">  <span> text!!! </span> </div>
+            <div id = "headerContent">
+                <div id = "header-logo">
+                    TASKIFY
+                </div>
+                <img src = "${this.historyIconRef}" alt = "history-icon" id = "history-icon"/>
+            </div>
         `;
     }
 
     render(parent) {
-        // this.children.button.object.addEvent("click", () => {
-        //     console.log("button click!!");
-        // });
 
-        this.children.badge.object.addEvent("click", () => {
-            console.log("click!!");
-        });
         super.render(parent);
+        
+        const history = parent.querySelector("#history-icon");
+
+        if (history) {
+            history.addEventListener("click", (event) => {
+                this.onHistoryClick
+            },false);
+        }
 
     }
 
