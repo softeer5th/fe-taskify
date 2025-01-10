@@ -16,10 +16,10 @@ export const colors = {
 
 export function setButtonColor(element, backgroundColor, textColor) {  
   if (backgroundColor in colors) {
-    element.classList.add(backgroundColor);
+    element.classList.add(`bg-${backgroundColor}`);
   }
 
   if (textColor in colors) {
-    element.classList.add(textColor);
+    element.classList.add(`text-${textColor}`);
   }
 }

@@ -9,7 +9,9 @@ export function Button({type,text,icon,backgroundColor,textColor,eventFuntion}){
     
     switch(type){
         case 'icon':
-            primaryButton.innerHTML = getIconSVG(icon,textColor)
+            primaryButton.innerHTML = getIconSVG(icon,textColor);
+            primaryButton.classList.remove('primary-button');
+            primaryButton.classList.add('icon-button');
             break;
         case 'text':
             primaryButton.innerHTML = `
