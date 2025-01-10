@@ -16,7 +16,7 @@ export const Icon = ({
   name, size = "lg", fillColor = "", strokeColor = "", onClick,
 }) => {
   const SIZE_NUM = size === "lg" ? 24 : 16;
-  const element = icons[name];
+  const element = icons[name]();
 
   if (fillColor) element.props.fill = fillColor;
   if (strokeColor) element.props.stroke = strokeColor;
