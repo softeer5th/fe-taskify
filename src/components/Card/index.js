@@ -1,5 +1,6 @@
 import { Icon } from "../../constants/icons/index.js";
 import { typos, colors } from "../../constants/tokens/index.js";
+import { useState } from "../../lib/hooks/useState.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { Button } from "../Button/index.js";
 
@@ -45,9 +46,11 @@ const Icons = (onClickTop, onClickBottom) => parser`
 export const Card = ({
   title, body, caption, type = "default", onClickLT, onClickRB,
 }) => {
+  const [cardType, setCardType] = useState(type);
+
   // eslint-disable-next-line
-  const findContents = (type) => {
-    if (type === "add-edit") return Buttons(onClickLT, onClickRB);
+  const findContents = () => {
+    if (cardType === "add-edit") return Buttons(() => setCardType("default"), onClickRB);
     return Icons(onClickLT, onClickRB);
   };
 
