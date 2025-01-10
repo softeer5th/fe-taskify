@@ -32,10 +32,9 @@ const ColumnItem = ({
     title,
     content,
   });
-
   const $author = createAuthor({ author });
-  $columnItem.append($textContainer, $author);
 
+  $columnItem.append($textContainer, $author);
   $columnItem.addEventListener("dragstart", handleDragStart);
   $columnItem.addEventListener("dragend", handleDragEnd);
 
