@@ -18,14 +18,13 @@ const loadData = () => {
 };
 
 const deleteCardFormStorage = (cardId, sectionType) => {
-  console.log(cardId, "삭제될 id", workList[sectionType]);
   const updatedWorkList = {
     ...workList,
     [sectionType]: workList[sectionType].filter(
       (item) => item.id !== Number(cardId)
     ),
   };
-  console.log(updatedWorkList, "삭제 후 workList");
+
   savedData(updatedWorkList);
   workList = loadData();
 };
