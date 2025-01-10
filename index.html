@@ -32,7 +32,7 @@
                 padding: 0 var(--number-50);
               "
             >
-              <p>30</p>
+              <p class="textlabel">30</p>
             </div>
           </div>
           <button id="add-card">
@@ -50,12 +50,23 @@
         class="surface-default"
         style="
           width: 320px;
+          display: flex;
+          flex-direction: column;
           padding: var(--number-200);
           border-radius: var(--number-100);
-          gap: var(--number-200);
         "
       >
-        <div id="buttons-area" style="display: flex; gap: 8px"></div>
+        <div style="width: 100%; display: flex">
+          <div id="text-area" style="width: 100%;"></div>
+          <div
+            id="icon-area"
+            style="display: flex; flex-direction: column; padding-left: 4px"
+          ></div>
+        </div>
+        <div
+          id="button-area"
+          style="display: flex; gap: 8px; margin-top: 16px"
+        ></div>
       </li>
     </template>
     <!-- 버튼 템플릿 -->
@@ -72,6 +83,38 @@
           border-radius: var(--number-100);
         "
       ></button>
+    </template>
+    <!-- 아이콘 버튼 템플릿 -->
+    <template id="icon-template">
+      <button>
+        <img />
+      </button>
+    </template>
+    <!-- 정적 텍스트 템플릿 -->
+    <template id="freezed-text-template">
+      <div style="width: 100%; display: flex; flex-direction: column; gap: 8px">
+        <h3 class="display-bold14 text-strong">애국가를 불러보자</h3>
+        <p class="display-medium14 text-default">
+          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화
+          삼천리 화려강산 대한사람 대한으로 길이 보전하세
+        </p>
+        <p
+          id="author"
+          class="display-medium14 text-weak"
+          style="margin-top: 8px"
+        >
+          author by <span id="author">web</span>
+        </p>
+      </div>
+    </template>
+    <!-- 텍스트 폼 템플릿 -->
+    <template id="text-form-template">
+      <form
+        style="width: 100%; display: flex; flex-direction: column; gap: 8px"
+      >
+        <input class="display-bold14 text-strong" placeholder="제목을 입력하세요"/>
+        <textarea class="display-medium14 text-default" placeholder="내용을 입력하세요"></textarea>
+      </form>
     </template>
   </head>
   <body
@@ -124,7 +167,12 @@
             "
           >
             <img src="./assets/icons/arrowBoth.svg" alt="arrow" />
-            <p class="display-medium12 text-bold">생성 순</p>
+            <p
+              class="textlabel display-medium12 text-bold"
+              style="padding: 0 4px"
+            >
+              생성 순
+            </p>
           </button>
         </div>
         <button id="history">

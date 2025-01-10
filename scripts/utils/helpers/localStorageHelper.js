@@ -1,6 +1,26 @@
 /**
+ * @typedef {Object} Card
+ * @property {number} id - 카드 ID
+ * @property {string} title - 카드 제목
+ * @property {string} body - 카드 내용
+ * @property {string} createdDate - 카드 생성일
+ */
+
+/**
+ * @typedef {Object} Column
+ * @property {number} columnId - 컬럼 ID
+ * @property {string} columnName - 컬럼 이름
+ * @property {Card[]} cards - 카드 배열
+ */
+
+/**
+ * @typedef {Object} Todos
+ * @property {Column[]} columns - 컬럼 배열
+ */
+
+/**
  * 투두 데이터를 로컬스토리지로부터 불러오는 함수
- * @returns {string[]} 투두 데이터
+ * @returns {Todos} 투두 데이터
  */
 const loadTodos = () => {
   const Todos = JSON.parse(localStorage.getItem('columns')) || [];
