@@ -29,6 +29,17 @@ const getSortedTodoList = ({ todoList, sortType }) => {
   });
 };
 
+const updateDOM = (sortedTodoList) => {
+  const $main = document.querySelector("main.column__section");
+
+  const $fragment = document.createDocumentFragment();
+  sortedTodoList.forEach((todo) => {
+    $fragment.appendChild(ColumnSection(todo));
+  });
+
+  $main.replaceChildren($fragment);
+};
+
 const createSortButton = () => {
   const $sortButton = createButton({
     className: "sort__button",
@@ -51,14 +62,7 @@ const createSortButton = () => {
     });
 
     // 3. 데이터를 기준으로 column__section을 갈아끼운다.
-    const $main = document.querySelector("main.column__section");
-
-    const $fragment = document.createDocumentFragment();
-    sortedTodoList.forEach((todo) => {
-      $fragment.appendChild(ColumnSection(todo));
-    });
-
-    $main.replaceChildren($fragment);
+    updateDOM(sortedTodoList);
 
     // 텍스트 토글 (생성 순 / 최신 순)
     e.currentTarget.querySelector("span").textContent =
