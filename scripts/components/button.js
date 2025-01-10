@@ -3,7 +3,7 @@
  * @param {Object} options - 옵션 객체
  * @param {'add' | 'cancle' | 'delete' | 'edit'} options.type - 버튼 타입
  * @param {boolean} [options.isDisabled=false] - 버튼 활성화 여부 (기본값: false)
- * @param {function} [options.onClick] - 클릭 이벤트 핸들러
+ * @param {Function} [options.onClick] - 클릭 이벤트 핸들러
  * @returns {DocumentFragment} - 버튼 요소를 포함하는 DocumentFragment
  */
 const Button = ({ type, isDisabled = false, onClick }) => {

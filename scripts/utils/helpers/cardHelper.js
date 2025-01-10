@@ -2,20 +2,51 @@ import Button from '../../components/button.js';
 import IconButton from '../../components/iconButton.js';
 
 /**
- * 카드 모드에 따라 그림자 생성
+ * 카드 모드에 따라 텍스트영역 세팅
+ * @param {HTMLElement} cardElement
+ * @param {'default' | 'add' | 'drag' | 'place'} mode
+ * @param {Card} cardData
+ * @param {boolean} isEditing
+ * @param {Function} setDisabled
+ */
+const setCardTextArea = (
+  cardElement,
+  mode,
+  cardData,
+  isEditing,
+  setDisabled
+) => {};
+
+/**
+ * 카드 모드에 따라 아이콘 버튼 세팅
  * @param {HTMLElement} cardElement
  * @param {'default' | 'add' | 'drag' | 'place'} mode
  */
-const setCardShadow = (cardElement, mode) => {
-  if (mode === 'drag') {
-    cardElement.style.boxShadow = 'var(--shadow-floating)';
-  } else {
-    cardElement.style.boxShadow = 'var(--shadow-normal)';
+const setCardIconButtons = (cardElement, mode) => {
+  const iconsArea = cardElement.querySelector('#icon-area');
+
+  if (mode === 'add') {
+    // 이 친구는 레이아웃에 기본적으로 존재하는 영역이므로 display: none 처리
+    iconsArea.style.display = 'none';
+    return;
   }
+
+  iconsArea.appendChild(
+    IconButton({
+      type: 'delete',
+      onClick: () => console.log('delete button clicked'),
+    })
+  );
+  iconsArea.appendChild(
+    IconButton({
+      type: 'edit',
+      onClick: () => console.log('edit button clicked'),
+    })
+  );
 };
 
 /**
- * 카드 모드에 따라 버튼 추가
+ * 카드 모드에 따라 버튼 세팅
  * @param {HTMLElement} cardElement
  * @param {'default' | 'add' | 'drag' | 'place'} mode
  * @param {boolean} isEditing
@@ -57,31 +88,16 @@ const setCardButtons = (cardElement, mode, isEditing, isDisabled) => {
 };
 
 /**
- * 카드 모드에 아이콘 버튼 유무 설정
+ * 카드 모드에 따라 그림자 세팅
  * @param {HTMLElement} cardElement
  * @param {'default' | 'add' | 'drag' | 'place'} mode
  */
-const setCardIconButtons = (cardElement, mode) => {
-  const iconsArea = cardElement.querySelector('#icon-area');
-
-  if (mode === 'add') {
-    // 이 친구는 레이아웃에 기본적으로 존재하는 영역이므로 display: none 처리
-    iconsArea.style.display = 'none';
-    return;
+const setCardShadow = (cardElement, mode) => {
+  if (mode === 'drag') {
+    cardElement.style.boxShadow = 'var(--shadow-floating)';
+  } else {
+    cardElement.style.boxShadow = 'var(--shadow-normal)';
   }
-
-  iconsArea.appendChild(
-    IconButton({
-      type: 'delete',
-      onClick: () => console.log('delete button clicked'),
-    })
-  );
-  iconsArea.appendChild(
-    IconButton({
-      type: 'edit',
-      onClick: () => console.log('edit button clicked'),
-    })
-  );
 };
 
-export { setCardShadow, setCardButtons, setCardIconButtons };
+export { setCardIconButtons, setCardButtons, setCardShadow };

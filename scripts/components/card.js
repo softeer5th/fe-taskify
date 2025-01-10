@@ -19,9 +19,10 @@ const Card = (mode = 'default', cardData) => {
   const card = document.getElementById('card-template').content.cloneNode(true);
   const cardElement = card.querySelector('li');
 
-  setCardShadow(cardElement, mode);
-  setCardButtons(cardElement, mode, false, true);
+  
   setCardIconButtons(cardElement, mode);
+  setCardButtons(cardElement, mode, false, false);
+  setCardShadow(cardElement, mode);
 
   if (mode === 'add') {
     cardElement.querySelector('#author').style.display = 'none';
