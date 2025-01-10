@@ -78,6 +78,7 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
       title,
       content,
       author: getDevice(),
+      createdAt: new Date(),
     };
 
     const $newColumnItem = createNewColumnItem({
