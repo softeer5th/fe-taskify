@@ -23,3 +23,12 @@
     color: var(--color-text-bold);
   }
 }
+
+:root {
+  --translate-offset: 0px;
+}
+
+.item-move {
+  transition: transform 0.5s ease;
+  transform: translateY(var(--translate-offset));
+}

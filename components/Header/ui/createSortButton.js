@@ -1,7 +1,6 @@
 import { IMAGE } from "../../../assets/index.js";
 import { createButton, createElement, createImg } from "../../../dom.js";
 import { loadLocalStorage } from "../../../utils/localStorage.js";
-import ColumnSection from "../../ColumnSection/ColumnSection.js";
 
 const INITIAL_SORT_TYPE = "생성 순";
 
@@ -29,15 +28,44 @@ const getSortedTodoList = ({ todoList, sortType }) => {
   });
 };
 
-const updateDOM = (sortedTodoList) => {
-  const $main = document.querySelector("main.column__section");
+// 정렬 애니메이션 적용
+const applySortAnimation = (sortedTodoList) => {
+  sortedTodoList.forEach((section) => {
+    const $columnBody = document
+      .querySelector(`#${section.id}`)
+      .querySelector(".column__body");
 
-  const $fragment = document.createDocumentFragment();
-  sortedTodoList.forEach((todo) => {
-    $fragment.appendChild(ColumnSection(todo));
+    const $items = Array.from($columnBody.children);
+    const orderedIdList = section.items.map((item) => item.id);
+
+    const gap = Number(
+      window
+        .getComputedStyle($columnBody)
+        .getPropertyValue("gap")
+        .split("px")[0]
+    );
+
+    $items.forEach(($item) => {
+      const currentIndex = $items.indexOf($item);
+      const newIndex = orderedIdList.indexOf(Number($item.dataset.id));
+      const offset = (newIndex - currentIndex) * ($item.offsetHeight + gap);
+
+      $item.classList.add("item-move");
+      $item.style.setProperty("--translate-offset", `${offset}px`);
+
+      setTimeout(() => {
+        $item.classList.remove("item-move");
+      }, 500);
+    });
+
+    setTimeout(() => {
+      const sortedItems = orderedIdList.map((id) =>
+        $items.find(($item) => Number($item.dataset.id) === id)
+      );
+
+      $columnBody.replaceChildren(...sortedItems);
+    }, 500);
   });
-
-  $main.replaceChildren($fragment);
 };
 
 const createSortButton = () => {
@@ -56,13 +84,11 @@ const createSortButton = () => {
     const todoList = loadLocalStorage();
 
     // 2. 토글된 정렬 기준으로 데이터를 정렬한다.
-    const sortedTodoList = getSortedTodoList({
-      todoList,
-      sortType: toggleText[e.currentTarget.textContent],
-    });
+    const sortType = toggleText[e.currentTarget.textContent];
+    const sortedTodoList = getSortedTodoList({ todoList, sortType });
 
-    // 3. 데이터를 기준으로 column__section을 갈아끼운다.
-    updateDOM(sortedTodoList);
+    // 카드 정렬 애니메이션 적용
+    applySortAnimation(sortedTodoList);
 
     // 텍스트 토글 (생성 순 / 최신 순)
     e.currentTarget.querySelector("span").textContent =
