@@ -1,0 +1,30 @@
+#header {
+    padding: var(--content-vertical-padding) var(--content-horizontal-padding) var(--content-vertical-padding) var(--content-horizontal-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#headerContent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-logo {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.64px;
+    color: var(--color_text_strong);
+}
+
+#history-icon{
+    padding: 5px;
+}
+
+#taskContent {
+    padding: 32px var(--content-horizontal-padding) var(--content-vertical-padding) var(--content-horizontal-padding);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}

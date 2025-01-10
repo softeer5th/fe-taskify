@@ -21,7 +21,7 @@ export class Badge extends Component {
     template() {
 
         return `
-            <div id = "${this.rootId}" class="badge"> 
+            <div class="badge"> 
                 ${this.num}
             </div>
          `;

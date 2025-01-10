@@ -5,6 +5,8 @@ export default class Component {
 
     constructor() {
         this.rootId = this.generateRandomString(16);
+        this.children = {};
+        this.events = [];
     }
 
     generateRandomString(length) {
@@ -19,16 +21,19 @@ export default class Component {
         return result;
     }
 
-
     template() {
         return '';
     }
 
     renderTree(parent) {
-        parent.innerHTML += this.template();
+        const wrapper = document.createElement("div"); 
+        wrapper.id = this.rootId; 
+        wrapper.innerHTML = this.template(); 
+        parent.appendChild(wrapper); 
 
+        console.log(parent, this.rootId);
         for (const key in this.children) {
-            const childParent = parent.querySelector(this.children[key].parentSelector);
+            const childParent = wrapper.querySelector(this.children[key].parentSelector);
             this.children[key].object.render(childParent);
         }
     }
@@ -39,14 +44,8 @@ export default class Component {
 
             if (root) {
                 this.events.forEach(({ listenerName, callback }) => {
-                    console.log(`root ${this.rootId} ${listenerName} `);
-                    console.log(root);
                     root.addEventListener(listenerName, (event) => {
-                        console.log("rootdddddd", this.rootId);
-                        // if (event.currentTarget.id === this.rootId) {
-                        //     event.stopPropagation();
-                        //     callback();
-                        // }
+                            callback();
                     }, false);
                 });
             }
@@ -59,7 +58,6 @@ export default class Component {
     }
 
     addEvent(listenerName, callback) {
-        console.log("event add!", this.rootId, listenerName);
         this.events.push({ listenerName, callback });
     }
 

@@ -11,7 +11,7 @@ export class DefaultCard extends Component {
     closeIconRef = "/assets/images/closed.svg";
     editIconRef = "/assets/images/edit.svg";
 
-    constructor(title, body, author, onCloseClick = () => { 
+    constructor(title, body, author, onCloseClick = () => {
         console.log("!!!")
     }, onEditClick = () => { }) {
         super();
@@ -25,7 +25,7 @@ export class DefaultCard extends Component {
 
     template() {
         return `
-        <div id = "${this.rootId}" class="card card-default"> 
+        <div class="card card-default"> 
             <div class = "card-text_area">
                 <div class = "card-title display-bold24">
                     ${this.title}
@@ -53,32 +53,25 @@ export class DefaultCard extends Component {
 
         if (close) {
             close.addEventListener("click", (event) => {
-                
                 this.onCloseClick();
-                event.preventDefault();
             });
         }
 
         const edit = parent.querySelector("#edit-icon");
 
         if (edit) {
-            
+
             edit.addEventListener("click", (event) => {
-                if (event.currentTarget.id === this.rootId) {
-                    event.stopPropagation();
-                    this.onEditClick();
-                }
+                this.onEditClick();
             }, false);
 
         }
 
         super.setEvents(parent);
-
     }
 
     addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
-
+        super.addEvent(listenerName, callback);
     }
 
 }

@@ -1,19 +1,35 @@
 import Component from "../components/component.js";
 import { Header } from "./task/header/header.js";
-import { Column } from "./task/column/column.js";
+import {  ColumnList } from "./task/column/columnList.js";
+import {  ColumnData } from "../route/data/columnData.js";
 
 export class App extends Component {
 
+    columnData = [
+        new ColumnData(
+            "해야할 일"
+            
+        ),
+        new ColumnData(
+            "하고 있는 일"
+
+        ),
+        new ColumnData(
+            "완료한 일"
+
+        ),
+    ]
     children = {
-        // header: {
-        //     object: new Header(),
-        //     parentSelector: "#header",
-        // },
+        header: {
+            object: new Header(),
+            parentSelector: "#header",
+        },
         column: {
-            object: new Column(),
-            parentSelector: "#header + .div",
+            object: new ColumnList(this.columnData),
+            parentSelector: "#taskContent",
         },
     };
+
     events = [];
 
     constructor() {
@@ -22,10 +38,8 @@ export class App extends Component {
 
     template() {
         return `
-            <div id = "${this.rootId}">
-                <div id = "header">  </div>
-                <div class = "div">  </div>
-            </div>
+            <div id = "header">  </div>
+            <div id = "taskContent">  </div>
         `;
     }
 
