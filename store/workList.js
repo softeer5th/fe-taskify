@@ -1,6 +1,6 @@
 import { updateCardCount } from "../js/cardNavbar.js";
 
-let workList = JSON.parse(localStorage.getItem("workList"));
+let workList;
 
 const savedData = (updatedWorkList) => {
   localStorage.setItem("workList", JSON.stringify(updatedWorkList));
@@ -57,5 +57,7 @@ const addStorage = (sectionType, title, content, CARD_ID) => {
   savedData(workList);
   updateCardCount(sectionType, workList[sectionType].length);
 };
+
+workList = loadData();
 
 export { deleteCardFormStorage, savedData, loadData, addStorage, editStorage };
