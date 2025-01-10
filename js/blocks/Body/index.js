@@ -1,3 +1,5 @@
+const lists = ['todo', 'doing', 'done'];
+
 const saveTasksToLocalStorage = (tasks) => {
     console.log(tasks);
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -32,7 +34,7 @@ function createSection(containerId, title, tasks) {
     section.innerHTML = `
         <div class="menu">
             <p>${title}</p>
-            <div class="badge medium12">${listCount}</div>
+            <div id=badge-${containerId} class="badge medium12">${listCount}</div>
             <div>
                 <button id="plus-${containerId}">
                     <img src="./assets/plus.svg" alt="plus">
@@ -70,6 +72,7 @@ const clearTasks = (containerId) => {
     while (ulElement.firstChild) {
         ulElement.removeChild(ulElement.firstChild);
     }
+    updateBadgeCount();
 };
 
 export const DOMLoaded = async () => {
@@ -83,10 +86,9 @@ export const DOMLoaded = async () => {
 };
 
 const initializeDragAndDrop = () => {
-    const lists = ['list-todo', 'list-doing', 'list-done'];
 
     lists.forEach(listId => {
-        const list = document.getElementById(listId);
+        const list = document.getElementById(`list-${listId}`);
 
         list.addEventListener('dragstart', (e) => {
             e.target.classList.add('dragging');
@@ -149,6 +151,7 @@ const initializeDragAndDrop = () => {
                 });
 
                 saveTasksToLocalStorage(updatedTasks);
+                updateBadgeCount();
             }
         });
     });
@@ -233,12 +236,10 @@ const createTaskBox = (type, list, id = null, task = null) => {
                     } 
                 }
                 return task;
-            }
-            );
+            });
 
             saveTasksToLocalStorage(updatedTasks);
         } else {
-
             const tasks = loadTasksFromLocalStorage();
             const totalCount = tasks.reduce((sum, item) => sum + item.list.length, 0);
             const newTask = createTaskElement(type, totalCount+1, titleInput.value, contentInput.value);
@@ -252,6 +253,8 @@ const createTaskBox = (type, list, id = null, task = null) => {
                 }
             });
             saveTasksToLocalStorage(tasks);
+
+            updateBadgeCount();
         }
     };
 
@@ -310,6 +313,8 @@ const createTaskElement = (type, id, title, content) => {
     // TODO: 삭제 모달 추가
     closedBtn.onclick = () => {
         task.remove();
+        // TODO: localStorage에서도 삭제
+        updateBadgeCount();
     };
     closedBtn.appendChild(closedImg);
 
@@ -322,4 +327,17 @@ const createTaskElement = (type, id, title, content) => {
     return task;
 };
 
+const getListCountByType = (type) => {
+    const tasks = loadTasksFromLocalStorage();
+    return tasks.find(task => task.type === type).list.length;
+}
 
+const updateBadgeCount = () => {
+    lists.forEach(id => {
+        const badge = document.querySelector(`#badge-${id}`);
+        
+        if (badge) {
+            badge.textContent = getListCountByType(id);
+        }
+    });
+};
