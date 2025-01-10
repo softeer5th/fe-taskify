@@ -3,14 +3,19 @@ import { setState, getState } from './stateUtil.js'
 
 // dom 최적화와 반대되는 방향...
 // async나 callback을 이용해서 dom 조작 작업이 완료된 뒤 DOM에 추가하는 방향으로 구현 수정?
+
+// initialize = (documentFragment) => void
 export const createDomElementAsChild = (
     templateId,
     parentDomElement,
+    initialize,
     appendRear = true
 ) => {
     if (!parentDomElement) throw new Error(`Parent is ${parentDomElement}`)
+    if (!initialize) throw new Error(`initialize is ${initialize}`)
 
     const { identifier, component } = createDomElement(templateId)
+    initialize(identifier, component)
     if (appendRear) {
         parentDomElement.appendChild(component)
     } else {
@@ -19,8 +24,11 @@ export const createDomElementAsChild = (
     return identifier
 }
 
-export const replaceDomElement = (templateId, originDomElement) => {
+export const replaceDomElement = (templateId, originDomElement, initialize) => {
+    if (!initialize) throw new Error(`initialize is ${initialize}`)
+
     const { identifier, component } = createDomElement(templateId)
+    initialize(identifier, component)
     originDomElement.replaceWith(component)
     return identifier
 }

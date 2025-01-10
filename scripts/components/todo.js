@@ -29,30 +29,31 @@ export const initTodo = () => {
     categoryList.map((category) => {
         const categoryId = createDomElementAsChild(
             templateNames.todoHeader,
-            todoHeaderParentElement
+            todoHeaderParentElement,
+            (identifier, component) => {
+                component.querySelector(
+                    `.${classNames.todoHeaderTitle}`
+                ).textContent = category.values.categoryName
+                component
+                    .querySelector(`.${classNames.addButton}`)
+                    .addEventListener('click', () => {
+                        onAddTodoButtonClick(category)
+                    })
+            }
         )
         category.identifier = categoryId
         category.todoFormDomId = null
-
-        const element = findDomElement(categoryId)
-        element.querySelector(`.${classNames.todoHeaderTitle}`).textContent =
-            category.values.categoryName
-        element
-            .querySelector(`.${classNames.addButton}`)
-            .addEventListener('click', () => {
-                onAddTodoButtonClick(category)
-            })
-
         category.values.todoList.map((todoItem) => {
-            const todoElementId = createDomElementAsChild(
+            createDomElementAsChild(
                 templateNames.todoItem,
                 findDomElement(categoryId).querySelector(
                     `.${classNames.todoBody}`
-                )
+                ),
+                (identifier, component) => {
+                    todoItem.identifier = identifier
+                    initTodoItemElement(component, todoItem)
+                }
             )
-            todoItem.identifier = todoElementId
-            const todoElement = findDomElement(todoElementId)
-            initTodoItemElement(todoElement, todoItem)
             // identifier 변경을 todoList에 반영
             return todoItem
         })
@@ -80,30 +81,33 @@ const enableAddTodoForm = (category) => {
     const formId = createDomElementAsChild(
         templateNames.todoItemAddForm,
         parentDomElement,
+        (identifier, component) => {
+            component
+                .querySelector(`.${classNames.todoAddFormSubmitBtn}`)
+                .addEventListener('click', () => {
+                    const formElement = findDomElement(identifier)
+                    const title = formElement.querySelector(
+                        `.${classNames.todoAddFormInputTitle}`
+                    ).value
+                    const content = formElement.querySelector(
+                        `.${classNames.todoAddFormInputContent}`
+                    ).value
+                    const author = 'web'
+                    addTodoItem(title, content, author, category)
+                    category.todoFormDomId = null
+                    removeDomElement(identifier)
+                })
+            component
+                .querySelector(`.${classNames.todoAddFormCancelBtn}`)
+                .addEventListener('click', () => {
+                    category.todoFormDomId = null
+                    removeDomElement(identifier)
+                })
+        },
         false
     )
+    // state에 변경사항 반영
     category.todoFormDomId = formId
-    const formElement = findDomElement(formId)
-    formElement
-        .querySelector(`.${classNames.todoAddFormSubmitBtn}`)
-        .addEventListener('click', () => {
-            const title = formElement.querySelector(
-                `.${classNames.todoAddFormInputTitle}`
-            ).value
-            const content = formElement.querySelector(
-                `.${classNames.todoAddFormInputContent}`
-            ).value
-            const author = 'web'
-            addTodoItem(title, content, author, category)
-            category.todoFormDomId = null
-            removeDomElement(formId)
-        })
-    formElement
-        .querySelector(`.${classNames.todoAddFormCancelBtn}`)
-        .addEventListener('click', () => {
-            category.todoFormDomId = null
-            removeDomElement(formId)
-        })
 }
 
 const disableAddTodoForm = (category) => {
@@ -145,17 +149,17 @@ const addTodoItem = (title, content, author, category) => {
     const identifier = createDomElementAsChild(
         templateNames.todoItem,
         parentDomElement,
+        (identifier, component) => {
+            const todoItem = TodoItem(identifier, title, content, author)
+            category.values.todoList.unshift(todoItem)
+            initTodoItemElement(component, todoItem)
+        },
         false
     )
 
-    const todoItem = TodoItem(identifier, title, content, author)
-    category.values.todoList.unshift(todoItem)
     // setState(TODO_CATEGORY_KEY, category)
     // category 객체를 참조하므로 setState를 안 해도 변경이 되긴 함 .. 맘에 안들지만 일단은 이렇게
     storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
-
-    const element = findDomElement(identifier)
-    initTodoItemElement(element, todoItem)
 }
 
 const getTodoItemInfo = (identifier) => {
@@ -191,58 +195,62 @@ const editTodoItem = (identifier) => {
     const originTodoElement = findDomElement(identifier)
     const formId = replaceDomElement(
         templateNames.todoItemEditForm,
-        originTodoElement
-    )
-    const formElement = findDomElement(formId)
-
-    formElement.querySelector(`.${classNames.todoEditFormInputTitle}`).value =
-        originTitle
-    formElement.querySelector(`.${classNames.todoEditFormInputContent}`).value =
-        originContent
-    formElement
-        .querySelector(`.${classNames.todoEditFormSubmitBtn}`)
-        .addEventListener('click', () => {
-            const title = formElement.querySelector(
+        originTodoElement,
+        (identifier, component) => {
+            component.querySelector(
                 `.${classNames.todoEditFormInputTitle}`
-            ).value
-            const content = formElement.querySelector(
+            ).value = originTitle
+            component.querySelector(
                 `.${classNames.todoEditFormInputContent}`
-            ).value
-            // TODO: author 정보 동적으로 가져오기
-            const author = 'web'
+            ).value = originContent
+            component
+                .querySelector(`.${classNames.todoEditFormSubmitBtn}`)
+                .addEventListener('click', () => {
+                    const element = findDomElement(identifier)
+                    const title = element.querySelector(
+                        `.${classNames.todoEditFormInputTitle}`
+                    ).value
+                    const content = element.querySelector(
+                        `.${classNames.todoEditFormInputContent}`
+                    ).value
+                    // TODO: author 정보 동적으로 가져오기
+                    const author = 'web'
 
-            const editedTodoElementId = replaceDomElement(
-                templateNames.todoItem,
-                formElement
-            )
-
-            const editedTodoItem = TodoItem(
-                editedTodoElementId,
-                title,
-                content,
-                author
-            )
-            const editedTodoElement = findDomElement(editedTodoElementId)
-            initTodoItemElement(editedTodoElement, editedTodoItem)
-
-            todoList[targetIdx] = editedTodoItem
-            storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
-        })
-    formElement
-        .querySelector(`.${classNames.todoEditFormCancelBtn}`)
-        .addEventListener('click', () => {
-            const abortedTodoItemId = replaceDomElement(
-                templateNames.todoItem,
-                formElement
-            )
-            const abortedTodoItemElement = findDomElement(abortedTodoItemId)
-            const abortedTodoItem = TodoItem(
-                abortedTodoItemId,
-                originTitle,
-                originContent,
-                originAuthor
-            )
-            initTodoItemElement(abortedTodoItemElement, abortedTodoItem)
-            todoList[targetIdx] = abortedTodoItem
-        })
+                    replaceDomElement(
+                        templateNames.todoItem,
+                        element,
+                        (identifier, component) => {
+                            const editedTodoItem = TodoItem(
+                                identifier,
+                                title,
+                                content,
+                                author
+                            )
+                            initTodoItemElement(component, editedTodoItem)
+                            todoList[targetIdx] = editedTodoItem
+                        }
+                    )
+                    storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
+                })
+            component
+                .querySelector(`.${classNames.todoEditFormCancelBtn}`)
+                .addEventListener('click', () => {
+                    replaceDomElement(
+                        templateNames.todoItem,
+                        findDomElement(identifier),
+                        (identifier, component) => {
+                            const abortedTodoItem = TodoItem(
+                                identifier,
+                                originTitle,
+                                originContent,
+                                originAuthor
+                            )
+                            initTodoItemElement(component, abortedTodoItem)
+                            todoList[targetIdx] = abortedTodoItem
+                        }
+                    )
+                })
+        }
+    )
+    const component = findDomElement(formId)
 }
