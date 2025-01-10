@@ -1,5 +1,5 @@
 import LogLayerHTML, { DeleteLogHTML, EmptyLogHTML, LogHTML } from "../components/log.js";
-import { createDeleteModal } from "./task.js";
+// import { createDeleteModal } from "./task.js";
 
 let logs = [];
 
@@ -45,10 +45,10 @@ export function renderingLogList(logLayerElement) {
         logFooterElement.innerHTML = DeleteLogHTML();
         logFooterElement.setAttribute('id', 'log_layer_footer')
         const deleteButton = logFooterElement.getElementsByTagName('button')[0];
-        deleteButton.addEventListener('click', ()=>createDeleteModal("모든 사용자 활동 기록을 삭제할까요?", ()=>{
-            deleteLog();
-            clearLogList();
-        }))
+        // deleteButton.addEventListener('click', ()=>createDeleteModal("모든 사용자 활동 기록을 삭제할까요?", ()=>{
+        //     deleteLog();
+        //     clearLogList();
+        // }))
         logLayerElement.appendChild(logFooterElement)
     }
 }

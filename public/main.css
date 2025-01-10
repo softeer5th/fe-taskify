@@ -3,6 +3,22 @@ main {
     padding: 32px 80px;
 }
 
+header > span {
+    display: flex;
+    align-items: center;
+}
+
+#sort_button {
+    margin-left: 16px;
+    box-sizing:content-box;
+    padding: 3px 8px;
+    display: flex;
+    align-items: center;
+    span {
+        padding: 0 4px;
+    }
+}
+
 #column_container {
     height: 100%;
     display: flex;

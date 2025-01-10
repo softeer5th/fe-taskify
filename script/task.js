@@ -1,70 +1,78 @@
-import createFormElement from "../script/formScript.js";
-import Modal from "../components/modal.js";
-import { renderTasks } from "./column.js";
-import { columns, handleDrag } from "./index.js";
-import { createModalChildren } from "./modal.js";
-import { setLog } from "./logScript.js";
+import ModalComponent from "../components/modal.js";
+import FormComponent from "../components/Form.js";
+import TaskComponent from "../components/task.js";
 
-export function createDeleteModal(message, callback) {
-    const body = document.getElementsByTagName("body")[0];
-    const modalElement = createModalChildren(message, callback);
-    const modal = Modal(modalElement);
-    body.appendChild(modal);
-}
+export default function TaskController(state) {
+    const formComponent = FormComponent();
+    const taskComponent = TaskComponent();
 
-export function createTask(task) {
-    const { title, content, created, column } = task;
+    // Task 수정 Form 렌더링 함수
+    function renderEditForm(task, originalElement) {
+        const editFormElement = formComponent.renderEdit(task);
+        formComponent.addUpdateEventListener(
+            editFormElement,
+            (e) => {
+                editTask(e, editFormElement, task);
+            },
+            () => {
+                formComponent.initEdit(editFormElement, task);
+                taskComponent.renderSwap(editFormElement, originalElement);
+            }
+        );
 
-    // 새 카드 컴포넌트 생성
-    const newCard = document.createElement("li");
-    newCard.setAttribute(
-        "class",
-        "card surface-default shadow-normal rounded-100"
-    );
-    newCard.setAttribute("draggable", "true");
-    newCard.innerHTML = taskHTML({ title, content });
-    newCard.addEventListener("dragstart", (e) => handleDrag(e, task));
-    // 이벤트 등록
-    taskEventHandler(newCard, task);
+        return editFormElement;
+    }
 
-    return newCard;
-}
+    // Task 렌더링 함수
+    function renderTask(parentElement, task) {
+        const newTaskElement = taskComponent.render(task);
 
-export function deleteTask(task) {
-    const { title, content, created, column } = task;
-    columns[column] = columns[column].filter((el) => el != task);
+        taskComponent.addEventListener(
+            newTaskElement,
+            () => removeTask(task, newTaskElement),
+            () => taskComponent.renderSwap(newTaskElement, renderEditForm(task, newTaskElement))
+        );
+
+        parentElement.appendChild(newTaskElement);
+    }
     
-    setLog({task: task, type:'remove', updated: new Date() })
+    // Task 삭제
+    function removeTask(task, taskElement) {
+        const modalComponent = ModalComponent();
 
-    renderTasks(column);
-}
+        modalComponent.render("선택한 카드를 삭제할까요?", ()=>{
+            state.removeTask(task);
+            taskElement.parentNode.removeChild(taskElement);
+        });
+    };
 
-export function editTask(cardElement, task) {
-    const formElement = createFormElement(task, undefined);
-    const parentNode = cardElement.parentNode;
-    parentNode.replaceChild(formElement, cardElement);
-}
+    // Task 수정
+    function editTask(e, currentElement, task) {
+        e.preventDefault();
 
-export function taskHTML({ title, content }) {
-    return `
-        <div class="card_text_container">
-            <h4 class="text-strong display-bold14">${title}</h4>
-            <p class="text-weak display-medium14">${content}</p>
-        </div>
-        <div class="card_button_container">
-            <button>
-                <img draggable="false" width="24" height="24" src="/public/icon/closed.svg"/>
-            </button>
-            <button>
-                <img draggable="false" width="24" height="24" src="/public/icon/edit.svg"/>
-            </button>
-        </div>
-    `;
-}
+        const newTitle = e.target.title.value;
+        const newContent = e.target.content.value;
+        const newTask = { ...task, title: newTitle, content: newContent };
+        
+        state.updateTask(task.column, task, newTask);
+        
+        const newTaskElement = taskComponent.render(newTask);
 
-export function taskEventHandler(cardElement, task) {
-    const buttons = cardElement.getElementsByTagName("button");
-    const [deleteButton, editButton] = buttons;
-    deleteButton.addEventListener("click", () => createDeleteModal("선택한 카드를 삭제할까요?", ()=>deleteTask(task)));
-    editButton.addEventListener("click", () => editTask(cardElement, task));
+        taskComponent.addEventListener(
+            newTaskElement,
+            () => removeTask(task, newTaskElement),
+            () => taskComponent.renderSwap(newTaskElement, renderEditForm(newTask))
+        );
+
+        const parentElement = currentElement.parentNode;
+
+        parentElement.replaceChild(newTaskElement, currentElement);
+    };
+
+    return {
+        renderTask, 
+        removeTask, 
+        editTask
+    }
+
 }
