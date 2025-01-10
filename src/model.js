@@ -190,6 +190,9 @@ export function Model() {
     updatedTask.description = updatedTaskDescription;
     updatedTask.device = updatedTaskDevice;
     pushHistory(data, { type: "updateTask", updatedTask: updatedTask });
+    if (model.state.editingTaskId === taskId) {
+      model.state.editingTaskId = -1;
+    }
     notify();
   }
 
