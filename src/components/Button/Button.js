@@ -15,7 +15,7 @@ export function Button({type,text,icon,backgroundColor,textColor,eventFuntion}){
             break;
         case 'text':
             primaryButton.innerHTML = `
-                <div class="button-content" style="color: ${colors[textColor]};>${text}</div>
+                <div class="button-content" style="color: ${colors[textColor]}">${text}</div>
             `;
             break;
         case 'iconText':
