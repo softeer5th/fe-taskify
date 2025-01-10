@@ -16,7 +16,7 @@ export const initStorage = () => {
 
   if (storageData === null) {
     saveLocalStorage(initialTodoList);
-    return storageData;
+    return initialTodoList;
   }
 
   return sortInitStorage(storageData);
