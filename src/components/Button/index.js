@@ -35,8 +35,7 @@ export const Button = ({
 
   return parser`
     <button onClick=${onClick} class="${findClasses()}">
-    ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })
-}
+    ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })}
     ${label && Text({ text: label, typo: typos.selected.bold[16] })}
     </button>`;
 };
