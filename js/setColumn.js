@@ -44,7 +44,7 @@ export const setDefaultColumn = () => {
             <path d="M12.6667 8.66533H8.66668V12.6653H7.33334V8.66533H3.33334V7.332H7.33334V3.332H8.66668V7.332H12.6667V8.66533Z" fill="#A0A3BD"/>
           </svg> 
         </div>
-        <div class="edit-btn">
+        <div class="delete-btn">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z" fill="#A0A3BD"/>
           </svg>
