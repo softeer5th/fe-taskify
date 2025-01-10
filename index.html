@@ -8,18 +8,36 @@
 <body>
 <div class="container">
   <header>
-    <div class="logo">TASKIFY</div>
-    <div class="historybtn">히스토리 버튼</div>
+
+    <div class="logo">
+      <div class="title">TASKIFY</div>
+      <button class="sort-btn" card-sort=1>
+        <img src="./assets/icon/arrowBoth.svg" alt="">
+        <span class="asc">생성 순</span>
+      </button>
+    </div>
+
+    <button class="history-btn">
+      <img src="./assets/icon/clock.svg" alt="history">
+    </button>
   </header>
 
   <main>
     <div class="task-lists">
-     
+
     </div>
   </main>
 
   <footer>
-    <div class="fab-plusicon"> 아이콘</div>
+    <button class="fab-plusicon">
+      <svg width="32" height="32" viewBox="0 0 16 16" fill="none"
+           style="position: relative; top:11px; left:6px"
+           xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M12.6667 8.66533H8.66668V12.6653H7.33334V8.66533H3.33334V7.332H7.33334V3.332H8.66668V7.332H12.6667V8.66533Z"
+          fill="#FEFEFE"/>
+      </svg>
+    </button>
   </footer>
 </div>
 <script type="module" src="js/main.js"></script>

@@ -22,6 +22,30 @@ header {
   font-size: 24px;
   font-weight: 700;
   color: rgba(20, 20, 43, 1);
+  display: flex;
+
+  gap: 8px;
+
+}
+
+.history-btn {
+  background: none;
+  border: none;
+}
+
+.sort-btn {
+  width: 75px;
+  height: 24px;
+  background: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(78, 75, 102, 1);
+  border: 1px solid rgba(190, 193, 213, 1);
 }
 
 main {
@@ -31,6 +55,7 @@ main {
 .task-lists {
   display: flex;
   flex-direction: row;
+  gap: 24px;
 }
 
 .task-list {
@@ -42,6 +67,13 @@ main {
   font-family: 'Pretendard Variable';
   font-size: 16px;
   position: relative;
+  gap: 8px;
+}
+
+.column {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .column-title {
@@ -51,38 +83,66 @@ main {
 }
 
 .add-btn {
-  width: 24px;
-  height: 24px;
   position: absolute;
   right: 40px;
 }
 
-.edit-btn {
-  width: 24px;
-  height: 24px;
+.delete-btn {
   position: absolute;
   right: 9px;
 }
 
+.card-delete-edit {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.card-edit-btn {
+  background: none;
+  border: none;
+}
+
+.card-close-btn {
+  background: none;
+  border: none;
+}
+
+
 .task {
   display: flex;
   justify-content: space-between;
-  width: 320px;
-  height: 104px;
+  width: 288px;
+  min-height: 72px;
+  height: auto;
   padding: 16px;
   border-color: black;
   border-width: thin;
   border-radius: 8px;
   background-color: rgba(254, 254, 254, 1);
   box-shadow: 0 1px 4px 0 rgba(110, 128, 145, 0.24);
-  margin: 16px 0 16px 0;
+  margin: 16px 0 0 0;
+  word-break: break-all;
+  order: 1;
+  
+}
+
+.title-cont-au {
+  font-family: 'Pretendard Variable';
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.content-author-divider {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .task-title {
-  font-family: 'Pretendard Variable';
   font-size: 14px;
-  line-height: 16.41px;
-  text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   font-weight: 700;
@@ -90,18 +150,13 @@ main {
 }
 
 .task-body {
-  font-family: 'Pretendard Variable';
   font-size: 14px;
-  line-height: 16.41px;
-  text-align: left;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
   font-weight: 500;
   color: rgba(110, 113, 145, 1);
+  width: 100%;
 }
 
 .task-author {
-  font-family: 'Pretendard Variable';
   font-size: 12px;
   line-height: 14.32px;
   text-align: left;
@@ -152,9 +207,7 @@ footer {
 }
 
 .fab-plusicon {
-  width: 32px;
-  height: 32px;
-  color: rgba(255, 255, 255, 1);
-  margin: 12px;
+  background: none;
+  border: none;
 }
 

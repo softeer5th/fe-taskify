@@ -39,7 +39,7 @@
 0. Super Simple Layout ✅
 1. Storage setting (add , delete, edit, redo ..,,etc ) ✅
 2. Card adding ✅
-3. Card Sorting
+3. Card Sorting ✅
 4. Card editing ( + delete)
 5. Card moving
 6. History manager
@@ -86,8 +86,8 @@
         - [ ] Drag
         - [ ] Drop
     - [ ] Sort
-        - [ ] 생성 순
-        - [ ] 최신 순
+        - [x] 생성 순
+        - [x] 최신 순
         - [ ] animation
     - [ ] Card
         - [ ] delete

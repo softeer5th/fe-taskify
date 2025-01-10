@@ -1,7 +1,8 @@
 import { closeCardModal, makeCard, popupCardModal } from './addCard.js';
 import { getColumnTasks } from '../utils/storage/taskManager.js';
-
 import { getColumn, setDefaultColumn } from './setColumn.js';
+import { sortCard } from './sortCard.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   setDefaultColumn();
@@ -30,6 +31,9 @@ document.addEventListener('click', (e) => {
     makeCard(task, parentColumn);
   } else if (e.target.classList.contains('task-add-can-btn')) { // 취소 버튼 클릭시
     closeCardModal(parentColumn);
+  } else if (e.target.closest('.sort-btn')) {
+    console.log(e.target.closest('.sort-btn').getAttribute('card-sort'));
+    sortCard(e.target.closest('.sort-btn').getAttribute('card-sort'));
   }
 });
 
