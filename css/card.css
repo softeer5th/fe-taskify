@@ -58,6 +58,15 @@
   color: var(--text-white-default);
 }
 
-.display-none {
-  display: none;
+.card-delete-icon:hover path {
+  fill: var(--text-danger);
+}
+
+button:disabled {
+  opacity: 0.3;
+}
+
+input:disabled,
+textarea:disabled {
+  background-color: transparent;
 }

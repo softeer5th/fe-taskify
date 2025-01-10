@@ -1,21 +1,10 @@
 import { card } from "../components/card.js";
-import { savedData, loadData } from "../store/workList.js";
+import { addStorage } from "../store/workList.js";
 const todoFormInit = (formCard) => {
   // form 초기화
   formCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록.
   formCard.querySelector(".title").value = "";
   formCard.querySelector(".content").value = "";
-};
-
-const addStorage = (sectionType, title, content, CARD_ID) => {
-  const workList = loadData();
-  workList[sectionType].push({
-    id: CARD_ID,
-    createdDate: new Date().toISOString(),
-    title,
-    content,
-  });
-  savedData(workList);
 };
 
 const addCard = (formCard, sectionType) => {

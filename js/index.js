@@ -5,6 +5,7 @@ import { eachColumn } from "../components/eachColumn.js";
 import { header } from "../components/header.js";
 import { loadData } from "../store/workList.js";
 import { card } from "../components/card.js";
+import { updateCardCount } from "./cardNavbar.js";
 
 const SECTION_TYPE = ["todo", "doing", "done"];
 const workList = loadData();
@@ -16,6 +17,7 @@ const eachColumnRender = () => {
     const container = cardContainer();
     const form = cardForm(type);
 
+    form.querySelector(".add-btn").disabled = true;
     container.appendChild(form);
 
     column.appendChild(navbar);
@@ -42,8 +44,7 @@ const loadPreviousCard = () => {
   const fragment = new DocumentFragment();
   SECTION_TYPE.forEach((type) => {
     if (workList[type].length > 0) {
-      workList[type].reverse(); //  최신순으로 default를 두어야할 것임. > 나중에 정렬 기능할 때 적용!
-
+      //  최신순으로 default를 두어야할 것임. > 나중에 정렬 기능할 때 적용!
       workList[type].forEach(({ title, content, id }) => {
         const cardDoc = card(id, title, content);
         cardDoc.querySelector(".title").disabled = true;
@@ -51,7 +52,7 @@ const loadPreviousCard = () => {
 
         fragment.appendChild(cardDoc);
       });
-
+      updateCardCount(type, workList[type].length);
       const cardForm = document.querySelector(`.${type}-form-card`);
       cardForm.after(fragment);
     }

@@ -1,7 +1,9 @@
-const workList = JSON.parse(localStorage.getItem("workList"));
+import { updateCardCount } from "../js/cardNavbar.js";
 
-const savedData = (workList) => {
-  localStorage.setItem("workList", JSON.stringify(workList));
+let workList;
+
+const savedData = (updatedWorkList) => {
+  localStorage.setItem("workList", JSON.stringify(updatedWorkList));
 };
 
 const loadData = () => {
@@ -13,7 +15,20 @@ const loadData = () => {
     };
     return workList;
   }
+  workList = JSON.parse(localStorage.getItem("workList"));
   return workList;
+};
+
+const deleteCardFormStorage = (cardId, sectionType) => {
+  const updatedWorkList = {
+    ...workList,
+    [sectionType]: workList[sectionType].filter(
+      (item) => item.id !== Number(cardId)
+    ),
+  };
+
+  savedData(updatedWorkList);
+  updateCardCount(sectionType, updatedWorkList[sectionType].length);
 };
 
 const editStorage = (sectionType, cardId, newTitle, newContent) => {
@@ -33,13 +48,16 @@ const editStorage = (sectionType, cardId, newTitle, newContent) => {
   savedData(updatedWorkList);
 };
 const addStorage = (sectionType, title, content, CARD_ID) => {
-  workList[sectionType].push({
+  workList[sectionType].unshift({
     id: CARD_ID,
     createdDate: new Date().toISOString(),
     title,
     content,
   });
   savedData(workList);
+  updateCardCount(sectionType, workList[sectionType].length);
 };
 
-export { savedData, loadData, addStorage, editStorage };
+workList = loadData();
+
+export { deleteCardFormStorage, savedData, loadData, addStorage, editStorage };
