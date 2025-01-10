@@ -16,12 +16,23 @@ async function loadTasksFromJSON () {
 function createSection(containerId, title, tasks) {
     const container = document.querySelector('main');
 
+    const fragment = new DocumentFragment()
+    let listCount = 0;
+    tasks.filter(task => task.type === containerId).forEach(({ type, list }) => {
+        list.forEach(({id, title, content}) => {
+            const newTask = createTaskElement(type, id, title, content);
+
+            fragment.appendChild(newTask);
+            listCount++;
+        });
+    }); 
+
     const section = document.createElement('section');
     section.className = 'bold16';
     section.innerHTML = `
         <div class="menu">
             <p>${title}</p>
-            <span class="count-todo"></span>
+            <div class="badge medium12">${listCount}</div>
             <div>
                 <button id="plus-${containerId}">
                     <img src="./assets/plus.svg" alt="plus">
@@ -46,13 +57,7 @@ function createSection(containerId, title, tasks) {
         clearTasks(containerId);
     });
 
-    tasks.filter(task => task.type === containerId).forEach(({ type, list }) => {
-        list.forEach(({id, title, content}) => {
-            const newTask = createTaskElement(type, id, title, content);
-
-            ulElement.appendChild(newTask);
-        });
-    }); 
+    ulElement.appendChild(fragment);
 }
 
 const clearTasks = (containerId) => {
@@ -316,3 +321,5 @@ const createTaskElement = (type, id, title, content) => {
 
     return task;
 };
+
+
