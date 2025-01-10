@@ -60,24 +60,3 @@ document.body.addEventListener("click", (event) => {
     closeDeleteModal();
   }
 });
-
-// if (e.target.matches(".save-btn") || e.target.matches(".cancel-btn")) {
-//     backToCard(card);
-//   }
-
-//   if (e.target.matches(".save-btn")) {
-//     // 저장
-//     if (
-//       previousTitle === cardTitle.value &&
-//       previousContent === cardContent.value
-//     ) {
-//       return;
-//     }
-//     editStorage(sectionType, card.id, cardTitle.value, cardContent.value);
-//   }
-
-//   if (e.target.matches(".cancel-btn")) {
-//     // 취소 버튼이라면, 이전 값을 저장.
-//     cardTitle.value = previousTitle;
-//     cardContent.value = previousContent;
-//   }

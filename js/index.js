@@ -5,6 +5,7 @@ import { eachColumn } from "../components/eachColumn.js";
 import { header } from "../components/header.js";
 import { loadData } from "../store/workList.js";
 import { card } from "../components/card.js";
+import { updateCardCount } from "./cardNavbar.js";
 
 const SECTION_TYPE = ["todo", "doing", "done"];
 const workList = loadData();
@@ -50,7 +51,7 @@ const loadPreviousCard = () => {
 
         fragment.appendChild(cardDoc);
       });
-
+      updateCardCount(type, workList[type].length);
       const cardForm = document.querySelector(`.${type}-form-card`);
       cardForm.after(fragment);
     }
