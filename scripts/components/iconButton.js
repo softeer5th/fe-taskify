@@ -2,7 +2,7 @@
  * 아이콘 버튼 컴포넌트
  * @param {Object} options - 옵션 객체
  * @param {'edit' | 'delete'} options.type - 버튼 타입
- * @param {Function} [options.onClick] - 클릭 이벤트 핸들러
+ * @param {function} [options.onClick] - 클릭 이벤트 핸들러
  * @returns {DocumentFragment} - 아이콘 버튼 요소를 포함하는 DocumentFragment
  */
 const IconButton = ({type, onClick}) => {

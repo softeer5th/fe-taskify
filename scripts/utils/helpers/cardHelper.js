@@ -1,21 +1,35 @@
 import Button from '../../components/button.js';
 import IconButton from '../../components/iconButton.js';
+import TextArea from '../../components/textArea.js';
+
+/**
+ * @typedef {Object} Card
+ * @property {number} id - 카드 ID
+ * @property {string} title - 카드 제목
+ * @property {string} body - 카드 내용
+ * @property {string} createdDate - 카드 생성일
+ */
 
 /**
  * 카드 모드에 따라 텍스트영역 세팅
  * @param {HTMLElement} cardElement
  * @param {'default' | 'add' | 'drag' | 'place'} mode
  * @param {Card} cardData
- * @param {boolean} isEditing
- * @param {Function} setDisabled
+ * @param {function} setDisabled
  */
-const setCardTextArea = (
-  cardElement,
-  mode,
-  cardData,
-  isEditing,
-  setDisabled
-) => {};
+const setCardTextArea = (cardElement, mode, cardData, setDisabled) => {
+  const textArea = cardElement.querySelector('#text-area');
+
+  textArea.appendChild(
+    TextArea({
+      cardElement: cardElement,
+      title: cardData.title,
+      body: cardData.body,
+      isEditing: mode === 'add',
+      setDisabled,
+    })
+  );
+};
 
 /**
  * 카드 모드에 따라 아이콘 버튼 세팅
@@ -62,27 +76,16 @@ const setCardButtons = (cardElement, mode, isEditing, isDisabled) => {
   }
 
   buttonsArea.appendChild(
-    Button({
-      type: 'cancle',
-      onClick: () => console.log('cancle button clicked'),
-    })
+    Button('cancle', () => console.log('cancle button clicked'))
   );
 
   if (isEditing) {
     buttonsArea.appendChild(
-      Button({
-        type: 'edit',
-        isDisabled,
-        onClick: () => console.log('edit button clicked'),
-      })
+      Button('edit', () => console.log('edit button clicked'))
     );
   } else {
     buttonsArea.appendChild(
-      Button({
-        type: 'add',
-        isDisabled,
-        onClick: () => console.log('add button clicked'),
-      })
+      Button('add', () => console.log('add button clicked'))
     );
   }
 };
@@ -100,4 +103,4 @@ const setCardShadow = (cardElement, mode) => {
   }
 };
 
-export { setCardIconButtons, setCardButtons, setCardShadow };
+export { setCardTextArea, setCardIconButtons, setCardButtons, setCardShadow };

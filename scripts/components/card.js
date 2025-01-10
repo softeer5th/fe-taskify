@@ -1,4 +1,4 @@
-import { setCardButtons, setCardShadow, setCardIconButtons } from '../utils/helpers/cardHelper.js';
+import { setCardButtons, setCardShadow, setCardIconButtons, setCardTextArea } from '../utils/helpers/cardHelper.js';
 import Button from './button.js';
 
 /**
@@ -19,14 +19,10 @@ const Card = (mode = 'default', cardData) => {
   const card = document.getElementById('card-template').content.cloneNode(true);
   const cardElement = card.querySelector('li');
 
-  
+  setCardTextArea(cardElement, mode, cardData, () => {});
   setCardIconButtons(cardElement, mode);
   setCardButtons(cardElement, mode, false, false);
   setCardShadow(cardElement, mode);
-
-  if (mode === 'add') {
-    cardElement.querySelector('#author').style.display = 'none';
-  }
 
   if (mode == 'place') {
     cardElement.style.opacity = '0.3';
