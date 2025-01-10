@@ -29,7 +29,6 @@ const deleteCardFormStorage = (cardId, sectionType) => {
 
   savedData(updatedWorkList);
   updateCardCount(sectionType, updatedWorkList[sectionType].length);
-  workList = loadData(); //?
 };
 
 const editStorage = (sectionType, cardId, newTitle, newContent) => {
