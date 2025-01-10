@@ -70,11 +70,11 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
     const content = $columnItem.querySelector("#content").value.trim();
 
     // 카드 생성
-    const lastId =
-      $columnItem.closest(".column__body").lastChild.dataset.id ?? 0;
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
 
     const newCard = {
-      id: Number(lastId) + 1,
+      id: array[0],
       title,
       content,
       author: getDevice(),
