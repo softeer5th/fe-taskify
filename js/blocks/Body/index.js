@@ -1,3 +1,5 @@
+const lists = ['todo', 'doing', 'done'];
+
 const saveTasksToLocalStorage = (tasks) => {
     console.log(tasks);
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -16,12 +18,25 @@ async function loadTasksFromJSON () {
 function createSection(containerId, title, tasks) {
     const container = document.querySelector('main');
 
+    const fragment = new DocumentFragment()
+    let listCount = 0;
+    tasks.filter(task => task.type === containerId).forEach(({ type, list }) => {
+        list.forEach(({id, title, content}) => {
+            const newTask = createTaskElement(type, id, title, content);
+
+            fragment.appendChild(newTask);
+            listCount++;
+        });
+    }); 
+
     const section = document.createElement('section');
     section.className = 'bold16';
     section.innerHTML = `
         <div class="menu">
-            <p>${title}</p>
-            <span class="count-todo"></span>
+            <div>
+                <p>${title}</p>
+                <span id=badge-${containerId} class="badge medium12">${listCount}</span>
+            </div>
             <div>
                 <button id="plus-${containerId}">
                     <img src="./assets/plus.svg" alt="plus">
@@ -46,13 +61,7 @@ function createSection(containerId, title, tasks) {
         clearTasks(containerId);
     });
 
-    tasks.filter(task => task.type === containerId).forEach(({ type, list }) => {
-        list.forEach(({id, title, content}) => {
-            const newTask = createTaskElement(type, id, title, content);
-
-            ulElement.appendChild(newTask);
-        });
-    }); 
+    ulElement.appendChild(fragment);
 }
 
 const clearTasks = (containerId) => {
@@ -65,6 +74,7 @@ const clearTasks = (containerId) => {
     while (ulElement.firstChild) {
         ulElement.removeChild(ulElement.firstChild);
     }
+    updateBadgeCount();
 };
 
 export const DOMLoaded = async () => {
@@ -78,10 +88,9 @@ export const DOMLoaded = async () => {
 };
 
 const initializeDragAndDrop = () => {
-    const lists = ['list-todo', 'list-doing', 'list-done'];
 
     lists.forEach(listId => {
-        const list = document.getElementById(listId);
+        const list = document.getElementById(`list-${listId}`);
 
         list.addEventListener('dragstart', (e) => {
             e.target.classList.add('dragging');
@@ -144,6 +153,7 @@ const initializeDragAndDrop = () => {
                 });
 
                 saveTasksToLocalStorage(updatedTasks);
+                updateBadgeCount();
             }
         });
     });
@@ -180,12 +190,16 @@ const createTaskBox = (type, list, id = null, task = null) => {
     taskBox.className = 'task-box';
 
     const titleInput = document.createElement('input');
+    titleInput.className = 'bold14';
+    titleInput.style.color = '#14142B';
     titleInput.type = 'text';
     titleInput.placeholder = '제목 입력';
     if (task) titleInput.value = task.querySelector('h3').innerText;
 
     const contentInput = document.createElement('textarea');
     contentInput.placeholder = '내용 입력';
+    contentInput.className = 'medium14';
+    contentInput.style.color = '#6E7191';
     if (task) contentInput.value = task.querySelector('p').innerText;
 
     const btnWrapper = document.createElement('div');
@@ -228,12 +242,10 @@ const createTaskBox = (type, list, id = null, task = null) => {
                     } 
                 }
                 return task;
-            }
-            );
+            });
 
             saveTasksToLocalStorage(updatedTasks);
         } else {
-
             const tasks = loadTasksFromLocalStorage();
             const totalCount = tasks.reduce((sum, item) => sum + item.list.length, 0);
             const newTask = createTaskElement(type, totalCount+1, titleInput.value, contentInput.value);
@@ -247,6 +259,8 @@ const createTaskBox = (type, list, id = null, task = null) => {
                 }
             });
             saveTasksToLocalStorage(tasks);
+
+            updateBadgeCount();
         }
     };
 
@@ -277,9 +291,13 @@ const createTaskElement = (type, id, title, content) => {
     const taskWrapper = document.createElement('div');
     const taskTitle = document.createElement('h3');
     taskTitle.innerText = title;
+    taskTitle.className = 'bold14';
+    taskTitle.style.color = '#14142B';
 
     const taskContent = document.createElement('p');
     taskContent.innerText = content;
+    taskContent.className = 'medium14';
+    taskContent.style.color = '#6E7191';
 
     taskWrapper.appendChild(taskTitle);
     taskWrapper.appendChild(taskContent);
@@ -305,6 +323,8 @@ const createTaskElement = (type, id, title, content) => {
     // TODO: 삭제 모달 추가
     closedBtn.onclick = () => {
         task.remove();
+        // TODO: localStorage에서도 삭제
+        updateBadgeCount();
     };
     closedBtn.appendChild(closedImg);
 
@@ -315,4 +335,19 @@ const createTaskElement = (type, id, title, content) => {
     task.appendChild(btnWrapper);
 
     return task;
+};
+
+const getListCountByType = (type) => {
+    const tasks = loadTasksFromLocalStorage();
+    return tasks.find(task => task.type === type).list.length;
+}
+
+const updateBadgeCount = () => {
+    lists.forEach(id => {
+        const badge = document.querySelector(`#badge-${id}`);
+        
+        if (badge) {
+            badge.textContent = getListCountByType(id);
+        }
+    });
 };
