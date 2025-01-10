@@ -19,6 +19,12 @@ section {
         justify-content: space-between;
         gap: 3rem;
 
+        div:nth-child(1) {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
         > div > button {
             align-content: center;
         }
@@ -46,6 +52,8 @@ section {
         flex-direction: column;
         gap: 4px;
     }
+
+    width: 312px;
 }
 
 .task-box {
@@ -57,10 +65,10 @@ section {
     margin-bottom: 8px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 
-    input {
+    /* input {
         font-size: 16px;
         font-weight: 700;
-        color: var(--grayscale-900)
+        color: var(--grayscale-900);
     }
 
     textarea{
@@ -68,7 +76,7 @@ section {
         font-weight: 500;
         color: var(--grayscale-600);
         height: auto;
-    }
+    } */
 
     .btn-wrapper {
         display: flex;
@@ -98,8 +106,4 @@ section {
 
 .list {
     min-height: 300px;
-}
-
-.btn-wrapper {
-    
 }
