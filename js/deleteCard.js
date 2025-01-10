@@ -34,7 +34,7 @@ const deleteCard = () => {
     .querySelector(`.${sectionToDelete}-wrapper`)
     .querySelector(".card-container")
     .querySelectorAll(".card");
-  console.log(cardList, "삭제 이전 상태");
+
   cardList.forEach((card) => {
     if (card.id === cardIdToDelete) {
       cardContainer.removeChild(card);
