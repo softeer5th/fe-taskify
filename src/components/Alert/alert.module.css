@@ -1,0 +1,36 @@
+.alert-container {
+    width: 400px;
+    padding: var(--gap-400) var(--gap-300) var(--gap-300) var(--gap-300);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-400);
+
+    text-align: center;
+
+    border-width: 0;
+    border-radius: var(--gap-100);
+}
+
+.alert-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #14212B4D;
+}
+
+.alert-text {
+  color: var(--text-default);
+}
+
+.alert-buttons {
+  display: flex;
+  gap: var(--gap-100);
+}

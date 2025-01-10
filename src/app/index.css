@@ -3,6 +3,7 @@
 @import url("../components/Chip/chip.module.css");
 @import url("../components/Text/text.module.css");
 @import url("../components/Card/card.module.css");
+@import url("../components/Alert/alert.module.css");
 @import url("./reset.css");
 
 :root {
@@ -88,7 +89,7 @@
     font-family: var(--pretendard);
     font-size: var(--md);
     font-weight: var(--medium);
-    line-height: 22;
+    line-height: 22px;
 }
 
 .display-medium14 {
