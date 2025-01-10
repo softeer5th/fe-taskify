@@ -1,14 +1,13 @@
-import { setState, getState } from '../utils/stateUtil.js'
-import { storeData, loadData } from '../utils/storageUtil.js'
+import { TodoItem } from '../domain/todoItem.js'
+import { classNames, templateNames } from '../strings.js'
 import {
     createDomElementAsChild,
     findDomElement,
     removeDomElement,
     replaceDomElement,
 } from '../utils/domUtil.js'
-import { classNames, templateNames } from '../strings.js'
-import { TodoItem } from '../domain/todoItem.js'
-import { Category } from '../domain/Category.js'
+import { getState, setState } from '../utils/stateUtil.js'
+import { loadData, storeData } from '../utils/storageUtil.js'
 
 // const TODO_LIST_STORAGE_KEY = 'todoList'
 const TODO_CATEGORY_KEY = 'todoCategory'
@@ -58,6 +57,7 @@ export const initTodo = () => {
             return todoItem
         })
 
+        renewTodoCount(category)
         // identifier 변경을 categoryList에 반영
         return category
     })
@@ -65,7 +65,7 @@ export const initTodo = () => {
     setState(TODO_CATEGORY_KEY, categoryList)
 }
 
-export const onAddTodoButtonClick = (category) => {
+const onAddTodoButtonClick = (category) => {
     if (category.todoFormDomId) {
         disableAddTodoForm(category)
     } else {
@@ -146,7 +146,7 @@ const addTodoItem = (title, content, author, category) => {
     const parentDomElement = findDomElement(category.identifier).querySelector(
         '.todos__body'
     )
-    const identifier = createDomElementAsChild(
+    createDomElementAsChild(
         templateNames.todoItem,
         parentDomElement,
         (identifier, component) => {
@@ -160,6 +160,7 @@ const addTodoItem = (title, content, author, category) => {
     // setState(TODO_CATEGORY_KEY, category)
     // category 객체를 참조하므로 setState를 안 해도 변경이 되긴 함 .. 맘에 안들지만 일단은 이렇게
     storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
+    renewTodoCount(category)
 }
 
 const getTodoItemInfo = (identifier) => {
@@ -178,6 +179,7 @@ const removeTodoItem = (identifier) => {
     const { category, index, todoItem } = getTodoItemInfo(identifier)
     category.values.todoList.splice(index, 1)
     removeDomElement(identifier)
+    renewTodoCount(category)
     storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
 }
 
@@ -193,7 +195,7 @@ const editTodoItem = (identifier) => {
     } = originTodoItem.values
 
     const originTodoElement = findDomElement(identifier)
-    const formId = replaceDomElement(
+    replaceDomElement(
         templateNames.todoItemEditForm,
         originTodoElement,
         (identifier, component) => {
@@ -252,5 +254,11 @@ const editTodoItem = (identifier) => {
                 })
         }
     )
-    const component = findDomElement(formId)
+}
+
+const renewTodoCount = (category) => {
+    const todoCount = findDomElement(category.identifier).querySelector(
+        `.${classNames.todoHeaderTodoCount}`
+    )
+    todoCount.textContent = category.values.todoList.length
 }
