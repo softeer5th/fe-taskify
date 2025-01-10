@@ -49,6 +49,7 @@ export function Model() {
       movingTaskId: -1,
       order: "latest",
       isHistoryOpen: false,
+      mouseOverColumnId: -1,
     },
   };
   let listeners = [];
@@ -78,6 +79,11 @@ export function Model() {
 
   // Public method
 
+  function setInitData(data) {
+    model.history[model.history.length - 1].data = data;
+    notify();
+  }
+
   function setEditingTaskId(taskId) {
     model.state.editingTaskId = taskId;
     notify();
@@ -100,6 +106,11 @@ export function Model() {
 
   function toggleHistory() {
     model.state.isHistoryOpen = !model.state.isHistoryOpen;
+    notify();
+  }
+
+  function setMouseOverColumnId(columnId) {
+    model.state.mouseOverColumnId = columnId;
     notify();
   }
 
@@ -195,6 +206,7 @@ export function Model() {
   }
 
   return {
+    setInitData,
     init: initHistory,
     addListener,
     removeListener,
@@ -205,6 +217,7 @@ export function Model() {
     setMovingTaskId,
     toggleOrder,
     toggleHistory,
+    setMouseOverColumnId,
     addColumn,
     removeColumn,
     addTask,
