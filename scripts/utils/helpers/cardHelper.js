@@ -64,9 +64,8 @@ const setCardIconButtons = (cardElement, mode) => {
  * @param {HTMLElement} cardElement
  * @param {'default' | 'add' | 'drag' | 'place'} mode
  * @param {boolean} isEditing
- * @param {boolean} isDisabled
  */
-const setCardButtons = (cardElement, mode, isEditing, isDisabled) => {
+const setCardButtons = (cardElement, mode, isEditing) => {
   const buttonsArea = cardElement.querySelector('#button-area');
 
   if (mode !== 'add') {
