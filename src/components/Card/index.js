@@ -5,21 +5,29 @@ import { Button } from "../Button/index.js";
 
 /**
  *
+ * @param {Function} onClickLeft - 왼쪽 버튼 클릭 이벤트 시 호출할 함수.
+ * @param {Function} onClickRight - 오른쪽 버튼 클릭 이벤트 시 호출할 함수.
+ * @returns {VDOM} - 버튼 컴포넌트 가상돔
  */
-const Buttons = () => parser`
+const Buttons = (onClickLeft, onClickRight) => parser`
         <div class="card-buttons">
-            ${Button({ label: "Button", isFull: true })}
-            ${Button({ label: "Button", isFull: true })}
+            ${Button({
+    label: "취소", variant: "sub", isFull: true, onClick: onClickLeft,
+  })}
+            ${Button({ label: "등록", isFull: true, onClick: onClickRight })}
         </div>
     `;
 
 /**
  *
+ * @param {Function} onClickTop - 위쪽 버튼 클릭 이벤트 시 호출할 함수.
+ * @param {Function} onClickBottom - 아래쪽 버튼 클릭 이벤트 시 호출할 함수.
+ * @returns {VDOM} - 아이콘 컴포넌트 가상돔
  */
-const Icons = () => parser`
+const Icons = (onClickTop, onClickBottom) => parser`
         <div class="card-icon-container">
-            ${Icon({ name: "close", fillColor: colors.text.weak })}
-            ${Icon({ name: "edit", strokeColor: colors.text.weak })}
+            ${Icon({ name: "close", fillColor: colors.text.weak, onClick: onClickTop })}
+            ${Icon({ name: "edit", strokeColor: colors.text.weak, onClick: onClickBottom })}
         </div>
 `;
 
@@ -30,17 +38,17 @@ const Icons = () => parser`
  * @param {string} props.body - 카드의 본문.
  * @param {"default"|"add-edit"|"drag"|"place"} [props.type] - 카드의 타입.
  * @param {string} [props.caption] - 카드의 캡션.
+ * @param {Function} [props.onClickLT] - 왼쪽, 위쪽 버튼 클릭 이벤트 시 호출할 함수.
+ * @param {Function} [props.onClickRB] - 오른쪽, 아래쪽 버튼 클릭 이벤트 시 호출할 함수.
  * @returns {VDOM} - 카드 컴포넌트 가상 돔
  */
 export const Card = ({
-  title, body, caption, type = "default",
+  title, body, caption, type = "default", onClickLT, onClickRB,
 }) => {
-  /**
-   *
-   */
-  const findContents = () => {
-    if (type === "add-edit") return Buttons();
-    return Icons();
+  // eslint-disable-next-line
+  const findContents = (type) => {
+    if (type === "add-edit") return Buttons(onClickLT, onClickRB);
+    return Icons(onClickLT, onClickRB);
   };
 
   return parser`
@@ -48,9 +56,9 @@ export const Card = ({
         <div class="card-text-container">
             <div class="${typos.display.bold[14]} card-title">${title}</div>
             <div class="${typos.display.medium[14]} card-body">${body}</div>
-            ${caption && parser`<div class="${typos.display.medium[12]} card-body">${caption}</div>`}
+            ${caption && parser`<div class="${typos.display.medium[12]} card-caption">${caption}</div>`}
         </div>
-        ${findContents()}
+        ${findContents(type)}
     </div>
     `;
 };

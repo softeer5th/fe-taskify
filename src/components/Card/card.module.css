@@ -24,17 +24,42 @@
     flex-direction: column;
 }
 
-.card-title, .card-body {
+.card-title, .card-body .card-caption{
     width: 100%;
 }
 
-.add-edit {
-    flex-direction: column;
+.card-title {
+    color: var(--text-strong);
+}
+
+.card-body {
+    color: var(--text-default);
+}
+
+.card-caption {
+    padding-top: var(--gap-100);
+    color: var(--text-weak);
 }
 
 .card-buttons {
     width: 100%;
 
+    padding-top: var(--gap-200);
+
     display: flex;
     gap: var(--gap-100);
+}
+
+/* 타입에 따른 스타일링 */
+
+.add-edit {
+    flex-direction: column;
+}
+
+.place {
+    opacity: 0.3;
+}
+
+.drag {
+    
 }

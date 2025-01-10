@@ -13,8 +13,13 @@ const App = () => {
       console.log("버튼 클릭");
     },
   });
+  const button2 = Button({
+    label: "Button",
+    variant: "sub",
+  });
   const iconButton = Button({
     label: "Button",
+    variant: "danger",
     showIcon: true,
   });
   const icon = Button({
@@ -31,12 +36,32 @@ const App = () => {
   const chip = Chip({ label: "Chip" });
 
   const card = Card({ title: "TITLE", body: "BODY", caption: "author by web" });
-  const addCard = Card({ title: "TITLE", body: "BODY", type: "add-edit" });
+  const addCard = Card({
+    title: "TITLE",
+    body: "BODY",
+    type: "add-edit",
+    // eslint-disable-next-line
+    onClickLT: () => console.log("lt"),
+  });
+  const dragCard = Card({
+    title: "TITLE", body: "BODY", caption: "author by web", type: "drag",
+  });
+  const placeCard = Card({
+    title: "TITLE",
+    body: "BODY",
+    caption: "author by web",
+    type: "place",
+    // eslint-disable-next-line
+    onClickRB: () => {
+      console.log("rb");
+    },
+  });
 
   return (
     parser`
         <div>
             ${button}
+            ${button2}
             ${iconButton}
             ${icon}
             ${ghost}
@@ -45,6 +70,8 @@ const App = () => {
             ${chip}
             ${card}
             ${addCard}
+            ${dragCard}
+            ${placeCard}
         </div>`
   );
 };
