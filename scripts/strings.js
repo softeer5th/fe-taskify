@@ -1,7 +1,9 @@
 export const classNames = {
+    todoContainer: 'todos',
     todoHeader: 'todos__header',
     todoHeaderTitle: 'todos__header__title',
     todoHeaderTodoCount: 'todos__header__todo-count',
+    todoBody: 'todos__body',
 
     todoItemTitle: 'todos__body__item__title',
     todoItemContent: 'todos__body__item__content',
