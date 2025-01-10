@@ -1,7 +1,7 @@
 import { plus } from "../../public/plus.js";
 import { closed } from "../../public/closed.js";
 
-export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleClicked }) {
+export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleClicked, onColumnDeleteButtonClicked }) {
   const columnElement = document.createElement("div");
   columnElement.classList.add("column");
   columnElement.id = column.id;
@@ -35,6 +35,7 @@ export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleCli
 
     const columnCloseButton = document.createElement("button");
     columnCloseButton.innerHTML = closed;
+    columnCloseButton.addEventListener("click", onColumnDeleteButtonClicked);
     columnCloseButton.classList.add("column__close-button");
 
     columnTitle.appendChild(columnTextarea);
