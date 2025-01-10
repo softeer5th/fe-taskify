@@ -181,6 +181,10 @@
   border-radius: 50%;
 }
 
+.textlabel {
+  padding: 0 4px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -204,10 +208,6 @@ button:hover {
 button:disabled {
   cursor: not-allowed;
   opacity: 0.3;
-}
-
-p, h1, h2, h3, h4, h5, h6 {
-  padding: 0 4px;
 }
 
 ul, ol {
