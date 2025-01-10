@@ -85,10 +85,10 @@
     - [ ] Card Move
         - [ ] Drag
         - [ ] Drop
-    - [ ] Sort
+    - [x] Sort
         - [x] 생성 순
         - [x] 최신 순
-        - [ ] animation
+        - [x] animation
     - [ ] Card
         - [ ] delete
             - [ ] warning modal
