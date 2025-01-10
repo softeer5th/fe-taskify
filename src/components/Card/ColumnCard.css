@@ -1,0 +1,62 @@
+.column-card-container{
+    width:320px;
+    display: flex;
+    border-radius: var(--Number-100);
+    padding: var(--Number-200);
+    gap:var(--Number-50);
+    background-color: var(--surface-default);
+    box-shadow: var(--shadow-nomal);
+}
+
+.column-content-container{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap:var(--Number-200);
+    border-radius: 8px;
+}
+
+.column-content-box{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap:var(--Number-200);
+}
+
+.column-card-title{
+    font: var(--display-bold14);
+    color:var(--text-strong);
+}
+
+.column-card-content{
+    font: var(--display-medium14);
+    color:var(--text-default);
+
+}
+
+.column-card-author{
+    font: var(--display-medium12);
+    color:var(--text-weak);
+
+}
+
+.column-card-icon-box{
+
+
+}
+
+/* type add/edit */
+.card-button-box{
+    display: flex;
+    gap:var(--Number-100);
+}
+
+/* type drag */
+
+.card-drag-container{
+    box-shadow: var(--shadow-floating);
+}
+
+.card-place-container{
+    opacity: 30%;
+}

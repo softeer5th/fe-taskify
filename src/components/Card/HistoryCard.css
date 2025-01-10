@@ -2,7 +2,7 @@
     width:344px;
     padding: var(--Number-200);
     display: flex;
-    background-color: var(surface-default);
+    background-color: var(--surface-default);
     gap:var(--Number-200);
 }
 
