@@ -3,6 +3,8 @@ import { createButton, createElement, createImg } from "../../../dom.js";
 import { loadLocalStorage } from "../../../utils/localStorage.js";
 import ColumnSection from "../../ColumnSection/ColumnSection.js";
 
+const INITIAL_SORT_TYPE = "생성 순";
+
 const toggleText = {
   "최신 순": "생성 순",
   "생성 순": "최신 순",
@@ -16,7 +18,7 @@ const createSortButton = () => {
   const $arrow = createImg({ src: IMAGE.arrowBoth, alt: "정렬" });
   const $sortText = createElement("span", {
     className: "display-medium12",
-    text: "생성 순",
+    text: INITIAL_SORT_TYPE,
   });
 
   function handleClickSort(e) {
