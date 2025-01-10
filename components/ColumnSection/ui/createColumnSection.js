@@ -1,6 +1,6 @@
 import { createElement } from "../../../dom.js";
-import ColumnBody from "../../ColumnBody/ColumnBody.js";
-import ColumnHeader from "../../ColumnHeader/ColumnHeader.js";
+import ColumnBody from "../ColumnBody/ColumnBody.js";
+import ColumnHeader from "../ColumnHeader/ColumnHeader.js";
 
 const createColumnSection = ({ id, title, items, store }) => {
   const $columnSection = createElement("section", {

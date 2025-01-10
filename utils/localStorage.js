@@ -1,3 +1,5 @@
+import { initialTodoList } from "../store/todoList.js";
+
 const STORAGE_KEY = "todoList";
 
 export const saveLocalStorage = (data) => {
@@ -7,4 +9,31 @@ export const saveLocalStorage = (data) => {
 export const loadLocalStorage = () => {
   const data = localStorage.getItem(STORAGE_KEY);
   return data ? JSON.parse(data) : null;
+};
+
+export const initStorage = () => {
+  const storageData = loadLocalStorage();
+
+  if (storageData === null) {
+    saveLocalStorage(initialTodoList);
+    return initialTodoList;
+  }
+
+  return sortInitStorage(storageData);
+};
+
+export const sortInitStorage = () => {
+  const storageData = loadLocalStorage();
+
+  const sortedList = [...storageData].map((section) => {
+    section.items.sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+
+    return section;
+  });
+
+  saveLocalStorage(sortedList);
+  return sortedList;
 };

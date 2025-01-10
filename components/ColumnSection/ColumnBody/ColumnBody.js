@@ -1,34 +1,32 @@
-import { createElement } from "../../../dom.js";
+import loadStyleSheet from "../../../utils/loadStyleSheet.js";
 import {
   loadLocalStorage,
   saveLocalStorage,
 } from "../../../utils/localStorage.js";
-import ColumnItem from "../../ColumnItem/ColumnItem.js";
+import createColumnBody from "./ui/createColumnBody.js";
 
-const createColumnBody = ({ sectionId, items }) => {
+loadStyleSheet("/components/ColumnSection/ColumnBody/styles.css");
+
+const ColumnBody = ({ sectionId, items }) => {
   let shadowElement = null;
-
-  const $columnBody = createElement("div", {
-    className: "column__body",
-  });
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    const target = e.target.closest(".column__item");
+    const $target = e.target.closest(".column__item");
 
     if (!shadowElement) {
       shadowElement = document.createElement("div");
       shadowElement.classList.add("after-image", "shadow-normal");
     }
 
-    if (target) {
-      const rect = target.getBoundingClientRect();
+    if ($target) {
+      const rect = $target.getBoundingClientRect();
       const offset = e.clientY - rect.top;
 
       if (offset < rect.height / 2) {
-        $columnBody.insertBefore(shadowElement, target);
+        $columnBody.insertBefore(shadowElement, $target);
       } else {
-        $columnBody.insertBefore(shadowElement, target.nextSibling);
+        $columnBody.insertBefore(shadowElement, $target.nextSibling);
       }
     } else {
       $columnBody.appendChild(shadowElement);
@@ -38,11 +36,9 @@ const createColumnBody = ({ sectionId, items }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     const draggedElement = document.querySelector(".dragging");
-    const siblingElements = Array.from($columnBody.children);
-    const dropIndex = siblingElements.indexOf(shadowElement);
 
     if (shadowElement && draggedElement) {
-      $columnBody.insertBefore(draggedElement, shadowElement);
+      $columnBody.replaceChild(draggedElement, shadowElement);
       shadowElement.remove();
       shadowElement = null;
     }
@@ -50,7 +46,7 @@ const createColumnBody = ({ sectionId, items }) => {
     const newSectionId = $columnBody.closest(".column__container").id;
     const itemId = Number(draggedElement.dataset.id);
 
-    updateTodoList(newSectionId, itemId, dropIndex);
+    updateTodoList(newSectionId, itemId);
   };
 
   const handleDragLeave = (e) => {
@@ -61,22 +57,20 @@ const createColumnBody = ({ sectionId, items }) => {
     }
   };
 
+  const $columnBody = createColumnBody({
+    sectionId,
+    items,
+  });
+
   $columnBody.addEventListener("dragover", handleDragOver);
   $columnBody.addEventListener("drop", handleDrop);
   $columnBody.addEventListener("dragleave", handleDragLeave);
 
-  items.forEach(({ id, title, content, author }) => {
-    const $columnItem = ColumnItem({ sectionId, id, title, content, author });
-    $columnBody.appendChild($columnItem);
-  });
-
   return $columnBody;
 };
 
-export default createColumnBody;
-
-// drag drop 한 순서 DB에 반영
-const updateTodoList = (sectionId, itemId, dropIndex) => {
+// TODO: 배열 메서드로 개선 필요
+const updateTodoList = (sectionId, itemId) => {
   const todoList = loadLocalStorage();
 
   let draggedItem = null;
@@ -94,11 +88,9 @@ const updateTodoList = (sectionId, itemId, dropIndex) => {
 
   const finalList = filteredList.map((section) => {
     if (section.id === sectionId && draggedItem) {
-      const updatedItems = [...section.items];
-      updatedItems.splice(dropIndex, 0, draggedItem); // 드롭된 위치에 삽입
       return {
         ...section,
-        items: updatedItems,
+        items: [...section.items, draggedItem],
       };
     }
     return section;
@@ -119,3 +111,5 @@ const updateCount = (todoList) => {
     $count.textContent = items.length;
   });
 };
+
+export default ColumnBody;

@@ -1,22 +1,13 @@
-import { IMAGE } from "../../../assets/index.js";
-import { createElement, createImg } from "../../../dom.js";
+import { createElement } from "../../../dom.js";
+import createHistoryButton from "./createHistoryButton.js";
+import createLeftHeader from "./createLeftHeader.js";
 
 const createHeader = () => {
   const $header = createElement("header", { className: "header" });
-  const $title = createElement("h1", {
-    className: "display-bold24",
-    text: "TASKIFY",
-  });
-  const $historyButton = createElement("button");
-  const $img = createImg({
-    src: IMAGE.clock,
-    alt: "사용자 활동 기록",
-  });
+  const $leftHeader = createLeftHeader();
+  const $historyButton = createHistoryButton();
 
-  $historyButton.appendChild($img);
-  $header.appendChild($title);
-  $header.appendChild($historyButton);
-
+  $header.append($leftHeader, $historyButton);
   return $header;
 };
 
