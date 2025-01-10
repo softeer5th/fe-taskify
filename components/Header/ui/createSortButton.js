@@ -10,6 +10,25 @@ const toggleText = {
   "생성 순": "최신 순",
 };
 
+const getSortedTodoList = ({ todoList, sortType }) => {
+  return [...todoList].map((section) => {
+    section.items.sort((a, b) => {
+      if (sortType === "최신 순") {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      } else if (sortType === "생성 순") {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      }
+      return 0;
+    });
+
+    return section;
+  });
+};
+
 const createSortButton = () => {
   const $sortButton = createButton({
     className: "sort__button",
@@ -26,23 +45,9 @@ const createSortButton = () => {
     const todoList = loadLocalStorage();
 
     // 2. 토글된 정렬 기준으로 데이터를 정렬한다.
-    const sortType = toggleText[e.currentTarget.textContent];
-
-    const sortedTodoList = [...todoList].map((section) => {
-      section.items.sort((a, b) => {
-        if (sortType === "최신 순") {
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        } else if (sortType === "생성 순") {
-          return (
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          );
-        }
-        return 0;
-      });
-
-      return section;
+    const sortedTodoList = getSortedTodoList({
+      todoList,
+      sortType: toggleText[e.currentTarget.textContent],
     });
 
     // 3. 데이터를 기준으로 column__section을 갈아끼운다.
