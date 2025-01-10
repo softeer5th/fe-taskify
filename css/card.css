@@ -58,6 +58,6 @@
   color: var(--text-white-default);
 }
 
-.display-none {
-  display: none;
+.card-delete-icon:hover path {
+  fill: var(--text-danger);
 }

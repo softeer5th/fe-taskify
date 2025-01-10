@@ -1,0 +1,56 @@
+.modal-overlay {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #14212b4d;
+}
+.modal-container {
+  z-index: 2;
+  background-color: var(--surface-default);
+  padding: 24px 32px;
+  box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.16);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  width: 400px;
+}
+
+.modal-msg {
+  margin-bottom: 32px;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  justify-content: center;
+  color: var(--text-default);
+}
+.modal-btn {
+  display: flex;
+  width: 100%;
+}
+.modal-btn button {
+  width: 50%;
+  padding: 7.5px 69.5px;
+  border-radius: 8px;
+}
+.modal-cancel-btn {
+  background-color: var(--surface-alt);
+  color: var(--text-default);
+  font-size: 14px;
+  line-height: 16.41px;
+  text-align: center;
+  font-weight: bold;
+  margin-right: 8px;
+}
+.modal-delete-btn {
+  font-size: 14px;
+  line-height: 16.41px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--text-white-default);
+  background-color: var(--surface-danger);
+}

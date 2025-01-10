@@ -1,7 +1,7 @@
-const workList = JSON.parse(localStorage.getItem("workList"));
+let workList = JSON.parse(localStorage.getItem("workList"));
 
-const savedData = (workList) => {
-  localStorage.setItem("workList", JSON.stringify(workList));
+const savedData = (updatedWorkList) => {
+  localStorage.setItem("workList", JSON.stringify(updatedWorkList));
 };
 
 const loadData = () => {
@@ -13,7 +13,21 @@ const loadData = () => {
     };
     return workList;
   }
+  workList = JSON.parse(localStorage.getItem("workList"));
   return workList;
+};
+
+const deleteCardFormStorage = (cardId, sectionType) => {
+  console.log(cardId, "삭제될 id", workList[sectionType]);
+  const updatedWorkList = {
+    ...workList,
+    [sectionType]: workList[sectionType].filter(
+      (item) => item.id !== Number(cardId)
+    ),
+  };
+  console.log(updatedWorkList, "삭제 후 workList");
+  savedData(updatedWorkList);
+  workList = loadData();
 };
 
 const editStorage = (sectionType, cardId, newTitle, newContent) => {
@@ -33,7 +47,7 @@ const editStorage = (sectionType, cardId, newTitle, newContent) => {
   savedData(updatedWorkList);
 };
 const addStorage = (sectionType, title, content, CARD_ID) => {
-  workList[sectionType].push({
+  workList[sectionType].unshift({
     id: CARD_ID,
     createdDate: new Date().toISOString(),
     title,
@@ -42,4 +56,4 @@ const addStorage = (sectionType, title, content, CARD_ID) => {
   savedData(workList);
 };
 
-export { savedData, loadData, addStorage, editStorage };
+export { deleteCardFormStorage, savedData, loadData, addStorage, editStorage };

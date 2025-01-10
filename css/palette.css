@@ -8,5 +8,7 @@
   --surface-brand: #007aff;
   --text-danger: #ff3b30;
   --border-default: #eff0f6;
+  --surface-alt: rgba(247, 247, 252, 1);
   --surface-default: #fefefe;
+  --surface-danger: rgba(255, 59, 48, 1);
 }
