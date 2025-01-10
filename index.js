@@ -1,8 +1,9 @@
 import { initStorage } from "./utils/localStorage.js";
-import App from "./App.js";
+import Main from "./Main.js";
+import Header from "./components/Header/Header.js";
 
 const todoList = initStorage();
 
-const $ROOT = document.getElementById("root");
-const app = new App($ROOT, todoList);
-app.render();
+const $root = document.getElementById("root");
+$root.appendChild(Header());
+$root.appendChild(Main(todoList));
