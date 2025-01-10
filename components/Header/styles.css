@@ -4,3 +4,22 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.left__header {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.sort__button {
+  display: flex;
+  align-items: center;
+
+  border: 0.1rem solid var(--color-border-bord);
+  border-radius: 0.8rem;
+  padding: 0.4rem 0.8rem;
+
+  span {
+    color: var(--color-text-bold);
+  }
+}
