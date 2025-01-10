@@ -38,6 +38,7 @@ body {
     font-family: 'Pretendard Variable', sans-serif;
     min-width: 400px;
     background-color: var(--grayscale-100);
+    user-select: none;
 }
 
 body {
@@ -280,6 +281,8 @@ textarea {
 .task__content {
     width: 100%;
     height: auto;
+    display: flex;
+    flex-direction: column;
     gap: 16px;
 }
 
@@ -301,6 +304,7 @@ textarea {
     font-size: 14px;
     font-weight: 500;
     color: var(--grayscale-600);
+    white-space: pre-line;
 }
 
 .task__content-device {
