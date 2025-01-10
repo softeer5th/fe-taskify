@@ -2,6 +2,8 @@ import createFormElement from '../script/formScript.js';
 import { columns } from './index.js';
 import { createTask } from './task.js';
 
+let ordering = 1;
+
 export function createTaskForm(columnIdx) {
     const cardFormArea = document.getElementsByClassName("card_add")[columnIdx];
     
@@ -17,6 +19,23 @@ export function createTaskForm(columnIdx) {
     cardFormArea.appendChild(formElement)
 }
 
+export function handleSortOrder() {
+    ordering = -ordering;
+    
+    document.querySelector('#sort_button > span').textContent = ordering === -1 ? '생성 순' : '최신 순';
+
+    for(let i =0; i<columns.length; i++) {
+        renderTasks(i);
+    }
+}
+
+function sortingTasks(taskA, taskB) {
+    const dateA = taskA.created;
+    const dateB = taskB.created;
+
+    if(dateA < dateB) return ordering;
+    else return -ordering;
+}
 
 export function renderTasks(columnIdx) {
     const columnElement = document.getElementsByClassName('column')[columnIdx];
@@ -28,7 +47,7 @@ export function renderTasks(columnIdx) {
         columnCardList.removeChild(columnCardList.lastChild)
     }
 
-    const tasks = columns[columnIdx];
+    const tasks = columns[columnIdx].sort(sortingTasks);
     counterElement.textContent = tasks.length;
     
     for(let task of tasks) {

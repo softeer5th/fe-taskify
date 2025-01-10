@@ -1,5 +1,5 @@
 import { createLogLayerElement, setLog } from "./logScript.js";
-import { createTaskForm, renderTasks } from "./column.js";
+import { createTaskForm, handleSortOrder, renderTasks } from "./column.js";
 import {  taskHTML } from "./task.js";
 
 let dragged = null;
@@ -155,7 +155,10 @@ function init() {
     }
 
     const logButton = document.querySelector('#log_button');
-    logButton.addEventListener('click', handleLogOpen)
+    logButton.addEventListener('click', handleLogOpen);
+
+    const sortButton = document.querySelector('#sort_button');
+    sortButton.addEventListener('click', handleSortOrder);
 
     for (let i = 0; i < 3; i++) {
         columns.push([]);
