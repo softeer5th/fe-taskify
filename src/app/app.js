@@ -1,5 +1,7 @@
+import { Alert } from "../components/Alert/index.js";
 import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
+import { Card } from "../components/Card/index.js";
 import { Chip } from "../components/Chip/index.js";
 import { parser } from "../lib/jsx-runtime/index.js";
 
@@ -12,8 +14,13 @@ const App = () => {
       console.log("버튼 클릭");
     },
   });
+  const button2 = Button({
+    label: "Button",
+    variant: "sub",
+  });
   const iconButton = Button({
     label: "Button",
+    variant: "danger",
     showIcon: true,
   });
   const icon = Button({
@@ -29,16 +36,51 @@ const App = () => {
 
   const chip = Chip({ label: "Chip" });
 
+  const card = Card({ title: "TITLE", body: "BODY", caption: "author by web" });
+  const addCard = Card({
+    title: "TITLE",
+    body: "BODY",
+    type: "add-edit",
+    // eslint-disable-next-line
+    onClickLT: () => console.log("lt"),
+  });
+  const dragCard = Card({
+    title: "TITLE", body: "BODY", caption: "author by web", type: "drag",
+  });
+  const placeCard = Card({
+    title: "TITLE",
+    body: "BODY",
+    caption: "author by web",
+    type: "place",
+    // eslint-disable-next-line
+    onClickRB: () => {
+      console.log("rb");
+    },
+  });
+
+  const alert = Alert({
+    text: "선택한 카드를 삭제할까요?",
+    // eslint-disable-next-line
+    leftOnClick: () => console.log("취소"),
+    // eslint-disable-next-line
+    rightOnClick: () => console.log("삭제"),
+  });
+
   return (
     parser`
         <div>
             ${button}
+            ${button2}
             ${iconButton}
             ${icon}
             ${ghost}
             ${badge}
             ${badge2}
             ${chip}
+            ${card}
+            ${addCard}
+            ${dragCard}
+            ${placeCard}
         </div>`
   );
 };

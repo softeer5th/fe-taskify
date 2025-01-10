@@ -7,13 +7,13 @@ import { redo } from "./redo.js";
 import { undo } from "./undo.js";
 
 const icons = {
-  arrowBoth: arrowBoth(),
-  close: close(),
-  edit: edit(),
-  history: history(),
-  plus: plus(),
-  redo: redo(),
-  undo: undo(),
+  arrowBoth,
+  close,
+  edit,
+  history,
+  plus,
+  redo,
+  undo,
 };
 
 export default icons;

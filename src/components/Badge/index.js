@@ -13,6 +13,7 @@ export const Badge = ({ text }) => {
    * @returns {string} - 포매팅된 텍스트
    */
   const formatText = () => {
+    // TODO: 매직 넘버
     if (Number(text) > 9) {
       return `${text}+`;
     }

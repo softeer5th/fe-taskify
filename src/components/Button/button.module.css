@@ -23,6 +23,15 @@
     color: var(--text-default);
 }
 
+.button-sub {
+    background-color: var(--surface-alt);
+    color: var(--text-default);
+}
+
+.button-danger {
+    background-color: var(--surface-danger);
+}
+
 .button-full {
     width: 100%;
 }
