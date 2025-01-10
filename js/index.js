@@ -17,6 +17,7 @@ const eachColumnRender = () => {
     const container = cardContainer();
     const form = cardForm(type);
 
+    form.querySelector(".add-btn").disabled = true;
     container.appendChild(form);
 
     column.appendChild(navbar);

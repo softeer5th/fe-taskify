@@ -1,5 +1,6 @@
 import { parseToDoc } from "../utils/parseToDoc.js";
 
+const updateAddButtonState = () => {};
 export const cardForm = (sectionType) => {
   const cardFormHTML = /*html*/ `
     <li class="${sectionType}-form-card card display-none">
@@ -23,5 +24,21 @@ export const cardForm = (sectionType) => {
     </div>
   </li>
     `;
-  return parseToDoc(cardFormHTML);
+
+  // DOM 요소로 변환
+  const cardFormElement = parseToDoc(cardFormHTML);
+
+  const title = cardFormElement.querySelector(".title");
+  const content = cardFormElement.querySelector(".content");
+
+  const updateAddButtonState = () => {
+    if (title.value.trim().length > 0 && content.value.trim().length > 0) {
+      cardFormElement.querySelector(".add-btn").disabled = false;
+    } else cardFormElement.querySelector(".add-btn").disabled = true;
+  };
+
+  title.addEventListener("input", updateAddButtonState);
+  content.addEventListener("input", updateAddButtonState);
+
+  return cardFormElement;
 };
