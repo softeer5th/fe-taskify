@@ -3,8 +3,8 @@ import {
   createButton,
   createImg,
   createDeleteSvg,
-} from "../../../dom.js";
-import { IMAGE } from "../../../assets/index.js";
+} from "../../../../dom.js";
+import { IMAGE } from "../../../../assets/index.js";
 
 const createColumnHeader = ({ title, count, handleClickAdd }) => {
   const $columnHeader = createElement("div", { className: "column__header" });

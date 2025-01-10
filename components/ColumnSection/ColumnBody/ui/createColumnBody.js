@@ -1,9 +1,9 @@
-import { createElement } from "../../../dom.js";
+import { createElement } from "../../../../dom.js";
 import {
   loadLocalStorage,
   saveLocalStorage,
-} from "../../../utils/localStorage.js";
-import ColumnItem from "../../ColumnItem/ColumnItem.js";
+} from "../../../../utils/localStorage.js";
+import ColumnItem from "../../../ColumnItem/ColumnItem.js";
 
 const createColumnBody = ({ sectionId, items }) => {
   let shadowElement = null;

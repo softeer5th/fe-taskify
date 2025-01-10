@@ -1,8 +1,8 @@
-import loadStyleSheet from "../../utils/loadStyleSheet.js";
-import ColumnInputItem from "../ColumnInputItem/ColumnInputItem.js";
+import loadStyleSheet from "../../../utils/loadStyleSheet.js";
+import ColumnInputItem from "../../ColumnInputItem/ColumnInputItem.js";
 import createColumnHeader from "./ui/createColumnHeader.js";
 
-loadStyleSheet("/components/ColumnHeader/styles.css");
+loadStyleSheet("/components/ColumnSection/ColumnHeader/styles.css");
 
 const ColumnHeader = ({ id, title, items, store }) => {
   const handleCancel = (e) => {

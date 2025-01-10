@@ -1,7 +1,7 @@
-import loadStyleSheet from "../../utils/loadStyleSheet.js";
+import loadStyleSheet from "../../../utils/loadStyleSheet.js";
 import createColumnBody from "./ui/createColumnBody.js";
 
-loadStyleSheet("/components/ColumnBody/styles.css");
+loadStyleSheet("/components/ColumnSection/ColumnBody/styles.css");
 
 const ColumnBody = ({ sectionId, items }) => {
   return createColumnBody({ sectionId, items });
