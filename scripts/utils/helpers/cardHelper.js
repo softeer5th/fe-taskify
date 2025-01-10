@@ -64,8 +64,9 @@ const setCardIconButtons = (cardElement, mode) => {
  * @param {HTMLElement} cardElement
  * @param {'default' | 'add' | 'drag' | 'place'} mode
  * @param {boolean} isEditing
+ * @param {boolean} disabled
  */
-const setCardButtons = (cardElement, mode, isEditing) => {
+const setCardButtons = (cardElement, mode, isEditing, disabled) => {
   const buttonsArea = cardElement.querySelector('#button-area');
 
   if (mode !== 'add') {
@@ -75,16 +76,16 @@ const setCardButtons = (cardElement, mode, isEditing) => {
   }
 
   buttonsArea.appendChild(
-    Button('cancle', () => console.log('cancle button clicked'))
+    Button('cancle', () => console.log('cancle button clicked'), disabled)
   );
 
   if (isEditing) {
     buttonsArea.appendChild(
-      Button('edit', () => console.log('edit button clicked'))
+      Button('edit', () => console.log('edit button clicked'), disabled)
     );
   } else {
     buttonsArea.appendChild(
-      Button('add', () => console.log('add button clicked'))
+      Button('add', () => console.log('add button clicked'), disabled)
     );
   }
 };

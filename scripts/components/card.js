@@ -20,7 +20,7 @@ const Card = (mode = 'default', cardData) => {
 
   setCardTextArea(cardElement, mode, cardData, () => {});
   setCardIconButtons(cardElement, mode);
-  setCardButtons(cardElement, mode, false, false);
+  setCardButtons(cardElement, mode, false, cardData.title === null || cardData.body === null);
   setCardShadow(cardElement, mode);
 
   if (mode == 'place') {

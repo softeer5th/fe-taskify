@@ -1,11 +1,11 @@
 /**
  * 버튼 컴포넌트
- * @param {number} id
  * @param {'add' | 'cancle' | 'delete' | 'edit'} type - 버튼 타입
- * @param {function} [onClick] - 클릭 이벤트 핸들러
+ * @param {function} onClick - 클릭 이벤트 핸들러
+ * @param {boolean} disabled - 버튼 비활성화 여부
  * @returns {DocumentFragment} - 버튼 요소를 포함하는 DocumentFragment
  */
-const Button = (type, onClick) => {
+const Button = (type, onClick, disabled) => {
   /**
    * @type {DocumentFragment}
    */
@@ -24,13 +24,11 @@ const Button = (type, onClick) => {
       buttonElement.textContent = '등록';
       buttonElement.classList.add('surface-brand', 'text-white-default');
       buttonElement.id = 'blue';
-      buttonElement.disabled = true;
       break;
     case 'edit':
       buttonElement.textContent = '수정';
       buttonElement.classList.add('surface-brand', 'text-white-default');
       buttonElement.id = 'blue';
-      buttonElement.disabled = true;
       break;
     case 'delete':
       buttonElement.textContent = '삭제';
@@ -40,9 +38,8 @@ const Button = (type, onClick) => {
       console.warn(`Unknown button type: ${type}`);
   }
 
-  if (onClick) {
-    buttonElement.addEventListener('click', onClick);
-  }
+  buttonElement.addEventListener('click', onClick);
+  buttonElement.disabled = disabled;
 
   return button;
 };
