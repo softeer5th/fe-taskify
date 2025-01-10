@@ -1,43 +1,113 @@
-import { createHeader } from "./component/header.js";
-import { createBody } from "./component/body.js";
+import { Model } from "./model.js";
+import { HeaderController, ColumnListController } from "./controller.js";
+import { TaskView } from "./view/taskView.js";
 
-const mockColumn = [
-  { id: 1, title: "해야 할 일", tasks: [1, 2] },
-  { id: 2, title: "하고 있는 일", tasks: [3] },
-  { id: 3, title: "완료한 일", tasks: [] },
-];
+const mockData = {
+  column: [
+    {
+      id: 1,
+      title: "해야 할 일",
+    },
+    {
+      id: 2,
+      title: "하고 있는 일",
+    },
+    {
+      id: 3,
+      title: "완료한 일",
+    },
+  ],
+  task: [
+    {
+      id: 1,
+      name: "자바스크립트 공부",
+      description: "자바스크립트 공부를 하면서 코드스피츠에 참석하기",
+      createdAt: Date(2021, 8, 1),
+      device: "web",
+      columnId: 1,
+    },
+    {
+      id: 2,
+      name: "코드스피츠 참석",
+      description: "* 8/1 코드스피츠 참석\n* 8/2 코드스피츠 참석",
+      createdAt: Date(2021, 8, 2),
+      device: "web",
+      columnId: 2,
+    },
+    {
+      id: 3,
+      name: "TIL 작성",
+      description: "Today I Learned 작성하기",
+      createdAt: Date(2021, 8, 3),
+      device: "web",
+      columnId: 3,
+    },
+  ],
+  user: {
+    name: "TestUser",
+    thumbnailUrl: "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
+  },
+};
 
-const mockTask = [
-  { id: 1, title: "블로그에 포스팅할 것", description: "* GitHub 공부내용\n* 모던 자바스크립트 1장 공부내용", createdAt: "1736181251", device: "web" },
-  { id: 2, title: "GitHub 공부하기", description: "add, commit, push", createdAt: "1736181431", device: "web" },
-  { id: 3, title: "HTML/CSS 공부하기", description: "input 태그 실습", createdAt: "1736181611", device: "web" },
-];
+const model = Model();
+model.setInitData(mockData);
+const rootElement = document.getElementById("root");
+HeaderController(model, rootElement);
+ColumnListController(model, rootElement);
 
-const mockHistory = [];
-
-let orderBy = "latest";
-let isHistoryOpen = false;
-
-const root = document.getElementById("root");
-
-function handleSortButton() {
-  if (orderBy === "latest") {
-    orderBy = "oldest";
-  } else {
-    orderBy = "latest";
+function unselectTask(event) {
+  event.stopPropagation();
+  const state = model.getCurrentDataState().state;
+  if (state.movingTaskId !== -1 && state.mouseOverColumnId !== -1) {
+    model.moveTask(state.movingTaskId, state.mouseOverColumnId);
+    console.log("Task", state.movingTaskId, "is moved to column", state.mouseOverColumnId);
   }
-  console.log("sort button clicked:", orderBy);
+  model.setMovingTaskId(-1);
 }
 
-function handleHistoryButton() {
-  isHistoryOpen = !isHistoryOpen;
-  console.log("history button clicked:", isHistoryOpen);
+window.addEventListener("mouseup", unselectTask);
+
+const ghostTask = TaskView({
+  task: {
+    id: -1,
+    name: "",
+    description: "",
+    createdAt: 0,
+    device: "web",
+    columnId: -1,
+  },
+  state: "moving",
+});
+ghostTask.style.position = "absolute";
+ghostTask.style.opacity = 0;
+ghostTask.style.pointerEvents = "none";
+ghostTask.style.zIndex = 1000;
+ghostTask.style.transform = "translate(-50%, -50%)";
+rootElement.appendChild(ghostTask);
+
+function moveGhostTask(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  const state = model.getCurrentDataState().state;
+  const task = model.getCurrentDataState().data.task.find((task) => task.id === state.movingTaskId);
+  if (task) {
+    ghostTask.innerHTML = TaskView({
+      task: task,
+      state: "dragging",
+      onFirstButtonClicked: () => {},
+      onSecondButtonClicked: () => {},
+    }).innerHTML;
+    ghostTask.classList.add("task--drag");
+  }
+  if (state.movingTaskId !== -1) {
+    ghostTask.style.top = event.clientY + "px";
+    ghostTask.style.left = event.clientX + "px";
+    ghostTask.style.opacity = 1;
+  } else {
+    ghostTask.style.opacity = 0;
+  }
 }
 
-const header = createHeader();
-header.mount(root);
-header.bindSortButton(handleSortButton);
-header.bindHistoryButton(handleHistoryButton);
-
-const body = createBody();
-body.mount(root);
+window.addEventListener("mousemove", moveGhostTask);
+window.addEventListener("mouseup", moveGhostTask);
+window.addEventListener("mousedown", moveGhostTask);
