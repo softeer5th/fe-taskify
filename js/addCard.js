@@ -34,16 +34,22 @@ export const makeCard = (task, parentColumn) => {
 
   const newTask = document.createElement('li');
   newTask.className = 'task';
-
+  newTask.setAttribute('data-timestamp', task.timestamp);
   newTask.innerHTML = `
     <div class="title-cont-au">
-      <div class="task-title">${task.title}</div>
-      <div class="task-body">${task.body}</div>
+      <div class = "content-author-divider">
+        <div class="task-title">${task.title}</div>
+        <div class="task-body">${task.body}</div>
+      </div>  
       <div class="task-author">author by me</div>
     </div>
-    <div class="delete-edit">
-      <div> x</div>
-      <div> e</div>
+    <div class="card-delete-edit">
+      <button class = "card-close-btn"> 
+        <img src="../assets/icon/closed.svg" alt="close">
+      </button>
+      <button class = "card-edit-btn"> 
+        <img src="../assets/icon/edit.svg" alt="edit" >
+      </button>
     </div>
   `;
 
