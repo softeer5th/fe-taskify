@@ -5,7 +5,7 @@
  * @param {function} [onClick] - 클릭 이벤트 핸들러
  * @returns {DocumentFragment} - 버튼 요소를 포함하는 DocumentFragment
  */
-const Button = (type, onClick ) => {
+const Button = (type, onClick) => {
   /**
    * @type {DocumentFragment}
    */
@@ -24,11 +24,13 @@ const Button = (type, onClick ) => {
       buttonElement.textContent = '등록';
       buttonElement.classList.add('surface-brand', 'text-white-default');
       buttonElement.id = 'blue';
+      buttonElement.disabled = true;
       break;
     case 'edit':
       buttonElement.textContent = '수정';
       buttonElement.classList.add('surface-brand', 'text-white-default');
       buttonElement.id = 'blue';
+      buttonElement.disabled = true;
       break;
     case 'delete':
       buttonElement.textContent = '삭제';

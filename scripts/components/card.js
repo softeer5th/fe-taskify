@@ -1,5 +1,4 @@
 import { setCardButtons, setCardShadow, setCardIconButtons, setCardTextArea } from '../utils/helpers/cardHelper.js';
-import Button from './button.js';
 
 /**
  * @typedef {Object} Card
