@@ -8,7 +8,7 @@ const createCategory = (
         identifier: identifier,
         todoFormDomId: todoFormDomId,
         values: {
-            category: categoryName,
+            categoryName: categoryName,
             todoList: todoList,
         },
     }

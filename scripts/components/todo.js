@@ -36,7 +36,7 @@ export const initTodo = () => {
 
         const element = findDomElement(categoryId)
         element.querySelector(`.${classNames.todoHeaderTitle}`).textContent =
-            category.values.category
+            category.values.categoryName
         element
             .querySelector(`.${classNames.addButton}`)
             .addEventListener('click', () => {
@@ -83,7 +83,6 @@ const enableAddTodoForm = (category) => {
         false
     )
     category.todoFormDomId = formId
-    // setState(TODO_FORM_DOM_ID_KEY, formId)
     const formElement = findDomElement(formId)
     formElement
         .querySelector(`.${classNames.todoAddFormSubmitBtn}`)
@@ -96,21 +95,20 @@ const enableAddTodoForm = (category) => {
             ).value
             const author = 'web'
             addTodoItem(title, content, author, category)
+            category.todoFormDomId = null
             removeDomElement(formId)
-            // setState(TODO_FORM_DOM_ID_KEY, null)
         })
     formElement
         .querySelector(`.${classNames.todoAddFormCancelBtn}`)
         .addEventListener('click', () => {
+            category.todoFormDomId = null
             removeDomElement(formId)
-            // setState(TODO_FORM_DOM_ID_KEY, null)
         })
 }
 
 const disableAddTodoForm = (category) => {
     removeDomElement(category.todoFormDomId)
     category.todoFormDomId = null
-    // setState(TODO_FORM_DOM_ID_KEY, null)
 }
 
 const initTodoItemElement = (todoElement, todoItem) => {
