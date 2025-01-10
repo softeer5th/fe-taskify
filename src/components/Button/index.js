@@ -1,13 +1,7 @@
 import { Icon } from "../../constants/icons/index.js";
 import { colors, typos } from "../../constants/tokens/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
-
-/**
- *
- * @param {string} label - 버튼에 표시할 라벨
- * @returns {VDOM} - 생성된 텍스트 가상돔
- */
-const Text = (label) => parser`<span class="button-text">${label}</span>`;
+import { Text } from "../Text/index.js";
 
 /**
  *
@@ -16,15 +10,28 @@ const Text = (label) => parser`<span class="button-text">${label}</span>`;
  * @param {"contained"|"ghost"} [props.type] - 버튼의 타입
  * @param {boolean} [props.showIcon] - 아이콘을 표시할지 여부
  * @param {Function} [props.onClick] - 클릭 이벤트 시 호출할 함수
+ * @param {boolean} [props.isFull] - 버튼의 너비를 꽉 채울지 여부
  * @returns {HTMLElement} - 생성된 버튼 가상돔
  */
 export const Button = ({
   showIcon = false,
   label,
   type = "contained",
+  isFull = false,
   onClick,
-}) => parser`
-<button onClick=${onClick} class="button-container ${typos.selected.bold[16]}">
+}) => {
+  /**
+   * @returns {string} - 버튼의 클래스명
+   */
+  const findClasses = () => {
+    const buttonType = `button-${type}`;
+    if (isFull) return `${buttonType} button-full`;
+    return buttonType;
+  };
+
+  return parser`
+<button onClick=${onClick} class="${findClasses()}">
     ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })}
-    ${label && Text(label)}
+    ${label && Text({ text: label, typo: typos.selected.bold[16] })}
 </button>`;
+};

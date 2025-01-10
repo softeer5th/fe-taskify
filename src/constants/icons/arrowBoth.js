@@ -5,6 +5,6 @@ import { parser } from "../../lib/jsx-runtime/index.js";
  */
 export const arrowBoth = () => parser`
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99799H13V10.998H19V12.998Z" fill="#6E7191"/>
+<path d="M16.375 19V5M16.375 5L19 7.625M16.375 5L13.75 7.625M7.625 5V19M7.625 19L10.25 16.375M7.625 19L5 16.375" stroke="#6E7191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
