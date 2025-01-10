@@ -1,3 +1,4 @@
+import { Alert } from "../components/Alert/index.js";
 import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
 import { Card } from "../components/Card/index.js";
@@ -57,6 +58,14 @@ const App = () => {
     },
   });
 
+  const alert = Alert({
+    text: "선택한 카드를 삭제할까요?",
+    // eslint-disable-next-line
+    leftOnClick: () => console.log("취소"),
+    // eslint-disable-next-line
+    rightOnClick: () => console.log("삭제"),
+  });
+
   return (
     parser`
         <div>
@@ -72,6 +81,7 @@ const App = () => {
             ${addCard}
             ${dragCard}
             ${placeCard}
+            ${alert}
         </div>`
   );
 };
