@@ -81,7 +81,6 @@ const App = () => {
             ${addCard}
             ${dragCard}
             ${placeCard}
-            ${alert}
         </div>`
   );
 };

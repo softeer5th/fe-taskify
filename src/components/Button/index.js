@@ -13,7 +13,7 @@ import { Text } from "../Text/index.js";
  * @param {Function} [props.onClick] - 클릭 이벤트 시 호출할 함수
  * @param {boolean} [props.isFull] - 버튼의 너비를 꽉 채울지 여부
  * @param props.state
- * @returns {HTMLElement} - 생성된 버튼 가상돔
+ * @returns {VDOM} - 생성된 버튼 가상돔
  */
 export const Button = ({
   showIcon = false,
