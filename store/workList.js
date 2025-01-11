@@ -3,8 +3,9 @@ import { updateCardCount } from "../js/cardNavbar.js";
 let workList;
 
 const savedData = (updatedWorkList) => {
+  console.log(updatedWorkList, "저장될 리스트");
   localStorage.setItem("workList", JSON.stringify(updatedWorkList));
-  workList = loadData();
+  workList = loadData(); // 삭제가 되고, 다시 workList 변수에 업데이트 필수.
 };
 
 const loadData = () => {
