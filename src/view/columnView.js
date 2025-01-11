@@ -1,7 +1,9 @@
 import { plus } from "../../public/plus.js";
 import { closed } from "../../public/closed.js";
 
-export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleClicked, onColumnDeleteButtonClicked }) {
+const COUNT_MAX = 99;
+
+export function ColumnView({ column, count, state, onAddButtonClicked, onColumnTitleClicked, onColumnDeleteButtonClicked }) {
   const columnElement = document.createElement("div");
   columnElement.classList.add("column");
   columnElement.id = column.id;
@@ -22,7 +24,7 @@ export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleCli
     columnTaskCount.classList.add("column__textarea-task-count");
 
     const columnTaskCountText = document.createElement("span");
-    columnTaskCountText.textContent = "0";
+    columnTaskCountText.textContent = count <= COUNT_MAX ? count : `${COUNT_MAX}+`;
     columnTaskCount.appendChild(columnTaskCountText);
 
     columnTextarea.appendChild(columnTitleText);
