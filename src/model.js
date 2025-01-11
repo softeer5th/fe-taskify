@@ -55,7 +55,8 @@ export function Model() {
   // Public method
 
   function setInitData(data) {
-    model.history[model.history.length - 1].data = data;
+    model.history[0].data = data;
+    model.currentPointer = 0;
     notify();
   }
 

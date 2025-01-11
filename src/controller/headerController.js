@@ -1,3 +1,5 @@
+import { HeaderView } from "../view/headerView.js";
+
 export function HeaderController(model, rootElement) {
   const headerView = HeaderView({
     onSortButtonClick: handleSortButtonClick,

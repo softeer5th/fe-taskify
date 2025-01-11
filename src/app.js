@@ -1,6 +1,6 @@
 import { Model } from "./model.js";
-import { HeaderController } from "./controller.js";
-import { ColumnListController } from "./controller.js";
+import { HeaderController } from "./controller/headerController.js";
+import { ColumnListController } from "./controller/columnListController.js";
 import { TaskView } from "./view/taskView.js";
 
 const mockData = {
