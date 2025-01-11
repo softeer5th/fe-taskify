@@ -1,5 +1,9 @@
 import { card } from "../components/card.js";
 import { addStorage } from "../store/workList.js";
+import { updateCardCount } from "./cardNavbar.js";
+
+const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
+
 const todoFormInit = (formCard) => {
   // form 초기화
   formCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록.
@@ -18,8 +22,18 @@ const addCard = (formCard, sectionType) => {
   // newform 카드 바로 뒤에 추가
   formCard.after(cardDoc);
 
+  const currentCardList = document
+    .querySelector(`.${sectionType}-wrapper`)
+    .querySelector(".card-container")
+    .querySelectorAll(".card");
+
   addStorage(sectionType, titleText, contentText, CARD_ID);
   todoFormInit(formCard); // 입력했던 값을 다시 빈 문자열로 초기화.
+
+  updateCardCount(
+    sectionType,
+    currentCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION
+  );
 };
 
 const showCardForm = (formCard) => {

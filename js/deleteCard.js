@@ -1,8 +1,11 @@
 import { modal } from "../components/modal.js";
 import { deleteCardFormStorage } from "../store/workList.js";
+import { updateCardCount } from "./cardNavbar.js";
 const cardContainer = document.querySelectorAll(".card-container");
 
 let [cardIdToDelete, sectionToDelete] = ["", ""];
+
+const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 
 const showDeleteModal = () => {
   const root = document.querySelector("#root");
@@ -41,7 +44,11 @@ const deleteCard = () => {
     }
   });
 
+  const cardLengthAfterDelete =
+    cardList.length - NUMBER_OF_CARD_FORM_PER_SECTION - 1;
+
   deleteCardFormStorage(cardIdToDelete, sectionToDelete);
+  updateCardCount(sectionToDelete, cardLengthAfterDelete);
 };
 
 const closeDeleteModal = () => {
