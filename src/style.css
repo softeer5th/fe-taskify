@@ -359,4 +359,8 @@ textarea {
 .task__editorButton button:nth-child(2) {
     background-color: var(--accent-blue);
     color: var(--grayscale-50);
+
+    &:disabled {
+        opacity: 0.3;
+    }
 }
