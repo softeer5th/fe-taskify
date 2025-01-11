@@ -15,14 +15,6 @@ export function ColumnListController(model, rootElement) {
 
   render();
 
-  function onModelChanged() {
-    render();
-  }
-
-  function destroy() {
-    model.removeListener(onModelChanged);
-  }
-
   function handleAddColumnButtonClick(event) {
     // TODO: Implement method when "add column" button is implemented
     event.stopPropagation();
@@ -48,4 +40,16 @@ export function ColumnListController(model, rootElement) {
     });
     columns = columns.filter((column) => !removedColumns.some((c) => c.getColumnControllerId() === column.id));
   }
+
+  function onModelChanged() {
+    render();
+  }
+
+  function destroy() {
+    model.removeListener(onModelChanged);
+  }
+
+  return {
+    destroy,
+  };
 }

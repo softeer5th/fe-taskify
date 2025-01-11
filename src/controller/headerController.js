@@ -11,14 +11,6 @@ export function HeaderController(model, rootElement) {
   }
   render();
 
-  function onModelChanged() {
-    render();
-  }
-
-  function destroy() {
-    model.removeListener(onModelChanged);
-  }
-
   function handleSortButtonClick(event) {
     event.stopPropagation();
     model.toggleOrder();
@@ -32,4 +24,16 @@ export function HeaderController(model, rootElement) {
   }
 
   function render() {}
+
+  function onModelChanged() {
+    render();
+  }
+
+  function destroy() {
+    model.removeListener(onModelChanged);
+  }
+
+  return {
+    destroy,
+  };
 }

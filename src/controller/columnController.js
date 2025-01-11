@@ -18,17 +18,6 @@ function ColumnController(model, columnId, parent) {
 
   render();
 
-  function onModelChanged() {
-    render();
-  }
-
-  function destroy() {
-    model.removeListener(onModelChanged);
-    if (columnView.parentElement) {
-      columnView.parentElement.removeChild(columnView);
-    }
-  }
-
   function handleTaskAddButtonClick(event) {
     event.stopPropagation();
     if (model.getCurrentDataState().state.editingColumnId) {
@@ -139,6 +128,17 @@ function ColumnController(model, columnId, parent) {
       tasks.push(taskView);
       columnView.appendChild(taskView);
     });
+  }
+
+  function onModelChanged() {
+    render();
+  }
+
+  function destroy() {
+    model.removeListener(onModelChanged);
+    if (columnView.parentElement) {
+      columnView.parentElement.removeChild(columnView);
+    }
   }
 
   function getColumnControllerId() {
