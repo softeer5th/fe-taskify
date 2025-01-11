@@ -30,38 +30,38 @@ const backToCard = (targetCard) => {
   cardContent.disabled = true;
 };
 
+const editBtnHandler = (e) => {
+  const card = e.target.closest(".card"); // 버튼을 누른 카드 찾기.
+  const sectionType = card.closest("section").className.split("-")[0]; // 어떤 칼럼 영역인지.
+
+  const cardTitle = card.querySelector(".title");
+  const cardContent = card.querySelector(".content");
+
+  if (e.target.matches(".card-edit-icon")) {
+    // 편집 아이콘을 눌렀다면
+    showEditCard(card);
+  }
+
+  if (e.target.matches(".save-btn")) {
+    // 저장
+    if (
+      previousTitle === cardTitle.value &&
+      previousContent === cardContent.value
+    ) {
+      return;
+    }
+    editStorage(sectionType, card.id, cardTitle.value, cardContent.value);
+    backToCard(card);
+  }
+
+  if (e.target.matches(".edit-cancel-btn")) {
+    // 취소 버튼이라면, 이전 값을 저장.
+    cardTitle.value = previousTitle;
+    cardContent.value = previousContent;
+    backToCard(card);
+  }
+};
+
 cardContainer.forEach((container) => {
-  container.addEventListener("click", (e) => {
-    const card = e.target.closest(".card"); // 버튼을 누른 카드 찾기.
-    const sectionType = card.closest("section").className.split("-")[0]; // 어떤 칼럼 영역인지.
-
-    const cardTitle = card.querySelector(".title");
-    const cardContent = card.querySelector(".content");
-
-    if (e.target.matches(".card-edit-icon")) {
-      // 편집 아이콘을 눌렀다면
-      showEditCard(card);
-    }
-
-    if (e.target.matches(".save-btn") || e.target.matches(".edit-cancel-btn")) {
-      backToCard(card);
-    }
-
-    if (e.target.matches(".save-btn")) {
-      // 저장
-      if (
-        previousTitle === cardTitle.value &&
-        previousContent === cardContent.value
-      ) {
-        return;
-      }
-      editStorage(sectionType, card.id, cardTitle.value, cardContent.value);
-    }
-
-    if (e.target.matches(".cancel-btn")) {
-      // 취소 버튼이라면, 이전 값을 저장.
-      cardTitle.value = previousTitle;
-      cardContent.value = previousContent;
-    }
-  });
+  container.addEventListener("click", editBtnHandler);
 });

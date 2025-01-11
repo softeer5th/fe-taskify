@@ -42,16 +42,18 @@ const showCardForm = (formCard) => {
 
 const columnArea = document.querySelector(".column-area");
 
-columnArea.addEventListener("click", (e) => {
+const createCardBtnHandler = (e) => {
   const submitBtn = e.target.closest(".add-btn");
   if (!submitBtn) return;
 
   const sectionType = submitBtn.dataset.section;
   const formCard = document.querySelector(`.${sectionType}-form-card`);
   addCard(formCard, sectionType);
-});
+};
 
-columnArea.addEventListener("click", (e) => {
+columnArea.addEventListener("click", createCardBtnHandler);
+
+const submitBtnHandler = (e) => {
   const submitBtn = e.target.closest(".add-icon");
 
   if (submitBtn) {
@@ -68,4 +70,6 @@ columnArea.addEventListener("click", (e) => {
       todoFormInit(formCard);
     }
   }
-});
+};
+
+columnArea.addEventListener("click", submitBtnHandler);
