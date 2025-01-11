@@ -20,6 +20,7 @@ const showEditCard = (targetCard) => {
 };
 
 const backToCard = (targetCard) => {
+  console.log(targetCard);
   const cardTitle = targetCard.querySelector(".title");
   const cardContent = targetCard.querySelector(".content");
   targetCard.querySelector(".name-of-device").classList.toggle("display-none");
@@ -43,7 +44,7 @@ cardContainer.forEach((container) => {
       showEditCard(card);
     }
 
-    if (e.target.matches(".save-btn") || e.target.matches(".cancel-btn")) {
+    if (e.target.matches(".save-btn") || e.target.matches(".edit-cancel-btn")) {
       backToCard(card);
     }
 

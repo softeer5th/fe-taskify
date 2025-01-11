@@ -32,7 +32,7 @@ export const card = (id, title = "", content = "") => {
           <!-- card-btn-box 은 + 버튼 누르면 보이는 영역 -->
           <div class="name-of-device text-weak">author by web</div>
           <div class="card-btn-box display-none">
-          <button class="cancel-btn">취소</button>
+          <button class="edit-cancel-btn cancel-btn">취소</button>
           <button class="save-btn">
               저장
           </button>

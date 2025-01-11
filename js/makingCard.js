@@ -39,9 +39,16 @@ columnArea.addEventListener("click", (e) => {
 
 columnArea.addEventListener("click", (e) => {
   const submitBtn = e.target.closest(".add-icon");
-  if (!submitBtn) return;
 
-  const sectionType = submitBtn.dataset.section;
-  const formCard = document.querySelector(`.${sectionType}-form-card`);
-  showCardForm(formCard);
+  if (submitBtn) {
+    const sectionType = submitBtn.dataset.section;
+    const formCard = document.querySelector(`.${sectionType}-form-card`);
+    showCardForm(formCard);
+  }
+
+  // 취소 버튼.
+  if (e.target.matches(".cancel-btn")) {
+    const formCard = e.target.closest(".card"); // 버튼을 누른 카드 찾기.
+    todoFormInit(formCard);
+  }
 });

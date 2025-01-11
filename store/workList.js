@@ -4,6 +4,7 @@ let workList;
 
 const savedData = (updatedWorkList) => {
   localStorage.setItem("workList", JSON.stringify(updatedWorkList));
+  workList = loadData();
 };
 
 const loadData = () => {
@@ -20,13 +21,14 @@ const loadData = () => {
 };
 
 const deleteCardFormStorage = (cardId, sectionType) => {
+  console.log(cardId, sectionType);
   const updatedWorkList = {
     ...workList,
     [sectionType]: workList[sectionType].filter(
       (item) => item.id !== Number(cardId)
     ),
   };
-
+  console.log(updatedWorkList, "삭제된 리스트");
   savedData(updatedWorkList);
   updateCardCount(sectionType, updatedWorkList[sectionType].length);
 };
