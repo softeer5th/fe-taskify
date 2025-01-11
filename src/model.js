@@ -1,28 +1,3 @@
-// DTO: Data Type Object
-// Not used, just for reference
-/*
-{
-  column: [{
-    id: Number,
-    title: string,
-  }];
-
-  task: [{
-    id: Number,
-    name: string,
-    description: string,
-    createdAt: Number,
-    device: string,
-    columnId: Number,
-  }];
-
-  user: {
-    name: string,
-    thumbnailUrl: string,
-  };
-}
-*/
-
 function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
@@ -151,6 +126,15 @@ export function Model() {
     notify();
   }
 
+  function updateColumn(columnId, updatedColumnName) {
+    const data = getCurrentData();
+    const updatedColumn = data.column.find((column) => column.id === columnId);
+    updatedColumn.title = updatedColumnName;
+    pushHistory(data, { type: "updateColumn", updatedColumnName: updatedColumnName });
+    model.editingColumnId = -1;
+    notify();
+  }
+
   function removeColumn(columnId) {
     const data = getCurrentData();
     const removedColumn = data.column.find((column) => column.id === columnId);
@@ -172,14 +156,7 @@ export function Model() {
     };
     data.task.push(addedTask);
     pushHistory(data, { type: "addTask", addedTask: addedTask });
-    notify();
-  }
-
-  function removeTask(taskId) {
-    const data = getCurrentData();
-    const removedTask = data.task.find((task) => task.id === taskId);
-    data.task = data.task.filter((task) => task.id !== taskId);
-    pushHistory(data, { type: "removeTask", removedTaskName: removedTask.name });
+    history.state.editingTaskId = addedTask.id;
     notify();
   }
 
@@ -204,6 +181,14 @@ export function Model() {
     notify();
   }
 
+  function removeTask(taskId) {
+    const data = getCurrentData();
+    const removedTask = data.task.find((task) => task.id === taskId);
+    data.task = data.task.filter((task) => task.id !== taskId);
+    pushHistory(data, { type: "removeTask", removedTaskName: removedTask.name });
+    notify();
+  }
+
   function getCurrentDataState() {
     return { data: getCurrentData(), state: deepCopy(model.state) };
   }
@@ -222,11 +207,12 @@ export function Model() {
     toggleHistory,
     setMouseOverColumnId,
     addColumn,
+    updateColumn,
     removeColumn,
     addTask,
-    removeTask,
     editTask,
     moveTask,
+    removeTask,
     getCurrentDataState,
   };
 }
