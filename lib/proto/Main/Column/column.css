@@ -1,0 +1,58 @@
+
+
+
+.column {
+
+}
+
+.cardList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.columnHeader {
+    display: flex;
+    padding: 0 16px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.columnHeader_textArea {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+}
+
+.columnHeader_textArea > h2 {
+    font-size: 16px;
+    color: rgba(78, 75, 102, 1)
+}
+
+.columnHeader_textArea > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    border: 1px solid rgba(239, 240, 246, 1);
+    font-size: 12px;
+    color: rgba(160, 163, 189, 1)
+
+}
+
+.columnHeader_iconButtons {
+    display: flex;
+    gap: 8px;
+}
+
+.columnHeader_iconButtons > button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
