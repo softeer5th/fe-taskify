@@ -3,7 +3,7 @@ import { parseToDoc } from "../utils/parseToDoc.js";
 const updateAddButtonState = () => {};
 export const cardForm = (sectionType) => {
   const cardFormHTML = /*html*/ `
-    <li class="${sectionType}-form-card card display-none">
+    <li class="${sectionType}-form-card form-card card display-none">
     <div class="card-contents-icons-box">
       <div class="card-texts">
         <input

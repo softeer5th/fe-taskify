@@ -20,7 +20,6 @@ const showEditCard = (targetCard) => {
 };
 
 const backToCard = (targetCard) => {
-  console.log(targetCard);
   const cardTitle = targetCard.querySelector(".title");
   const cardContent = targetCard.querySelector(".content");
   targetCard.querySelector(".name-of-device").classList.toggle("display-none");
