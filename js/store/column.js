@@ -55,7 +55,7 @@ const createEmptyColumns = (titleArray) => titleArray.map((title, index) => crea
  * Create default columns
  * @returns {Column[]}
  */
-const createDefaultColumns = () => createEmptyColumns(DEFAULT_COLUMN_TITLE);
+const createDefaultColumns = () => createEmptyColumns(['해야 할 일', '하고 있는 일', '완료한 일']);
 
 /**
  * Append column to original columns
@@ -83,14 +83,14 @@ const appendCard = (columnArray, columnId, newCard) => {
 }
 
 const deleteCard = (columnArray, columnId, cardId) => columnArray.map(column => column.id !== columnId ? column :
-    { ...column, cards: column.cards.filter(card => card.id === cardId) }
+    { ...column, cards: column.cards.filter(card => card.id+1 === cardId) }
 )
 
 const updateCard = (columnArray, columnId, cardId, newCard) => columnArray.map(column => column.id !== columnId ? column :
     { ...column, cards: column.cards.map(card => card.id !== cardId ? card : { ...newCard, id: card.id, date: card.date, }) }
 )
 
-let columnStoreIndex = DEFAULT_COLUMN_COUNT;
+let columnStoreIndex = 2;
 let columnStorage = createDefaultColumns();
 
 export const columnStore = () => {
@@ -127,6 +127,7 @@ export const columnStore = () => {
             return newCardId;
         },
         deleteCard: (columnId, cardId) => {
+            console.log(columnStorage)
             columnStorage = deleteCard(columnStorage, columnId, cardId)
             columnStorage = columnStorage.map(column => column.id !== columnId ? column : {
                 ...column,
