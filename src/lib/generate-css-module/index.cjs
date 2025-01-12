@@ -1,6 +1,6 @@
+const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
-const crypto = require("crypto");
 
 const componentsDir = path.resolve(process.cwd(), "src/components");
 
@@ -37,6 +37,7 @@ const generateRandomStringFromFileName = (name) => {
 /**
  * CSS 파일을 난수를 붙여 반환합니다.
  * @param {string} cssFilePath - 업데이트할 CSS 파일 경로
+ * @returns {string} - 난수가 붙은 CSS 파일 내용
  */
 const updateCSSFiles = (cssFilePath) => {
   const cssContent = fs.readFileSync(cssFilePath, "utf-8");
@@ -45,7 +46,7 @@ const updateCSSFiles = (cssFilePath) => {
 
   const transformedCSS = cssContent.replace(/\.([\w-]+)/g, (_, className) => {
     const newCSSClassName = `${className}-${generateRandomStringFromFileName(
-      cssFileName
+      cssFileName,
     )}`;
     css[className] = newCSSClassName;
     return `.${newCSSClassName}`;
@@ -54,7 +55,7 @@ const updateCSSFiles = (cssFilePath) => {
   const cssExport = `export default ${JSON.stringify(css, null, 2)};`;
   const distFilePath = path.resolve(
     path.dirname(cssFilePath),
-    `${cssFileName}.module.js`
+    `${cssFileName}.module.js`,
   );
   fs.writeFileSync(distFilePath, cssExport, "utf-8");
 
@@ -63,12 +64,16 @@ const updateCSSFiles = (cssFilePath) => {
 
 /**
  *
+ * @param {string} newCSSString - 새로 적용할 CSS 파일 내용
  */
 const updateStyleCSSFile = (newCSSString) => {
   const distFilePath = path.resolve(process.cwd(), "src/app/style.css");
   fs.writeFileSync(distFilePath, newCSSString, "utf-8");
 };
 
+/**
+ *
+ */
 const main = () => {
   const moduleCSSFiles = getAllModuleCSSFiles(componentsDir);
   const newCSS = moduleCSSFiles.map(updateCSSFiles);
