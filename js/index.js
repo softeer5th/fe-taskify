@@ -27,7 +27,7 @@ const eachColumnRender = () => {
   });
 };
 
-const initRender = () => {
+const initRender = async () => {
   const root = document.querySelector("#root");
   // root 바로 뒤에 헤더 추가
   root.append(header());
@@ -38,6 +38,12 @@ const initRender = () => {
 
   eachColumnRender();
   loadPreviousCard();
+
+  // index.js가 로드되고 나서 로드 됨.
+  await import("./createCard.js");
+  await import("./editCard.js");
+  await import("./deleteCard.js");
+  await import("./cardNavbar.js");
 };
 
 const loadPreviousCard = () => {

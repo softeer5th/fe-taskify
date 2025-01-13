@@ -32,13 +32,13 @@ cardContainer.forEach((container) => {
 });
 
 const deleteCard = () => {
-  const cardContainer = document
-    .querySelector(`.${sectionToDelete}-wrapper`)
-    .querySelector(".card-container");
-  const cardList = document
-    .querySelector(`.${sectionToDelete}-wrapper`)
-    .querySelector(".card-container")
-    .querySelectorAll(".card");
+  const cardContainer = document.querySelector(
+    `.${sectionToDelete}-wrapper .card-container`
+  );
+
+  const cardList = document.querySelectorAll(
+    `.${sectionToDelete}-wrapper .card-container .card`
+  );
 
   cardList.forEach((card) => {
     if (card.id === cardIdToDelete) {

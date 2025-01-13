@@ -3,6 +3,7 @@ import { addStorage } from "../store/workList.js";
 import { updateCardCount } from "./cardNavbar.js";
 
 const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
+const columnArea = document.querySelector(".column-area");
 
 const todoFormInit = (formCard) => {
   // form 초기화
@@ -22,14 +23,14 @@ const addCard = (formCard, sectionType) => {
   // newform 카드 바로 뒤에 추가
   formCard.after(cardDoc);
 
-  const currentCardList = document
-    .querySelector(`.${sectionType}-wrapper`)
-    .querySelector(".card-container")
-    .querySelectorAll(".card");
+  const currentCardList = document.querySelectorAll(
+    `.${sectionType}-wrapper .card-container .card`
+  );
 
   addStorage(sectionType, titleText, contentText, CARD_ID);
   todoFormInit(formCard); // 입력했던 값을 다시 빈 문자열로 초기화.
 
+  console.log(currentCardList.length, "이잉");
   updateCardCount(
     sectionType,
     currentCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION
@@ -39,8 +40,6 @@ const addCard = (formCard, sectionType) => {
 const showCardForm = (formCard) => {
   formCard.classList.toggle("display-none");
 };
-
-const columnArea = document.querySelector(".column-area");
 
 const createCardBtnHandler = (e) => {
   const submitBtn = e.target.closest(".add-btn");
