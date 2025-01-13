@@ -1,9 +1,10 @@
 import HeaderComponent from "../components/header.js";
 import { LogComponent } from "../components/log.js";
 import ModalComponent from "../components/modal.js";
+import ColumnController from "./column.js";
 
 export default function HeaderController(state, bodyElement) {
-    const columns = state.getColumns();
+    const {columns, columnTasks} = state.getColumns();
     const headerComponent = HeaderComponent();
     const logComponent = LogComponent(columns.columns);
 
@@ -12,7 +13,7 @@ export default function HeaderController(state, bodyElement) {
         const headerElement = headerComponent.render();
         headerComponent.addEventListener(
             headerElement,
-            () => {},
+            handleSort,
             renderLog
         );
 
@@ -47,7 +48,18 @@ export default function HeaderController(state, bodyElement) {
             bodyElement.appendChild(logElement);
         }
     }
-    
+
+    function handleSort() {
+        const columnController = ColumnController(state, bodyElement);
+        const currentOrder = state.flipOrder();
+
+        for(let i=0; i<columns.length; i++) {
+            columnController.renderColumn(i, state.sortTask(columnTasks[i]));
+        }
+
+        return currentOrder;
+    }
+
 
     return {
         renderInit,

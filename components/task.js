@@ -28,14 +28,14 @@ export default function TaskComponent() {
     
     // Task 컴포넌트 렌더링 함수
     function render(task) {
-        const { title, content, created, column } = task;
-
+        const { title, content, created, column, taskId } = task;
         // 새 카드 컴포넌트 생성
         const newTaskElement = document.createElement("li");
         newTaskElement.setAttribute(
             "class",
             "card surface-default shadow-normal rounded-100"
         );
+        newTaskElement.setAttribute('taskid', taskId)
         newTaskElement.setAttribute("draggable", "true");
         newTaskElement.innerHTML = template({ title, content });
 

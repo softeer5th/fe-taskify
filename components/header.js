@@ -1,4 +1,10 @@
 export default function HeaderComponent() {
+
+    const sortText = {
+        "1": '생성 순',
+        "-1": '오래된 순'
+    }
+
     function template() {
         return `
             <span>
@@ -22,8 +28,11 @@ export default function HeaderComponent() {
 
     function addEventListener(headerElement, handleSort, handleLog) {
         const [sortButton, logButton] = headerElement.getElementsByTagName('button');
-
-        sortButton.addEventListener('click', handleSort);
+        
+        sortButton.addEventListener('click', ()=>{
+            const order = String(handleSort());
+            sortButton.querySelector('span').textContent = sortText[order];
+        });
         logButton.addEventListener('click', handleLog);
     }
 
