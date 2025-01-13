@@ -1,4 +1,5 @@
 import Button from '../../components/button.js';
+import { autoResize, limitTextLength } from './textAreaHelper.js';
 
 /**
  * @typedef {Object} Card
@@ -23,26 +24,27 @@ const initCardTextArea = (cardElement, cardData) => {
   _input.value = _h3.textContent = cardData.title;
   _textArea.value = _p.textContent = cardData.body;
 
-  [_input, _textArea].forEach((element) => {
-    element.addEventListener('input', () => {
-      if (_input.value.trim() === '' || _textArea.value.trim() === '') {
-        cardElement
-          .querySelectorAll('#button-area button')
-          .forEach((button, index) => {
-            if (index !== 0) {
-              button.disabled = true;
-            }
-          });
-      } else {
-        cardElement
-          .querySelectorAll('#button-area button')
-          .forEach((button, index) => {
-            if (index !== 0) {
-              button.disabled = false;
-            }
-          });
-      }
-    });
+  _input.addEventListener('input', () => {
+    cardElement
+      .querySelectorAll('#button-area button')
+      .forEach((button, index) => {
+        if (index !== 0) {
+          button.disabled =
+            _input.value.trim() === '' || _textArea.value.trim() === '';
+        }
+      });
+  });
+  _textArea.addEventListener('input', () => {
+    autoResize(_textArea);
+    limitTextLength(_textArea);
+    cardElement
+      .querySelectorAll('#button-area button')
+      .forEach((button, index) => {
+        if (index !== 0) {
+          button.disabled =
+            _input.value.trim() === '' || _textArea.value.trim() === '';
+        }
+      });
   });
 };
 
