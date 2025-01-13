@@ -25,12 +25,15 @@ export const initTodo = () => {
     // categoryList = [Category(-1, '해야할 일'), Category(-1, '하고 있는 일')]
     // storeData(TODO_CATEGORY_KEY, categoryList)
 
-    const todoHeaderParentElement = document.querySelector('.main')
+    const mainElement = document.querySelector('.main')
     categoryList.map((category) => {
         const categoryId = createDomElementAsChild(
             templateNames.todoHeader,
-            todoHeaderParentElement,
+            mainElement,
             (identifier, component) => {
+                component = component.querySelector(
+                    `.${classNames.todoContainer}`
+                )
                 component.querySelector(
                     `.${classNames.todoHeaderTitle}`
                 ).textContent = category.values.categoryName
@@ -39,6 +42,29 @@ export const initTodo = () => {
                     .addEventListener('click', () => {
                         onAddTodoButtonClick(category)
                     })
+
+                let currentCategory = null
+                let currentIndex = null
+                component.addEventListener('dragover', (e) => {
+                    // 드롭을 허용하기 위해 기본 동작 취소
+                    e.preventDefault()
+                })
+                component.addEventListener('drop', (e) => {
+                    // 일부 요소의 링크 열기와 같은 기본 동작 취소
+                    e.preventDefault()
+                })
+                component.addEventListener('dragenter', (e) => {
+                    const categoryList = getState(TODO_CATEGORY_KEY)
+                    categoryList.forEach((v, i) => {
+                        const parentElement = findDomElement(v.identifier)
+                        if (!parentElement.contains(e.target)) return
+                        currentCategory = v.identifier
+                        console.log('currentCategory', currentCategory)
+                    })
+                })
+                component.addEventListener('dragleave', (e) => {
+                    // console.log('dragleave', e.target)
+                })
             }
         )
         category.identifier = categoryId
@@ -151,38 +177,15 @@ const manageDrag = (element) => {
         // console.log(e.target)
         // console.log(element.offsetHeight)
     })
-    element.addEventListener('drag', (e) => {})
-    element.addEventListener('dragover', (e) => {
-        // 드롭을 허용하기 위해 기본 동작 취소
-        // e.preventDefault()
+    element.addEventListener('drag', (e) => {
+        // console.log('drag', e.target)
     })
     element.addEventListener('dragend', (e) => {})
-    element.addEventListener('dragenter', (e) => {
-        // console.log('dragenter', e.target)
-        const categoryList = getState(TODO_CATEGORY_KEY)
-        categoryList.forEach((v, i) => {
-            const parentElement = findDomElement(v.identifier)
-            if (!parentElement.contains(e.target)) return
-            currentIndex = v.identifier
-            console.log('currentIndex', currentIndex)
-            // if (v.identifier === parentElement.id) {
-            //     currentIndex = i
-            // }
-        })
-    })
-    element.addEventListener('dragleave', (e) => {
-        // console.log('dragleave', e.target)
-    })
-    element.addEventListener('drop', (e) => {
-        // 일부 요소의 링크 열기와 같은 기본 동작 취소
-        e.preventDefault()
-    })
 }
 
 const addTodoItem = (title, content, author, category) => {
-    // TODO: 하드코딩된 부모 클래스명 변경
     const parentDomElement = findDomElement(category.identifier).querySelector(
-        '.todos__body'
+        classNames.todoBody
     )
     createDomElementAsChild(
         templateNames.todoItem,
