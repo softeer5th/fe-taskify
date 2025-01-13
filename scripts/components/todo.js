@@ -26,6 +26,10 @@ export const initTodo = () => {
     // storeData(TODO_CATEGORY_KEY, categoryList)
 
     const mainElement = document.querySelector('.main')
+    let currentCategory = null
+    let currentIndex = null
+    let skeletonElementId = null
+
     categoryList.map((category) => {
         const categoryId = createDomElementAsChild(
             templateNames.todoHeader,
@@ -43,10 +47,6 @@ export const initTodo = () => {
                         onAddTodoButtonClick(category)
                     })
 
-                let currentCategory = null
-                let currentIndex = null
-                let skeletonElement = null
-
                 component.addEventListener('dragover', (e) => {
                     // 드롭을 허용하기 위해 기본 동작 취소
                     e.preventDefault()
@@ -56,6 +56,8 @@ export const initTodo = () => {
                     e.preventDefault()
                 })
                 component.addEventListener('dragenter', (e) => {
+                    // if (!e.target.contains(`.${classNames.todoItemBody}`))
+                    //     return
                     const categoryList = getState(TODO_CATEGORY_KEY)
                     for (let category of categoryList) {
                         // 카테고리 식별
@@ -72,21 +74,32 @@ export const initTodo = () => {
                         ] of category.values.todoList.entries()) {
                             if (todoItem.identifier === e.target.id) {
                                 currentIndex = idx
-                                console.log(
-                                    `currentCategory: ${currentCategory}, currentIndex: ${currentIndex}`
-                                )
                                 break
                             }
                         }
-
-                        if (currentIndex === null) {
+                        if (e.target.className === classNames.todoContainer) {
                             currentIndex = category.values.todoList.length
                         }
+                        // 자식 요소에 이벤트 전달되면 null값이 들어감...
+                        if (currentIndex === null) {
+                            return
+                        }
+                        console.log('dragenter', currentCategory, currentIndex)
                     }
                 })
-                component.addEventListener('dragleave', (e) => {
-                    // console.log('dragleave', e.target)
-                })
+                component.addEventListener(
+                    'dragleave',
+                    (e) => {
+                        // if (currentCategory === identifier) return
+                        // if (e.target.id !== identifier) return
+                        console.log('dragleave')
+                        e.stopPropagation()
+                        findDomElement(identifier)
+                            .querySelector(`.${classNames.skeleton}`)
+                            .remove()
+                    },
+                    true
+                )
             }
         )
         category.identifier = categoryId

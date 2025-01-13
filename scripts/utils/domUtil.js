@@ -33,6 +33,24 @@ export const replaceDomElement = (templateId, originDomElement, initialize) => {
     return identifier
 }
 
+export const createDomElementAsSibling = (
+    templateId,
+    targetDomElement,
+    initialize,
+    insertAfter = true
+) => {
+    if (!initialize) throw new Error(`initialize is ${initialize}`)
+
+    const { identifier, component } = createDomElement(templateId)
+    initialize(identifier, component)
+    if (insertAfter) {
+        targetDomElement.after(component)
+    } else {
+        targetDomElement.before(component)
+    }
+    return identifier
+}
+
 export const createDomElement = (templateId) => {
     const templateElement = document.getElementById(templateId)
     const component = document.importNode(templateElement.content, true)

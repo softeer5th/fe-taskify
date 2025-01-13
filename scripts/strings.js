@@ -28,6 +28,8 @@ export const classNames = {
     addButton: 'add-btn',
     deleteButton: 'delete-btn',
     editButton: 'edit-btn',
+
+    skeleton: 'skeleton',
 }
 
 export const templateNames = {
