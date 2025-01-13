@@ -36,7 +36,7 @@ button {
 
 .nav-bar-text { 
     font-size: var(--todo-font-size-large);
-    font-weight: var(--todo-font-weight-bold);
+    font-weight: var(--todo-font-weight-medium);
     color: var(--todo-text-strong);
 }
 
