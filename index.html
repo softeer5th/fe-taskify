@@ -9,11 +9,17 @@
     <!-- 카드들을 담고있는 컬럼 템플릿 -->
     <template id="column-template">
       <ul
-        style="display: flex; flex-direction: column; gap: 10px"
+        style="
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          overflow-y: scroll;
+        "
       >
         <div
           style="
-            width:320px; 
+            width: 320px;
             display: flex;
             justify-content: space-between;
             padding: 0 var(--number-200);

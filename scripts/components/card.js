@@ -1,4 +1,4 @@
-import CardMode from '../store/models/tmp.js';
+import CardMode from '../store/models/card-model.js';
 import {
   initCardTextArea,
   initCardIconButtons,

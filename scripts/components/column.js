@@ -1,3 +1,4 @@
+import createState from '../utils/helpers/stateHelper.js';
 import Card from './card.js';
 /**
  * @typedef {Object} Card
@@ -14,7 +15,7 @@ import Card from './card.js';
  * @property {Card[]} cards - 카드 배열
  */
 
-/** 
+/**
  * 컬럼 컴포넌트
  * @param {Column} columnData - 컬럼 데이터
  */
@@ -23,13 +24,45 @@ const Column = (columnData) => {
     .getElementById('column-template')
     .content.cloneNode(true);
 
+  /**
+   * @type {HTMLElement}
+   */
+  const columnElement = column.querySelector('ul');
+
+  const columnState = createState(columnData);
+  columnState.subscribe(() => {
+    columnElement.querySelectorAll('li').forEach((child) => {
+      child.remove();
+    });
+
+    columnState.getState().cards.forEach((cardData) => {
+      columnElement.appendChild(
+        Card(cardData.title === null ? 'add' : 'default', cardData)
+      );
+    });
+
+    column.querySelector('.textlabel').textContent =
+      columnState.getState().cards.length;
+  });
+
   column.querySelector('h2').textContent = columnData.columnName;
   columnData.cards.forEach((cardData) => {
-    column.querySelector('ul').appendChild(Card('default', cardData));
-  })
+    columnElement.appendChild(Card('default', cardData));
+  });
 
   column.querySelector('#add-card').addEventListener('click', (e) => {
-    console.log('add card');
+    columnState.setState({
+      ...columnState.getState(),
+      cards: [
+        {
+          id: columnState.getState().cards.length + 1,
+          title: null,
+          body: null,
+          createdDate: new Date().toISOString(),
+        },
+        ...columnState.getState().cards,
+      ],
+    });
   });
   column.querySelector('#close-column').addEventListener('click', (e) => {
     console.log('close column');
