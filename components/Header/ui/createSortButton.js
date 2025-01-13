@@ -2,6 +2,7 @@ import { IMAGE } from "../../../assets/index.js";
 import { createButton, createElement, createImg } from "../../../dom.js";
 import { loadLocalStorage } from "../../../utils/localStorage.js";
 
+const ANIMATION_DURATION = 500;
 const INITIAL_SORT_TYPE = "생성 순";
 
 const toggleText = {
@@ -53,7 +54,7 @@ const applySortAnimation = (sortedTodoList) => {
 
       setTimeout(() => {
         $item.classList.remove("item-move");
-      }, 500);
+      }, ANIMATION_DURATION);
     });
 
     setTimeout(() => {
@@ -62,7 +63,7 @@ const applySortAnimation = (sortedTodoList) => {
       );
 
       $columnBody.replaceChildren(...sortedItems);
-    }, 500);
+    }, ANIMATION_DURATION);
   });
 };
 
