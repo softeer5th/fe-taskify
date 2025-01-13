@@ -15,12 +15,9 @@ export function createComponent({ initialState, render, props }) {
   const rerender = () => {
     console.log("State updated:", state);
     const updatedElement = render({ state, setState, props });
-
-    // 기존 DOM 내부만 교체
     rootElement.replaceChildren(...updatedElement.childNodes);
   };
 
-  // 초기 렌더링
   rootElement.appendChild(render({ state, setState, props }));
   subscribe(rerender);
 

@@ -1,11 +1,13 @@
-import { Column } from "../components/column.js";
+import { Column } from "../components/column/column.js";
 
+export function ColumnList({ columnList, onAddCard, onDeleteCard, onUpdateCard }) {
 
-export function ColumnList({ columns, onAddCard, onDeleteCard, onUpdateCard }) {
   const container = document.createElement("div");
-  container.className = "column-list";
-  console.log(columns)
-  columns.columns.forEach((column) => {
+  container.className = "main-container";
+
+  const { columns } = columnList;
+
+  columns.forEach((column) => {
     const columnElement = Column({
       column,
       onAddCard,
@@ -16,4 +18,5 @@ export function ColumnList({ columns, onAddCard, onDeleteCard, onUpdateCard }) {
   });
 
   return container;
+
 }

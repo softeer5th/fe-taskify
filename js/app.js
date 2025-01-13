@@ -4,34 +4,34 @@ import { Navbar } from "./container/navbar.js";
 import { ColumnList } from "./container/columnList.js";
 
 export const App = () => {
+
     const store = columnStore();
+
     return createComponent({
-        initialState : {
+        initialState: {
             columns: store.getColumns(),
         },
-        render: ({state, setState}) => {
+        render: ({ state, setState }) => {
             console.log(store.getColumns());
             const app = document.createElement("div");
 
             app.appendChild(Navbar());
             const columnList = ColumnList({
-                columns: state,
-                onAddCard: (columnId, cardData) => {
-                store.createCard(columnId, cardData);
-                setState({columns: store.getColumns()}); // 상태 갱신
+                columnList: state,
+                onAddCard: (columnId) => {
+                    store.createCard(columnId);
+                    setState({ columns: store.getColumns() });
                 },
                 onDeleteCard: (columnId, cardId) => {
-                store.deleteCard(columnId, cardId);
-                setState({columns: store.getColumns()}); // 상태 갱신
+                    store.deleteCard(columnId, cardId);
+                    setState({ columns: store.getColumns() });
                 },
                 onUpdateCard: (columnId, cardId, updatedCard) => {
-                store.updateCard(columnId, cardId, updatedCard);
-                setState({columns: store.getColumns()}); // 상태 갱신
+                    store.updateCard(columnId, cardId, updatedCard);
+                    setState({ columns: store.getColumns() });
                 },
             });
-
             app.appendChild(columnList);
-            console.log("Rendered DOM structure:", document.querySelector(".root-container"));
 
             return app;
         }

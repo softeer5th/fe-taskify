@@ -1,6 +1,6 @@
 
-import { navbarText } from "../components/navbarText.js";
-import { navbarButton } from "../components/navbarButton.js";
+import { navbarText } from "../components/nav/navbarText.js";
+import { navbarButton } from "../components/nav/navbarButton.js";
 
 export const Navbar = () => {
     const header = document.createElement("header");
@@ -8,7 +8,7 @@ export const Navbar = () => {
 
     const text = navbarText();
     header.appendChild(text);
-    
+
     const button = navbarButton();
     header.appendChild(button);
 

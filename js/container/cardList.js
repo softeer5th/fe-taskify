@@ -1,9 +1,11 @@
-import { Card } from "../components/card.js";
+import { Card } from "../components/card/card.js";
+import { createComponent } from "../global/createComponent.js";
 
 export function CardList({ cards, columnId, onDeleteCard, onUpdateCard }) {
-  const container = document.createElement("div");
-  container.className = "card-list";
 
+  const cardContainer = document.createElement("ol");
+  cardContainer.className = "column-card-list";
+  console.log(cards)
   cards.forEach((card) => {
     const cardElement = Card({
       card,
@@ -11,8 +13,8 @@ export function CardList({ cards, columnId, onDeleteCard, onUpdateCard }) {
       onDeleteCard,
       onUpdateCard,
     });
-    container.appendChild(cardElement);
+    cardContainer.appendChild(cardElement);
   });
 
-  return container;
+  return cardContainer;
 }
