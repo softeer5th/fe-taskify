@@ -109,7 +109,7 @@ export default function State() {
             updated: new Date(),
         });
         const index = task.column;
-        columnTasks[index] = columnTasks[index].filter((el) => el != task);
+        columnTasks[index] = columnTasks[index].filter((el) => el.taskId != task.taskId);
     }
 
     function sortTask(task) {

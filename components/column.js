@@ -5,7 +5,7 @@ export default function ColumnComponent() {
         return `
             <h3 class="column_title text-bold display-bold16">
                 ${title}
-                <span class="column_task_counter text-weak display-medium12">0</span>
+                <span class="column_task_counter text-weak display-medium12 border-default rounded-100">0</span>
                 <span class="column_button_container">
                     <button>
                         <img draggable="false" width="24" height="24" src="/public/icon/plus.svg" />
@@ -45,8 +45,17 @@ export default function ColumnComponent() {
         );
     }
 
+    function rerenderHeader(idx, n) {
+        const counterElement = document.body.querySelectorAll('.column_task_counter')[idx];
+        if(n > MAX_TASKS) counterElement.textContent `${MAX_TASKS}+`;
+        else counterElement.textContent = n;
+    }
+
     return {
         render,
         addEventListener,
+        rerenderHeader
     };
 }
+
+const MAX_TASKS = 99;

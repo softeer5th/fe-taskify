@@ -6,7 +6,10 @@ export default function ColumnController(state, bodyElement) {
     const { columns: columnList, columnTasks } = state.getColumns();
     const columnComponent = ColumnComponent();
     const formComponent = FormComponent();
-    const taskController = TaskController(state);
+    const taskController = TaskController(state, (idx)=>{
+        console.log(idx, columnTasks[idx]);
+        columnComponent.rerenderHeader(idx, columnTasks[idx].length);
+    });
     
 
     // 각 Column의 task들 렌더링
@@ -48,6 +51,7 @@ export default function ColumnController(state, bodyElement) {
 
         state.addTask(columnIdx, newTask);
         renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]));
+        columnComponent.rerenderHeader(columnIdx, columnTasks[columnIdx].length);
     }
 
     // Column의 + 버튼을 눌러 Task를 생성하기 위한 Form 생성
