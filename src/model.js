@@ -157,13 +157,14 @@ export default class Model {
     this.#notify();
   }
 
-  updateColumn(columnId, updatedColumnName) {
+  updateColumn(columnId, updatedColumTitle) {
     const currentData = this.getCurrentData();
-    const column = currentData.column.find((column) => column.id === columnId);
-    Object.assign(column, updatedColumnName);
+    const columnIdx = currentData.column.findIndex((column) => column.id === columnId);
+    currentData.column[columnIdx].title = updatedColumTitle;
+
     this.#pushHistory(currentData, {
       type: "updateColumn",
-      updatedColumnName: updatedColumnName,
+      updatedColumnName: updatedColumTitle,
     });
     this.setEditingColumnId(-1);
   }
