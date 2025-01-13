@@ -1,153 +1,188 @@
+// Define column structure as a comment or use JSDoc
+/**
+ * @typedef {Object} Column
+ * @property {number} id
+ * @property {string} name
+ */
+
+/**
+ * @typedef {Object} Task
+ * @property {number} id
+ * @property {string} name
+ * @property {string} description
+ * @property {number} createdAt
+ * @property {string} device
+ * @property {number} columnId
+ */
+
 function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-export function Model() {
-  let model = {
-    history: [
-      {
-        data: {
-          column: [],
-          task: [],
-          user: {
-            name: "TestUser1",
-            thumbnailUrl: "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
+export default class Model {
+  #model = {};
+  #listeners = [];
+  constructor() {
+    this.#model = {
+      history: [
+        {
+          data: {
+            column: [],
+            task: [],
+            user: {
+              name: "TestUser1",
+              thumbnailUrl: "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
+            },
           },
+          action: "init",
         },
-        action: "init",
+      ],
+      currentPointer: history.length - 1,
+      state: {
+        editingTaskId: -1,
+        editingColumnId: -1,
+        movingTaskId: -1,
+        order: "latest",
+        isHistoryOpen: false,
+        mouseOverColumnId: -1,
       },
-    ],
-    currentPointer: history.length - 1,
-    state: {
-      editingTaskId: -1,
-      editingColumnId: -1,
-      movingTaskId: -1,
-      order: "latest",
-      isHistoryOpen: false,
-      mouseOverColumnId: -1,
-    },
-  };
-  let listeners = [];
+    };
+    this.#listeners = [];
+  }
 
   // Private method
 
-  function notify() {
-    listeners.forEach((listener) => listener());
+  #notify() {
+    this.#listeners.forEach((listener) => listener());
   }
 
-  function getCurrentData() {
-    const currentHistory = model.history[model.currentPointer];
-    const currentData = currentHistory.data;
-    return deepCopy(currentData);
-  }
-
-  function pushHistory(newData, action) {
+  #pushHistory(newData, action) {
     const newHistory = {
       data: newData,
       action,
       actionTime: Date.now(),
     };
-    model.history.push(newHistory);
-    model.currentPointer += 1;
-    notify();
+    this.#model.history.push(newHistory);
+    this.#model.currentPointer += 1;
+    this.#notify();
   }
 
   // Public method
 
-  function setInitData(data) {
-    model.history[0].data = data;
-    model.currentPointer = 0;
-    notify();
+  getCurrentData() {
+    const currentHistory = this.#model.history[this.#model.currentPointer];
+    const currentData = currentHistory.data;
+    return deepCopy(currentData);
   }
 
-  function setEditingTaskId(taskId) {
-    model.state.editingTaskId = taskId;
-    notify();
+  getCurrentState() {
+    return deepCopy(this.#model.state);
   }
 
-  function setEditingColumnId(columnId) {
-    model.state.editingColumnId = columnId;
-    notify();
+  setInitData(initData) {
+    this.#model.history[0].data = initData;
+    this.#model.currentPointer = 0;
+    this.#notify();
   }
 
-  function setMovingTaskId(taskId) {
-    model.state.movingTaskId = taskId;
-    notify();
+  setEditingTaskId(taskId) {
+    this.#model.state.editingTaskId = taskId;
+    this.#notify();
   }
 
-  function toggleOrder() {
-    model.state.order = model.state.order === "latest" ? "oldest" : "latest";
-    notify();
+  setEditingColumnId(columnId) {
+    this.#model.state.editingColumnId = columnId;
+    this.#notify();
   }
 
-  function toggleHistory() {
-    model.state.isHistoryOpen = !model.state.isHistoryOpen;
-    notify();
+  setMovingTaskId(taskId) {
+    this.#model.state.movingTaskId = taskId;
+    this.#notify();
   }
 
-  function setMouseOverColumnId(columnId) {
-    model.state.mouseOverColumnId = columnId;
-    notify();
+  toggleOrder() {
+    this.#model.state.order = this.#model.state.order === "latest" ? "oldest" : "latest";
+    this.#notify();
   }
 
-  function addListener(listener) {
-    listeners.push(listener);
+  toggleHistory() {
+    this.#model.state.isHistoryOpen = !this.#model.state.isHistoryOpen;
+    this.#notify();
   }
 
-  function removeListener(listener) {
-    listeners = listeners.filter((l) => l !== listener);
+  setMouseOverColumnId(columnId) {
+    this.#model.state.mouseOverColumnId = columnId;
+    this.#notify();
   }
 
-  function initHistory(history) {
-    model.history = history;
-    notify();
+  addListener(listener) {
+    this.#listeners.push(listener);
   }
 
-  function undo() {
-    if (model.currentPointer > 1) {
-      model.currentPointer -= 1;
-      notify();
+  removeListener(listener) {
+    this.#listeners = this.#listeners.filter((li) => li !== listener);
+  }
+
+  initHistory(history) {
+    this.#model.history = history;
+    this.#model.currentPointer = history.length - 1;
+    this.#notify();
+  }
+
+  undo() {
+    if (this.#model.currentPointer > 1) {
+      this.#model.currentPointer -= 1;
+      this.#notify();
     }
   }
 
-  function redo() {
-    if (model.currentPointer < model.history.length - 1) {
-      model.currentPointer += 1;
-      notify();
+  redo() {
+    if (this.#model.currentPointer < this.#model.history.length - 1) {
+      this.#model.currentPointer += 1;
+      this.#notify();
     }
   }
 
-  function addColumn(addedColumnName) {
-    const data = getCurrentData();
-    data.column.push({
+  addColumn(addedColumnName) {
+    const currentData = this.getCurrentData();
+    const newColumn = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
-      title: addedColumnName,
+      name: addedColumnName,
+    };
+    currentData.column.push(newColumn);
+    this.#pushHistory(currentData, {
+      type: "addColumn",
+      addedColumnName: addedColumnName,
     });
-    pushHistory(data, { type: "addColumn", addedColumnName: addedColumnName });
-    notify();
+    this.#notify();
   }
 
-  function updateColumn(columnId, updatedColumnName) {
-    const data = getCurrentData();
-    const updatedColumn = data.column.find((column) => column.id === columnId);
-    updatedColumn.title = updatedColumnName;
-    pushHistory(data, { type: "updateColumn", updatedColumnName: updatedColumnName });
-    model.editingColumnId = -1;
-    notify();
+  updateColumn(columnId, updatedColumnName) {
+    const currentData = this.getCurrentData();
+    const column = currentData.column.find((column) => column.id === columnId);
+    Object.assign(column, updatedColumnName);
+    this.#pushHistory(currentData, {
+      type: "updateColumn",
+      updatedColumnName: updatedColumnName,
+    });
+    this.setEditingColumnId(-1);
   }
 
-  function removeColumn(columnId) {
-    const data = getCurrentData();
-    const removedColumn = data.column.find((column) => column.id === columnId);
-    data.column = data.column.filter((column) => column.id !== columnId);
-    data.task = data.task.filter((task) => task.columnId !== columnId);
-    pushHistory(data, { type: "removeColumn", removedColumnName: removedColumn.title });
-    notify();
+  removeColumn(columnId) {
+    const currentData = this.getCurrentData();
+    const removedColumn = currentData.column.find((column) => column.id === columnId);
+    currentData.column = currentData.column.filter((column) => column.id !== columnId);
+    currentData.task = currentData.task.filter((task) => task.columnId !== columnId);
+    this.#pushHistory(currentData, {
+      type: "removeColumn",
+      removedColumnName: removedColumn.name,
+    });
+    this.#notify();
   }
 
-  function addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
-    const data = getCurrentData();
-    const addedTask = {
+  addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
+    const currentData = this.getCurrentData();
+    const newTask = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
       name: addedTaskName,
       description: addedTaskDescription,
@@ -155,65 +190,54 @@ export function Model() {
       device: addedTaskDevice,
       columnId,
     };
-    data.task.push(addedTask);
-    pushHistory(data, { type: "addTask", addedTask: addedTask });
-    history.state.editingTaskId = addedTask.id;
-    notify();
+    currentData.task.push(newTask);
+    this.#pushHistory(currentData, {
+      type: "addTask",
+      addedTaskName: addedTaskName,
+    });
+    this.#notify();
   }
 
-  function editTask(taskId, updatedTaskName, updatedTaskDescription, updatedTaskDevice) {
-    const data = getCurrentData();
-    const updatedTask = data.task.find((task) => task.id === taskId);
-    updatedTask.name = updatedTaskName;
-    updatedTask.description = updatedTaskDescription;
-    updatedTask.device = updatedTaskDevice;
-    pushHistory(data, { type: "updateTask", updatedTask: updatedTask });
-    if (model.state.editingTaskId === taskId) {
-      model.state.editingTaskId = -1;
+  updateTask(taskId, updatedTask) {
+    const currentData = this.getCurrentData();
+    const task = currentData.task.find((task) => task.id === taskId);
+    Object.assign(task, updatedTask);
+    let historyAction;
+    if (task.columnId !== updatedTask.columnId) {
+      historyAction = {
+        type: "moveTask",
+        updatedTaskName: updatedTask.name,
+        fromColumnId: task.columnId,
+        toColumnId: updatedTask.columnId,
+      };
+      this.#model.state.movingTaskId = -1;
+    } else {
+      historyAction = {
+        type: "updateTask",
+        updatedTaskName: updatedTask.name,
+      };
+      this.#model.state.editingTaskId = -1;
     }
-    notify();
+    this.#pushHistory(currentData, historyAction);
+    this.#notify();
   }
 
-  function moveTask(taskId, destinationColumnId) {
-    const data = getCurrentData();
-    const movedTask = data.task.find((task) => task.id === taskId);
-    movedTask.columnId = destinationColumnId;
-    pushHistory(data, { type: "moveTask", movedTask: movedTask, sourceColumnId: movedTask.columnId, destinationColumnId: destinationColumnId });
-    notify();
+  removeTask(taskId) {
+    const currentData = this.getCurrentData();
+    const removedTask = currentData.task.find((task) => task.id === taskId);
+    currentData.task = currentData.task.filter((task) => task.id !== taskId);
+    this.#pushHistory(currentData, {
+      type: "removeTask",
+      removedTaskName: removedTask.name,
+    });
+    this.#notify();
   }
 
-  function removeTask(taskId) {
-    const data = getCurrentData();
-    const removedTask = data.task.find((task) => task.id === taskId);
-    data.task = data.task.filter((task) => task.id !== taskId);
-    pushHistory(data, { type: "removeTask", removedTaskName: removedTask.name });
-    notify();
+  getCurrentColumnData() {
+    return this.getCurrentData().column;
   }
 
-  function getCurrentDataState() {
-    return { data: getCurrentData(), state: deepCopy(model.state) };
+  getCurrentTaskData() {
+    return this.getCurrentData().task;
   }
-
-  return {
-    setInitData,
-    init: initHistory,
-    addListener,
-    removeListener,
-    undo,
-    redo,
-    setEditingTaskId,
-    setEditingColumnId,
-    setMovingTaskId,
-    toggleOrder,
-    toggleHistory,
-    setMouseOverColumnId,
-    addColumn,
-    updateColumn,
-    removeColumn,
-    addTask,
-    editTask,
-    moveTask,
-    removeTask,
-    getCurrentDataState,
-  };
 }
