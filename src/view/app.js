@@ -1,8 +1,8 @@
 import Component from "../components/component.js";
 import { Header } from "./task/header/header.js";
-import {  ColumnList } from "./task/column/columnList.js";
-import {  ColumnData } from "../route/data/columnData.js";
-import {  CardData } from "../route/data/cardData.js";
+import { ColumnList } from "./task/column/columnList.js";
+import { ColumnData } from "../route/data/columnData.js";
+import { CardData } from "../route/data/cardData.js";
 
 export class App extends Component {
 
@@ -26,7 +26,7 @@ export class App extends Component {
                     "내용1",
                     "web"
                 ),
-               new  CardData(
+                new CardData(
                     "제목2",
                     "내용2",
                     "web"
@@ -37,28 +37,41 @@ export class App extends Component {
                     "web"
                 )
             ]
-
         ),
         new ColumnData(
             "완료한 일"
 
         ),
     ]
-    children = {
-        header: {
-            object: new Header(),
-            parentSelector: "#header",
-        },
-        column: {
-            object: new ColumnList(this.columnData),
-            parentSelector: "#taskContent",
-        },
-    };
-
+    
     events = [];
 
     constructor() {
         super();
+        this.setChildren();
+    }
+
+    setChildren(){
+        this.children = {
+            header: {
+                object: new Header(),
+                parentSelector: "#header",
+            },
+            column: {
+                object: new ColumnList(this.columnData,
+                    (columnIndex, cardData) => {
+                        this.columnData[columnIndex].addData(cardData);
+                    },
+                    (columnIndex, cardIndex) => {
+                        this.columnData[columnIndex].removeData(cardIndex);
+
+                        this.setChildren();
+                        this.clear(this.parent);
+                        this.render(this.parent);
+                    }),
+                parentSelector: "#taskContent",
+            },
+        };
     }
 
     template() {
@@ -70,7 +83,6 @@ export class App extends Component {
 
     render(parent) {
         super.render(parent);
-
     }
 
     addEvent(listenerName, callback) {

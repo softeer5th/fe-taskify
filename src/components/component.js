@@ -47,11 +47,6 @@ export default class Component {
 
         wrapper.innerHTML = this.template();
 
-        // console.log("parent",parent);
-        // console.log("rootid",this.rootId);
-        // console.log("rooclass",this.rootClass);
-        // console.log("wrapper",wrapper);
-
         parent.appendChild(wrapper);
 
 
@@ -80,7 +75,13 @@ export default class Component {
         }
     }
 
+    clear(parent){
+        parent.innerHTML = '';
+    }
+
     render(parent) {
+        console.log(parent);
+        this.parent = parent;
         this.renderTree(parent);
         this.setEvents(parent);
     }

@@ -7,13 +7,15 @@ export class Column extends Component {
 
     events = [];
 
-    constructor(columnData) {
+    constructor(columnData, onCardAdd = () => {}, onCardDelete = (cardIndex) => {}) {
         super();
         super.addRootclass("column");
 
         this.children = {
             header: {
-                object: new ColumnHeader(columnData.name, columnData.data.length),
+                object: new ColumnHeader(columnData.name, columnData.data.length, () =>{
+                    onCardAdd();
+                }),
                 parentSelector: `.column`
             }
         };
@@ -23,7 +25,14 @@ export class Column extends Component {
                 object: new DefaultCard(
                     cardData.title,
                     cardData.body,
-                    cardData.author
+                    cardData.author,
+                    () => {
+                        onCardDelete(index);
+                    },
+                    () => {
+
+                    }
+
                 ),
                 parentSelector:`.column`
             };

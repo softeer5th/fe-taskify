@@ -12,7 +12,6 @@ export class DefaultCard extends Component {
     editIconRef = "/assets/images/edit.svg";
 
     constructor(title, body, author, onCloseClick = () => {
-        console.log("!!!")
     }, onEditClick = () => { }) {
         super();
         super.addRootclass("card");
@@ -49,7 +48,8 @@ export class DefaultCard extends Component {
 
         super.renderTree(parent);
 
-        const close = parent.querySelector("#close-icon");
+        const component = parent.querySelector(`.${this.rootSelectorClassName}`);
+        const close = component.querySelector("#close-icon");
 
         if (close) {
             close.addEventListener("click", (event) => {
@@ -57,7 +57,7 @@ export class DefaultCard extends Component {
             });
         }
 
-        const edit = parent.querySelector("#edit-icon");
+        const edit = component.querySelector("#edit-icon");
 
         if (edit) {
 
