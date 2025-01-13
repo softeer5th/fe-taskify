@@ -261,3 +261,8 @@
     align-items: center;
     justify-content: space-between;
 }
+.container-3660315 {
+    display: flex;
+    gap: var(--gap-300);
+    padding: 20px 80px;
+}
