@@ -1,3 +1,4 @@
+import CardMode from '../store/models/tmp.js';
 import {
   initCardTextArea,
   initCardIconButtons,
@@ -5,6 +6,7 @@ import {
   setCardShadow,
   toggleDisplay,
 } from '../utils/helpers/cardHelper.js';
+import createState from '../utils/helpers/stateHelper.js';
 
 /**
  * @typedef {Object} Card
@@ -24,37 +26,45 @@ const Card = (mode = 'default', cardData) => {
   const card = document.getElementById('card-template').content.cloneNode(true);
   const cardElement = card.querySelector('li');
 
-  initCardTextArea(cardElement, mode, cardData, () => {});
-  initCardIconButtons(cardElement, mode);
+  const cardState = createState(cardData);
+  const cardMode = createState(new CardMode(mode, false));
+
+  cardMode.subscribe(() => {
+    setCardState(cardElement, cardState.getState(), cardMode.getState());
+  });
+
+  initCardTextArea(cardElement, cardData);
+  initCardIconButtons(cardElement, cardMode.setState);
   initCardButtons(cardElement);
 
-  const isEditMode = true;
-  setCardState(cardElement, cardData, mode, isEditMode);
+  setCardState(cardElement, cardData, cardMode.getState());
 
   return card;
 };
 
 /**
- * 
- * @param {HTMLElement} cardElement 
- * @param {Card} cardData 
- * @param {string} mode 
- * @param {boolean} isEditMode 
+ *
+ * @param {HTMLElement} cardElement
+ * @param {Card} cardData
+ * @param {CardMode} mode
  */
-const setCardState = (cardElement, cardData, mode, isEditMode) => {
-  toggleDisplay(cardElement.querySelector('#text-form'), mode === 'add');
-  toggleDisplay(cardElement.querySelector('#freezed-text'), mode !== 'add');
-  toggleDisplay(cardElement.querySelector('#icon-area'), mode !== 'add');
-  toggleDisplay(cardElement.querySelector('#button-area'), mode === 'add');
+const setCardState = (cardElement, cardData, mode) => {
+  console.log(mode);
+  toggleDisplay(cardElement.querySelector('#freezed-text'), mode.currentMode !== 'add');
+  toggleDisplay(cardElement.querySelector('#icon-area'), mode.currentMode !== 'add');
+  toggleDisplay(cardElement.querySelector('#text-form'), mode.currentMode === 'add');
+  toggleDisplay(cardElement.querySelector('#button-area'), mode.currentMode === 'add');
 
-  toggleDisplay(cardElement.querySelector('#add-button'), !isEditMode);
-  toggleDisplay(cardElement.querySelector('#edit-button'), isEditMode);
-  
-  cardElement.querySelectorAll('#button-area button').forEach((button, index) => {
-    if (index !== 0) {
-      button.disabled = cardData.title === null || cardData.body === null;
-    }
-  });
+  toggleDisplay(cardElement.querySelector('#add-button'), !mode.isEditMode);
+  toggleDisplay(cardElement.querySelector('#edit-button'), mode.isEditMode);
+
+  cardElement
+    .querySelectorAll('#button-area button')
+    .forEach((button, index) => {
+      if (index !== 0) {
+        button.disabled = cardData.title === null || cardData.body === null;
+      }
+    });
 
   setCardShadow(cardElement, mode);
 

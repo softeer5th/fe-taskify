@@ -11,11 +11,10 @@ import Button from '../../components/button.js';
 /**
  * 카드 모드에 따라 텍스트영역 세팅
  * @param {HTMLElement} cardElement
- * @param {'default' | 'add' | 'drag' | 'place'} mode
  * @param {Card} cardData
  * @param {function} setDisabled
  */
-const initCardTextArea = (cardElement, mode, cardData) => {
+const initCardTextArea = (cardElement, cardData) => {
   const _h3 = cardElement.querySelector('h3');
   const _p = cardElement.querySelector('p');
   const _input = cardElement.querySelector('form input');
@@ -63,14 +62,18 @@ const toggleDisplay = (element, isDisplay) => {
 /**
  * 카드 모드에 따라 아이콘 버튼 세팅
  * @param {HTMLElement} cardElement
- * @param {'default' | 'add' | 'drag' | 'place'} mode
+ * @param {function} setState
  */
-const initCardIconButtons = (cardElement, mode) => {
+const initCardIconButtons = (cardElement, setState) => {
   cardElement.querySelector('#delete-card').addEventListener('click', () => {
-    console.log('delete button clicked');
+    setState((prev) => {
+      return { ...prev, isEditMode: true };
+    });
   });
   cardElement.querySelector('#edit-card').addEventListener('click', () => {
-    console.log('edit button clicked');
+    setState(() => {
+      return { currentMode: 'add', isEditMode: true };
+    });
   });
 };
 
