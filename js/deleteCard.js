@@ -1,9 +1,9 @@
-import { removeTask } from '../utils/storage/taskManager.js';
-import { getTaskByTimestamp } from '../utils/storage/taskManager.js';
+import { removeTask } from "../utils/storage/taskManager.js";
+import { getTaskByTimestamp } from "../utils/storage/taskManager.js";
 
 export const deleteCard = (task) => {
   deleteCardModal(task);
-}
+};
 
 const deleteCardModal = (task) => {
   task.innerHTML = `
@@ -19,15 +19,19 @@ const deleteCardModal = (task) => {
       </div>
     </div>
   `;
-}
+};
 
 export const closeDeleteModal = (isConfirm, task) => {
-  const storedTask = getTaskByTimestamp(task.closest('.column').getAttribute('data-column-key'),
-    parseInt(task.getAttribute('data-timestamp')));
+  const storedTask = getTaskByTimestamp(
+    task.closest(".column").getAttribute("data-column-key"),
+    parseInt(task.getAttribute("data-timestamp"))
+  );
   console.log(storedTask);
   if (isConfirm) {
-    removeTask(task.closest('.column').getAttribute('data-column-key'),
-      task.getAttribute('data-timestamp'));
+    removeTask(
+      task.closest(".column").getAttribute("data-column-key"),
+      task.getAttribute("data-timestamp")
+    );
     task.remove();
   } else {
     task.innerHTML = `
@@ -48,6 +52,5 @@ export const closeDeleteModal = (isConfirm, task) => {
         </button>
       </div>
     `;
-
   }
-}
+};

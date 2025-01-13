@@ -1,5 +1,5 @@
-import { editTask } from '../utils/storage/taskManager.js';
-import { getTaskByTimestamp } from '../utils/storage/taskManager.js';
+import { editTask } from "../utils/storage/taskManager.js";
+import { getTaskByTimestamp } from "../utils/storage/taskManager.js";
 
 export const editCard = (task) => {
   popupEditModal(task);
@@ -18,19 +18,29 @@ const popupEditModal = (task) => {
       </div>
     </div>
   `;
-}
+};
 
 export const closeEditModal = (isEdited, task) => {
-  const beforeTask = getTaskByTimestamp(task.closest('.column').getAttribute('data-column-key'),
-    parseInt(task.getAttribute('data-timestamp')));
+  const beforeTask = getTaskByTimestamp(
+    task.closest(".column").getAttribute("data-column-key"),
+    parseInt(task.getAttribute("data-timestamp"))
+  );
   if (isEdited) {
-    const title = task.querySelector('.task-title').value;
-    const body = task.querySelector('input:last-child').value;
-    const timestamp = parseInt(task.getAttribute('data-timestamp'));
-    const newTask = { title: title, body: body, author: 'me', timestamp: timestamp };
+    const title = task.querySelector(".task-title").value;
+    const body = task.querySelector("input:last-child").value;
+    const timestamp = parseInt(task.getAttribute("data-timestamp"));
+    const newTask = {
+      title: title,
+      body: body,
+      author: "me",
+      timestamp: timestamp,
+    };
 
-    editTask(task.closest('.column').getAttribute('data-column-key'),
-      task.getAttribute('data-timestamp'), newTask);
+    editTask(
+      task.closest(".column").getAttribute("data-column-key"),
+      task.getAttribute("data-timestamp"),
+      newTask
+    );
 
     task.innerHTML = `
       <div class="title-cont-au">
@@ -50,9 +60,7 @@ export const closeEditModal = (isEdited, task) => {
         </button>
       </div>
     `;
-
   } else {
-
     task.innerHTML = `
       <div class="title-cont-au">
         <div class = "content-author-divider">
@@ -71,7 +79,5 @@ export const closeEditModal = (isEdited, task) => {
         </button>
       </div>
     `;
-
   }
-}
-
+};

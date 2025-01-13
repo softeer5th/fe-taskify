@@ -1,8 +1,8 @@
-import { addTask, getTaskByTimestamp } from '../utils/storage/taskManager.js';
+import { addTask, getTaskByTimestamp } from "../utils/storage/taskManager.js";
 
 export const popupCardModal = (parentColumn) => {
-  const newTask = document.createElement('li');
-  newTask.className = 'task'
+  const newTask = document.createElement("li");
+  newTask.className = "task";
   newTask.innerHTML = `
     <div class ="task-add-modal">
       <div class ="title-cont-au" >
@@ -16,25 +16,26 @@ export const popupCardModal = (parentColumn) => {
     </div>
   `;
   parentColumn.prepend(newTask);
-}
+};
 
 export const closeCardModal = (parentColumn) => {
-  const taskAddModal = parentColumn.querySelector('.task-add-modal');
-  const targetTask = taskAddModal.closest('.task');
+  const taskAddModal = parentColumn.querySelector(".task-add-modal");
+  const targetTask = taskAddModal.closest(".task");
   targetTask.remove();
-}
+};
 
 export const makeCard = (task, parentColumn) => {
-  const taskAddModal = parentColumn.querySelector('.task-add-modal');
+  const taskAddModal = parentColumn.querySelector(".task-add-modal");
 
   if (taskAddModal) {
-    const targetTask = taskAddModal.closest('.task');
+    const targetTask = taskAddModal.closest(".task");
     targetTask.remove();
   }
 
-  const newTask = document.createElement('li');
-  newTask.className = 'task';
-  newTask.setAttribute('data-timestamp', task.timestamp);
+  const newTask = document.createElement("li");
+  newTask.className = "task";
+  newTask.setAttribute("data-timestamp", task.timestamp);
+  newTask.draggable = "true";
   newTask.innerHTML = `
     <div class="title-cont-au">
       <div class = "content-author-divider">
@@ -53,15 +54,15 @@ export const makeCard = (task, parentColumn) => {
     </div>
   `;
 
-  if (document.querySelector('.sort-btn').getAttribute('card-sort') === '1') {
+  if (document.querySelector(".sort-btn").getAttribute("card-sort") === "1") {
     parentColumn.appendChild(newTask);
   } else {
-    parentColumn.insertBefore(newTask, parentColumn.querySelector('.task'));
+    parentColumn.insertBefore(newTask, parentColumn.querySelector(".task"));
   }
 
-  const columnKey = parentColumn.getAttribute('data-column-key');
+  const columnKey = parentColumn.getAttribute("data-column-key");
   if (!getTaskByTimestamp(columnKey, task.timestamp)) {
     addTask(columnKey, task);
-    parentColumn.querySelector('.column-count').textContent++;
+    parentColumn.querySelector(".column-count").textContent++;
   }
-}
+};
