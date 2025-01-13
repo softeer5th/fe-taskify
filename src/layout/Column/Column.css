@@ -8,3 +8,10 @@
     display: flex;
     gap:24px;
 }
+
+.column-box{  
+    display: flex;
+    flex-direction: column;
+    gap:4px;
+
+}

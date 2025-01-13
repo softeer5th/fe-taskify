@@ -2,7 +2,7 @@ import { loadCss } from '../../utils/loadcss.js';
 import { Badge } from '../Badge/Badge.js';
 import { Button } from '../Button/Button.js';
 
-export function ColumnHeader(title,badgeContent,plusEvent,closedEvent){
+export function ColumnHeader({title,badgeContent,plusEvent,closedEvent}){
     const columnHeader = document.createElement('div');
     columnHeader.className = "column-header";
     columnHeader.innerHTML = `
