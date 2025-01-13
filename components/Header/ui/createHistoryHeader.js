@@ -2,6 +2,11 @@ import { IMAGE } from "../../../assets/index.js";
 import { createButton, createElement, createImg } from "../../../dom.js";
 
 const createHistoryHeader = () => {
+  const handleClickClose = (e) => {
+    const $userHistory = e.currentTarget.closest(".user-history");
+    $userHistory.classList.toggle("fade-in");
+  };
+
   const $historyHeader = createElement("div", {
     className: "history__header",
   });
@@ -19,12 +24,9 @@ const createHistoryHeader = () => {
     text: "닫기",
   });
 
-  // TODO: 닫기 버튼 클릭 시 오른쪽 이동 애니메이션 적용
   const $closeButton = createButton({
     className: "history__closeButton",
-    handleClick: () => {
-      alert("닫기");
-    },
+    handleClick: handleClickClose,
   });
 
   $closeButton.append($closeImg, $closeText);
