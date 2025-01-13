@@ -16,6 +16,7 @@ export default [
     rules: {
       semi: ["error", "always"],
       "import/extensions": ["error", "always"],
+      "jsdoc/require-jsdoc": "off",
     },
   },
 ];
