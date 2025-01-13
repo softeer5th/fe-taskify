@@ -6,7 +6,7 @@ import ColumnController from "./column.js";
 export default function HeaderController(state, bodyElement) {
     const {columns, columnTasks} = state.getColumns();
     const headerComponent = HeaderComponent();
-    const logComponent = LogComponent(columns.columns);
+    const logComponent = LogComponent(columns);
 
     // Column 동적 생성 및 이벤트 등록
     function renderInit() {
