@@ -1,3 +1,5 @@
+// TODO: indexing
+
 const createTodoItem = (identifier, title, content, author) => {
     return {
         identifier: identifier,

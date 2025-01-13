@@ -8,6 +8,7 @@ import {
 } from '../utils/domUtil.js'
 import { getState, setState } from '../utils/stateUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
+import { Category } from '../domain/category.js'
 
 // const TODO_LIST_STORAGE_KEY = 'todoList'
 const TODO_CATEGORY_KEY = 'todoCategory'
@@ -139,6 +140,43 @@ const initTodoItemElement = (todoElement, todoItem) => {
         .addEventListener('click', () => {
             editTodoItem(identifier)
         })
+    manageDrag(todoElement.querySelector(`.${classNames.todoItemBody}`))
+}
+
+const manageDrag = (element) => {
+    // let isDragging = false
+    let currentCategory = null
+    let currentIndex = null
+    element.addEventListener('dragstart', (e) => {
+        // console.log(e.target)
+        // console.log(element.offsetHeight)
+    })
+    element.addEventListener('drag', (e) => {})
+    element.addEventListener('dragover', (e) => {
+        // 드롭을 허용하기 위해 기본 동작 취소
+        // e.preventDefault()
+    })
+    element.addEventListener('dragend', (e) => {})
+    element.addEventListener('dragenter', (e) => {
+        // console.log('dragenter', e.target)
+        const categoryList = getState(TODO_CATEGORY_KEY)
+        categoryList.forEach((v, i) => {
+            const parentElement = findDomElement(v.identifier)
+            if (!parentElement.contains(e.target)) return
+            currentIndex = v.identifier
+            console.log('currentIndex', currentIndex)
+            // if (v.identifier === parentElement.id) {
+            //     currentIndex = i
+            // }
+        })
+    })
+    element.addEventListener('dragleave', (e) => {
+        // console.log('dragleave', e.target)
+    })
+    element.addEventListener('drop', (e) => {
+        // 일부 요소의 링크 열기와 같은 기본 동작 취소
+        e.preventDefault()
+    })
 }
 
 const addTodoItem = (title, content, author, category) => {
@@ -157,7 +195,6 @@ const addTodoItem = (title, content, author, category) => {
         false
     )
 
-    // setState(TODO_CATEGORY_KEY, category)
     // category 객체를 참조하므로 setState를 안 해도 변경이 되긴 함 .. 맘에 안들지만 일단은 이렇게
     storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
     renewTodoCount(category)
