@@ -87,7 +87,7 @@ export const initTodo = () => {
                         if (currentIndex === null) {
                             return
                         }
-                        // console.log('dragenter', currentCategory, currentIndex)
+                        console.log('dragenter', currentCategory, currentIndex)
                     }
                 })
                 component.addEventListener(
@@ -95,8 +95,8 @@ export const initTodo = () => {
                     (e) => {
                         dragDepth--
                         if (dragDepth > 0) return
-                        console.log('dragleave', category.identifier)
-                        e.stopPropagation()
+                        // console.log('dragleave', category.identifier)
+                        // e.stopPropagation()
                         findDomElement(identifier)
                             .querySelector(`.${classNames.skeleton}`)
                             .remove()
