@@ -15,7 +15,7 @@ export const popupCardModal = (parentColumn) => {
       </div>
     </div>
   `;
-  parentColumn.appendChild(newTask);
+  parentColumn.prepend(newTask);
 }
 
 export const closeCardModal = (parentColumn) => {
