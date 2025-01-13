@@ -1,12 +1,25 @@
 import TaskColumn from "../TaskColumn/TaskColumn.js";
+import initialTaskData from "../../stores/initialTaskData.js";
 
 export default function Main() {
-  const main = document.createElement("main");
-  main.classList.add("main");
+  const $main = document.createElement("main");
+  $main.classList.add("main");
 
-  main.appendChild(TaskColumn({ title: "해야할 일", tasks: [1, 2, 3] }));
-  main.appendChild(TaskColumn({ title: "하고 있는 일", tasks: [4, 5] }));
-  main.appendChild(TaskColumn({ title: "완료한 일", tasks: [6, 7, 8, 9] }));
+  if (!localStorage.getItem("taskData")) {
+    localStorage.setItem("taskData", JSON.stringify(initialTaskData));
+  }
 
-  return main;
+  const taskData = JSON.parse(localStorage.getItem("taskData"));
+
+  taskData.forEach((column) => {
+    $main.appendChild(
+      TaskColumn({
+        columnId: column.taskColumnId,
+        columnTitle: column.taskColumnTitle,
+        taskList: column.taskList,
+      })
+    );
+  });
+
+  return $main;
 }
