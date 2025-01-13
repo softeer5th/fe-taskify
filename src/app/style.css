@@ -250,3 +250,14 @@
 .text-982d9e3 {
     padding: 0 var(--gap-50) 0 var(--gap-50);
 }
+
+.container-1e0584a {
+    width: 100%;
+    height: 64px;
+
+    padding: 20px 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

@@ -1,11 +1,7 @@
-import { Card } from "../components/Card/index.js";
-import { ColumnTitle } from "../components/ColumnTitle/index.js";
-import { parser } from "../lib/jsx-runtime/index.js";
+import MainPage from "../page/index.js";
 
-const App = () => parser`
-        <div>
-            ${Card({ title: "TITLE", body: "BODY" })}
-            ${ColumnTitle({ title: "COLUMN", count: 1 })}
-        </div>`;
+const App = () => (
+  MainPage()
+);
 
 export default App;
