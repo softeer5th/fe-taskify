@@ -1,5 +1,7 @@
 .badge-container{
     display: inline-flex;  
+    align-items: center;
+    justify-content: center;
     width:auto;
     height: 24px;
     border-radius: var(--Number-100);
