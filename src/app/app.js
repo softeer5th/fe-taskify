@@ -3,15 +3,16 @@ import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
 import { Card } from "../components/Card/index.js";
 import { Chip } from "../components/Chip/index.js";
+import { useState } from "../lib/hooks/index.js";
 import { parser } from "../lib/jsx-runtime/index.js";
 
-// eslint-disable-next-line
 const App = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const button = Button({
-    label: "Button",
-    // eslint-disable-next-line
+    label: "알럿창 열기",
+
     onClick: () => {
-      console.log("버튼 클릭");
+      setIsOpen(true);
     },
   });
   const button2 = Button({
@@ -52,7 +53,7 @@ const App = () => {
     body: "BODY",
     caption: "author by web",
     type: "place",
-    // eslint-disable-next-line
+
     onClickRB: () => {
       console.log("rb");
     },
@@ -60,9 +61,8 @@ const App = () => {
 
   const alert = Alert({
     text: "선택한 카드를 삭제할까요?",
-    // eslint-disable-next-line
-    leftOnClick: () => console.log("취소"),
-    // eslint-disable-next-line
+    isOpen,
+    onClose: () => setIsOpen(false),
     rightOnClick: () => console.log("삭제"),
   });
 
@@ -81,6 +81,7 @@ const App = () => {
             ${addCard}
             ${dragCard}
             ${placeCard}
+            ${isOpen && alert}
         </div>`
   );
 };
