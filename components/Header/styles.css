@@ -39,11 +39,16 @@
   right: 0;
   top: 6.4rem;
   width: 36rem;
-  min-height: 12.1rem;
-  max-height: 68rem;
+
   background-color: var(--color-surface-default);
   padding: 0.8rem;
   border-radius: 1.6rem;
+}
+
+.history__main {
+  min-height: 4.9rem;
+  max-height: 56rem;
+  overflow: scroll;
 }
 
 .history__header {
