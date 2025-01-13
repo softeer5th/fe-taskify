@@ -21,9 +21,26 @@ const histories = [
     date: "2025-01-10T04:20:01.833Z",
     profileImg: IMAGE.profile,
     nickname: "@멋진삼",
-    title: "블로그에 포스팅할 것",
-    prevColumn: "하고있는 일",
-    nextColumn: "해야할 일",
+    title: "블로그에 포스팅할 것(add)",
+    column: "해야할 일",
+  },
+
+  {
+    id: 3,
+    action: "remove",
+    date: "2025-01-09T04:20:01.833Z",
+    profileImg: IMAGE.profile,
+    nickname: "@멋진삼",
+    title: "블로그에 포스팅할 것(remove)",
+  },
+
+  {
+    id: 4,
+    action: "update",
+    date: "2025-01-10T02:20:01.833Z",
+    profileImg: IMAGE.profile,
+    nickname: "@멋진삼",
+    title: "블로그에 포스팅할 것(update)",
   },
 ];
 
