@@ -1,18 +1,19 @@
 import { createButton, createElement } from "../../../dom.js";
+import createModal from "../../Modal/createModal.js";
 
-const createHistoryFooter = () => {
+const createHistoryFooter = ({ handleDeleteHistory }) => {
   const $historyFooter = createElement("div", {
     className: "history__footer",
   });
 
-  // TODO: 기록 전체 삭제 삭제 클릭 시 모달 띄우기
-  // TODO: 삭제하기 클릭 시 컨텐츠 전체 삭제
   const $deleteButton = createButton({
     className: "display-bold14",
     text: "기록 전체 삭제",
     handleClick: () => {
-      // TODO: 사용자 활동 기록 저장 데이터도 모두 삭제
-      $historyMain.replaceChildren();
+      createModal({
+        content: "모든 사용자 활동 기록을 삭제할까요?",
+        onClick: handleDeleteHistory,
+      });
     },
   });
 

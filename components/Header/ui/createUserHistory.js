@@ -70,8 +70,13 @@ const createUserHistory = () => {
   const $historyHeader = createHistoryHeader();
   const $historyMain = createHistoryMain({ histories: sortedHistories });
 
+  const handleDeleteHistory = () => {
+    // TODO: 사용자 활동 기록 저장 데이터도 모두 삭제
+    $historyMain.replaceChildren();
+  };
+
   if (histories.length > 0) {
-    const $historyFooter = createHistoryFooter();
+    const $historyFooter = createHistoryFooter({ handleDeleteHistory });
     $userHistory.append($historyHeader, $historyMain, $historyFooter);
     return $userHistory;
   }
