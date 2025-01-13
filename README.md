@@ -12,10 +12,10 @@
 - [ ]  **FAB**
 - [x]  **Badge**
 - [x]  **Chip**
-- [ ]  **Card**
+- [x]  **Card**
     - [ ]  글자수 제한
     - [ ]  글자수에 따른 반응형
-- [ ]  **Alert**
+- [x]  **Alert**
 - [ ]  **Columnn Title**
 - [ ]  **Action History Item**
 
