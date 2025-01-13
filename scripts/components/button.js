@@ -1,6 +1,6 @@
 /**
  * 버튼 컴포넌트
- * @param {'add' | 'cancle' | 'delete' | 'edit'} type - 버튼 타입
+ * @param {'add' | 'cancel' | 'delete' | 'edit'} type - 버튼 타입
  * @param {function} onClick - 클릭 이벤트 핸들러
  * @returns {DocumentFragment} - 버튼 요소를 포함하는 DocumentFragment
  */
@@ -15,7 +15,7 @@ const Button = (type, onClick) => {
   const buttonElement = button.querySelector('button');
 
   switch (type) {
-    case 'cancle':
+    case 'cancel':
       buttonElement.textContent = '취소';
       buttonElement.classList.add('surface-alt', 'text-default');
       break;

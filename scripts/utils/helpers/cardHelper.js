@@ -80,14 +80,15 @@ const initCardIconButtons = (cardElement, setState) => {
 /**
  * 카드 모드에 따라 버튼 세팅
  * @param {HTMLElement} cardElement
+ * @param {{name: string, handler: function}} buttonInfos
  */
-const initCardButtons = (cardElement) => {
+const initCardButtons = (cardElement, buttonInfos) => {
   const buttonsArea = cardElement.querySelector('#button-area');
 
   buttonsArea.append(
-    Button('cancle', () => console.log('cancle button clicked')),
-    Button('add', () => console.log('add button clicked')),
-    Button('edit', () => console.log('edit button clicked'))
+    ...buttonInfos.map((buttonInfo) =>
+      Button(buttonInfo.name, buttonInfo.handler)
+    )
   );
 };
 

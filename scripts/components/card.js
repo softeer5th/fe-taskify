@@ -29,13 +29,42 @@ const Card = (mode = 'default', cardData) => {
   const cardState = createState(cardData);
   const cardMode = createState(new CardMode(mode, false));
 
+  cardState.subscribe(() => {
+    cardMode.setState(new CardMode('default', false));
+  });
+
   cardMode.subscribe(() => {
+    console.log(cardState.getState());
     setCardState(cardElement, cardState.getState(), cardMode.getState());
   });
 
   initCardTextArea(cardElement, cardData);
   initCardIconButtons(cardElement, cardMode.setState);
-  initCardButtons(cardElement);
+  initCardButtons(cardElement, [
+    {
+      name: 'cancel',
+      handler: () => {
+        cardMode.setState(new CardMode('default', false));
+      },
+    },
+    {
+      name: 'add',
+      handler: () => {
+        // cardMode.setState(new CardMode('default', true));
+        console.log('add card to Colunm');
+      },
+    },
+    {
+      name: 'edit',
+      handler: () => {
+        cardState.setState({
+          ...cardState.getState(),
+          title: cardElement.querySelector('input').value,
+          body: cardElement.querySelector('textarea').value,
+        });
+      },
+    },
+  ]);
 
   setCardState(cardElement, cardData, cardMode.getState());
 
@@ -49,11 +78,22 @@ const Card = (mode = 'default', cardData) => {
  * @param {CardMode} mode
  */
 const setCardState = (cardElement, cardData, mode) => {
-  console.log(mode);
-  toggleDisplay(cardElement.querySelector('#freezed-text'), mode.currentMode !== 'add');
-  toggleDisplay(cardElement.querySelector('#icon-area'), mode.currentMode !== 'add');
-  toggleDisplay(cardElement.querySelector('#text-form'), mode.currentMode === 'add');
-  toggleDisplay(cardElement.querySelector('#button-area'), mode.currentMode === 'add');
+  toggleDisplay(
+    cardElement.querySelector('#freezed-text'),
+    mode.currentMode !== 'add'
+  );
+  toggleDisplay(
+    cardElement.querySelector('#icon-area'),
+    mode.currentMode !== 'add'
+  );
+  toggleDisplay(
+    cardElement.querySelector('#text-form'),
+    mode.currentMode === 'add'
+  );
+  toggleDisplay(
+    cardElement.querySelector('#button-area'),
+    mode.currentMode === 'add'
+  );
 
   toggleDisplay(cardElement.querySelector('#add-button'), !mode.isEditMode);
   toggleDisplay(cardElement.querySelector('#edit-button'), mode.isEditMode);
@@ -65,6 +105,14 @@ const setCardState = (cardElement, cardData, mode) => {
         button.disabled = cardData.title === null || cardData.body === null;
       }
     });
+
+  const _h3 = cardElement.querySelector('h3');
+  const _p = cardElement.querySelector('p');
+  const _input = cardElement.querySelector('form input');
+  const _textArea = cardElement.querySelector('form textarea');
+
+  _input.value = _h3.textContent = cardData.title;
+  _textArea.value = _p.textContent = cardData.body;
 
   setCardShadow(cardElement, mode);
 
