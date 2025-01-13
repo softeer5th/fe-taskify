@@ -11,8 +11,7 @@ export const render = () => {
   currentIndex = 0;
   const root = document.getElementById("root");
   root.innerHTML = "";
-  const element = App();
-  root.appendChild(createDOM(element));
+  root.appendChild(createDOM(App()));
 };
 
 /**
@@ -21,18 +20,20 @@ export const render = () => {
  * @returns {[*, Function]} - 상태와 상태를 변경하는 함수.
  */
 export const useState = (initState) => {
+  const index = currentIndex;
+
   if (!states[currentIndex]) {
     states[currentIndex] = initState;
   }
 
-  const state = states[currentIndex];
+  const state = states[index];
 
   /**
    *
-   * @param newState
+   * @param {*} newState - 변경할 새로운 상태.
    */
   const setState = (newState) => {
-    states[currentIndex] = newState;
+    states[index] = newState;
     render();
   };
 
