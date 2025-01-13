@@ -12,7 +12,6 @@ export class ColumnList extends Component {
     constructor(columnList, onCardAdd = (columnIndex, cardData) => { }, onCardDelete = (columnIndex, cardIndex) => { }) {
         super();
 
-        console.log("columnList",columnList);
         columnList.forEach((columnData, index) => {
             this.children[`column${index}`] = {
                 object: new Column(columnData,

@@ -43,8 +43,18 @@ export class App extends Component {
 
         ),
     ]
-    
-    events = [];
+
+    onCardAdd = (columnIndex, cardData) => {
+        this.columnData[columnIndex].addData(cardData);
+    };
+
+    onCardDelete = (columnIndex, cardIndex) => {
+        this.columnData[columnIndex].removeData(cardIndex);
+
+        this.setChildren();
+        this.clear(this.parent);
+        this.render(this.parent);
+    };
 
     constructor() {
         super();
@@ -58,17 +68,7 @@ export class App extends Component {
                 parentSelector: "#header",
             },
             column: {
-                object: new ColumnList(this.columnData,
-                    (columnIndex, cardData) => {
-                        this.columnData[columnIndex].addData(cardData);
-                    },
-                    (columnIndex, cardIndex) => {
-                        this.columnData[columnIndex].removeData(cardIndex);
-
-                        this.setChildren();
-                        this.clear(this.parent);
-                        this.render(this.parent);
-                    }),
+                object: new ColumnList(this.columnData, this.onCardAdd, this.onCardDelete),
                 parentSelector: "#taskContent",
             },
         };

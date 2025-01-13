@@ -39,6 +39,19 @@ export class ColumnHeader extends Component {
 
     render(parent) {
         super.render(parent);
+
+        const component = this.parent.querySelector(`.${this.rootSelectorClassName}`);
+
+        const addIcon = component.querySelector("#add-icon");
+        if(addIcon){
+            addIcon.addEventListener("click", this.onAddClick);
+        }
+
+        const deleteIcon = component.querySelector("#delete-icon");
+        if(deleteIcon){
+            deleteIcon.addEventListener("click", this.onAddClick);
+        }
+
     }
 
     addEvent(listenerName, callback) {

@@ -26,7 +26,7 @@ export default class Component {
         return result;
     }
 
-    addRootclass(className){
+    addRootclass(className) {
         this.rootClass.push(className);
     }
 
@@ -37,11 +37,11 @@ export default class Component {
     renderTree(parent) {
         const wrapper = document.createElement("div");
 
-        if(this.rootId){
+        if (this.rootId) {
             wrapper.id = this.rootId;
         }
 
-        this.rootClass.forEach( (className) => {
+        this.rootClass.forEach((className) => {
             wrapper.classList.add(className);
         });
 
@@ -52,35 +52,31 @@ export default class Component {
 
         for (const key in this.children) {
             const childParent = wrapper.querySelector(this.children[key].parentSelector);
-            if(childParent){
+            if (childParent) {
                 this.children[key].object.render(childParent);
             }
-            else{
+            else {
                 this.children[key].object.render(wrapper);
             }
         }
     }
 
     setEvents(parent) {
-        if (this.rootId) {
-            const root = parent.querySelector(`.${this.rootSelectorClassName}`);
+        const root = parent.querySelector(`.${this.rootSelectorClassName}`);
+        if (root) {
+            this.events.forEach(({ listenerName, callback }) => {
+                console.log(root,listenerName, callback);
+                root.addEventListener(listenerName, () => callback());
 
-            if (root) {
-                this.events.forEach(({ listenerName, callback }) => {
-                    root.addEventListener(listenerName, (event) => {
-                        callback();
-                    }, false);
-                });
-            }
+            });
         }
     }
 
-    clear(parent){
+    clear(parent) {
         parent.innerHTML = '';
     }
 
     render(parent) {
-        console.log(parent);
         this.parent = parent;
         this.renderTree(parent);
         this.setEvents(parent);

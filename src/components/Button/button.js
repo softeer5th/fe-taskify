@@ -2,13 +2,7 @@ import Component from "../component.js";
 
 export class Button extends Component {
 
-    children = {
-
-    };
-
-    events = [];
-
-    constructor(text = '', iconRef, buttonType = "confirm-button") {
+    constructor(text = '', iconRef, buttonType = "confirm-button" ) {
         super();
         super.addRootclass(buttonType);
         super.addRootclass("button-background");
@@ -25,10 +19,10 @@ export class Button extends Component {
         }
 
         return `
-                ${iconTemplate}
-                <div class = "button-text">
-                    ${this.text}
-                </div>
+            ${iconTemplate}
+            <div class = "button-text">
+                ${this.text}
+            </div>
         `;
     }
 

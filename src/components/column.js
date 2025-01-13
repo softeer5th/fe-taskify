@@ -1,6 +1,7 @@
 import { Button } from "../../../components/Button/button.js";
 import Component from "../../../components/component.js";
 import { DefaultCard } from "./Card/card.js";
+import { EditCard } from "./Card/editCard.js";
 import { ColumnHeader } from "./columnHeader.js";
 
 export class Column extends Component {
@@ -10,13 +11,39 @@ export class Column extends Component {
     constructor(columnData, onCardAdd = () => {}, onCardDelete = (cardIndex) => {}) {
         super();
         super.addRootclass("column");
+        this.setCallback(onCardAdd, onCardDelete);
 
+        this.setChildren(columnData);
+        
+    }
+
+    setCallback(onCardAdd, onCardDelete){
+        this.onCardAdd = () => {
+            console.log("add!!");
+            this.toggleAddCard();
+        };
+
+        this.onColumnDelete = () => {
+            
+        };
+
+        this.onNewCardAdd = () => {
+            this.toggleAddCard();
+        }; 
+        this.onNewCardDismiss = () => {
+
+            this.toggleAddCard();
+        };
+    }
+
+    setChildren(columnData){
         this.children = {
             header: {
-                object: new ColumnHeader(columnData.name, columnData.data.length, () =>{
-                    onCardAdd();
-                }),
+                object: new ColumnHeader(columnData.name, columnData.data.length, this.onCardAdd, this.onColumnDelete),
                 parentSelector: `.column`
+            },
+            input: {
+                object: new EditCard('','', this.onNewCardAdd, this.onNewCardDismiss )
             }
         };
     
@@ -44,8 +71,16 @@ export class Column extends Component {
     }
 
     render(parent) {
-
         super.render(parent);
+        this.toggleAddCard()
+    }
+    
+    toggleAddCard(){
+        const inputRootClass = this.children.input.object.rootSelectorClassName;
+        const input = this.parent.querySelector(`.${inputRootClass}`);
+
+        input.classList.toggle("hide");
+    
     }
 
     addEvent(listenerName, callback) {
