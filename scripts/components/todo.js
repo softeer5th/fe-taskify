@@ -55,10 +55,10 @@ export const initTodo = () => {
                     // 일부 요소의 링크 열기와 같은 기본 동작 취소
                     e.preventDefault()
                 })
-
                 let dragDepth = 0
                 component.addEventListener('dragenter', (e) => {
                     dragDepth++
+                    let skeletonUpdateFlag = false
                     // if (!e.target.contains(`.${classNames.todoItemBody}`))
                     //     return
                     const categoryList = getState(TODO_CATEGORY_KEY)
@@ -68,41 +68,60 @@ export const initTodo = () => {
                             category.identifier
                         )
                         if (!parentElement.contains(e.target)) continue
+                        if (currentCategory !== category.identifier) {
+                            // 카테고리가 바뀌면 skeleton update
+                            console.log(
+                                'category change',
+                                currentCategory,
+                                'to',
+                                category.identifier
+                            )
+                            skeletonUpdateFlag = true
+                        }
                         currentCategory = category.identifier
                         // todoList의 몇 번째 index인지 식별
-                        currentIndex = null
+                        // currentIndex = null
                         for (let [
                             idx,
                             todoItem,
                         ] of category.values.todoList.entries()) {
                             if (todoItem.identifier === e.target.id) {
+                                if (currentIndex !== idx) {
+                                    // index가 바뀌면 skeleton update
+                                    console.log(
+                                        'index change',
+                                        currentIndex,
+                                        'to',
+                                        idx
+                                    )
+                                    skeletonUpdateFlag = true
+                                }
                                 currentIndex = idx
                                 break
                             }
                         }
+                        // 컨테이너 빈 영역에 대해서는 todo 리스트의 맨 끝에 추가
                         if (e.target.className === classNames.todoContainer) {
+                            skeletonUpdateFlag = true
                             currentIndex = category.values.todoList.length
                         }
                         // 자식 요소에 이벤트 전달되면 null값이 들어감...
                         if (currentIndex === null) {
                             return
                         }
-                        console.log('dragenter', currentCategory, currentIndex)
+                        // console.log('dragenter', currentCategory, currentIndex))
+                        console.log('flag', skeletonUpdateFlag)
                     }
                 })
-                component.addEventListener(
-                    'dragleave',
-                    (e) => {
-                        dragDepth--
-                        if (dragDepth > 0) return
-                        // console.log('dragleave', category.identifier)
-                        // e.stopPropagation()
-                        findDomElement(identifier)
-                            .querySelector(`.${classNames.skeleton}`)
-                            .remove()
-                    },
-                    true
-                )
+                component.addEventListener('dragleave', (e) => {
+                    dragDepth--
+                    if (dragDepth > 0) return
+                    console.log('dragleave', category.identifier)
+                    // e.stopPropagation()
+                    findDomElement(identifier)
+                        .querySelector(`.${classNames.skeleton}`)
+                        .remove()
+                })
             }
         )
         category.identifier = categoryId
