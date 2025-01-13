@@ -1,36 +1,11 @@
-import { createElement, createImg } from "../../../dom.js";
-import createHistoryContent from "./createHistoryItem.js";
+import { createElement } from "../../../dom.js";
 
-const createHistoryMain = ({ history }) => {
-  const $historyMain = createElement("div", {
-    className: "history__container",
-  });
+import HistoryItem from "./HistoryItem.js";
 
-  const $profileImg = createImg({
-    src: history.profileImg,
-    alt: "프로필",
-  });
-  $profileImg.width = 40;
-  $profileImg.height = 40;
+const createHistoryMain = ({ histories }) => {
+  const $historyMain = createElement("ul");
 
-  const $contentContainer = createElement("div", {
-    className: "history__contentContainer",
-  });
-
-  const $user = createElement("span", {
-    className: "history__user display-medium14",
-    text: history.nickname,
-  });
-
-  const $content = createHistoryContent({ history });
-
-  const $date = createElement("span", {
-    className: "history__date display-medium12",
-    text: "3분 전",
-  });
-
-  $contentContainer.append($user, $content, $date);
-  $historyMain.append($profileImg, $contentContainer);
+  $historyMain.append(...histories.map((history) => HistoryItem({ history })));
   return $historyMain;
 };
 
