@@ -1,7 +1,7 @@
 import { closed } from "../../public/closed.js";
 import { edit } from "../../public/edit.js";
 
-export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
+export default function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task");
   taskElement.id = task.id;
@@ -9,17 +9,49 @@ export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClic
   if (state === "editing") {
     taskElement.classList.add("task--edit");
 
-    const contentBody = document.createElement("div");
+    const contentBody = document.createElement("form");
     contentBody.classList.add("task__content-body");
 
     const contentTitle = document.createElement("input");
     contentTitle.classList.add("task__content-title");
     contentTitle.placeholder = "제목을 입력하세요";
+    contentTitle.autofocus = true;
+    contentTitle.maxLength = 500;
+    contentTitle.required = true;
     contentTitle.value = task.name;
+    contentTitle.addEventListener("input", (event) => {
+      const description = event.target.parentElement.querySelector(".task__content-description");
+      const saveButton = event.target.parentElement.parentElement.querySelector(".task__editorButton").querySelector("button:last-child");
+      if (event.target.value.length > 0 && description.value.length > 0) {
+        saveButton.disabled = false;
+      } else {
+        saveButton.disabled = true;
+      }
+    });
+    contentTitle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      event.target.focus();
+    });
 
     const contentDescription = document.createElement("textarea");
     contentDescription.classList.add("task__content-description");
+    contentDescription.maxLength = 500;
+    contentDescription.required = true;
     contentDescription.placeholder = "내용을 입력하세요";
+    contentDescription.addEventListener("input", (event) => {
+      const title = event.target.parentElement.querySelector(".task__content-title");
+      const saveButton = event.target.parentElement.parentElement.querySelector(".task__editorButton").querySelector("button:last-child");
+      if (event.target.value.length > 0 && title.value.length > 0) {
+        saveButton.disabled = false;
+      } else {
+        saveButton.disabled = true;
+      }
+    });
+    contentDescription.addEventListener("click", (event) => {
+      event.stopPropagation();
+      event.target.focus();
+    });
+
     contentDescription.value = task.description;
 
     const editorButton = document.createElement("div");
@@ -32,6 +64,7 @@ export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClic
     const saveButton = document.createElement("button");
     saveButton.textContent = "등록";
     saveButton.addEventListener("click", onSecondButtonClicked);
+    saveButton.disabled = true;
 
     editorButton.appendChild(cancelButton);
     editorButton.appendChild(saveButton);
@@ -71,18 +104,20 @@ export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClic
     const buttonGroup = document.createElement("div");
     buttonGroup.classList.add("task__iconButton");
 
-    const firstButton = document.createElement("button");
-    firstButton.classList.add("task__iconButton-icon");
-    firstButton.innerHTML = closed;
-    firstButton.addEventListener("click", onFirstButtonClicked);
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("task__iconButton-icon");
+    deleteButton.innerHTML = closed;
+    deleteButton.addEventListener("click", onFirstButtonClicked);
+    deleteButton.addEventListener("mousedown", (event) => event.stopPropagation());
 
-    const secondButton = document.createElement("button");
-    secondButton.classList.add("task__iconButton-icon");
-    secondButton.innerHTML = edit;
-    secondButton.addEventListener("click", onSecondButtonClicked);
+    const editButton = document.createElement("button");
+    editButton.classList.add("task__iconButton-icon");
+    editButton.innerHTML = edit;
+    editButton.addEventListener("click", onSecondButtonClicked);
+    editButton.addEventListener("mousedown", (event) => event.stopPropagation());
 
-    buttonGroup.appendChild(firstButton);
-    buttonGroup.appendChild(secondButton);
+    buttonGroup.appendChild(deleteButton);
+    buttonGroup.appendChild(editButton);
 
     taskElement.appendChild(buttonGroup);
   }

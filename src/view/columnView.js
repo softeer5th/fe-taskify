@@ -1,12 +1,37 @@
 import { plus } from "../../public/plus.js";
 import { closed } from "../../public/closed.js";
 
-export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleClicked, onColumnDeleteButtonClicked }) {
+const COUNT_MAX = 99;
+
+export default function ColumnView({ column, count, state, onColumnTitleEvent, onAddButtonClicked, onColumnDeleteButtonClicked }) {
   const columnElement = document.createElement("div");
   columnElement.classList.add("column");
   columnElement.id = column.id;
 
-  if (state === "default") {
+  if (state === "editing") {
+    const columnTitle = document.createElement("div");
+    columnTitle.classList.add("column__title-edit");
+
+    const columnTextInput = document.createElement("input");
+    columnTextInput.value = column.title;
+    columnTextInput.classList.add("column__textarea-title");
+    columnTextInput.autofocus = true;
+    columnTextInput.addEventListener("focusout", onColumnTitleEvent);
+
+    const columnAddButton = document.createElement("button");
+    columnAddButton.innerHTML = plus;
+    columnAddButton.addEventListener("click", onAddButtonClicked);
+
+    const columnCloseButton = document.createElement("button");
+    columnCloseButton.innerHTML = closed;
+    columnCloseButton.addEventListener("click", onColumnDeleteButtonClicked);
+
+    columnTitle.appendChild(columnTextInput);
+    columnTitle.appendChild(columnAddButton);
+    columnTitle.appendChild(columnCloseButton);
+
+    columnElement.appendChild(columnTitle);
+  } else {
     const columnTitle = document.createElement("div");
     columnTitle.classList.add("column__title");
 
@@ -15,14 +40,14 @@ export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleCli
 
     const columnTitleText = document.createElement("div");
     columnTitleText.textContent = column.title;
-    columnTitleText.addEventListener("dblclick", onColumnTitleClicked);
+    columnTitleText.addEventListener("dblclick", onColumnTitleEvent);
     columnTitleText.classList.add("column__textarea-title");
 
     const columnTaskCount = document.createElement("div");
     columnTaskCount.classList.add("column__textarea-task-count");
 
     const columnTaskCountText = document.createElement("span");
-    columnTaskCountText.textContent = "0";
+    columnTaskCountText.textContent = count <= COUNT_MAX ? count : `${COUNT_MAX}+`;
     columnTaskCount.appendChild(columnTaskCountText);
 
     columnTextarea.appendChild(columnTitleText);
@@ -44,6 +69,11 @@ export function ColumnView({ column, state, onAddButtonClicked, onColumnTitleCli
 
     columnElement.appendChild(columnTitle);
   }
+
+  const columnTaskList = document.createElement("div");
+  columnTaskList.classList.add("column__task-list");
+
+  columnElement.appendChild(columnTaskList);
 
   return columnElement;
 }
