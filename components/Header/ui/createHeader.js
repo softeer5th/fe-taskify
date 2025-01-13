@@ -1,13 +1,13 @@
 import { createElement } from "../../../dom.js";
-import createHistoryButton from "./createHistoryButton.js";
+import HistoryButton from "../HistoryButton/HistoryButton.js";
+import UserHistory from "../UserHistory/UserHistory.js";
 import createLeftHeader from "./createLeftHeader.js";
-import createUserHistory from "./createUserHistory.js";
 
 const createHeader = () => {
   const $header = createElement("header", { className: "header" });
   const $leftHeader = createLeftHeader();
-  const $historyButton = createHistoryButton();
-  const $userHistory = createUserHistory();
+  const $historyButton = HistoryButton();
+  const $userHistory = UserHistory();
 
   $header.append($leftHeader, $historyButton, $userHistory);
   return $header;

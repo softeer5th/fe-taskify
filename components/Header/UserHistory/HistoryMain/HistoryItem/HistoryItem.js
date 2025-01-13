@@ -1,6 +1,6 @@
-import { createElement, createImg } from "../../../dom.js";
-import { formatHistoryDate } from "../../../utils/date.js";
-import createHistoryContent from "./createHistoryContent.js";
+import { createElement, createImg } from "../../../../../dom.js";
+import createHistoryContent from "./ui/createHistoryContent.js";
+import { formatHistoryDate } from "../../../../../utils/date.js";
 
 const HistoryItem = ({ history }) => {
   const $historyContainer = createElement("li", {

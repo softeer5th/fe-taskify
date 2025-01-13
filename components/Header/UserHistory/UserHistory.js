@@ -1,8 +1,8 @@
 import { IMAGE } from "../../../assets/index.js";
 import { createElement } from "../../../dom.js";
-import createHistoryFooter from "./createHistoryFooter.js";
-import createHistoryHeader from "./createHistoryHeader.js";
-import createHistoryMain from "./createHistoryMain.js";
+import createHistoryFooter from "../ui/createHistoryFooter.js";
+import HistoryHeader from "./HistoryHeader/HistoryHeader.js";
+import HistoryMain from "./HistoryMain/HistoryMain.js";
 
 const histories = [
   {
@@ -62,18 +62,18 @@ const sortedHistories = [...histories].sort((a, b) => {
   return new Date(b.date) - new Date(a.date);
 });
 
-const createUserHistory = () => {
+const UserHistory = () => {
+  const handleDeleteHistory = () => {
+    // TODO: 사용자 활동 기록 저장 데이터도 모두 삭제
+    const $userHistory = document.querySelector(".history__main");
+    $userHistory.replaceChildren();
+  };
+
   const $userHistory = createElement("div", {
     className: "user-history shadow-floating",
   });
-
-  const $historyHeader = createHistoryHeader();
-  const $historyMain = createHistoryMain({ histories: sortedHistories });
-
-  const handleDeleteHistory = () => {
-    // TODO: 사용자 활동 기록 저장 데이터도 모두 삭제
-    $historyMain.replaceChildren();
-  };
+  const $historyHeader = HistoryHeader();
+  const $historyMain = HistoryMain({ histories: sortedHistories });
 
   if (histories.length > 0) {
     const $historyFooter = createHistoryFooter({ handleDeleteHistory });
@@ -85,4 +85,4 @@ const createUserHistory = () => {
   return $userHistory;
 };
 
-export default createUserHistory;
+export default UserHistory;

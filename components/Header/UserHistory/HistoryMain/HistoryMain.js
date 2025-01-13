@@ -1,8 +1,7 @@
-import { createElement } from "../../../dom.js";
+import { createElement } from "../../../../dom.js";
+import HistoryItem from "./HistoryItem/HistoryItem.js";
 
-import HistoryItem from "./HistoryItem.js";
-
-const createHistoryMain = ({ histories }) => {
+const HistoryMain = ({ histories }) => {
   const $historyMain = createElement("ul", { className: "history__main" });
 
   const $emptyHistory = createElement("div", {
@@ -26,4 +25,4 @@ const createHistoryMain = ({ histories }) => {
   return $historyMain;
 };
 
-export default createHistoryMain;
+export default HistoryMain;

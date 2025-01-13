@@ -1,4 +1,4 @@
-import { createElement } from "../../../dom.js";
+import { createElement } from "../../../../../../dom.js";
 import createHistoryText from "./createHistoryText.js";
 
 const createHistoryContent = ({ history }) => {

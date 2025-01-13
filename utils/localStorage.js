@@ -26,10 +26,7 @@ export const sortInitStorage = () => {
   const storageData = loadLocalStorage();
 
   const sortedList = [...storageData].map((section) => {
-    section.items.sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    );
+    section.items.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
     return section;
   });
