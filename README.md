@@ -91,9 +91,9 @@
         - [x] animation
     - [x] Card
         - [x] delete
-            - [ ] warning modal
+            - [x] warning modal
         - [x] edit
-            - [ ] edit modal
+            - [x] edit modal
     - [ ] CardList (Column)
         - [x] Count of Cards
         - [x] Add Card
