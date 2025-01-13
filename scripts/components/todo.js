@@ -55,7 +55,10 @@ export const initTodo = () => {
                     // 일부 요소의 링크 열기와 같은 기본 동작 취소
                     e.preventDefault()
                 })
+
+                let dragDepth = 0
                 component.addEventListener('dragenter', (e) => {
+                    dragDepth++
                     // if (!e.target.contains(`.${classNames.todoItemBody}`))
                     //     return
                     const categoryList = getState(TODO_CATEGORY_KEY)
@@ -84,15 +87,15 @@ export const initTodo = () => {
                         if (currentIndex === null) {
                             return
                         }
-                        console.log('dragenter', currentCategory, currentIndex)
+                        // console.log('dragenter', currentCategory, currentIndex)
                     }
                 })
                 component.addEventListener(
                     'dragleave',
                     (e) => {
-                        // if (currentCategory === identifier) return
-                        // if (e.target.id !== identifier) return
-                        console.log('dragleave')
+                        dragDepth--
+                        if (dragDepth > 0) return
+                        console.log('dragleave', category.identifier)
                         e.stopPropagation()
                         findDomElement(identifier)
                             .querySelector(`.${classNames.skeleton}`)
