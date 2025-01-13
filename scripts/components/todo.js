@@ -45,6 +45,8 @@ export const initTodo = () => {
 
                 let currentCategory = null
                 let currentIndex = null
+                let skeletonElement = null
+
                 component.addEventListener('dragover', (e) => {
                     // 드롭을 허용하기 위해 기본 동작 취소
                     e.preventDefault()
@@ -55,12 +57,32 @@ export const initTodo = () => {
                 })
                 component.addEventListener('dragenter', (e) => {
                     const categoryList = getState(TODO_CATEGORY_KEY)
-                    categoryList.forEach((v, i) => {
-                        const parentElement = findDomElement(v.identifier)
-                        if (!parentElement.contains(e.target)) return
-                        currentCategory = v.identifier
-                        console.log('currentCategory', currentCategory)
-                    })
+                    for (let category of categoryList) {
+                        // 카테고리 식별
+                        const parentElement = findDomElement(
+                            category.identifier
+                        )
+                        if (!parentElement.contains(e.target)) continue
+                        currentCategory = category.identifier
+                        // todoList의 몇 번째 index인지 식별
+                        currentIndex = null
+                        for (let [
+                            idx,
+                            todoItem,
+                        ] of category.values.todoList.entries()) {
+                            if (todoItem.identifier === e.target.id) {
+                                currentIndex = idx
+                                console.log(
+                                    `currentCategory: ${currentCategory}, currentIndex: ${currentIndex}`
+                                )
+                                break
+                            }
+                        }
+
+                        if (currentIndex === null) {
+                            currentIndex = category.values.todoList.length
+                        }
+                    }
                 })
                 component.addEventListener('dragleave', (e) => {
                     // console.log('dragleave', e.target)
