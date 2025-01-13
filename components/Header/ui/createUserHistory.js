@@ -58,13 +58,17 @@ const histories = [
   },
 ];
 
+const sortedHistories = [...histories].sort((a, b) => {
+  return new Date(b.date) - new Date(a.date);
+});
+
 const createUserHistory = () => {
   const $userHistory = createElement("div", {
     className: "user-history shadow-floating",
   });
 
   const $historyHeader = createHistoryHeader();
-  const $historyMain = createHistoryMain({ histories });
+  const $historyMain = createHistoryMain({ histories: sortedHistories });
   const $historyFooter = createHistoryFooter();
 
   $userHistory.append($historyHeader, $historyMain, $historyFooter);
