@@ -1,5 +1,5 @@
 import renderTemplate from "./main.js";
-import { overlay, delCardAlert } from "./alert.js";
+import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 
 export function checkCardInput() {
     const titleInput = document.getElementById('title-input');
@@ -30,17 +30,17 @@ export function confirmAddCard(columnId){
 
 export function delCard(columnId, cardId) {
     overlay.style.display = "block";
+    createDeleteCardAlert(columnId, cardId);
+    let delCardAlert = document.getElementById(`deleteCardAlert-${columnId}-${cardId}`);
     delCardAlert.style.display = "block";
     let column = document.getElementById("card-list"+columnId);
     let card = column.querySelector("#card-id"+cardId);
     delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
     delCardAlert.querySelector('#cancel-delete-card-button').addEventListener('click',(event)=>{
-        overlay.style.display = "none";
-        delCardAlert.style.display = "none";
+        hideAlert();
     });
     delCardAlert.querySelector('#confirm-delete-card-button').addEventListener('click',(event)=>{
-        overlay.style.display = "none";
-        delCardAlert.style.display = "none";
+        hideAlert();
         if (column.contains(card)) {
             column.removeChild(card);
         }

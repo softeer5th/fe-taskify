@@ -6,9 +6,9 @@ function adaptProps(component, templateId, props) {
     // props가 있는 경우에만
     if (Object.keys(props).length>0) {
         if (templateId==='column-template') {
-            component.querySelector('#column-id').id += props.id;
+            component.querySelector('#column-id').id += props.columnId;
             component.querySelector('.column-name').textContent = props.title || 'Default Title';
-            component.querySelector('#card-list').id += props.id;
+            component.querySelector('#card-list').id += props.columnId;
             if (props.cardCount) {
                 if (parseInt(props.cardCount)>99) {
                     component.querySelector('.card-count').textContent = "99+";
@@ -55,12 +55,12 @@ async function loadTemplate(templateFile, templateId, props) {
 function adaptEventListener(targetId, props) {
     const regEx = /^card-list/;
     if (targetId==="column-area") {
-        const parentElement = document.querySelector('#column-id'+props.id);
+        const parentElement = document.querySelector('#column-id'+props.columnId);
         parentElement.querySelector('#add-card-button').addEventListener('click', (event)=> {
-            addCard(props.id);
+            addCard(props.columnId);
         });
         parentElement.querySelector('#delete-cards-button').addEventListener('click', (event)=> {
-            delAllCard(props.id);
+            delAllCard(props.columnId);
         });
     } else if (regEx.test(targetId)) {
         const parentElement = document.querySelector('#card-list'+props.columnId);
@@ -87,6 +87,6 @@ export default async function renderTemplate(templateFile, templateId, targetId,
 }
 
 
-renderTemplate('./html/column_template.html', 'column-template', 'column-area', {id:0, title:"해야할 일", cardCount:"0",});
-renderTemplate('./html/column_template.html', 'column-template', 'column-area', {id:1, title:"하고 있는 일", cardCount:"0",});
-renderTemplate('./html/column_template.html', 'column-template', 'column-area', {id:2, title:"완료한 일", cardCount:"0",});
+renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:0, title:"해야할 일", cardCount:"0",});
+renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:1, title:"하고 있는 일", cardCount:"0",});
+renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:2, title:"완료한 일", cardCount:"0",});
