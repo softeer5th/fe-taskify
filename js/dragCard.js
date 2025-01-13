@@ -96,8 +96,7 @@ const dropCardHandler = (e) => {
 const cards = document.querySelectorAll(".card");
 cards.forEach((eachCard) => {
   eachCard.addEventListener("dragstart", dragStartHandler);
-  eachCard.addEventListener("dragend", dragEndHandler);
+  eachCard.addEventListener("dragend", dragEndHandler); // 드래그를 중간에 취소했다면
   eachCard.addEventListener("dragover", dragOverHandler);
   eachCard.addEventListener("drop", dropCardHandler);
-  //   eachCard.addEventListener("dragend", dragEndHandler);
 });
