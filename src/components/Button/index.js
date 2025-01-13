@@ -15,6 +15,7 @@ import styles from "./button.module.js";
  * @param {Function} [props.onClick] - 클릭 이벤트 시 호출할 함수
  * @param {boolean} [props.isFull] - 버튼의 너비를 꽉 채울지 여부
  * @param props.state
+ * @param props.disabled
  * @returns {VDOM} - 생성된 버튼 가상돔
  */
 export const Button = ({
@@ -23,6 +24,7 @@ export const Button = ({
   type = "contained",
   variant = "primary",
   isFull = false,
+  disabled = false,
   onClick,
 }) => {
   /**
@@ -35,7 +37,7 @@ export const Button = ({
   };
 
   return parser`
-  <button onClick=${onClick} class="${findClasses()}">
+  <button onClick=${onClick} class="${findClasses()}" ${disabled && "disabled"}>
       ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })}
       ${label && Text({ text: label, typo: typos.selected.bold[14] })}
   </button>`;
