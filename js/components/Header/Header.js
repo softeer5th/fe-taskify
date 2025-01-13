@@ -19,6 +19,7 @@ export default function Header() {
     children: createImg({
       src: "/assets/icons/clock.svg",
       alt: "history icon",
+      classList: "header__historyIcon",
     }),
   });
 
