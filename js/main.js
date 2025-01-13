@@ -51,7 +51,7 @@ async function loadTemplate(templateFile, templateId, props) {
     return null;
 }
 
-
+// 템플릿에 이벤트 리스너 적용
 function adaptEventListener(targetId, props) {
     const regEx = /^card-list/;
     if (targetId==="column-area") {

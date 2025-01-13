@@ -1,6 +1,7 @@
 import renderTemplate from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 
+// 입력창 확인 후 버튼 활성화 결정
 export function checkCardInput() {
     const titleInput = document.getElementById('title-input');
     const titleValue = titleInput.value.trim();
@@ -18,6 +19,7 @@ export function checkCardInput() {
     }
 }
 
+// 카드 추가 확정
 export function confirmAddCard(columnId){
     const titleInput = document.getElementById('title-input');
     const titleValue = titleInput.value.trim();
@@ -28,6 +30,7 @@ export function confirmAddCard(columnId){
 }
 
 
+// 카드 삭제 묻기
 export function delCard(columnId, cardId) {
     overlay.style.display = "block";
     createDeleteCardAlert(columnId, cardId);
@@ -48,6 +51,7 @@ export function delCard(columnId, cardId) {
 }
 
 
+// 카드 수정
 export function editCard(columnId, cardId) {
     let column = document.getElementById("card-list"+columnId);
     let card = column.querySelector("#card-id"+cardId);
@@ -77,23 +81,10 @@ export function editCard(columnId, cardId) {
     `;
 
     newActionDiv.querySelector('.confirm-button').addEventListener('click', (event)=> {
-        const titleInput = document.getElementById('title-input');
-        const titleValue = titleInput.value.trim();
-        const contentInput = document.getElementById('content-input');
-        const contentValue = contentInput.value.trim();
-        renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:cardId, title:titleValue, content:contentValue,});
-        let card = column.querySelector("#card-id"+cardId);
-        card.parentNode.removeChild(card);
+        applyChanges(card, columnId, cardId)
     });
     newActionDiv.querySelector('.cancel-button').addEventListener('click', (event)=> {
-        let card = column.querySelector("#card-id"+cardId);
-        card.style.display = "flex";
-        [...card.children].forEach(element => {
-            card.removeChild(element);
-        });
-        [...tempMemory].forEach(element => {
-            card.appendChild(element);
-        });
+        undoChanges(card,tempMemory);
     });
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
@@ -108,4 +99,25 @@ export function editCard(columnId, cardId) {
 
     card.appendChild(newInfoDiv);
     card.appendChild(newActionDiv);
+}
+
+// 수정사항 반영
+function applyChanges(card, columnId, cardId){
+    const titleInput = card.querySelector('#title-input');
+    const titleValue = titleInput.value.trim();
+    const contentInput = card.querySelector('#content-input');
+    const contentValue = contentInput.value.trim();
+    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:cardId, title:titleValue, content:contentValue,});
+    card.parentNode.removeChild(card);
+}
+
+// 수정사항 취소
+function undoChanges(card, tempMemory){
+    card.style.display = "flex";
+    [...card.children].forEach(element => {
+        card.removeChild(element);
+    });
+    [...tempMemory].forEach(element => {
+        card.appendChild(element);
+    });
 }

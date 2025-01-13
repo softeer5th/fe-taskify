@@ -1,6 +1,8 @@
 export let overlay = document.getElementById('overlay');
 const alertArea = document.getElementById('alert-area');
 
+
+// 특정 카드 삭제
 export function createDeleteCardAlert(columnId, cardId) {
     const delCardAlertDiv = document.createElement('div');
     delCardAlertDiv.className = 'modal';
@@ -13,6 +15,8 @@ export function createDeleteCardAlert(columnId, cardId) {
     alertArea.appendChild(delCardAlertDiv);
 }
 
+
+// 칼럼 내 카드 전부 삭제
 export function createDeleteAllCardAlert(columnId) {
     const delAllCardAlertDiv = document.createElement('div');
     delAllCardAlertDiv.className = 'modal';
@@ -25,6 +29,8 @@ export function createDeleteAllCardAlert(columnId) {
     alertArea.appendChild(delAllCardAlertDiv);
 }
 
+
+// 알러트창 없애기
 export function hideAlert() {
     overlay.style.display = "none";
     alertArea.innerHTML = ``;

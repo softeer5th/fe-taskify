@@ -64,6 +64,7 @@ button{
     flex: 1;
     border-radius: 5px;
     padding: 7px 0;
+    transition: opacity 0.2s ease;
 }
 
 .cancel-button {
@@ -82,6 +83,12 @@ button{
     background-color: #007AFF;
     color: #FEFEFE;
     opacity: 0.3;
+}
+
+.confirm-button:hover {
+    background-color: #007AFF;
+    color: #FEFEFE;
+    opacity: 0.8;
 }
 
 .card-actions button{
