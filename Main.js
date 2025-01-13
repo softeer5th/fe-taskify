@@ -4,10 +4,9 @@ import { createElement } from "./dom.js";
 const Main = (todoList) => {
   const $main = createElement("main", { className: "column__section" });
 
-  todoList &&
-    todoList.forEach((todo) => {
-      $main.appendChild(ColumnSection(todo));
-    });
+  todoList?.forEach((todo) => {
+    $main.appendChild(ColumnSection(todo));
+  });
 
   return $main;
 };
