@@ -121,3 +121,30 @@ function undoChanges(card, tempMemory){
         card.appendChild(element);
     });
 }
+
+let isDragging = false;
+
+export function startDragCard(event, clone) {
+    isDragging = true;
+
+    document.body.appendChild(clone);
+
+    clone.style.left = `${event.clientX}px`;
+    clone.style.top = `${event.clientY}px`;
+}
+
+export function moveCard(event, clone) {
+    if (!isDragging || !clone) return;
+
+    clone.style.left = `${event.clientX}px`;
+    clone.style.top = `${event.clientY}px`;
+    console.log(clone.style.left);
+}
+
+export function finishDragCard(clone) {
+    if (isDragging && clone) {
+        isDragging = false;
+
+        clone.remove();
+    }
+}
