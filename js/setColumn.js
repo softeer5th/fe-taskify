@@ -14,7 +14,6 @@ export const getColumn = () => {
 }
 export const setDefaultColumn = () => {
   const columns = getColumn();
-  console.log(columns);
   if (!columns.length) { //innerhtml 로 각각의 기본 column 추가
     addColumn('해야할 일');
     addColumn('진행중인 일');

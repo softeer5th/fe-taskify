@@ -1,8 +1,14 @@
 import { closeCardModal, makeCard, popupCardModal } from './addCard.js';
-import { getColumnTasks, removeTask, editTask } from '../utils/storage/taskManager.js';
+import {
+  getColumnTasks,
+  removeTask,
+  editTask,
+  getTaskByTimestamp
+} from '../utils/storage/taskManager.js';
 import { getColumn, setDefaultColumn } from './setColumn.js';
 import { sortCard } from './sortCard.js';
 import { editCard, closeEditModal } from './editCard.js';
+import { deleteCard, closeDeleteModal } from './deleteCard.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   setDefaultColumn();
@@ -34,14 +40,18 @@ document.addEventListener('click', ({ target }) => { // 이벤트 위임 & 이�
     console.log(target.closest('.sort-btn').getAttribute('card-sort'));
     sortCard(target.closest('.sort-btn').getAttribute('card-sort'));
   } else if (target.closest('.card-close-btn')) {
-    removeTask(parentColumn.getAttribute('data-column-key'), task.getAttribute('data-timestamp'));
-    task.remove();
+    deleteCard(task);
+  } else if (target.closest('.task-delete-cancel-btn')) {
+    closeDeleteModal(false, task);
+  } else if (target.closest('.task-delete-confirm-btn')) {
+    closeDeleteModal(true, task);
   } else if (target.closest('.card-edit-btn')) {
     editCard(task);
   } else if (target.closest('.task-edit-add-btn')) {
-    closeEditModal(true);
+    closeEditModal(true, task);
   } else if (target.closest('.task-edit-can-btn')) {
-    closeEditModal(false);
+    closeEditModal(false, task);
+    console.log(task);
   }
 });
 

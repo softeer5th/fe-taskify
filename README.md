@@ -40,7 +40,7 @@
 1. Storage setting (add , delete, edit, redo ..,,etc ) ✅
 2. Card adding ✅
 3. Card Sorting ✅
-4. Card editing ( + delete)
+4. Card editing ( + delete) ✅
 5. Card moving
 6. History manager
 7. Column manager
@@ -89,10 +89,10 @@
         - [x] 생성 순
         - [x] 최신 순
         - [x] animation
-    - [ ] Card
-        - [ ] delete
+    - [x] Card
+        - [x] delete
             - [ ] warning modal
-        - [ ] edit
+        - [x] edit
             - [ ] edit modal
     - [ ] CardList (Column)
         - [x] Count of Cards

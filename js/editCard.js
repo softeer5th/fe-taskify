@@ -1,11 +1,7 @@
 import { editTask } from '../utils/storage/taskManager.js';
-
-let globalTaskCopy = null;
-let globalTask = null;
+import { getTaskByTimestamp } from '../utils/storage/taskManager.js';
 
 export const editCard = (task) => {
-  globalTask = task;
-  globalTaskCopy = task.cloneNode(true);
   popupEditModal(task);
 };
 
@@ -24,25 +20,24 @@ const popupEditModal = (task) => {
   `;
 }
 
-export const closeEditModal = (isEdited) => {
+export const closeEditModal = (isEdited, task) => {
+  const beforeTask = getTaskByTimestamp(task.closest('.column').getAttribute('data-column-key'),
+    parseInt(task.getAttribute('data-timestamp')));
   if (isEdited) {
-    // store 에 저장 후, 화면에 렌더링
-    const title = globalTask.querySelector('.task-title').value;
-    const body = globalTask.querySelector('input:last-child').value;
-    const task = {
-      title: title,
-      body: body,
-      author: 'me',
-      timestamp: globalTask.getAttribute('data-timestamp')
-    };
-    console.log(globalTask);
-    editTask(globalTask.closest('.column').getAttribute('data-column-key'), task.timestamp, task);
-    globalTask.innerHTML = `
+    const title = task.querySelector('.task-title').value;
+    const body = task.querySelector('input:last-child').value;
+    const timestamp = parseInt(task.getAttribute('data-timestamp'));
+    const newTask = { title: title, body: body, author: 'me', timestamp: timestamp };
+
+    editTask(task.closest('.column').getAttribute('data-column-key'),
+      task.getAttribute('data-timestamp'), newTask);
+
+    task.innerHTML = `
       <div class="title-cont-au">
         <div class = "content-author-divider">
           <div class="task-title
-          ">${task.title}</div>
-          <div class="task-body">${task.body}</div>
+          ">${title}</div>
+          <div class="task-body">${body}</div>
         </div>
         <div class="task-author">author by me</div>
       </div>
@@ -55,8 +50,28 @@ export const closeEditModal = (isEdited) => {
         </button>
       </div>
     `;
+
   } else {
-    globalTask.innerHTML = globalTaskCopy.innerHTML;
+
+    task.innerHTML = `
+      <div class="title-cont-au">
+        <div class = "content-author-divider">
+          <div class="task-title
+          ">${beforeTask.title}</div>
+          <div class="task-body">${beforeTask.body}</div>
+        </div>
+        <div class="task-author">author by me</div>
+      </div>
+      <div class="card-delete-edit">
+        <button class = "card-close-btn"> 
+          <img src="../assets/icon/closed.svg" alt="close">
+        </button>
+        <button class = "card-edit-btn"> 
+          <img src="../assets/icon/edit.svg" alt="edit" >
+        </button>
+      </div>
+    `;
+
   }
 }
 
