@@ -36,13 +36,14 @@
 
 .user-history {
   position: absolute;
-  right: 0;
+  right: -50rem;
   top: 6.4rem;
   width: 36rem;
 
   background-color: var(--color-surface-default);
   padding: 0.8rem;
   border-radius: 1.6rem;
+  transition: transform 0.5s, opacity 0.5s;
 }
 
 .history__main {
@@ -121,4 +122,9 @@
 
 .bold {
   color: var(--color-text-bold);
+}
+
+.fade-in {
+  transform: translateX(-500px);
+  opacity: 1;
 }
