@@ -1,4 +1,5 @@
 import { createElement, createImg } from "../../../dom.js";
+import { formatHistoryDate } from "../../../utils/date.js";
 import createHistoryContent from "./createHistoryContent.js";
 
 const HistoryItem = ({ history }) => {
@@ -26,7 +27,7 @@ const HistoryItem = ({ history }) => {
 
   const $date = createElement("span", {
     className: "history__date display-medium12",
-    text: "3분 전",
+    text: formatHistoryDate(history.date),
   });
 
   $contentContainer.append($user, $content, $date);
