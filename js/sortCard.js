@@ -24,7 +24,7 @@ export const sortCard = (sortFlag) => {
     tasks.forEach((task, index) => {
       const taskElement = col.querySelector(`.task[data-timestamp="${task.timestamp}"]`);
       if (taskElement) {
-        taskElement.style.order = index;
+        taskElement.style.order = index + 1;
       }
     });
 
@@ -41,7 +41,7 @@ export const sortCard = (sortFlag) => {
 
       const deltaY = -finalPosition.top + initialPosition.top;
       console.log(deltaY);
-      
+
       taskElement.style.transition = 'none';
       taskElement.style.transform = `translateY(${deltaY}px)`;
 
