@@ -101,3 +101,7 @@
     color: var(--color-text-danger);
   }
 }
+
+.bold {
+  color: var(--color-text-bold);
+}

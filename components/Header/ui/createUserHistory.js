@@ -1,6 +1,18 @@
 import { IMAGE } from "../../../assets/index.js";
 import { createElement, createButton, createImg } from "../../../dom.js";
 import createModal from "../../Modal/createModal.js";
+import createHistoryContent from "./createHistoryItem.js";
+
+const history = {
+  id: 1,
+  action: "move",
+  date: "2025-01-10T05:20:01.833Z",
+  profileImg: IMAGE.profile,
+  nickname: "@멋진삼",
+  title: "블로그에 포스팅할 것",
+  prevColumn: "하고있는 일",
+  nextColumn: "해야할 일",
+};
 
 const createUserHistory = () => {
   const $userHistory = createElement("div", {
@@ -55,10 +67,7 @@ const createUserHistory = () => {
     text: "@멋진삼",
   });
 
-  const $content = createElement("span", {
-    className: "history__content display-medium14",
-    text: "블로그에 포스팅할 것을(를) 하고있는 일에서 해야할 일로 이동하였습니다.",
-  });
+  const $content = createHistoryContent({ history });
 
   const $date = createElement("span", {
     className: "history__date display-medium12",
@@ -85,9 +94,7 @@ const createUserHistory = () => {
 
   $historyFooter.appendChild($deleteButton);
 
-  // Assemble all components
   $userHistory.append($historyHeader, $historyContainer, $historyFooter);
-
   return $userHistory;
 };
 
