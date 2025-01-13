@@ -61,10 +61,10 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
       name: 'cancel',
       handler: () => {
         if (cardData.title === null && cardData.body === null) {
+          cardElement.parentElement.querySelector('#add-card').disabled = false;
           cardElement.remove();
         } else {
           cardMode.setState(new CardMode('default', false));
-          // TODO: 바뀐 데이터를 상위 요소에게 알려줘야 함
         }
       },
     },
@@ -73,6 +73,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
       handler: () => {
         applyCardChanges(cardElement, cardState);
         addCard(cardState.getState());
+        cardElement.parentElement.querySelector('#add-card').disabled = false;
       },
       // TODO: 바뀐 데이터를 상위 요소에게 알려줘야 함
     },

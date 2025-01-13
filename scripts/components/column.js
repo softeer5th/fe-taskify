@@ -98,6 +98,8 @@ const Column = (columnData) => {
     } else {
       columnElement.appendChild(newCard);
     }
+
+    columnElement.querySelector('#add-card').disabled = true;
   });
 
   columnElement
