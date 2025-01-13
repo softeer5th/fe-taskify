@@ -31,9 +31,7 @@ const getSortedTodoList = ({ todoList, sortType }) => {
 // 정렬 애니메이션 적용
 const applySortAnimation = (sortedTodoList) => {
   sortedTodoList.forEach((section) => {
-    const $columnBody = document
-      .querySelector(`#${section.id}`)
-      .querySelector(".column__body");
+    const $columnBody = document.querySelector(`#${section.id} .column__body`);
 
     const $items = Array.from($columnBody.children);
     const orderedIdList = section.items.map((item) => item.id);
