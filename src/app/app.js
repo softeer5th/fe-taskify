@@ -1,3 +1,4 @@
+import { ActionHistoryItem } from "../components/ActionHistoryItem/index.js";
 import { Alert } from "../components/Alert/index.js";
 import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
@@ -83,6 +84,14 @@ const App = () => {
             ${dragCard}
             ${placeCard}
             ${ColumnTitle({ title: "Title", count: 10 })}
+            ${ActionHistoryItem({
+      username: "username",
+      title: "title",
+      columnBefore: "before",
+      columnAfter: "after",
+      action: "action",
+      timestamp: "timestamp",
+    })}
         </div>`
   );
 };
