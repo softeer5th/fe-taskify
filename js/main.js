@@ -64,8 +64,33 @@ document.addEventListener("click", ({ target }) => {
   }
 });
 
+//드래그 구현, 차후 refactor
 document.addEventListener("dragstart", ({ target }) => {
   target.classList.add("dragging");
 });
 
-document.addEventListener("dragend", ({ target }) => {});
+document.addEventListener("dragend", ({ target }) => {
+  target.classList.remove("dragging");
+});
+
+document.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  const draggingCard = document.querySelector(".dragging");
+  const columns = document.querySelectorAll(".column");
+
+  columns.forEach((column) => {
+    if (e.target.closest(".column") === column) {
+      const cards = [...column.querySelectorAll(".task:not(.dragging)")];
+      const afterCard = cards.find((card) => {
+        const rect = card.getBoundingClientRect();
+        return e.clientY <= rect.top + rect.height / 2;
+      });
+
+      if (afterCard) {
+        column.insertBefore(draggingCard, afterCard);
+      } else {
+        column.appendChild(draggingCard);
+      }
+    }
+  });
+});
