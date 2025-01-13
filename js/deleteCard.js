@@ -1,6 +1,7 @@
 import { modal } from "../components/modal.js";
 import { deleteCardFormStorage } from "../store/workList.js";
 import { updateCardCount } from "./cardNavbar.js";
+import { getSectionType } from "../utils/getSectionType.js";
 const cardContainer = document.querySelectorAll(".card-container");
 
 let [cardIdToDelete, sectionToDelete] = ["", ""];
@@ -17,7 +18,9 @@ const showDeleteModal = () => {
 
 const deleteCardHandler = (e) => {
   const card = e.target.closest(".card"); // 버튼을 누른 카드 찾기.
-  const sectionType = card.closest("section").className.split("-")[0]; // 어떤 칼럼 영역인지.
+  if (!card) return;
+
+  const sectionType = getSectionType(card);
   cardIdToDelete = card.id;
   sectionToDelete = sectionType;
 

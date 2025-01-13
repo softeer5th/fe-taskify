@@ -65,4 +65,4 @@ const loadPreviousCard = () => {
   });
 };
 
-initRender();
+await initRender();

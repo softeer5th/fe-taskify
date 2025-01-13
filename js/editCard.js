@@ -1,5 +1,5 @@
 import { editStorage } from "../store/workList.js";
-
+import { getSectionType } from "../utils/getSectionType.js";
 const cardContainer = document.querySelectorAll(".card-container");
 
 let [previousTitle, previousContent] = ["", ""];
@@ -32,7 +32,9 @@ const backToCard = (targetCard) => {
 
 const editBtnHandler = (e) => {
   const card = e.target.closest(".card"); // 버튼을 누른 카드 찾기.
-  const sectionType = card.closest("section").className.split("-")[0]; // 어떤 칼럼 영역인지.
+  if (!card) return;
+
+  const sectionType = getSectionType(card);
 
   const cardTitle = card.querySelector(".title");
   const cardContent = card.querySelector(".content");

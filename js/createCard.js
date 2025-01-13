@@ -1,6 +1,7 @@
 import { card } from "../components/card.js";
 import { addStorage } from "../store/workList.js";
 import { updateCardCount } from "./cardNavbar.js";
+import "./dragCard.js";
 
 const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 const columnArea = document.querySelector(".column-area");
@@ -30,7 +31,6 @@ const addCard = (formCard, sectionType) => {
   addStorage(sectionType, titleText, contentText, CARD_ID);
   todoFormInit(formCard); // 입력했던 값을 다시 빈 문자열로 초기화.
 
-  console.log(currentCardList.length, "이잉");
   updateCardCount(
     sectionType,
     currentCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION

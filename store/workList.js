@@ -22,7 +22,6 @@ const loadData = () => {
 };
 
 const deleteCardFormStorage = (cardId, sectionType) => {
-  console.log(cardId, sectionType);
   const updatedWorkList = {
     ...workList,
     [sectionType]: workList[sectionType].filter(
@@ -59,6 +58,33 @@ const addStorage = (sectionType, title, content, CARD_ID) => {
   savedData(workList);
 };
 
+const updateLocalStorageAfterDrop = (prevSection, nowSection, targetCard) => {
+  const targetCardData = workList[prevSection].find(
+    (item) => item.id === Number(targetCard.id)
+  );
+
+  const workListAfterDeletePrev = {
+    ...workList,
+    [prevSection]: workList[prevSection].filter(
+      (item) => item.id !== Number(targetCard.id)
+    ),
+  };
+
+  const updatedWorkList = {
+    ...workListAfterDeletePrev,
+    [nowSection]: [targetCardData, ...workListAfterDeletePrev[nowSection]],
+  };
+
+  savedData(updatedWorkList);
+};
+
 workList = loadData();
 
-export { deleteCardFormStorage, savedData, loadData, addStorage, editStorage };
+export {
+  deleteCardFormStorage,
+  savedData,
+  loadData,
+  addStorage,
+  editStorage,
+  updateLocalStorageAfterDrop,
+};

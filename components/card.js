@@ -1,7 +1,7 @@
 import { parseToDoc } from "../utils/parseToDoc.js";
 export const card = (id, title = "", content = "") => {
   const cardHTML = /*html*/ `
-      <li class="card" id="${id}">
+      <div class="card" id="${id}" draggable="true">
           <div class="card-contents-icons-box">
           <div class="card-texts">
               <input class="title text-strong" value="${title}" aria-placeholder="제목" />
@@ -37,7 +37,7 @@ export const card = (id, title = "", content = "") => {
               저장
           </button>
       </div>
-      </li>
+      </div>
       `;
   return parseToDoc(cardHTML);
 };
