@@ -2,6 +2,7 @@ import { TodoItem } from '../domain/todoItem.js'
 import { classNames, templateNames } from '../strings.js'
 import {
     createDomElementAsChild,
+    createDomElementAsSibling,
     findDomElement,
     removeDomElement,
     replaceDomElement,
@@ -13,6 +14,7 @@ import { Category } from '../domain/category.js'
 // const TODO_LIST_STORAGE_KEY = 'todoList'
 const TODO_CATEGORY_KEY = 'todoCategory'
 // const TODO_FORM_DOM_ID_KEY = 'isCreatingTodo'
+const DRAG_ELEMENT_KEY = 'dragElement'
 
 export const initTodo = () => {
     let categoryList = loadData(TODO_CATEGORY_KEY)
@@ -68,17 +70,19 @@ export const initTodo = () => {
                             category.identifier
                         )
                         if (!parentElement.contains(e.target)) continue
-                        if (currentCategory !== category.identifier) {
+                        if (
+                            currentCategory?.identifier !== category.identifier
+                        ) {
                             // 카테고리가 바뀌면 skeleton update
                             console.log(
                                 'category change',
-                                currentCategory,
+                                currentCategory?.identifier,
                                 'to',
                                 category.identifier
                             )
                             skeletonUpdateFlag = true
                         }
-                        currentCategory = category.identifier
+                        currentCategory = category
                         // todoList의 몇 번째 index인지 식별
                         // currentIndex = null
                         for (let [
@@ -109,8 +113,49 @@ export const initTodo = () => {
                         if (currentIndex === null) {
                             return
                         }
-                        // console.log('dragenter', currentCategory, currentIndex))
                         console.log('flag', skeletonUpdateFlag)
+                        // console.log(
+                        //     'dragenter',
+                        //     currentCategory.identifier,
+                        //     currentIndex
+                        // )
+                        if (!skeletonUpdateFlag) return
+                        findDomElement(skeletonElementId)?.remove()
+                        if (currentIndex < category.values.todoList.length) {
+                            skeletonElementId = createDomElementAsSibling(
+                                templateNames.todoItemSkeleton,
+                                findDomElement(
+                                    currentCategory.values.todoList[
+                                        currentIndex
+                                    ].identifier
+                                ),
+                                (identifier, component) => {
+                                    skeletonElementId = identifier
+                                    console.log(
+                                        getState(DRAG_ELEMENT_KEY).offsetHeight
+                                    )
+                                    component.firstElementChild.style.height = `${
+                                        getState(DRAG_ELEMENT_KEY).offsetHeight
+                                    }px`
+                                }
+                            )
+                        } else {
+                            skeletonElementId = createDomElementAsChild(
+                                templateNames.todoItemSkeleton,
+                                parentElement.querySelector(
+                                    `.${classNames.todoBody}`
+                                ),
+                                (identifier, component) => {
+                                    skeletonElementId = identifier
+                                    console.log(
+                                        getState(DRAG_ELEMENT_KEY).offsetHeight
+                                    )
+                                    component.firstElementChild.style.height = `${
+                                        getState(DRAG_ELEMENT_KEY).offsetHeight
+                                    }px`
+                                }
+                            )
+                        }
                     }
                 })
                 component.addEventListener('dragleave', (e) => {
@@ -233,6 +278,7 @@ const manageDrag = (element) => {
     element.addEventListener('dragstart', (e) => {
         // console.log(e.target)
         // console.log(element.offsetHeight)
+        setState(DRAG_ELEMENT_KEY, e.target)
     })
     element.addEventListener('drag', (e) => {
         // console.log('drag', e.target)
