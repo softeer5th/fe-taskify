@@ -49,6 +49,7 @@
 .history__header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1.45rem 1.6rem;
 }
 
