@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "css": "node src/lib/generate-css-module/index.cjs & npx eslint --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

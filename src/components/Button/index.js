@@ -3,6 +3,8 @@ import { colors, typos } from "../../constants/tokens/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { Text } from "../Text/index.js";
 
+import styles from "./button.module.js";
+
 /**
  *
  * @param {object} props - 컴포넌트의 props
@@ -27,14 +29,14 @@ export const Button = ({
    * @returns {string} - 버튼의 클래스명
    */
   const findClasses = () => {
-    const buttonClass = `button-${type} button-${variant}`;
-    if (isFull) return `${buttonClass} button-full`;
+    const buttonClass = `${styles[type]} ${styles[variant]}`;
+    if (isFull) return `${buttonClass} ${styles.full}`;
     return buttonClass;
   };
 
   return parser`
-<button onClick=${onClick} class="${findClasses()}">
-    ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })}
-    ${label && Text({ text: label, typo: typos.selected.bold[14] })}
-</button>`;
+  <button onClick=${onClick} class="${findClasses()}">
+      ${showIcon && Icon({ name: "plus", size: "md", fillColor: colors.text.white.default })}
+      ${label && Text({ text: label, typo: typos.selected.bold[14] })}
+  </button>`;
 };

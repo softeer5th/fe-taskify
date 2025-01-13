@@ -4,6 +4,8 @@ import { useState } from "../../lib/hooks/useState.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { Button } from "../Button/index.js";
 
+import styles from "./card.module.js";
+
 /**
  *
  * @param {Function} onClickLeft - 왼쪽 버튼 클릭 이벤트 시 호출할 함수.
@@ -11,7 +13,7 @@ import { Button } from "../Button/index.js";
  * @returns {VDOM} - 버튼 컴포넌트 가상돔
  */
 const Buttons = (onClickLeft, onClickRight) => parser`
-        <div class="card-buttons">
+        <div class="${styles.buttons}">
             ${Button({
     label: "취소", variant: "sub", isFull: true, onClick: onClickLeft,
   })}
@@ -26,7 +28,7 @@ const Buttons = (onClickLeft, onClickRight) => parser`
  * @returns {VDOM} - 아이콘 컴포넌트 가상돔
  */
 const Icons = (onClickTop, onClickBottom) => parser`
-        <div class="card-icon-container">
+        <div class="${styles["icon-container"]}">
             ${Icon({ name: "close", fillColor: colors.text.weak, onClick: onClickTop })}
             ${Icon({ name: "edit", strokeColor: colors.text.weak, onClick: onClickBottom })}
         </div>
@@ -55,11 +57,11 @@ export const Card = ({
   };
 
   return parser`
-    <div class="card-container ${type}">
-        <div class="card-text-container">
-            <div class="${typos.display.bold[14]} card-title">${title}</div>
-            <div class="${typos.display.medium[14]} card-body">${body}</div>
-            ${caption && parser`<div class="${typos.display.medium[12]} card-caption">${caption}</div>`}
+    <div class="${styles.container} ${styles[type]}">
+        <div class="${styles["text-container"]}">
+            <div class="${typos.display.bold[14]} ${styles.title}">${title}</div>
+            <div class="${typos.display.medium[14]} ${styles.body}">${body}</div>
+            ${caption && parser`<div class="${typos.display.medium[12]} ${styles.caption}">${caption}</div>`}
         </div>
         ${findContents(type)}
     </div>

@@ -3,6 +3,8 @@ import { colors, typos } from "../../constants/tokens/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { Text } from "../Text/index.js";
 
+import styles from "./chip.module.js";
+
 /**
  *
  * @param {object} props - 칩 컴포넌트의 props
@@ -10,8 +12,8 @@ import { Text } from "../Text/index.js";
  * @returns {VDOM}
  */
 export const Chip = ({ label }) => parser`
-    <span class="chip-container">
+    <span class="${styles.container}">
         ${Icon({ name: "arrowBoth", size: "md", strokeColor: colors.text.default })}
         ${Text({ text: label, typo: typos.display.medium[12] })}
     </span>
-    `;
+`;

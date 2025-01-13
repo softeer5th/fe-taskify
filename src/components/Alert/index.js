@@ -2,6 +2,8 @@ import { typos } from "../../constants/tokens/typos.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { Button } from "../Button/index.js";
 
+import styles from "./alert.module.js";
+
 /**
  *
  * @param {object} props - 알럿 컴포넌트의 속성.
@@ -11,10 +13,10 @@ import { Button } from "../Button/index.js";
  * @returns {VDOM} - 알럿 컴포넌트.
  */
 export const Alert = ({ text, leftOnClick, rightOnClick }) => parser`
-    <div class="alert-background">
-        <dialog open="true" class="alert-container">
+    <div class="${styles.background}">
+        <dialog open="true" class="${styles.container}">
             <div class="${typos.display.medium[16]} alert-text">${text}</div>
-            <div class="alert-buttons">
+            <div class="${styles.buttons}">
                 ${Button({
     label: "취소", onClick: leftOnClick, variant: "sub", isFull: true,
   })}
