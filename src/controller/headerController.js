@@ -1,10 +1,11 @@
-import { HeaderView } from "../view/headerView.js";
+import HeaderView from "../view/headerView.js";
 
-export function HeaderController(model, rootElement) {
+export default function HeaderController(model, rootElement) {
   const headerView = HeaderView({
     onSortButtonClick: handleSortButtonClick,
     onHistoryButtonClick: handleHistoryButtonClick,
   });
+
   model.addListener(onModelChanged);
   if (rootElement.children.length < 1) {
     rootElement.appendChild(headerView);

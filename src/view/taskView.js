@@ -1,7 +1,7 @@
 import { closed } from "../../public/closed.js";
 import { edit } from "../../public/edit.js";
 
-export function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
+export default function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task");
   taskElement.id = task.id;
