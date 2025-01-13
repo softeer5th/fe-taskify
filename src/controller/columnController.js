@@ -1,175 +1,103 @@
-import { ColumnView } from "../view/columnView.js";
-import { TaskView } from "../view/taskView.js";
+import Model from "../model.js";
 
-export function ColumnController(model, columnId, parent) {
-  const column = model.getCurrentDataState().data.column.find((column) => column.id === columnId);
-  let tasks = [];
+import ColumnListView from "../view/columnListView.js";
+import ColumnView from "../view/columnView.js";
 
-  let columnView = ColumnView({
-    column: column,
-    state: "default",
-    count: tasks.length,
-    onAddButtonClicked: handleTaskAddButtonClick,
-    onColumnTitleClicked: handleColumnTitleClick,
-    onColumnDeleteButtonClicked: handleColumnDeleteButtonClick,
-  });
-  columnView.addEventListener("mouseenter", handleColumnMouseEnter);
-  parent.appendChild(columnView);
+export default function ColumnController(model = new Model(), rootElement = document.getElementById("root")) {
+  // export default function ColumnController(model, rootElement) {
+  const columnListView = ColumnListView();
+  rootElement.appendChild(columnListView);
+
+  // let columnViews: HTMLElement[] = [];
+  let columnViews = [];
+
+  model.addListener(render());
 
   render();
 
-  function handleTaskAddButtonClick(event) {
+  function handleAddColumnButtonClick(event) {
     event.stopPropagation();
 
-    const state = model.getCurrentDataState().state;
-    if (state.editingTaskId !== -1) return;
-    const newTask = TaskView({
-      task: {
-        id: "",
-        name: "",
-        description: "",
-        createdAt: Date.now(),
-        device: "",
-        columnId: columnId,
-      },
-      state: "editing",
-      onFirstButtonClicked: handleTaskEditCancelButtonClick,
-      onSecondButtonClicked: handleTaskEditSaveButtonClick,
-    });
-
-    if (tasks.length === 0) {
-      columnView.appendChild(newTask);
-    } else {
-      columnView.insertBefore(newTask, columnView.children[1]);
-    }
-    console.log("Task Add Button Clicked");
+    console.log("Add Column Button Clicked");
   }
 
-  function handleColumnTitleClick(event) {
+  function handleColumnTitleClicked(event) {
     event.stopPropagation();
-    // model.setEditingColumnId(column.id);
-    console.log("Column Title Clicked");
+    const column = event.target.closest(".column");
+    const columnId = parseInt(column.id);
+
+    model.setEditingColumnId(columnId);
   }
 
-  function handleColumnDeleteButtonClick(event) {
+  function handleColumnTitleFocusOut(event) {
     event.stopPropagation();
-    // model.removeColumn(column.id);
-    // destroy();
-    console.log("Column Delete Button Clicked");
+    const column = event.target.closest(".column");
+    const columnId = parseInt(column.id);
+
+    console.log(event.target.value);
+    model.updateColumn(columnId, event.target.value);
   }
 
-  function handleColumnMouseEnter(event) {
+  function handleAddTaskButtonClick(event) {
     event.stopPropagation();
-    const currentMouseOverColumnId = model.getCurrentDataState().state.mouseOverColumnId;
-    if (currentMouseOverColumnId !== column.id) {
-      model.setMouseOverColumnId(column.id);
-    }
+    const columnId = parseInt(event.target.closest(".column").id);
+
+    model.setEditingTaskId(0);
+    console.log("Add Task Button Clicked:", columnId);
   }
 
-  function handleTaskDeleteButtonClick(event) {
+  function handleColumnDeleteButtonClicked(event) {
     event.stopPropagation();
-    const taskId = parseInt(event.currentTarget.parentElement.parentElement.id);
-    // model.removeTask(taskId);
-    console.log("Task Delete Button Clicked:", taskId);
-  }
-
-  function handleTaskEditButtonClick(event) {
-    event.stopPropagation();
-    const taskId = parseInt(event.currentTarget.parentElement.parentElement.id);
-    // model.setEditingTaskId(taskId);
-    console.log("Task Edit Button Clicked:", taskId);
-  }
-
-  function handleTaskEditCancelButtonClick(event) {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const editingTaskId = model.getCurrentDataState().state.editingTaskId;
-    if (editingTaskId === -1) {
-      columnView.removeChild(columnView.children[1]);
-    } else {
-      model.setEditingTaskId(-1);
-    }
-    console.log("Task Edit Cancel Button Clicked");
-  }
-
-  function handleTaskEditSaveButtonClick(event) {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const taskId = parseInt(event.currentTarget.parentElement.parentElement.id);
-    console.log("Task Edit Save Button Clicked");
-  }
-
-  function handleTaskClick(event) {
-    const taskId = parseInt(event.currentTarget.id);
-    // model.setMovingTaskId(taskId);
-    console.log("Task Clicked");
-  }
-
-  function render() {
-    const currentDataState = model.getCurrentDataState();
-    const state = currentDataState.state;
-    const columnOnModel = currentDataState.data.column.find((column) => column.id === columnId);
-    if (!columnOnModel) {
-      destroy();
-      return;
-    }
-
-    const originTaskNumber = tasks.length;
-    const columnTasks = currentDataState.data.task.filter((task) => task.columnId === columnId);
-    tasks = columnTasks.map((task) => {
-      const isEditing = state.editingTaskId === task.id;
-      const isMoving = state.movingTaskId === task.id;
-      const taskView = TaskView({
-        task: task,
-        state: isEditing ? "edit" : isMoving ? "moving" : "default",
-        onFirstButtonClicked: isEditing ? handleTaskEditCancelButtonClick : handleTaskDeleteButtonClick,
-        onSecondButtonClicked: isEditing ? handleTaskEditSaveButtonClick : handleTaskEditButtonClick,
-      });
-      taskView.addEventListener("mousedown", handleTaskClick);
-      return taskView;
-    });
-
-    if (originTaskNumber !== tasks.length || JSON.stringify(columnOnModel) !== JSON.stringify(column) || state.editingColumnId === columnId) {
-      if (columnView.parentElement) {
-        columnView.parentElement.removeChild(columnView);
-      }
-      columnView = ColumnView({
-        column: columnOnModel,
-        state: state.editingColumnId === columnId ? "edit" : "default",
-        count: tasks.length,
-        onAddButtonClicked: handleTaskAddButtonClick,
-        onColumnTitleClicked: handleColumnTitleClick,
-        onColumnDeleteButtonClicked: handleColumnDeleteButtonClick,
-      });
-      columnView.addEventListener("mouseenter", handleColumnMouseEnter);
-
-      parent.appendChild(columnView);
-    }
-
-    tasks.forEach((task) => {
-      columnView.appendChild(task);
-    });
-  }
-
-  function onModelChanged() {
-    render();
+    const columnId = parseInt(event.target.closest(".column").id);
+    model.removeColumn(columnId);
   }
 
   function destroy() {
     model.removeListener(onModelChanged);
-    if (columnView.parentElement) {
-      columnView.parentElement.removeChild(columnView);
-    }
   }
 
-  function getColumnControllerId() {
-    return columnId;
+  function render() {
+    const columnOnModel = model.getCurrentColumnData();
+    const tasksOnModel = model.getCurrentTaskData();
+    const state = model.getCurrentState();
+
+    const removedColumn = columnViews.filter((columnView) => !columnOnModel.some((column) => column.id === parseInt(columnView.id)));
+    removedColumn.forEach((columnView) => {
+      columnView.remove();
+    });
+    columnViews = columnViews.filter((columnView) => columnOnModel.some((column) => column.id === parseInt(columnView.id)));
+
+    columnOnModel.forEach((column) => {
+      const columnView = columnViews.find((columnView) => parseInt(columnView.id) === column.id);
+      const columnState = state.editingColumnId === column.id ? "editing" : "default";
+
+      if (columnView) {
+        const newColumnHeader = ColumnView({
+          column: column,
+          count: tasksOnModel.filter((task) => task.columnId === column.id).length,
+          state: columnState,
+          onColumnTitleEvent: columnState === "editing" ? handleColumnTitleFocusOut : handleColumnTitleClicked,
+          onAddButtonClicked: handleAddTaskButtonClick,
+          onColumnDeleteButtonClicked: handleColumnDeleteButtonClicked,
+        }).querySelector(`${columnState === "editing" ? ".column__title-edit" : ".column__title"}`);
+
+        columnView.children[0].replaceWith(newColumnHeader);
+      } else {
+        const newColumnView = ColumnView({
+          column: column,
+          count: tasksOnModel.filter((task) => task.columnId === column.id).length,
+          state: state,
+          onColumnTitleEvent: columnState === "editing" ? handleColumnTitleFocusOut : handleColumnTitleClicked,
+          onAddButtonClicked: handleAddTaskButtonClick,
+          onColumnDeleteButtonClicked: handleColumnDeleteButtonClicked,
+        });
+        columnListView.appendChild(newColumnView);
+        columnViews.push(newColumnView);
+      }
+    });
   }
 
   return {
     destroy,
-    getColumnControllerId,
   };
 }
