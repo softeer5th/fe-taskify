@@ -14,7 +14,7 @@
 .columnHeader {
     display: flex;
     padding: 0 16px;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 10px;
 }
@@ -22,14 +22,28 @@
 .columnHeader_textArea {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-end;
     gap: 8px;
 }
 
 .columnHeader_textArea > h2 {
     font-size: 16px;
-    color: rgba(78, 75, 102, 1)
+    color: rgba(78, 75, 102, 1);
+    max-width: 180px;
+    margin: auto 0;
+    word-break: break-all;
 }
+
+.columnHeader_textArea > h2[contenteditable="true"] {
+    outline: none;
+    width: 180px;
+    border: 1px solid rgba(239, 240, 246, 1);
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    padding: 3px 7px;
+}
+
 
 .columnHeader_textArea > div {
     display: flex;
@@ -50,6 +64,14 @@
 }
 
 .columnHeader_iconButtons > button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconButton {
     width: 24px;
     height: 24px;
     display: flex;
