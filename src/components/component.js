@@ -3,8 +3,13 @@ export default class Component {
     children = {};
     events = [];
 
+    rootId;
+    rootClass = [];
+    rootSelectorClassName = "";
+
     constructor() {
-        this.rootId = this.generateRandomString(16);
+        this.rootSelectorClassName = this.generateRandomString(16);
+        this.rootClass.push(this.rootSelectorClassName);
         this.children = {};
         this.events = [];
     }
@@ -21,31 +26,54 @@ export default class Component {
         return result;
     }
 
+    addRootclass(className){
+        this.rootClass.push(className);
+    }
+
     template() {
         return '';
     }
 
     renderTree(parent) {
-        const wrapper = document.createElement("div"); 
-        wrapper.id = this.rootId; 
-        wrapper.innerHTML = this.template(); 
-        parent.appendChild(wrapper); 
+        const wrapper = document.createElement("div");
 
-        console.log(parent, this.rootId);
+        if(this.rootId){
+            wrapper.id = this.rootId;
+        }
+
+        this.rootClass.forEach( (className) => {
+            wrapper.classList.add(className);
+        });
+
+        wrapper.innerHTML = this.template();
+
+        // console.log("parent",parent);
+        // console.log("rootid",this.rootId);
+        // console.log("rooclass",this.rootClass);
+        // console.log("wrapper",wrapper);
+
+        parent.appendChild(wrapper);
+
+
         for (const key in this.children) {
             const childParent = wrapper.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
+            if(childParent){
+                this.children[key].object.render(childParent);
+            }
+            else{
+                this.children[key].object.render(wrapper);
+            }
         }
     }
 
     setEvents(parent) {
         if (this.rootId) {
-            const root = parent.querySelector(`#${this.rootId}`);
+            const root = parent.querySelector(`.${this.rootSelectorClassName}`);
 
             if (root) {
                 this.events.forEach(({ listenerName, callback }) => {
                     root.addEventListener(listenerName, (event) => {
-                            callback();
+                        callback();
                     }, false);
                 });
             }

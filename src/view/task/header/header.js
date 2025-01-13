@@ -12,6 +12,8 @@ export class Header extends Component {
 
     events = [];
 
+    rootId = "headerContent";
+
     constructor(onHistoryClick = () => {}) {
         super();
         this.onHistoryClick = onHistoryClick;
@@ -21,12 +23,10 @@ export class Header extends Component {
 
     template() {
         return `
-            <div id = "headerContent">
-                <div id = "header-logo">
-                    TASKIFY
-                </div>
-                <img src = "${this.historyIconRef}" alt = "history-icon" id = "history-icon"/>
+             <div id = "header-logo">
+                TASKIFY
             </div>
+            <img src = "${this.historyIconRef}" alt = "history-icon" id = "history-icon"/>
         `;
     }
 

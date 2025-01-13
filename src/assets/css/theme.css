@@ -47,7 +47,7 @@ body{
     background-color: var(--color_surface_alt);
 }
 
-div{
+.wrapper{
     width: 100%;
     box-sizing: border-box;
 }

@@ -7,23 +7,21 @@ export class ColumnList extends Component {
     children = {};
     events = [];
 
+    rootId = "columnList";
+
     constructor(columnList) {
         super();
 
         columnList.forEach((columnData, index) => {
             this.children[`column${index}`] = {
                 object: new Column(columnData),
-                parentSelector: "#column-list"
+                parentSelector: "#columnList"
             };
         });
     }
 
     template() {
-        return `
-            <div id = "column-list">
-
-            </div>
-        `;
+        return '';
     }
 
     render(parent) {

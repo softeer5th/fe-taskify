@@ -2,16 +2,41 @@ import Component from "../components/component.js";
 import { Header } from "./task/header/header.js";
 import {  ColumnList } from "./task/column/columnList.js";
 import {  ColumnData } from "../route/data/columnData.js";
+import {  CardData } from "../route/data/cardData.js";
 
 export class App extends Component {
 
     columnData = [
         new ColumnData(
-            "해야할 일"
-            
+            "해야할 일",
+            [
+                new CardData(
+                    "제목1",
+                    "내용1",
+                    "web"
+                )
+            ]
+
         ),
         new ColumnData(
-            "하고 있는 일"
+            "하고 있는 일",
+            [
+                new CardData(
+                    "제목1",
+                    "내용1",
+                    "web"
+                ),
+               new  CardData(
+                    "제목2",
+                    "내용2",
+                    "web"
+                ),
+                new CardData(
+                    "제목3",
+                    "내용3",
+                    "web"
+                )
+            ]
 
         ),
         new ColumnData(

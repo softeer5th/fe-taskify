@@ -1,4 +1,5 @@
-#column-list{
+#columnList{
+    flex:1;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -8,9 +9,11 @@
 
 .column{
     width: 320px;
+    padding: 0px var(--number_200) 0px var(--number_200);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    box-sizing: border-box;
 }

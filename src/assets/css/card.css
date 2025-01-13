@@ -1,8 +1,10 @@
 .card {
+    width: 100%;
     border-radius: var(--number_100);
     background-color: var(--color_surface_default);
     padding: var(--number_200);
     box-shadow: var(--shadow_normal);
+    box-sizing: border-box;
 }
 
 .card-default{

@@ -10,6 +10,8 @@ export class Button extends Component {
 
     constructor(text = '', iconRef, buttonType = "confirm-button") {
         super();
+        super.addRootclass(buttonType);
+        super.addRootclass("button-background");
         this.iconRef = iconRef;
         this.text = text;
         this.buttonType = buttonType;
@@ -17,21 +19,16 @@ export class Button extends Component {
 
     template() {
 
-        let buttonStyle = this.buttonType;
-
         let iconTemplate = '';
         if (this.iconRef) {
             iconTemplate = `<img src=${this.iconRef} alt="icon" class="button-icon" />`;
         }
 
-        buttonStyle += ' button-background';
         return `
-            <div id = "${this.rootId}" class="${buttonStyle}"> 
                 ${iconTemplate}
                 <div class = "button-text">
                     ${this.text}
                 </div>
-            </div>
         `;
     }
 
@@ -40,7 +37,7 @@ export class Button extends Component {
     }
 
     addEvent(listenerName, callback) {
-        super.addEvent( listenerName, callback );
+        super.addEvent(listenerName, callback);
     }
 
 }

@@ -8,6 +8,7 @@ export class ColumnHeader extends Component {
 
     constructor(name = '',numOfColumns = 0, onAddClick = () => { }, onDeleteClick = () => { }) {
         super();
+        super.addRootclass("columnHeader");
         this.name = name;
         this.children = {
             badge: {
@@ -24,16 +25,14 @@ export class ColumnHeader extends Component {
 
     template() {
         return `
-            <div class = "columnHeader">
-                <div class = "columnHeader-textArea">
-                    <div class = "display-bold16">
-                        ${this.name}
-                    </div>
+            <div class = "columnHeader-textArea">
+                <div class = "display-bold16">
+                    ${this.name}
                 </div>
-                <div class = "columnHeader-icons">
-                    <img src = "${this.addIconRef}" alt = "add-icon" class = "columnHeader-icon" id = "add-icon"/>
-                    <img src = "${this.deleteIconRef}" alt = "delete-icon" class = "columnHeader-icon" id = "delete-icon"/>
-                </div>
+            </div>
+            <div class = "columnHeader-icons">
+                <img src = "${this.addIconRef}" alt = "add-icon" class = "columnHeader-icon" id = "add-icon"/>
+                <img src = "${this.deleteIconRef}" alt = "delete-icon" class = "columnHeader-icon" id = "delete-icon"/>
             </div>
         `;
     }

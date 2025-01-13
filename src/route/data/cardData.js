@@ -1,5 +1,5 @@
 
-class CardData {
+export class CardData {
 
     constructor(title = '', body = '', author = '') {
         this.title = title;

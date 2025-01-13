@@ -15,6 +15,8 @@ export class DefaultCard extends Component {
         console.log("!!!")
     }, onEditClick = () => { }) {
         super();
+        super.addRootclass("card");
+        super.addRootclass("card-default");
         this.title = title;
         this.body = body;
         this.author = author;
@@ -25,7 +27,6 @@ export class DefaultCard extends Component {
 
     template() {
         return `
-        <div class="card card-default"> 
             <div class = "card-text_area">
                 <div class = "card-title display-bold24">
                     ${this.title}
@@ -41,7 +42,6 @@ export class DefaultCard extends Component {
                 <img src=${this.closeIconRef} alt="close-icon" class="card-icon" id = "close-icon" />
                 <img src=${this.editIconRef} alt="edit-icon" class="card-icon" id = "edit-icon" />
             </div>
-        </div>
     `;
     }
 

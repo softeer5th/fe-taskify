@@ -9,11 +9,12 @@ export class Column extends Component {
 
     constructor(columnData) {
         super();
+        super.addRootclass("column");
 
         this.children = {
             header: {
                 object: new ColumnHeader(columnData.name, columnData.data.length),
-                parentSelector: ".column"
+                parentSelector: `.column`
             }
         };
     
@@ -24,20 +25,17 @@ export class Column extends Component {
                     cardData.body,
                     cardData.author
                 ),
-                parentSelector: ".column"
+                parentSelector:`.column`
             };
         });
     }
 
     template() {
-        return `
-            <div class = "column">
-                
-            </div>
-        `;
+        return '';
     }
 
     render(parent) {
+
         super.render(parent);
     }
 
