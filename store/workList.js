@@ -1,5 +1,3 @@
-import { updateCardCount } from "../js/cardNavbar.js";
-
 let workList;
 
 const savedData = (updatedWorkList) => {
@@ -9,16 +7,18 @@ const savedData = (updatedWorkList) => {
 };
 
 const loadData = () => {
-  if (!workList) {
-    const workList = {
+  const loadedWorkList = JSON.parse(localStorage.getItem("workList"));
+  if (!loadedWorkList) {
+    const blankWorkList = {
       todo: [],
       doing: [],
       done: [],
     };
-    return workList;
+    workList = blankWorkList;
+    return blankWorkList;
   }
-  workList = JSON.parse(localStorage.getItem("workList"));
-  return workList;
+  workList = loadedWorkList;
+  return loadedWorkList;
 };
 
 const deleteCardFormStorage = (cardId, sectionType) => {
@@ -49,6 +49,7 @@ const editStorage = (sectionType, cardId, newTitle, newContent) => {
   savedData(updatedWorkList);
 };
 const addStorage = (sectionType, title, content, CARD_ID) => {
+  console.log(workList, "??");
   workList[sectionType].unshift({
     id: CARD_ID,
     createdDate: new Date().toISOString(),
@@ -77,8 +78,6 @@ const updateLocalStorageAfterDrop = (prevSection, nowSection, targetCard) => {
 
   savedData(updatedWorkList);
 };
-
-workList = loadData();
 
 export {
   deleteCardFormStorage,

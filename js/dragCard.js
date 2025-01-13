@@ -4,7 +4,7 @@ import { updateLocalStorageAfterDrop } from "../store/workList.js";
 
 const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 const dragStartHandler = (e) => {
-  console.log("dragstart");
+  console.log("dragstart!!!!");
 
   const targetCard = e.target;
   const prevSectionType = getSectionType(targetCard);

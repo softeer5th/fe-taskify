@@ -48,6 +48,7 @@ const initRender = async () => {
 
 const loadPreviousCard = () => {
   const fragment = new DocumentFragment();
+
   SECTION_TYPE.forEach((type) => {
     if (workList[type].length > 0) {
       //  최신순으로 default를 두어야할 것임. > 나중에 정렬 기능할 때 적용!
@@ -65,4 +66,4 @@ const loadPreviousCard = () => {
   });
 };
 
-await initRender();
+initRender();
