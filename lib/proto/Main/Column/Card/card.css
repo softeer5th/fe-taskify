@@ -24,19 +24,6 @@
     flex-direction: column;
 }
 
-.iconButtons > button {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.iconButtons > button:hover {
-    background-color: rgba(0,122,255, 0.8);
-    border-radius: 5px;
-}
-
 .textArea > h3 {
     font-size: 14px;
     font-weight: 700;
