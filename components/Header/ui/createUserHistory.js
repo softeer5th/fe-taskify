@@ -3,6 +3,7 @@ import { createElement, createButton, createImg } from "../../../dom.js";
 import createModal from "../../Modal/createModal.js";
 import createHistoryHeader from "./createHistoryHeader.js";
 import createHistoryContent from "./createHistoryItem.js";
+import createHistoryMain from "./createHistoryMain.js";
 
 const history = {
   id: 1,
@@ -21,36 +22,7 @@ const createUserHistory = () => {
   });
 
   const $historyHeader = createHistoryHeader();
-
-  const $historyContainer = createElement("div", {
-    className: "history__container",
-  });
-
-  const $profileImg = createImg({
-    src: IMAGE.profile,
-    alt: "프로필",
-  });
-  $profileImg.width = 40;
-  $profileImg.height = 40;
-
-  const $contentContainer = createElement("div", {
-    className: "history__contentContainer",
-  });
-
-  const $user = createElement("span", {
-    className: "history__user display-medium14",
-    text: "@멋진삼",
-  });
-
-  const $content = createHistoryContent({ history });
-
-  const $date = createElement("span", {
-    className: "history__date display-medium12",
-    text: "3분 전",
-  });
-
-  $contentContainer.append($user, $content, $date);
-  $historyContainer.append($profileImg, $contentContainer);
+  const $historyMain = createHistoryMain({ history });
 
   const $historyFooter = createElement("div", {
     className: "history__footer",
@@ -63,13 +35,13 @@ const createUserHistory = () => {
     text: "기록 전체 삭제",
     handleClick: () => {
       // TODO: 사용자 활동 기록 저장 데이터도 모두 삭제
-      $historyContainer.replaceChildren();
+      $historyMain.replaceChildren();
     },
   });
 
   $historyFooter.appendChild($deleteButton);
 
-  $userHistory.append($historyHeader, $historyContainer, $historyFooter);
+  $userHistory.append($historyHeader, $historyMain, $historyFooter);
   return $userHistory;
 };
 
