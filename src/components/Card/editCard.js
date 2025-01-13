@@ -1,14 +1,15 @@
+import { CardData } from "../../route/data/cardData.js";
 import { Button } from "../Button/button.js";
 import Component from "../component.js";
 
 export class EditCard extends Component {
 
     children = {
-        dismiss:{
+        dismiss: {
             object: new Button("취소", null, "dismiss-button"),
             parentSelector: ".card-buttons"
         },
-        confirm:{
+        confirm: {
             object: new Button("저장", null, "confirm-button"),
             parentSelector: ".card-buttons"
         },
@@ -19,11 +20,7 @@ export class EditCard extends Component {
     closeIconRef = "/assets/images/closed.svg";
     editIconRef = "/assets/images/edit.svg";
 
-    constructor(title, body, onConfirm = () => {
-            console.log("confirm")
-     }, onDismiss = () => { 
-        console.log("dismiss")
-     }) {
+    constructor(title, body, onConfirm = (newCardData) => { }, onDismiss = () => { }) {
         super();
         super.addRootclass("card");
         super.addRootclass("card-edit");
@@ -31,8 +28,17 @@ export class EditCard extends Component {
         this.title = title;
         this.body = body;
 
-        this.onConfirm = onConfirm;
+        this.onConfirm = () => {
+            const newCardData = this.addCardData();
+            console.log("newCard Data", newCardData);
+            onConfirm(newCardData);
+        };
         this.onDismiss = onDismiss;
+    }
+
+    clearInput() {
+        this.title = '';
+        this.body = '';
     }
 
     template() {
@@ -47,13 +53,26 @@ export class EditCard extends Component {
         `;
     }
 
-    render(parent) {   
-        
+    addCardData() {
+        const component = this.parent.querySelector(`.${this.rootSelectorClassName}`);
+        const titleInput = component.querySelector(".card-title");
+        const bodyInput = component.querySelector(".card-body");
+
+        return new CardData(
+            titleInput.value,
+            bodyInput.value,
+            "web"
+        );
+
+    }
+
+    render(parent) {
+
         this.children.confirm.object.addEvent("click", this.onConfirm);
         this.children.dismiss.object.addEvent("click", this.onDismiss);
 
         super.render(parent);
-        
+
     }
 
     addEvent(listenerName, callback) {

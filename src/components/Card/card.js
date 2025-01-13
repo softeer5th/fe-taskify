@@ -43,7 +43,6 @@ export class DefaultCard extends Component {
             </div>
     `;
     }
-
     render(parent) {
 
         super.renderTree(parent);

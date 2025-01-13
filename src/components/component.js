@@ -65,7 +65,6 @@ export default class Component {
         const root = parent.querySelector(`.${this.rootSelectorClassName}`);
         if (root) {
             this.events.forEach(({ listenerName, callback }) => {
-                console.log(root,listenerName, callback);
                 root.addEventListener(listenerName, () => callback());
 
             });

@@ -25,7 +25,7 @@ export class IconButton extends Component {
 
         return `
             ${iconTemplate}
-    `;
+        `;
     }
 
     render(parent) {

@@ -8,32 +8,39 @@ export class Column extends Component {
 
     events = [];
 
-    constructor(columnData, onCardAdd = () => {}, onCardDelete = (cardIndex) => {}) {
+    constructor(columnData, onCardAdded = (newCardData) => {}, onCardDelete = (cardIndex) => {}) {
         super();
         super.addRootclass("column");
-        this.setCallback(onCardAdd, onCardDelete);
+        this.setCallback(onCardAdded, onCardDelete);
 
         this.setChildren(columnData);
         
     }
 
-    setCallback(onCardAdd, onCardDelete){
+    setCallback(onCardAdded, onCardDelete){
+        
         this.onCardAdd = () => {
-            console.log("add!!");
-            this.toggleAddCard();
-        };
+           this.toggleAddCard();
+        }
 
         this.onColumnDelete = () => {
             
         };
 
-        this.onNewCardAdd = () => {
+        this.onCardDelete = onCardDelete;
+
+        this.onNewCardAdded = (newCardData) => {
+            onCardAdded(newCardData);
             this.toggleAddCard();
         }; 
         this.onNewCardDismiss = () => {
-
+            this.children.input.object.clearInput();
             this.toggleAddCard();
         };
+
+        this.onEditCard = () => {
+
+        }
     }
 
     setChildren(columnData){
@@ -43,7 +50,7 @@ export class Column extends Component {
                 parentSelector: `.column`
             },
             input: {
-                object: new EditCard('','', this.onNewCardAdd, this.onNewCardDismiss )
+                object: new EditCard('','', this.onNewCardAdded, this.onNewCardDismiss )
             }
         };
     
@@ -54,12 +61,9 @@ export class Column extends Component {
                     cardData.body,
                     cardData.author,
                     () => {
-                        onCardDelete(index);
+                        this.onCardDelete(index);
                     },
-                    () => {
-
-                    }
-
+                    this.onEditCard,
                 ),
                 parentSelector:`.column`
             };
@@ -80,7 +84,6 @@ export class Column extends Component {
         const input = this.parent.querySelector(`.${inputRootClass}`);
 
         input.classList.toggle("hide");
-    
     }
 
     addEvent(listenerName, callback) {

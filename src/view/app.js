@@ -46,14 +46,14 @@ export class App extends Component {
 
     onCardAdd = (columnIndex, cardData) => {
         this.columnData[columnIndex].addData(cardData);
+
+        this.rerendering();
     };
 
     onCardDelete = (columnIndex, cardIndex) => {
         this.columnData[columnIndex].removeData(cardIndex);
 
-        this.setChildren();
-        this.clear(this.parent);
-        this.render(this.parent);
+        this.rerendering();
     };
 
     constructor() {
@@ -79,6 +79,12 @@ export class App extends Component {
             <div id = "header">  </div>
             <div id = "taskContent">  </div>
         `;
+    }
+
+    rerendering(){
+        this.setChildren();
+        this.clear(this.parent);
+        this.render(this.parent);
     }
 
     render(parent) {
