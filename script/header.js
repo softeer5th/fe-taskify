@@ -22,7 +22,7 @@ export default function HeaderController(state, bodyElement) {
 
     function renderClearLogModal() {
         const modalComponent = ModalComponent();
-        modalComponent.render('진짜로 로그 삭제함?',
+        modalComponent.render('모든 사용자 활동 기록을 삭제할까요?',
             ()=>{
                 state.clearLog();
                 renderLog();
