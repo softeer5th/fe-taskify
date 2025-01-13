@@ -1,0 +1,34 @@
+export default function HeaderComponent() {
+    function template() {
+        return `
+            <span>
+                <h1 class="text-strong display-bold24">TASKIFY</h1>
+                <button id="sort_button" class="border-bord rounded-100 display-medium12 text-bold">
+                    <img width="16" height="16" src="/public/icon/arrowBoth.svg"/>
+                    <span>생성 순</span>
+                </button>
+            </span>
+            <button id="log_button">
+                <img draggable="false" width="24" height="24" src="/public/icon/clock.svg" />
+            </button>
+            `;
+    }
+
+    function render() {
+        const headerElement = document.createElement('header');
+        headerElement.innerHTML =  template();
+        return headerElement;
+    }
+
+    function addEventListener(headerElement, handleSort, handleLog) {
+        const [sortButton, logButton] = headerElement.getElementsByTagName('button');
+
+        sortButton.addEventListener('click', handleSort);
+        logButton.addEventListener('click', handleLog);
+    }
+
+    return {
+        render,
+        addEventListener
+    };
+}

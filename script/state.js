@@ -16,11 +16,26 @@ export default function State() {
             index: 2,
         }
     ];
+    let logs = [];
 
     let dragged = {
         task: null,
         element: null,
     };
+
+    function setLog(log) {
+        if (logs.length >= 5) {
+            logs = [...logs.slice(1), log];
+        } else logs.push(log);
+    }
+
+    function getLog() {
+        return logs;
+    }
+
+    function clearLog() {
+        logs = [];
+    }
 
     function getOrder() {
         return orderingState;
@@ -59,15 +74,30 @@ export default function State() {
     }
 
     function addTask(index, task) {
+        setLog({
+            task: task,
+            type: 'ADD',
+            updated: new Date(),
+        });
         columnTasks[index].push(task);
     }
 
     function updateTask(index, currentTask, newTask) {
+        setLog({
+            task: currentTask,
+            type: 'UPDATE',
+            updated: new Date(),
+        });
         const taskIndex = columnTasks[index].indexOf(currentTask);
         columnTasks[index][taskIndex] = newTask;
     }
 
     function removeTask(task) {
+        setLog({
+            task: task,
+            type: 'REMOVE',
+            updated: new Date(),
+        });
         const index = task.column;
         columnTasks[index] = columnTasks[index].filter(el => el != task);
     }
@@ -84,5 +114,7 @@ export default function State() {
         addTask,
         updateTask,
         removeTask,
+        getLog,
+        clearLog,
     }
 }
