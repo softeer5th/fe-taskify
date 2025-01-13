@@ -124,7 +124,7 @@ main {
   margin: 16px 0 0 0;
   word-break: break-all;
   order: 1;
-  
+
 }
 
 .title-cont-au {
@@ -171,6 +171,11 @@ main {
   flex-direction: row;
   justify-content: space-between;
   margin-top: 13px;
+}
+
+.task-add-modal {
+  width: 288px;
+  min-height: 72px;
 }
 
 .task-add-can-btn {

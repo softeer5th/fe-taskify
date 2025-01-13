@@ -27,7 +27,7 @@ export const addTask = (key, task) => {
 }
 export const removeTask = (key, taskTimestamp) => {
   const tasks = getColumnTasks(key) || [];
-  const updatedTasks = tasks.filter(task => task.timestamp !== taskTimestamp);
+  const updatedTasks = tasks.filter(task => task.timestamp !== parseInt(taskTimestamp));
   localStorage.setItem(key, JSON.stringify(updatedTasks));
 }
 
