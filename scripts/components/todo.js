@@ -84,7 +84,6 @@ export const initTodo = () => {
                         }
                         currentCategory = category
                         // todoList의 몇 번째 index인지 식별
-                        // currentIndex = null
                         for (let [
                             idx,
                             todoItem,
@@ -121,6 +120,7 @@ export const initTodo = () => {
                         // )
                         if (!skeletonUpdateFlag) return
                         findDomElement(skeletonElementId)?.remove()
+
                         if (currentIndex < category.values.todoList.length) {
                             skeletonElementId = createDomElementAsSibling(
                                 templateNames.todoItemSkeleton,
@@ -163,6 +163,14 @@ export const initTodo = () => {
                     if (dragDepth > 0) return
                     console.log('dragleave', category.identifier)
                     // e.stopPropagation()
+                    findDomElement(identifier)
+                        .querySelector(`.${classNames.skeleton}`)
+                        .remove()
+                })
+                component.addEventListener('drop', (e) => {
+                    console.log('drop', category.identifier)
+                    currentCategory = null
+                    currentIndex = null
                     findDomElement(identifier)
                         .querySelector(`.${classNames.skeleton}`)
                         .remove()
