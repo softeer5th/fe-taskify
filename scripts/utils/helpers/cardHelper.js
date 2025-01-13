@@ -64,19 +64,16 @@ const toggleDisplay = (element, isDisplay) => {
 /**
  * 카드 모드에 따라 아이콘 버튼 세팅
  * @param {HTMLElement} cardElement
- * @param {function} setState
+ * @param {function} eventHandler1
+ * @param {function} eventHandler2
  */
-const initCardIconButtons = (cardElement, setState) => {
+const initCardIconButtons = (cardElement, eventHandler1, eventHandler2) => {
   cardElement.querySelector('#delete-card').addEventListener('click', () => {
-    setState((prev) => {
-      return { ...prev, isEditMode: true };
-    });
+    eventHandler1();
   });
-  cardElement.querySelector('#edit-card').addEventListener('click', () => {
-    setState(() => {
-      return { currentMode: 'add', isEditMode: true };
-    });
-  });
+  cardElement
+    .querySelector('#edit-card')
+    .addEventListener('click', () => eventHandler2());
 };
 
 /**

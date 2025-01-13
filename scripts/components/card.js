@@ -20,10 +20,16 @@ import createState from '../utils/helpers/stateHelper.js';
  * 카드 컴포넌트
  * @param {'default' | 'add' | 'drag' | 'place'} mode - 카드 모드
  * @param {Card} cardData - 카드 데이터
+ * @param {function} addCard - 카드 추가 함수
+ * @param {function} deleteCard - 카드 삭제 함수
  * @returns {DocumentFragment} - 카드 요소를 포함하는 DocumentFragment
  */
-const Card = (mode = 'default', cardData) => {
+const Card = (mode = 'default', cardData, addCard, deleteCard) => {
   const card = document.getElementById('card-template').content.cloneNode(true);
+
+  /**
+   * @type {HTMLElement}
+   */
   const cardElement = card.querySelector('li');
 
   const cardState = createState(cardData);
@@ -34,35 +40,49 @@ const Card = (mode = 'default', cardData) => {
   });
 
   cardMode.subscribe(() => {
-    console.log(cardState.getState());
     setCardState(cardElement, cardState.getState(), cardMode.getState());
   });
 
   initCardTextArea(cardElement, cardData);
-  initCardIconButtons(cardElement, cardMode.setState);
+  initCardIconButtons(
+    cardElement,
+    () => {
+      cardElement.remove();
+      deleteCard(cardData.id);
+    },
+    () => {
+      cardMode.setState(() => {
+        return { currentMode: 'add', isEditMode: true };
+      });
+    }
+  );
   initCardButtons(cardElement, [
     {
       name: 'cancel',
       handler: () => {
-        cardMode.setState(new CardMode('default', false));
+        if (cardData.title === null && cardData.body === null) {
+          cardElement.remove();
+        } else {
+          cardMode.setState(new CardMode('default', false));
+          // TODO: 바뀐 데이터를 상위 요소에게 알려줘야 함
+        }
       },
     },
     {
       name: 'add',
       handler: () => {
-        // cardMode.setState(new CardMode('default', true));
-        console.log('add card to Colunm');
+        applyCardChanges(cardElement, cardState);
+        addCard(cardState.getState());
       },
+      // TODO: 바뀐 데이터를 상위 요소에게 알려줘야 함
     },
     {
       name: 'edit',
       handler: () => {
-        cardState.setState({
-          ...cardState.getState(),
-          title: cardElement.querySelector('input').value,
-          body: cardElement.querySelector('textarea').value,
-        });
+        applyCardChanges(cardElement, cardState);
+        addCard(cardState.getState());
       },
+      // TODO: 바뀐 데이터를 상위 요소에게 알려줘야 함
     },
   ]);
 
@@ -121,6 +141,14 @@ const setCardState = (cardElement, cardData, mode) => {
   } else {
     cardElement.style.opacity = '1';
   }
+};
+
+const applyCardChanges = (cardElement, cardState) => {
+  cardState.setState({
+    ...cardState.getState(),
+    title: cardElement.querySelector('input').value,
+    body: cardElement.querySelector('textarea').value,
+  });
 };
 
 export default Card;

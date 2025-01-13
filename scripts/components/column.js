@@ -31,42 +31,81 @@ const Column = (columnData) => {
 
   const columnState = createState(columnData);
   columnState.subscribe(() => {
-    columnElement.querySelectorAll('li').forEach((child) => {
-      child.remove();
-    });
-
-    columnState.getState().cards.forEach((cardData) => {
-      columnElement.appendChild(
-        Card(cardData.title === null ? 'add' : 'default', cardData)
-      );
-    });
-
-    column.querySelector('.textlabel').textContent =
+    // TODO: 바뀐 데이터를 로컬스토리지나 서버에 저장해야함
+    columnElement.querySelector('.textlabel').textContent =
       columnState.getState().cards.length;
   });
 
-  column.querySelector('h2').textContent = columnData.columnName;
+  columnElement.querySelector('h2').textContent = columnData.columnName;
+  columnElement.querySelector('.textlabel').textContent =
+    columnState.getState().cards.length;
+
   columnData.cards.forEach((cardData) => {
-    columnElement.appendChild(Card('default', cardData));
+    columnElement.appendChild(
+      Card(
+        'default',
+        cardData,
+        (newData) =>
+          columnState.setState((prevState) => {
+            return {
+              ...prevState,
+              cards: prevState.cards.map((card) =>
+                card.id === newData.id ? newData : card
+              ),
+            };
+          }),
+        (removeCardId) =>
+          columnState.setState((prev) => {
+            return {
+              ...prev,
+              cards: prev.cards.filter((card) => card.id !== removeCardId),
+            };
+          })
+      )
+    );
   });
 
-  column.querySelector('#add-card').addEventListener('click', (e) => {
-    columnState.setState({
-      ...columnState.getState(),
-      cards: [
-        {
-          id: columnState.getState().cards.length + 1,
-          title: null,
-          body: null,
-          createdDate: new Date().toISOString(),
-        },
-        ...columnState.getState().cards,
-      ],
+  columnElement.querySelector('#add-card').addEventListener('click', (e) => {
+    const newCard = Card(
+      'add',
+      {
+        id: Date.now + Math.random(),
+        title: null,
+        body: null,
+        createdDate: new Date().toISOString(),
+      },
+      (cardData) => {
+        columnState.setState((prevState) => {
+          return {
+            ...prevState,
+            cards: [cardData, ...prevState.cards],
+          };
+        });
+      },
+      (removeCardId) => {
+        columnState.setState((prevState) => {
+          return {
+            ...prevState,
+            cards: prevState.cards.filter((card) => card.id !== removeCardId),
+          };
+        });
+      }
+    );
+
+    const firstChild = columnElement.querySelector('li'); // 첫 번째 자식 요소 선택
+    if (firstChild) {
+      columnElement.insertBefore(newCard, firstChild);
+    } else {
+      columnElement.appendChild(newCard);
+    }
+  });
+
+  columnElement
+    .querySelector('#close-column')
+    .addEventListener('click', (e) => {
+      columnElement.remove();
+      // TODO: 상위 요소에게 컬럼 삭제 이벤트 전달
     });
-  });
-  column.querySelector('#close-column').addEventListener('click', (e) => {
-    console.log('close column');
-  });
 
   return column;
 };
