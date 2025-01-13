@@ -6,11 +6,11 @@ const createColumnBody = ({ sectionId, items }) => {
     className: "column__body",
   });
 
-  items.forEach(({ id, title, content, author }) => {
-    const $columnItem = ColumnItem({ sectionId, id, title, content, author });
-    $columnBody.appendChild($columnItem);
-  });
+  const $columnItemList = items.map(({ id, title, content, author }) =>
+    ColumnItem({ sectionId, id, title, content, author })
+  );
 
+  $columnBody.append(...$columnItemList);
   return $columnBody;
 };
 
