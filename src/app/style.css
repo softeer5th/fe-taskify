@@ -55,6 +55,26 @@
     color: var(--text-bold);
 }
 
+.container-881d5fb {
+    width: 320px;
+    padding: 0 var(--gap-200) 0 var(--gap-200);
+
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--gap-100);
+}
+
+.content-881d5fb {
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    gap: var(--gap-100);
+}
+
+.title-881d5fb {
+    color: var(--text-bold);
+}
 .text-982d9e3 {
     padding: 0 var(--gap-50) 0 var(--gap-50);
 }

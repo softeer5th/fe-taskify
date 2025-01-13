@@ -3,6 +3,7 @@ import { Badge } from "../components/Badge/index.js";
 import { Button } from "../components/Button/index.js";
 import { Card } from "../components/Card/index.js";
 import { Chip } from "../components/Chip/index.js";
+import { ColumnTitle } from "../components/ColumnTitle/index.js";
 import { parser } from "../lib/jsx-runtime/index.js";
 
 // eslint-disable-next-line
@@ -81,6 +82,7 @@ const App = () => {
             ${addCard}
             ${dragCard}
             ${placeCard}
+            ${ColumnTitle({ title: "Title", count: 10 })}
         </div>`
   );
 };
