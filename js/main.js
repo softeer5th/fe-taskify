@@ -1,5 +1,5 @@
 import { addCard, delAllCard  } from "./column_action.js";
-import { editCard, delCard, startDragCard, moveCard, finishDragCard } from "./card_action.js";
+import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging } from "./card_action.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -65,12 +65,12 @@ function adaptEventListener(targetId, props) {
 function setEventForColumn(props) {
     const parentElement = document.querySelector('#column-id'+props.columnId);
 
-    addListener(parentElement.querySelector('#add-card-button'), (event, realTarget)=>{
+    addListener(parentElement.querySelector('#add-card-button'), (event)=>{
         if (event.type === "click") {
             addCard(props.columnId);
         }
     })
-    addListener(parentElement.querySelector('#delete-cards-button'), (event, realTarget)=>{
+    addListener(parentElement.querySelector('#delete-cards-button'), (event)=>{
         if (event.type === "click") {
             delAllCard(props.columnId);
         }
@@ -82,32 +82,27 @@ function setEventForCard(props) {
     const parentElement = document.querySelector('#card-list'+props.columnId);
     const childElement = parentElement.querySelector("#card-id"+props.cardId);
     // 카드 수정 버튼에 이벤트 추가
-    addListener(childElement.querySelector('#edit-card-button'), (event, realTarget)=>{
+    addListener(childElement.querySelector('#edit-card-button'), (event)=>{
         if (event.type === "click") {
             editCard(props.columnId, props.cardId);
         }
     })
     // 카드 삭제 버튼에 이벤트 추가
-    addListener(childElement.querySelector('#del-card-button'), (event, realTarget)=>{
+    addListener(childElement.querySelector('#del-card-button'), (event)=>{
         if (event.type === "click") {
             delCard(props.columnId, props.cardId);
         }
     })
-    // 카드 드래그 시작
-    addListener(childElement, (event, realTarget)=>{
+    // 카드 드래그
+    addListener(childElement, (event)=>{
         if (event.type === "mousedown") {
             if (!clone) {
-                clone = realTarget.cloneNode(true);
+                clone = childElement.cloneNode(true);
                 clone.classList.add('dragging');
-                startDragCard(event, clone);
+                startDragCard(event, clone, props.columnId, props.cardId);
             }
-        } else if (event.type === "mouseup") {
-            finishDragCard(clone);
-            clone = null;
         }
     });
-    addListener(childElement, (event, realTarget)=>{
-    })
 }
 
 // 타겟 엘리먼트에 템플릿 렌더링하기
@@ -120,19 +115,6 @@ export default async function renderTemplate(templateFile, templateId, targetId,
     }
 }
 
-let clone = null;   
-
-
-// 마우스 이동
-// document.addEventListener('mousemove', (event) => {
-//     let realTarget = null;
-//     if(realTarget = checkTarget(event.target, 'dragging')) {
-//         moveCard(event, clone);
-//     }
-// });
-
-
-
 function addListener(element, listener) {
     if (!eventListeners.has(element)) {
       eventListeners.set(element, []); // 요소에 대한 리스너 배열 초기화
@@ -142,7 +124,6 @@ function addListener(element, listener) {
 
 function triggerListeners(event, startElement) {
     let currentElement = startElement;
-    console.log(eventListeners);
 
     while (currentElement) {
         if (eventListeners.has(currentElement)) {
@@ -157,8 +138,7 @@ function triggerListeners(event, startElement) {
 }
 
 const eventListeners = new WeakMap();
-
-
+let clone = null;
 
 document.addEventListener('click', (event) => {
     triggerListeners(event, event.target);
@@ -168,8 +148,17 @@ document.addEventListener('mousedown', (event) => {
     triggerListeners(event, event.target);
 });
 
+document.addEventListener('mousemove', (event) => {
+    if (isDragging) {
+        moveCard(event, clone);
+    }
+});
+
 document.addEventListener('mouseup', (event) => {
-    triggerListeners(event, event.target);
+    if (isDragging) {
+        finishDragCard(clone);
+        clone = null;
+    }
 });
 
 renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:0, title:"해야할 일", cardCount:"0",});

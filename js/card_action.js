@@ -122,29 +122,49 @@ function undoChanges(card, tempMemory){
     });
 }
 
-let isDragging = false;
+export let isDragging = false;
+let gapX = 0;
+let gapY = 0;
+let draggingColumnId = 0;
+let draggingCardId = 0;
 
-export function startDragCard(event, clone) {
+export function startDragCard(event, clone, columnId, cardId) {
     isDragging = true;
-
+    const parentElement = document.querySelector('#card-list'+columnId);
+    const childElement = parentElement.querySelector("#card-id"+cardId);
+    clone.style.width = window.getComputedStyle(childElement).width;
+    draggingCardId = cardId;
+    draggingColumnId = columnId;
     document.body.appendChild(clone);
+    childElement.style.opacity = 0.3;
 
-    clone.style.left = `${event.clientX}px`;
-    clone.style.top = `${event.clientY}px`;
+    const parentRect = childElement.getBoundingClientRect(); // 부모 요소의 경계 정보
+
+    const relativeX = event.clientX - parentRect.left; // 부모 요소 내부에서의 X 좌표
+    const relativeY = event.clientY - parentRect.top;  // 부모 요소 내부에서의 Y 좌표
+
+    gapX = relativeX;
+    gapY = relativeY+10;
+
+    clone.style.left = `${event.clientX-gapX}px`;
+    clone.style.top = `${event.clientY-gapY}px`;
+    document.body.classList.add('no-select');
 }
 
 export function moveCard(event, clone) {
     if (!isDragging || !clone) return;
 
-    clone.style.left = `${event.clientX}px`;
-    clone.style.top = `${event.clientY}px`;
-    console.log(clone.style.left);
+    clone.style.left = `${event.clientX-gapX}px`;
+    clone.style.top = `${event.clientY-gapY}px`;
 }
 
 export function finishDragCard(clone) {
     if (isDragging && clone) {
+        const parentElement = document.querySelector('#card-list'+draggingColumnId);
+        const childElement = parentElement.querySelector("#card-id"+draggingCardId);
+        childElement.style.opacity = 1;
         isDragging = false;
-
         clone.remove();
+        document.body.classList.remove('no-select');
     }
 }

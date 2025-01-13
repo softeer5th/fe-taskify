@@ -6,8 +6,7 @@
 }
 
 .card-list li {
-    background-color: #FEFEFE;;
-    width: 100%;
+    background-color: #FEFEFE;
     min-height: 80px;
     max-width: 280px;
     display: flex;
@@ -20,7 +19,6 @@
 
 .new-card {
     background-color: #FEFEFE;;
-    width: 100%;
     min-height: 80px;
     max-width: 280px;
     display: block;
@@ -134,14 +132,12 @@ button{
 }
 
 
-.dragging {
+.dragging{
     background-color: #FEFEFE;
-    min-width: 280px;
     min-height: 80px;
-    max-width: 280px;
     display: flex;
     margin-top: 10px;
-    box-shadow: 0 1px 4px 0 #6E80913D;
+    box-shadow: 0 16px 16px 0 #6E80913D;
     border-radius: 5px;
     padding: 20px;
     position: absolute;

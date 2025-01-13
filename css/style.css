@@ -5,6 +5,12 @@ body {
     margin-right: 5%;
 }
 
+.no-select {
+    user-select: none; /* 텍스트 선택 비활성화 */
+    -webkit-user-select: none; /* 크롬/사파리 대응 */
+    -ms-user-select: none; /* IE 대응 */
+}
+
 header {
     display: flex;
 }
