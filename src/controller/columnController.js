@@ -11,7 +11,7 @@ export default function ColumnController(model = new Model(), rootElement = docu
   // let columnViews: HTMLElement[] = [];
   let columnViews = [];
 
-  model.addListener(render());
+  model.addListener(render);
 
   render();
 
@@ -42,7 +42,6 @@ export default function ColumnController(model = new Model(), rootElement = docu
     event.stopPropagation();
     const columnId = parseInt(event.target.closest(".column").id);
 
-    model.setEditingTaskId(0);
     console.log("Add Task Button Clicked:", columnId);
   }
 
