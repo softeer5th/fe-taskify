@@ -185,7 +185,7 @@ const manageDrag = (element) => {
 
 const addTodoItem = (title, content, author, category) => {
     const parentDomElement = findDomElement(category.identifier).querySelector(
-        classNames.todoBody
+        `.${classNames.todoBody}`
     )
     createDomElementAsChild(
         templateNames.todoItem,
