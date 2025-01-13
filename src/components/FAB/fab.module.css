@@ -1,0 +1,11 @@
+.container {
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background-color: var(--surface-brand);
+}

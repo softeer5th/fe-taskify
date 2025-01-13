@@ -215,6 +215,17 @@
 .title-881d5fb {
     color: var(--text-bold);
 }
+.container-c2242e2 {
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background-color: var(--surface-brand);
+}
 .text-982d9e3 {
     padding: 0 var(--gap-50) 0 var(--gap-50);
 }

@@ -5,6 +5,7 @@ import { Button } from "../components/Button/index.js";
 import { Card } from "../components/Card/index.js";
 import { Chip } from "../components/Chip/index.js";
 import { ColumnTitle } from "../components/ColumnTitle/index.js";
+import { FAB } from "../components/FAB/index.js";
 import { parser } from "../lib/jsx-runtime/index.js";
 
 // eslint-disable-next-line
@@ -91,6 +92,10 @@ const App = () => {
       columnAfter: "after",
       action: "action",
       timestamp: "timestamp",
+    })}
+        ${FAB({
+      // eslint-disable-next-line
+      onClick: () => console.log("FAB 클릭"),
     })}
         </div>`
   );
