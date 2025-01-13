@@ -51,6 +51,17 @@
   overflow: scroll;
 }
 
+.empty__history {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 4.9rem;
+}
+
+.empty__historyText {
+  color: var(--color-text-weak);
+}
+
 .history__header {
   display: flex;
   justify-content: space-between;

@@ -49,7 +49,7 @@ const histories = [
     title: "블로그에 포스팅할 것(update)",
   },
   {
-    id: 5,
+    id: 6,
     action: "update",
     date: "2025-01-13T02:20:01.833Z",
     profileImg: IMAGE.profile,
@@ -69,9 +69,14 @@ const createUserHistory = () => {
 
   const $historyHeader = createHistoryHeader();
   const $historyMain = createHistoryMain({ histories: sortedHistories });
-  const $historyFooter = createHistoryFooter();
 
-  $userHistory.append($historyHeader, $historyMain, $historyFooter);
+  if (histories.length > 0) {
+    const $historyFooter = createHistoryFooter();
+    $userHistory.append($historyHeader, $historyMain, $historyFooter);
+    return $userHistory;
+  }
+
+  $userHistory.append($historyHeader, $historyMain);
   return $userHistory;
 };
 
