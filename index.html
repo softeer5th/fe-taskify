@@ -9,13 +9,7 @@
     <!-- 카드들을 담고있는 컬럼 템플릿 -->
     <template id="column-template">
       <ul
-        style="
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          overflow-y: scroll;
-        "
+        style="height: 100%; display: flex; flex-direction: column; gap: 10px"
       >
         <div
           style="
@@ -190,9 +184,17 @@
           <img src="./assets/icons/icon.svg" alt="history" />
         </button>
       </header>
-      <div style="width: 100%; height: 100%; padding: 32px 0">
+      <div
+        style="width: 100%; height: 100%; padding: 32px 0; overflow-y: hidden"
+      >
         <main
-          style="width: 100%; height: 100%; display: flex; gap: 24px"
+          style="
+            width: 100%;
+            height: 100%;
+            display: flex;
+            gap: 24px;
+            overflow-y: auto;
+          "
         ></main>
         <div
           style="
