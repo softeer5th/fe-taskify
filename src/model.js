@@ -2,7 +2,7 @@
 /**
  * @typedef {Object} Column
  * @property {number} id
- * @property {string} name
+ * @property {string} title
  */
 
 /**
@@ -175,7 +175,7 @@ export default class Model {
     currentData.task = currentData.task.filter((task) => task.columnId !== columnId);
     this.#pushHistory(currentData, {
       type: "removeColumn",
-      removedColumnName: removedColumn.name,
+      removedColumnName: removedColumn.title,
     });
     this.#notify();
   }
