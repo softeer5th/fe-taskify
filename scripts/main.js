@@ -1,11 +1,12 @@
 import Column from './components/column.js';
+import { loadTodos } from './utils/helpers/localStorageHelper.js';
 
 const App = () => {
   const main = document.querySelector('main');
 
-  main.appendChild(Column('해야할 일'));
-  main.appendChild(Column('하고 있는 일'));
-  main.appendChild(Column('완료한 일'));
+  loadTodos().columns.forEach((column) => {
+    main.appendChild(Column(column));
+  });
 
   document.querySelector('#history').addEventListener('click', (e) => {
     console.log('view archived columns');

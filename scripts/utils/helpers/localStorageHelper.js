@@ -23,7 +23,57 @@
  * @returns {Todos} 투두 데이터
  */
 const loadTodos = () => {
-  const Todos = JSON.parse(localStorage.getItem('columns')) || [];
+  let Todos = JSON.parse(localStorage.getItem('columns'));
+
+  if (!Todos) {
+    Todos = {
+      columns: [
+        {
+          columnId: 0,
+          columnName: '해야할 일',
+          cards: [
+            // 더미데이터
+            {
+              id: 1,
+              title: '모던 자바스크립트 예제 실습',
+              body: '1장 예제 내용 실습 후, 커밋까지',
+              createdDate: '2021-08-10',
+            },
+            {
+              id: 2,
+              title: 'GitHub 공부하기',
+              body: 'add, commit, push',
+              createdDate: '2021-08-10',
+            },
+            {
+              id: 3,
+              title: '카드 제목',
+              body: '카드 내용',
+              createdDate: '2021-08-10',
+            },
+            {
+              id: 4,
+              title: '카드 제목',
+              body: '카드 내용',
+              createdDate: '2021-08-10',
+            },
+          ],
+        },
+        {
+          columnId: 1,
+          columnName: '하고 있는 일',
+          cards: [],
+        },
+        {
+          columnId: 2,
+          columnName: '완료한 일',
+          cards: [],
+        },
+      ],
+    };
+    localStorage.setItem('columns', JSON.stringify(Todos));
+  }
+
   return Todos;
 };
 
