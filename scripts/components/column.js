@@ -1,59 +1,111 @@
+import createState from '../utils/helpers/stateHelper.js';
 import Card from './card.js';
+/**
+ * @typedef {Object} Card
+ * @property {number} id - 카드 ID
+ * @property {string} title - 카드 제목
+ * @property {string} body - 카드 내용
+ * @property {string} createdDate - 카드 생성일
+ */
 
-const Column = (columnTitle) => {
+/**
+ * @typedef {Object} Column
+ * @property {number} columnId - 컬럼 ID
+ * @property {string} columnName - 컬럼 이름
+ * @property {Card[]} cards - 카드 배열
+ */
+
+/**
+ * 컬럼 컴포넌트
+ * @param {Column} columnData - 컬럼 데이터
+ */
+const Column = (columnData) => {
   const column = document
     .getElementById('column-template')
     .content.cloneNode(true);
 
-  column.querySelector('h2').textContent = columnTitle;
+  /**
+   * @type {HTMLElement}
+   */
+  const columnElement = column.querySelector('ul');
 
-  column.querySelector('ul').appendChild(
-    Card('default', {
-      id: 1,
-      title: '모던 자바스크립트 예제 실습',
-      body: '1장 예제 내용 실습 후, 커밋까지',
-      createdDate: '2021-08-10',
-    })
-  );
-  column.querySelector('ul').appendChild(
-    Card('add', {
-      id: 2,
-      title: 'GitHub 공부하기',
-      body: 'add, commit, push',
-      createdDate: '2021-08-10',
-    })
-  );
-  column.querySelector('ul').appendChild(
-    Card('drag', {
-      id: 3,
-      title: '카드 제목',
-      body: '카드 내용',
-      createdDate: '2021-08-10',
-    })
-  );
-  column.querySelector('ul').appendChild(
-    Card('place', {
-      id: 4,
-      title: '카드 제목',
-      body: '카드 내용',
-      createdDate: '2021-08-10',
-    })
-  );
-  column.querySelector('ul').appendChild(
-    Card('add', {
-      id: 4,
-      title: null,
-      body: null,
-      createdDate: '2021-08-10',
-    })
-  );
+  const columnState = createState(columnData);
+  columnState.subscribe(() => {
+    // TODO: 바뀐 데이터를 로컬스토리지나 서버에 저장해야함
+    columnElement.querySelector('.textlabel').textContent =
+      columnState.getState().cards.length;
+  });
 
-  column.querySelector('#add-card').addEventListener('click', (e) => {
-    console.log('add card');
+  columnElement.querySelector('h2').textContent = columnData.columnName;
+  columnElement.querySelector('.textlabel').textContent =
+    columnState.getState().cards.length;
+
+  columnData.cards.forEach((cardData) => {
+    columnElement.appendChild(
+      Card(
+        'default',
+        cardData,
+        (newData) =>
+          columnState.setState((prevState) => {
+            return {
+              ...prevState,
+              cards: prevState.cards.map((card) =>
+                card.id === newData.id ? newData : card
+              ),
+            };
+          }),
+        (removeCardId) =>
+          columnState.setState((prev) => {
+            return {
+              ...prev,
+              cards: prev.cards.filter((card) => card.id !== removeCardId),
+            };
+          })
+      )
+    );
   });
-  column.querySelector('#close-column').addEventListener('click', (e) => {
-    console.log('close column');
+
+  columnElement.querySelector('#add-card').addEventListener('click', (e) => {
+    const newCard = Card(
+      'add',
+      {
+        id: Date.now + Math.random(),
+        title: null,
+        body: null,
+        createdDate: new Date().toISOString(),
+      },
+      (cardData) => {
+        columnState.setState((prevState) => {
+          return {
+            ...prevState,
+            cards: [cardData, ...prevState.cards],
+          };
+        });
+      },
+      (removeCardId) => {
+        columnState.setState((prevState) => {
+          return {
+            ...prevState,
+            cards: prevState.cards.filter((card) => card.id !== removeCardId),
+          };
+        });
+      }
+    );
+
+    const firstChild = columnElement.querySelector('li'); // 첫 번째 자식 요소 선택
+    if (firstChild) {
+      columnElement.insertBefore(newCard, firstChild);
+    } else {
+      columnElement.appendChild(newCard);
+    }
   });
+
+  columnElement
+    .querySelector('#close-column')
+    .addEventListener('click', (e) => {
+      columnElement.remove();
+      // TODO: 상위 요소에게 컬럼 삭제 이벤트 전달
+    });
 
   return column;
 };

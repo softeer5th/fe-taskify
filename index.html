@@ -8,9 +8,12 @@
     <link rel="stylesheet" href="./styles/components.css" />
     <!-- 카드들을 담고있는 컬럼 템플릿 -->
     <template id="column-template">
-      <ul style="display: flex; flex-direction: column; gap: 10px">
+      <ul
+        style="height: 100%; display: flex; flex-direction: column; gap: 10px"
+      >
         <div
           style="
+            width: 320px;
             display: flex;
             justify-content: space-between;
             padding: 0 var(--number-200);
@@ -49,7 +52,7 @@
       <li
         class="surface-default"
         style="
-          width: 320px;
+          width: 100%;
           display: flex;
           flex-direction: column;
           padding: var(--number-200);
@@ -57,11 +60,50 @@
         "
       >
         <div style="width: 100%; display: flex">
-          <div id="text-area" style="width: 100%;"></div>
+          <div
+            id="freezed-text"
+            style="width: 100%; display: flex; flex-direction: column; gap: 8px"
+          >
+            <h3 class="display-bold14 text-strong">애국가를 불러보자</h3>
+            <p
+              class="display-medium14 text-default"
+              style="white-space: pre-wrap"
+            >
+              동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세
+              무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세
+            </p>
+            <p
+              id="author"
+              class="display-medium14 text-weak"
+              style="margin-top: 8px"
+            >
+              author by <span id="author">web</span>
+            </p>
+          </div>
+          <form
+            id="text-form"
+            style="width: 100%; display: flex; flex-direction: column; gap: 8px"
+          >
+            <input
+              class="display-bold14 text-strong"
+              placeholder="제목을 입력하세요"
+            />
+            <textarea
+              class="display-medium14 text-default"
+              placeholder="내용을 입력하세요"
+            ></textarea>
+          </form>
           <div
             id="icon-area"
             style="display: flex; flex-direction: column; padding-left: 4px"
-          ></div>
+          >
+            <button id="delete-card">
+              <img src="./assets/icons/closed.svg" alt="delete" />
+            </button>
+            <button id="edit-card">
+              <img src="./assets/icons/edit.svg" alt="edit" />
+            </button>
+          </div>
         </div>
         <div
           id="button-area"
@@ -71,61 +113,18 @@
     </template>
     <!-- 버튼 템플릿 -->
     <template id="button-template">
-      <button
-        class="display-bold14"
-        style="
-          width: 100%;
-          height: 32px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: var(--number-100);
-          border-radius: var(--number-100);
-        "
-      ></button>
+      <button class="display-bold14 card"></button>
     </template>
     <!-- 아이콘 버튼 템플릿 -->
-    <template id="icon-template">
-      <button>
-        <img />
-      </button>
-    </template>
+    <template id="icon-template"> </template>
     <!-- 정적 텍스트 템플릿 -->
-    <template id="freezed-text-template">
-      <div style="width: 100%; display: flex; flex-direction: column; gap: 8px">
-        <h3 class="display-bold14 text-strong">애국가를 불러보자</h3>
-        <p class="display-medium14 text-default">
-          동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 무궁화
-          삼천리 화려강산 대한사람 대한으로 길이 보전하세
-        </p>
-        <p
-          id="author"
-          class="display-medium14 text-weak"
-          style="margin-top: 8px"
-        >
-          author by <span id="author">web</span>
-        </p>
-      </div>
-    </template>
+    <template id="freezed-text-template"> </template>
     <!-- 텍스트 폼 템플릿 -->
-    <template id="text-form-template">
-      <form
-        style="width: 100%; display: flex; flex-direction: column; gap: 8px"
-      >
-        <input class="display-bold14 text-strong" placeholder="제목을 입력하세요"/>
-        <textarea class="display-medium14 text-default" placeholder="내용을 입력하세요"></textarea>
-      </form>
-    </template>
+    <template id="text-form-template"> </template>
   </head>
   <body
     class="surface-alt"
-    style="
-      width: 100dvw;
-      height: 100dvh;
-      margin: 0;
-      padding: 0;
-      overflow-y: hidden;
-    "
+    style="width: 100dvw; height: 100dvh; margin: 0; padding: 0"
   >
     <div
       id="app"
@@ -134,7 +133,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        padding: 0 80px;
+        overflow-y: hidden;
       "
     >
       <header
@@ -144,6 +143,7 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
+          padding: 0 80px;
         "
       >
         <div
@@ -179,30 +179,35 @@
           <img src="./assets/icons/icon.svg" alt="history" />
         </button>
       </header>
-      <div style="width: 100%; height: 100%; padding: 32px 0">
-        <main
-          style="width: 100%; height: 100%; display: flex; gap: 24px"
-        ></main>
-        <div
-          style="
-            position: fixed;
-            bottom: 48px;
-            right: 48px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-          "
-        >
-          <button class="floating-button surface-default">
-            <img src="./assets/icons/undo.svg" alt="undo" />
-          </button>
-          <button class="floating-button surface-default">
-            <img src="./assets/icons/redo.svg" alt="redo" />
-          </button>
-          <button class="floating-button surface-brand">
-            <img src="./assets/icons/plus-large.svg" alt="plus" />
-          </button>
-        </div>
+      <main
+        style="
+          width: 100%;
+          height: 100%;
+          padding: 32px 80px;
+          display: flex;
+          gap: 24px;
+          overflow: auto;
+        "
+      ></main>
+      <div
+        style="
+          position: fixed;
+          bottom: 48px;
+          right: 48px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        "
+      >
+        <button class="floating-button surface-default">
+          <img src="./assets/icons/undo.svg" alt="undo" />
+        </button>
+        <button class="floating-button surface-default">
+          <img src="./assets/icons/redo.svg" alt="redo" />
+        </button>
+        <button class="floating-button surface-brand">
+          <img src="./assets/icons/plus-large.svg" alt="plus" />
+        </button>
       </div>
     </div>
     <script type="module" src="./scripts/main.js"></script>
