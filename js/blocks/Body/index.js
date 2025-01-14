@@ -1,7 +1,8 @@
+import { Modal } from '../Modal/index.js';
+
 const lists = ['todo', 'doing', 'done'];
 
 const saveTasksToLocalStorage = (tasks) => {
-    console.log(tasks);
     localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
@@ -23,6 +24,7 @@ function createSection(containerId, title, tasks) {
     tasks.filter(task => task.type === containerId).forEach(({ type, list }) => {
         list.forEach(({id, title, content}) => {
             const newTask = createTaskElement(type, id, title, content);
+            // newTask.style.order = sortOrder === 'asc' ? id : -id;
 
             fragment.appendChild(newTask);
             listCount++;
@@ -102,10 +104,6 @@ const initializeDragAndDrop = () => {
 
         list.addEventListener('dragover', (e) => {
             e.preventDefault();
-        });
-
-        list.addEventListener('drop', (e) => {
-            e.preventDefault();
 
             const afterElement = getDragAfterElement(list, e.clientY);
             const draggable = document.querySelector('.dragging'); // 드래그 요소
@@ -122,9 +120,9 @@ const initializeDragAndDrop = () => {
                 const parentElementId = previousParentId;
                 const targetListId = list.id;
 
-                console.log(parentElementId, targetListId); // 기존의 섹션 id, 이동된 섹션 id
-                console.log('draggable', draggable); // 이동된 요소 id
-                console.log('item', e.target); // drop된 위치 (ul, li 둘 중 하나)
+                // console.log(parentElementId, targetListId); // 기존의 섹션 id, 이동된 섹션 id
+                // console.log('draggable', draggable); // 이동된 요소 id
+                // console.log('item', e.target); // drop된 위치 (ul, li 둘 중 하나)
                 
                 const tasks = loadTasksFromLocalStorage();
                 const draggableId = parseInt(draggable.id.split('-')[1]);
@@ -155,6 +153,10 @@ const initializeDragAndDrop = () => {
                 saveTasksToLocalStorage(updatedTasks);
                 updateBadgeCount();
             }
+        });
+
+        list.addEventListener('drop', (e) => {
+            e.preventDefault();
         });
     });
 };
@@ -282,7 +284,6 @@ const createTaskBox = (type, list, id = null, task = null) => {
 };
 
 const createTaskElement = (type, id, title, content) => {
-    console.log(type, title, content);
     const task = document.createElement('li');
     task.className = 'task-item';
     task.draggable = true;
@@ -320,16 +321,30 @@ const createTaskElement = (type, id, title, content) => {
     closedImg.src = '/assets/closed.svg';
     closedImg.alt = 'closed';
 
-    // TODO: 삭제 모달 추가
     closedBtn.onclick = () => {
-        task.remove();
-        // TODO: localStorage에서도 삭제
-        updateBadgeCount();
+        
+        const modal = new Modal({
+            message: '선택한 카드를 삭제할까요?',
+            onDelete: () => {
+                task.remove();
+                const tasks = loadTasksFromLocalStorage();
+                const updatedTasks = tasks.map(t => {
+                    if (t.type === type) {
+                        t.list = t.list.filter(task => task.id !== id);
+                    }
+                    return t;
+                }).filter(t => t.list.length > 0);
+                saveTasksToLocalStorage(updatedTasks);
+                
+                updateBadgeCount();
+            }
+        });
+        modal.open();
     };
     closedBtn.appendChild(closedImg);
 
-    btnWrapper.appendChild(editBtn);
     btnWrapper.appendChild(closedBtn);
+    btnWrapper.appendChild(editBtn);
 
     task.appendChild(taskWrapper);
     task.appendChild(btnWrapper);
@@ -351,3 +366,22 @@ const updateBadgeCount = () => {
         }
     });
 };
+
+const changeBtn = document.getElementById('change-btn');
+const changeBtnText = document.getElementById('change-btn-text');
+let sortOrder = 'asc';
+
+changeBtn.addEventListener('click', () => {
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    changeBtnText.textContent = sortOrder === 'asc' ? '생성순' : '최신순';
+
+    const tasks = loadTasksFromLocalStorage();
+    tasks.forEach(task => {
+        task.list.forEach((item, index) => {
+            const taskElement = document.getElementById(`task-${item.id}`);
+            if (taskElement) {
+                // taskElement.style.order = sortOrder === 'asc' ? item.id : -item.id;
+            }
+        });
+    });
+});

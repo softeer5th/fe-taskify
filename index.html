@@ -9,8 +9,32 @@
 </head>
 <body>
     <header>
-        <h1 class="bold24">Taskify</h1>
-        <span>시계 아이콘</span>
+        <div class="logo-section">
+            <h1 class="bold24">Taskify</h1>
+            <button id="change-btn" class="change__btn">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.9167 12.6666V3.33331M10.9167 3.33331L12.6667 5.08331M10.9167 3.33331L9.16671 5.08331M5.08337 3.33331V12.6666M5.08337 12.6666L6.83337 10.9166M5.08337 12.6666L3.33337 10.9166" stroke="#6E7191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="change-btn-text">생성순</span>
+            </button>
+        </div>
+        <button id="clock-btn" class="clock__btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 7.8V12H16.2" stroke="#6E7191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19C15.8661 19 19 15.8661 19 12C19 8.1339 15.8661 5 12 5C8.1339 5 5 8.1339 5 12C5 15.8661 8.1339 19 12 19Z" stroke="#6E7191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <div class="activity__list">
+            <div class="activity__list__header">
+                <p class="title">사용자 활동 기록</p>
+                <div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z" fill="#A0A3BD"/>
+                    </svg>
+                    <span>닫기</span>
+                </div>
+            </div>
+        </div>
     </header>
     <main>
     </main>

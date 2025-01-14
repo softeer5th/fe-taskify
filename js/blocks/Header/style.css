@@ -1,6 +1,77 @@
 header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 2rem 0;
+
+    .logo-section {
+        display: flex;
+
+        gap: 16px;
+
+        .change__btn {
+            padding: 4px 8px;
+            color: var(--grayscale-600);
+            border: 1px solid var(--grayscale-600);
+            border-radius: 8px;
+
+            font-size: 12px;
+            font-weight: 500;
+
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    }
+
+    .activity__list{
+        display: none;
+        background-color: var(--grayscale-50);
+        
+        .activity__list__header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+
+            .title {
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--grayscale-900);
+            } 
+
+            > div {
+                display: flex;
+                align-items: center;
+
+                > span {
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: var(--grayscale-600);
+                }
+            }
+        }        
+    }
+
+    .clock__btn {
+        position: relative;
+    }
+
+    .clock__toggle {
+        position: absolute;
+        right: 10px;
+        top: 60px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .record__container {
+        display: flex;
+
+        .textBox {   
+            display: flex;
+            flex-direction: column;
+        }
+    }
 }
