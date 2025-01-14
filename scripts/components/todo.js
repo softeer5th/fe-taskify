@@ -201,7 +201,7 @@ export const initTodo = () => {
                     prevIndex = null
                     currentCategory = null
                     currentIndex = null
-                    // storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
+                    storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
                 })
             }
         )
