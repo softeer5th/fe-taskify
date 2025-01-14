@@ -23,4 +23,20 @@ header {
             gap: 4px;
         }
     }
+
+    .activity__list{
+        display: none;
+    }
+
+    .clock__btn {
+        position: relative;
+    }
+
+    .clock__toggle {
+        position: absolute;
+        right: 10px;
+        top: 40px;
+        display: flex;
+        flex-direction: column;
+    }
 }
