@@ -5,6 +5,7 @@ import { editCard, closeEditModal } from "./card/editCard.js";
 import { sort } from "./sort.js";
 import { deleteCard, closeDeleteModal } from "./card/deleteCard.js";
 import { dragendCard, dragoverCard, dragStartCard } from "./card/moveCard.js";
+import { showHistoryModal } from "./history/historyModal.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   setDefaultColumn();
@@ -55,6 +56,8 @@ document.addEventListener("click", ({ target }) => {
     closeEditModal(true, task);
   } else if (target.closest(".task-edit-can-btn")) {
     closeEditModal(false, task);
+  } else if (target.closest(".history-btn")) {
+    showHistoryModal();
   }
 });
 

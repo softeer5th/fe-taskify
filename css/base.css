@@ -214,3 +214,30 @@ footer {
 .dragging {
   opacity: 30%;
 }
+
+.history-modal {
+  position: fixed;
+  top: 64px;
+  right: -366px; /* 시작 위치를 화면 밖으로 */
+  width: 366px;
+  height: 680px;
+  padding: 16px;
+  gap: 16px;
+  border-radius: 16px;
+  background-color: rgba(254, 254, 254, 1);
+  box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
+}
+
+.history-modal.show {
+  transition: right 0.3s ease-in-out;
+  right: 48px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
+}
+.history-modal.close {
+  transition: left 0.3s ease-in-out;
+  right: -366px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
+}
+
+.modal-body {
+  padding: 20px;
+  color: white;
+}
