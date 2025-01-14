@@ -3,7 +3,6 @@ import { Modal } from '../Modal/index.js';
 const lists = ['todo', 'doing', 'done'];
 
 const saveTasksToLocalStorage = (tasks) => {
-    console.log(tasks);
     localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
@@ -361,7 +360,6 @@ const getListCountByType = (type) => {
 const updateBadgeCount = () => {
     lists.forEach(id => {
         const badge = document.querySelector(`#badge-${id}`);
-        console.log(badge);
         
         if (badge) {
             badge.textContent = getListCountByType(id);
