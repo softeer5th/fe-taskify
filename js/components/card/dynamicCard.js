@@ -1,45 +1,47 @@
-import { createComponent } from "../../global/createComponent.js";
 import { CardDynamicButtons } from "./buttons/cardDynamicButtons.js";
 import { CardContentInput } from "./input/cardContentInput.js";
 import { CardTitleInput } from "./input/cardTitleInput.js";
 
-export const DynamicCard = (card, columnId) => {
+export const DynamicCard = (card, onCardDelete, onCardUpdate) => {
+    const { title, content, date } = card;
 
-    return createComponent({
-        initialState: {
-            title: "a",
-            content: "a",
-        },
-        render: ({ state, setState }) => {
-            console.log(state)
-            const { id } = card;
+    const fragment = document.createDocumentFragment();
 
-            const { title, content } = state;
+    const cardFormContainer = document.createElement("li");
+    cardFormContainer.className = "card-template";
 
-            const fragment = document.createDocumentFragment();
+    let currentTitle = title;
+    let currentContent = content;
+    let isNew = title === "" && content === "";
 
-            const cardFormContainer = document.createElement("li");
-            cardFormContainer.className = "card-template";
+    const titleInput = CardTitleInput({ title });
+    cardFormContainer.appendChild(titleInput);
 
-            cardFormContainer.appendChild(CardTitleInput({
-                title,
-                onChangeInput: (newTitle) => {
-                    setState({ ...state, title: newTitle })
-                }
-            }));
+    const contentInput = CardContentInput({ content });
+    cardFormContainer.appendChild(contentInput);
 
-            cardFormContainer.appendChild(CardContentInput({
-                content,
-                onChangeInput: (newContent) => {
-                    setState({ ...state, content: newContent })
-                }
-            }));
+    cardFormContainer.querySelectorAll(['textarea', 'input']).forEach(element => element.addEventListener('input', (e) => {
+        if (e.target.tagName === 'INPUT') currentTitle = e.target.value;
+        if (e.target.tagName === 'TEXTAREA') currentContent = e.target.value;
+    }));
 
-            cardFormContainer.appendChild(CardDynamicButtons(id, columnId));
-            fragment.appendChild(cardFormContainer);
-            return fragment;
+    cardFormContainer.appendChild(CardDynamicButtons());
+
+    cardFormContainer.addEventListener("click", (e) => {
+        if (e.target.closest("button").classList.contains("card-button-cancel")) {
+            onCardDelete();
+        }
+        if (e.target.closest("button").classList.contains("card-button-submit")) {
+            onCardUpdate({
+                ...card,
+                title: currentTitle,
+                content: currentContent,
+                date: isNew ? new Date() : date,
+                readOnly: true,
+            })
         }
     })
 
-
+    fragment.appendChild(cardFormContainer);
+    return fragment;
 }

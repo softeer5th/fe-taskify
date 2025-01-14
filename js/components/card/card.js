@@ -1,19 +1,18 @@
-import { createComponent } from "../../global/createComponent.js"
 import { DynamicCard } from "./dynamicCard.js";
 import { ViewCard } from "./viewCard.js";
 
 export const Card = ({
     card,
-    columnId,
-    onDeleteCard,
-    onUpdateCard,
+    onCardDelete,
+    onCardUpdate
 }) => {
     const { readOnly } = card;
+
     if (readOnly) {
         // 카드 조회
-        return ViewCard(card);
+        return ViewCard(card, onCardDelete, onCardUpdate);
     }
 
     // 카드 생성/편집
-    return DynamicCard(card);
+    return DynamicCard(card, onCardDelete, onCardUpdate);
 }

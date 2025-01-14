@@ -1,6 +1,6 @@
 import { Column } from "../components/column/column.js";
 
-export function ColumnList({ columnList, onAddCard, onDeleteCard, onUpdateCard }) {
+export function ColumnList({ columnList, setState }) {
 
   const container = document.createElement("div");
   container.className = "main-container";
@@ -10,9 +10,7 @@ export function ColumnList({ columnList, onAddCard, onDeleteCard, onUpdateCard }
   columns.forEach((column) => {
     const columnElement = Column({
       column,
-      onAddCard,
-      onDeleteCard,
-      onUpdateCard,
+      setState
     });
     container.appendChild(columnElement);
   });
