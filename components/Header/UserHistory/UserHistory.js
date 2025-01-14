@@ -1,87 +1,57 @@
-import { IMAGE } from "../../../assets/index.js";
 import { createElement } from "../../../dom.js";
+import historyStore from "../../../store/historyStore.js";
 import createHistoryFooter from "../ui/createHistoryFooter.js";
 import HistoryHeader from "./HistoryHeader/HistoryHeader.js";
 import HistoryMain from "./HistoryMain/HistoryMain.js";
 
-const histories = [
-  {
-    id: 1,
-    action: "move",
-    date: "2025-01-13T05:20:01.833Z",
-    profileImg: IMAGE.profile,
-    nickname: "@멋진삼",
-    title: "블로그에 포스팅할 것",
-    prevColumn: "하고있는 일",
-    nextColumn: "해야할 일",
-  },
-  {
-    id: 2,
-    action: "add",
-    date: "2025-01-13T04:20:01.833Z",
-    profileImg: IMAGE.profile,
-    nickname: "@멋진삼",
-    title: "블로그에 포스팅할 것(add)",
-    column: "해야할 일",
-  },
-  {
-    id: 3,
-    action: "remove",
-    date: "2025-01-12T04:20:01.833Z",
-    profileImg: IMAGE.profile,
-    nickname: "@멋진삼",
-    title: "블로그에 포스팅할 것(remove)",
-  },
-  {
-    id: 4,
-    action: "update",
-    date: "2025-01-13T02:20:01.833Z",
-    profileImg: IMAGE.profile,
-    nickname: "@멋진삼",
-    title: "블로그에 포스팅할 것(update)",
-  },
-  {
-    id: 5,
-    action: "update",
-    date: "2025-01-13T02:20:01.833Z",
-    profileImg: IMAGE.profile,
-    nickname: "@멋진삼",
-    title: "블로그에 포스팅할 것(update)",
-  },
-  {
-    id: 6,
-    action: "update",
-    date: "2025-01-13T02:20:01.833Z",
-    profileImg: IMAGE.profile,
-    nickname: "@멋진삼",
-    title: "블로그에 포스팅할 것(update)",
-  },
-];
+const updateHistoryFooter = ({ handleDeleteHistory, histories }) => {
+  const $userHistoryDOM = document.querySelector(".user-history");
+  const $historyFooterDOM = $userHistoryDOM.querySelector(".history__footer");
 
-const sortedHistories = [...histories].sort((a, b) => {
-  return new Date(b.date) - new Date(a.date);
-});
+  // 활동 기록 최초 생성
+  if (histories.length > 0 && !$historyFooterDOM) {
+    const $historyFooter = createHistoryFooter({
+      handleDeleteHistory,
+      histories,
+    });
+
+    $userHistoryDOM.appendChild($historyFooter);
+    // 활동 기록 모두 제거
+  } else if (histories.length === 0 && $historyFooterDOM) {
+    $userHistoryDOM.lastChild.remove();
+  }
+};
 
 const UserHistory = () => {
   const handleDeleteHistory = () => {
-    // TODO: 사용자 활동 기록 저장 데이터도 모두 삭제
-    const $userHistory = document.querySelector(".history__main");
-    $userHistory.replaceChildren();
+    historyStore.clear();
   };
 
   const $userHistory = createElement("div", {
     className: "user-history shadow-floating",
   });
   const $historyHeader = HistoryHeader();
-  const $historyMain = HistoryMain({ histories: sortedHistories });
+  const $historyMain = HistoryMain({ histories: historyStore.histories });
+  const $historyFooter = createHistoryFooter({
+    handleDeleteHistory,
+    histories: historyStore.histories,
+  });
 
-  if (histories.length > 0) {
-    const $historyFooter = createHistoryFooter({ handleDeleteHistory });
-    $userHistory.append($historyHeader, $historyMain, $historyFooter);
-    return $userHistory;
-  }
+  // 액션에 발생했을 때 history에 추가
+  historyStore.subscribe((updatedHistories) => {
+    const $updatedHistoryMain = HistoryMain({ histories: updatedHistories });
+    const $historyMainDOM = document.querySelector(
+      ".user-history .history__main"
+    );
+    $historyMainDOM.replaceWith($updatedHistoryMain);
 
-  $userHistory.append($historyHeader, $historyMain);
+    updateHistoryFooter({
+      handleDeleteHistory,
+      histories: updatedHistories,
+    });
+  });
+
+  $userHistory.append($historyHeader, $historyMain, $historyFooter);
   return $userHistory;
 };
 

@@ -1,3 +1,5 @@
+import { STORAGE_KEY } from "../../../constants/storageKey.js";
+import historyStore from "../../../store/historyStore.js";
 import loadStyleSheet from "../../../utils/loadStyleSheet.js";
 import {
   loadLocalStorage,
@@ -35,6 +37,7 @@ const ColumnBody = ({ sectionId, items }) => {
 
   const handleDrop = (e) => {
     e.preventDefault();
+    const prevSectionId = e.dataTransfer.getData("text/prevSectionId");
     const draggedElement = document.querySelector(".dragging");
 
     if (shadowElement && draggedElement) {
@@ -43,10 +46,13 @@ const ColumnBody = ({ sectionId, items }) => {
       shadowElement = null;
     }
 
-    const newSectionId = $columnBody.closest(".column__container").id;
+    const sectionId = $columnBody.closest(".column__container").id;
     const itemId = Number(draggedElement.dataset.id);
+    const title = draggedElement.querySelector(
+      ".column__item__title"
+    ).textContent;
 
-    updateTodoList(newSectionId, itemId);
+    updateTodoList({ sectionId, itemId, prevSectionId, title });
   };
 
   const handleDragLeave = (e) => {
@@ -70,10 +76,15 @@ const ColumnBody = ({ sectionId, items }) => {
 };
 
 // TODO: 배열 메서드로 개선 필요
-const updateTodoList = (sectionId, itemId) => {
-  const todoList = loadLocalStorage();
+const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
+  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
 
   let draggedItem = null;
+
+  const prevColumn = todoList.find(
+    (section) => section.id === prevSectionId
+  ).title;
+  const nextColumn = todoList.find((section) => section.id === sectionId).title;
 
   const filteredList = todoList.map((section) => {
     if (section.items.some((item) => item.id === itemId)) {
@@ -97,7 +108,16 @@ const updateTodoList = (sectionId, itemId) => {
   });
 
   updateCount(finalList);
-  saveLocalStorage(finalList);
+  saveLocalStorage(STORAGE_KEY.todoList, finalList);
+
+  if (prevColumn !== nextColumn) {
+    historyStore.action({
+      action: "move",
+      title,
+      prevColumn: prevColumn,
+      nextColumn: nextColumn,
+    });
+  }
 };
 
 const updateCount = (todoList) => {

@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .column__section {

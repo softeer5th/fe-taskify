@@ -3,23 +3,22 @@ import createAddButtonContainer from "./createAddButtonContainer.js";
 import createInputContainer from "./createInputContainer.js";
 
 const createColumnInputItem = ({
-  handleInputTitle,
-  handleInputContent,
-  handleCancel,
-  handleSubmit,
+  id,
+  title = "",
+  content = "",
+  type = "add",
 }) => {
-  const $columnInputItem = createElement("div", { className: "column__item" });
+  const $columnInputItem = createElement("div", {
+    className: "column__item",
+    "data-id": id,
+  });
   const $inputContainer = createInputContainer({
-    handleInputTitle,
-    handleInputContent,
+    title,
+    content,
   });
-  const $addButtonContainer = createAddButtonContainer({
-    handleCancel,
-    handleSubmit,
-  });
+  const $addButtonContainer = createAddButtonContainer({ type });
 
   $columnInputItem.append($inputContainer, $addButtonContainer);
-
   return $columnInputItem;
 };
 

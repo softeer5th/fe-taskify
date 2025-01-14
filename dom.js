@@ -22,10 +22,12 @@ export const createButton = ({
   text = "",
   handleClick,
   disabled,
+  type = "add",
 }) => {
   const $button = createElement("button", { id, className, text });
   $button.disabled = disabled ?? false;
   $button.addEventListener("click", handleClick);
+  $button.setAttribute("data-type", type);
 
   return $button;
 };
@@ -48,11 +50,13 @@ export const createTextarea = ({
   handleInput,
   placeholder = "",
   maxLength = 500,
+  value = "",
 }) => {
   const $textarea = createElement("textarea", { id, className });
   $textarea.rows = 1;
   $textarea.maxLength = maxLength;
   $textarea.placeholder = placeholder ?? undefined;
+  $textarea.value = value;
 
   $textarea.addEventListener("change", handleChange);
   $textarea.addEventListener("input", handleInput);
