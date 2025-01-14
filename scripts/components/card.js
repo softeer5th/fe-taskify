@@ -1,4 +1,3 @@
-import CardMode from '../store/models/card-model.js';
 import {
   initCardTextArea,
   initCardIconButtons,
@@ -18,13 +17,14 @@ import createState from '../utils/helpers/stateHelper.js';
 
 /**
  * 카드 컴포넌트
- * @param {'default' | 'add' | 'drag' | 'place'} mode - 카드 모드
+ * @param {'default' | 'add' | 'drag' | 'place' | 'edit'} mode - 카드 모드
  * @param {Card} cardData - 카드 데이터
  * @param {function} addCard - 카드 추가 함수
  * @param {function} deleteCard - 카드 삭제 함수
+ * @param {function} editCard - 카드 수정 함수
  * @returns {DocumentFragment} - 카드 요소를 포함하는 DocumentFragment
  */
-const Card = (mode = 'default', cardData, addCard, deleteCard) => {
+const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
   const card = document.getElementById('card-template').content.cloneNode(true);
 
   /**
@@ -33,11 +33,12 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
   const cardElement = card.querySelector('li');
 
   const cardState = createState(cardData);
-  const cardMode = createState(new CardMode(mode, false));
+  const cardMode = createState(mode);
 
   cardState.subscribe(() => {
-    cardMode.setState(new CardMode('default', false));
-    addCard(cardState.getState());
+    if (cardMode.getState() === 'add') addCard(cardState.getState());
+    else editCard(cardState.getState());
+    cardMode.setState('default');
   });
 
   cardMode.subscribe(() => {
@@ -52,7 +53,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
       deleteCard(cardData.id);
     },
     () => {
-      cardMode.setState(() => ({ currentMode: 'add', isEditMode: true }));
+      cardMode.setState('edit');
     }
   );
   initCardButtons(cardElement, [
@@ -63,7 +64,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
           cardElement.parentElement.querySelector('#add-card').disabled = false;
           cardElement.remove();
         } else {
-          cardMode.setState(new CardMode('default', false));
+          cardMode.setState('default');
         }
       },
     },
@@ -93,28 +94,28 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
  *
  * @param {HTMLElement} cardElement
  * @param {Card} cardData
- * @param {CardMode} mode
+ * @param {'default' | 'add' | 'drag' | 'place' | 'edit'} mode - 카드 모드
  */
 const updateCardDisplay = (cardElement, cardData, mode) => {
   toggleDisplay(
     cardElement.querySelector('#freezed-text'),
-    mode.currentMode !== 'add'
+    mode !== 'add' && mode !== 'edit'
   );
   toggleDisplay(
     cardElement.querySelector('#icon-area'),
-    mode.currentMode !== 'add'
+    mode !== 'add' && mode !== 'edit'
   );
   toggleDisplay(
     cardElement.querySelector('#text-form'),
-    mode.currentMode === 'add'
+    mode === 'add' || mode === 'edit'
   );
   toggleDisplay(
     cardElement.querySelector('#button-area'),
-    mode.currentMode === 'add'
+    mode === 'add' || mode === 'edit'
   );
 
-  toggleDisplay(cardElement.querySelector('#add-button'), !mode.isEditMode);
-  toggleDisplay(cardElement.querySelector('#edit-button'), mode.isEditMode);
+  toggleDisplay(cardElement.querySelector('#add-button'), mode !== 'edit');
+  toggleDisplay(cardElement.querySelector('#edit-button'), mode === 'edit');
 
   cardElement
     .querySelectorAll('#button-area button')
