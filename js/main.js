@@ -1,45 +1,96 @@
-import { closeCardModal, makeCard, popupCardModal } from './addCard.js';
-import { getColumnTasks } from '../utils/storage/taskManager.js';
-import { getColumn, setDefaultColumn } from './setColumn.js';
-import { sortCard } from './sortCard.js';
+import { closeCardModal, makeCard, popupCardModal } from "./addCard.js";
+import {
+  getColumnTasks,
+  removeTask,
+  editTask,
+  getTaskByTimestamp,
+} from "../utils/storage/taskManager.js";
+import { getColumn, setDefaultColumn } from "./setColumn.js";
+import { sortCard } from "./sortCard.js";
+import { editCard, closeEditModal } from "./editCard.js";
+import { deleteCard, closeDeleteModal } from "./deleteCard.js";
 
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   setDefaultColumn();
 
-  const columns = document.querySelectorAll('.column');
-  columns.forEach(column => {
-    const columnKey = column.getAttribute('data-column-key');
+  const columns = document.querySelectorAll(".column");
+  columns.forEach((column) => {
+    const columnKey = column.getAttribute("data-column-key");
     const tasks = getColumnTasks(columnKey);
     if (!tasks) return;
-    tasks.forEach(task => {
+    tasks.forEach((task) => {
       makeCard(task, column);
     });
   });
 });
 
-document.addEventListener('click', (e) => {
-  console.log(e.target);
-  const parentColumn = e.target.closest('.column');
-  console.log(parentColumn);
-  if (e.target.closest('.add-btn')) { // + 버튼 클릭시
+document.addEventListener("click", ({ target }) => {
+  // 이벤트 위임 & 이벤트 객체 분해
+  const parentColumn = target.closest(".column");
+  const task = target.closest(".task");
+  if (target.closest(".add-btn")) {
+    // + 버튼 클릭시
     popupCardModal(parentColumn);
-  } else if (e.target.classList.contains('task-add-add-btn')) { // 등록 버튼 클릭시
+  } else if (target.classList.contains("task-add-add-btn")) {
+    // 등록 버튼 클릭시
     const title = parentColumn.querySelector("input").value;
-    const body = parentColumn.querySelector('input:last-child').value;
-    const task = { title: title, body: body, author: 'me', timestamp: Date.now() };
+    const body = parentColumn.querySelector("input:last-child").value;
+    const task = {
+      title: title,
+      body: body,
+      author: "me",
+      timestamp: Date.now(),
+    };
     makeCard(task, parentColumn);
-  } else if (e.target.classList.contains('task-add-can-btn')) { // 취소 버튼 클릭시
+  } else if (target.classList.contains("task-add-can-btn")) {
+    // 취소 버튼 클릭시
     closeCardModal(parentColumn);
-  } else if (e.target.closest('.sort-btn')) {
-    console.log(e.target.closest('.sort-btn').getAttribute('card-sort'));
-    sortCard(e.target.closest('.sort-btn').getAttribute('card-sort'));
+  } else if (target.closest(".sort-btn")) {
+    console.log(target.closest(".sort-btn").getAttribute("card-sort"));
+    sortCard(target.closest(".sort-btn").getAttribute("card-sort"));
+  } else if (target.closest(".card-close-btn")) {
+    deleteCard(task);
+  } else if (target.closest(".task-delete-cancel-btn")) {
+    closeDeleteModal(false, task);
+  } else if (target.closest(".task-delete-confirm-btn")) {
+    closeDeleteModal(true, task);
+  } else if (target.closest(".card-edit-btn")) {
+    editCard(task);
+  } else if (target.closest(".task-edit-add-btn")) {
+    closeEditModal(true, task);
+  } else if (target.closest(".task-edit-can-btn")) {
+    closeEditModal(false, task);
+    console.log(task);
   }
 });
 
+//드래그 구현, 차후 refactor
+document.addEventListener("dragstart", ({ target }) => {
+  target.classList.add("dragging");
+});
 
+document.addEventListener("dragend", ({ target }) => {
+  target.classList.remove("dragging");
+});
 
+document.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  const draggingCard = document.querySelector(".dragging");
+  const columns = document.querySelectorAll(".column");
 
+  columns.forEach((column) => {
+    if (e.target.closest(".column") === column) {
+      const cards = [...column.querySelectorAll(".task:not(.dragging)")];
+      const afterCard = cards.find((card) => {
+        const rect = card.getBoundingClientRect();
+        return e.clientY <= rect.top + rect.height / 2;
+      });
 
-
-
+      if (afterCard) {
+        column.insertBefore(draggingCard, afterCard);
+      } else {
+        column.appendChild(draggingCard);
+      }
+    }
+  });
+});

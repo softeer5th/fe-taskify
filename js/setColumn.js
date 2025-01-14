@@ -1,5 +1,5 @@
-import { getColumnTasks } from '../utils/storage/taskManager.js';
-import { addColumn } from '../utils/storage/columnManager.js';
+import { getColumnTasks } from "../utils/storage/taskManager.js";
+import { addColumn } from "../utils/storage/columnManager.js";
 
 export const getColumn = () => {
   let columnCount = 1;
@@ -11,30 +11,29 @@ export const getColumn = () => {
   }
 
   return columns;
-}
+};
 export const setDefaultColumn = () => {
   const columns = getColumn();
-  console.log(columns);
-  if (!columns.length) { //innerhtml 로 각각의 기본 column 추가
-    addColumn('해야할 일');
-    addColumn('진행중인 일');
-    addColumn('완료한 일');
-    columns.push('해야할 일');
-    columns.push('진행중인 일');
-    columns.push('완료한 일');
+  if (!columns.length) {
+    //innerhtml 로 각각의 기본 column 추가
+    addColumn("해야할 일");
+    addColumn("진행중인 일");
+    addColumn("완료한 일");
+    columns.push("해야할 일");
+    columns.push("진행중인 일");
+    columns.push("완료한 일");
   }
 
-
   let dataColumnKey = 1;
-  columns.forEach(column => {
+  columns.forEach((column) => {
     //task count 를 위한 코드
     const tasks = getColumnTasks(dataColumnKey);
     const taskCount = tasks ? tasks.length : 0;
 
     //column 추가
-    const newColumn = document.createElement('ol');
-    newColumn.className = 'column';
-    newColumn.setAttribute('data-column-key', `${dataColumnKey++}`);
+    const newColumn = document.createElement("ol");
+    newColumn.className = "column";
+    newColumn.setAttribute("data-column-key", `${dataColumnKey++}`);
     newColumn.innerHTML = `
       <li class="task-list">
         <div class="column-title">${column}</div>
@@ -51,7 +50,7 @@ export const setDefaultColumn = () => {
         </div>
       </li>
     `;
-    const taskList = document.querySelector('.task-lists');
+    const taskList = document.querySelector(".task-lists");
     taskList.appendChild(newColumn);
   });
-}
+};
