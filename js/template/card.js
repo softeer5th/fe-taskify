@@ -1,10 +1,14 @@
-
 import { attachCommandEvent, attachViewEvent } from "../event/card.js";
+import { columnStore } from "../store/column.js";
+
+const { getCardWithId } = columnStore();
 
 // 일반 카드 템플릿
-const cardTemplate = (cardData, columnIndex = null, cardIndex = null, originalId = undefined) => {
+const cardTemplate = (columnId, cardId) => {
+    const cardData = getCardWithId(columnId, cardId);
+    console.log(cardData)
     const { title, content, author } = cardData;
-    const id = originalId ? originalId : `card-${columnIndex}-${cardIndex}`
+    const id = `card-${columnId}-${cardId}`
     const element = document.createElement("li");
     element.className = "card-view-template"
     element.id = id;
@@ -32,10 +36,12 @@ const cardTemplate = (cardData, columnIndex = null, cardIndex = null, originalId
     return element;
 }
 // 추가 / 수정할 때 사용하는 템플릿
-const createCardTemplate = (cardData = null) => {
+const createCardTemplate = (columnId = null, cardId = null) => {
     const element = document.createElement("li");
+    const card = getCardWithId(columnId, cardId);
     element.className = "card-template"
-    element.innerHTML = !cardData ? `
+    if (!card) {
+        element.innerHTML = `
                 <input type="text" class="display-bold14 card-title" placeholder="제목을 입력하세요">
                 </input>
                 <textarea type="text"
@@ -50,29 +56,32 @@ const createCardTemplate = (cardData = null) => {
                         등록
                     </button>
                 </div>
-            ` : `
-                <input type="text" class="display-bold14 card-title" value=${cardData.title} placeholder="제목을 입력하세요">
-                </input>
-                <textarea type="text"
-                    rows="1"
-                    class="display-medium14 card-content"
-                    placeholder="내용을 입력하세요" 
-                required>${cardData.content}</textarea>
-                <div class="card-button-container">
-                    <button class="display-bold14 card-button-cancel">
-                        취소
-                    </button>
-                    <button class="display-bold14 card-button-submit">
-                        수정
-                    </button>
-                </div>
             `
+        return element;
+    }
+    element.innerHTML = `
+        <input type="text" class="display-bold14 card-title" value=${title} placeholder="제목을 입력하세요">
+        </input>
+        <textarea type="text"
+            rows="1"
+            class="display-medium14 card-content"
+            placeholder="내용을 입력하세요" 
+        required>${content}</textarea>
+        <div class="card-button-container edit">
+            <button class="display-bold14 card-button-cancel">
+                취소
+            </button>
+            <button class="display-bold14 card-button-submit">
+                수정
+            </button>
+        </div>
+    `
     return element;
 }
 
-const createCardHTML = (cardData = null) => createCardTemplate(cardData);
-export const createCardElement = (index) => attachCommandEvent(createCardHTML(), index);
-export const saveCardHTML = (cardData, columnIndex, cardIndex) => attachViewEvent(cardTemplate(cardData, columnIndex, cardIndex));
-export const cancelCardHTML = (cardData) => attachViewEvent(cardTemplate(cardData));
-export const editCardHTML = (cardData, index) => attachCommandEvent(createCardHTML(cardData), index, true, cardData);
+const createCardHTML = (columnId = null, cardId = null) => createCardTemplate(columnId, cardId);
+export const createCardElement = () => attachCommandEvent(createCardHTML());
+export const saveCardHTML = (columnId, cardId) => attachViewEvent(cardTemplate(columnId, cardId));
+export const cancelCardHTML = (columnId, cardId) => attachViewEvent(cardTemplate(columnId, cardId));
+export const editCardHTML = (columnId, cardId) => attachCommandEvent(createCardHTML(columnId, cardId), getCardWithId(columnId, cardId));
 export const loadCardHTMLs = (columnIndex, cardDataArray) => cardDataArray.map((card, index) => cardTemplate(columnIndex, index, card)).join('');
