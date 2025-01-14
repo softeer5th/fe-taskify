@@ -28,9 +28,10 @@ export const initTodo = () => {
     // storeData(TODO_CATEGORY_KEY, categoryList)
 
     const mainElement = document.querySelector('.main')
+    let prevCategory = null
+    let prevIndex = null
     let currentCategory = null
     let currentIndex = null
-    let skeletonElementId = null
 
     categoryList.map((category) => {
         const categoryId = createDomElementAsChild(
@@ -48,7 +49,13 @@ export const initTodo = () => {
                     .addEventListener('click', () => {
                         onAddTodoButtonClick(category)
                     })
+                component
+                    .querySelector(`.${classNames.deleteButton}`)
+                    .addEventListener('click', () => {
+                        console.log(category.values.todoList)
+                    })
 
+                // ###### 드래그 이벤트 ######
                 component.addEventListener('dragover', (e) => {
                     // 드롭을 허용하기 위해 기본 동작 취소
                     e.preventDefault()
@@ -56,10 +63,16 @@ export const initTodo = () => {
                 component.addEventListener('drop', (e) => {
                     // 일부 요소의 링크 열기와 같은 기본 동작 취소
                     e.preventDefault()
+                    setState(DRAG_ELEMENT_KEY, null)
                 })
+
                 let dragDepth = 0
                 component.addEventListener('dragenter', (e) => {
                     dragDepth++
+                    const [originElementId, originIndex] =
+                        getState(DRAG_ELEMENT_KEY)
+
+                    const originElement = findDomElement(originElementId)
                     let skeletonUpdateFlag = false
                     // if (!e.target.contains(`.${classNames.todoItemBody}`))
                     //     return
@@ -80,8 +93,11 @@ export const initTodo = () => {
                                 'to',
                                 category.identifier
                             )
+                            // if (currentCategory !== null) {
                             skeletonUpdateFlag = true
+                            // }
                         }
+                        prevCategory = currentCategory
                         currentCategory = category
                         // todoList의 몇 번째 index인지 식별
                         for (let [
@@ -89,6 +105,8 @@ export const initTodo = () => {
                             todoItem,
                         ] of category.values.todoList.entries()) {
                             if (todoItem.identifier === e.target.id) {
+                                // 순서 바뀐 후 다시 origin으로 초기화되는 현상 방지
+                                if (e.target.id === originElementId) break
                                 if (currentIndex !== idx) {
                                     // index가 바뀌면 skeleton update
                                     console.log(
@@ -97,9 +115,12 @@ export const initTodo = () => {
                                         'to',
                                         idx
                                     )
+                                    // if (currentIndex !== null) {
                                     skeletonUpdateFlag = true
+                                    // }
+                                    prevIndex = currentIndex ?? originIndex
+                                    currentIndex = idx
                                 }
-                                currentIndex = idx
                                 break
                             }
                         }
@@ -109,52 +130,56 @@ export const initTodo = () => {
                             currentIndex = category.values.todoList.length
                         }
                         // 자식 요소에 이벤트 전달되면 null값이 들어감...
-                        if (currentIndex === null) {
-                            return
-                        }
-                        console.log('flag', skeletonUpdateFlag)
+                        // if (currentIndex === null) {
+                        //     return
+                        // }
+                        skeletonUpdateFlag &&
+                            console.log('flag', skeletonUpdateFlag)
                         // console.log(
                         //     'dragenter',
                         //     currentCategory.identifier,
                         //     currentIndex
                         // )
                         if (!skeletonUpdateFlag) return
-                        findDomElement(skeletonElementId)?.remove()
 
-                        if (currentIndex < category.values.todoList.length) {
-                            skeletonElementId = createDomElementAsSibling(
-                                templateNames.todoItemSkeleton,
-                                findDomElement(
-                                    currentCategory.values.todoList[
-                                        currentIndex
-                                    ].identifier
+                        if (prevCategory !== currentCategory) {
+                            return
+                        }
+
+                        const bodyElement = parentElement.querySelector(
+                            `.${classNames.todoBody}`
+                        )
+                        const targetElement = findDomElement(
+                            category.values.todoList[currentIndex].identifier
+                        )
+                        const todoList = category.values.todoList
+                        const originTodoItem = todoList[currentIndex]
+                        if (prevIndex < currentIndex) {
+                            // bodyElement.childNodes[currentIndex].after(
+                            //     originElement
+                            // )
+                            targetElement.after(originElement)
+                            // todoList.splice(prevIndex, 1)
+                            category.values.todoList = [
+                                ...todoList.slice(0, prevIndex),
+                                ...todoList.slice(
+                                    prevIndex + 1,
+                                    currentIndex + 1
                                 ),
-                                (identifier, component) => {
-                                    skeletonElementId = identifier
-                                    console.log(
-                                        getState(DRAG_ELEMENT_KEY).offsetHeight
-                                    )
-                                    component.firstElementChild.style.height = `${
-                                        getState(DRAG_ELEMENT_KEY).offsetHeight
-                                    }px`
-                                }
-                            )
-                        } else {
-                            skeletonElementId = createDomElementAsChild(
-                                templateNames.todoItemSkeleton,
-                                parentElement.querySelector(
-                                    `.${classNames.todoBody}`
-                                ),
-                                (identifier, component) => {
-                                    skeletonElementId = identifier
-                                    console.log(
-                                        getState(DRAG_ELEMENT_KEY).offsetHeight
-                                    )
-                                    component.firstElementChild.style.height = `${
-                                        getState(DRAG_ELEMENT_KEY).offsetHeight
-                                    }px`
-                                }
-                            )
+                                todoList[prevIndex],
+                                ...todoList.slice(currentIndex + 1),
+                            ]
+                        } else if (prevIndex > currentIndex) {
+                            // bodyElement.childNodes[currentIndex].before(
+                            //     originElement
+                            // )
+                            targetElement.before(originElement)
+                            category.values.todoList = [
+                                ...todoList.slice(0, currentIndex),
+                                todoList[prevIndex],
+                                ...todoList.slice(currentIndex, prevIndex),
+                                ...todoList.slice(prevIndex + 1),
+                            ]
                         }
                     }
                 })
@@ -169,6 +194,8 @@ export const initTodo = () => {
                 })
                 component.addEventListener('drop', (e) => {
                     console.log('drop', category.identifier)
+                    prevCategory = null
+                    prevIndex = null
                     currentCategory = null
                     currentIndex = null
                     findDomElement(identifier)
@@ -286,7 +313,8 @@ const manageDrag = (element) => {
     element.addEventListener('dragstart', (e) => {
         // console.log(e.target)
         // console.log(element.offsetHeight)
-        setState(DRAG_ELEMENT_KEY, e.target)
+        const index = Array.from(element.parentNode.children).indexOf(element)
+        setState(DRAG_ELEMENT_KEY, [e.target.id, index])
     })
     element.addEventListener('drag', (e) => {
         // console.log('drag', e.target)
