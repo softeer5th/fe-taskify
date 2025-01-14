@@ -3,9 +3,11 @@ import { DefaultCard } from "./Card/card.js";
 import { EditCard } from "./Card/editCard.js";
 import { ColumnHeader } from "./columnHeader.js";
 
+let previousPositions = {};
+
 export class Column extends Component {
 
-    onColumnDelete = () => {};
+    onColumnDelete = () => { };
 
     onCardAdd = () => this.toggleAddCard();
 
@@ -22,10 +24,11 @@ export class Column extends Component {
 
     constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }) {
         super();
+        this.columnData = columnData;
         this.addRootclass("column");
         this.setCallback(onCardAdded, onCardDelete);
 
-        this.setChildren(columnData);
+        this.setChildren();
     }
 
     setCallback(onCardAdded, onCardDelete) {
@@ -39,11 +42,10 @@ export class Column extends Component {
 
     }
 
-    setChildren(columnData) {
-        console.log(columnData);
+    setChildren() {
         this.children = {
             header: {
-                object: new ColumnHeader(columnData.name, columnData.data.length, this.onCardAdd, this.onColumnDelete),
+                object: new ColumnHeader(this.columnData.name, this.columnData.data.length, this.onCardAdd, this.onColumnDelete),
                 parentSelector: ".column"
             },
             input: {
@@ -51,8 +53,7 @@ export class Column extends Component {
             }
         };
 
-        columnData.data.forEach((cardData, index) => {
-            console.log(index, cardData);
+        this.columnData.data.forEach((cardData, index) => {
             this.createDefaultCard(index, cardData);
         });
     }
@@ -67,7 +68,7 @@ export class Column extends Component {
             this.hideAddCard(input);
         }
     }
-    
+
     showAddCard() {
         const inputRootClass = this.children.input.object.rootSelectorClassName;
         const input = this.parent.querySelector(`.${inputRootClass}`);
@@ -76,7 +77,7 @@ export class Column extends Component {
             input.classList.remove("hide");
         }
     }
-    
+
     hideAddCard() {
         const inputRootClass = this.children.input.object.rootSelectorClassName;
         const input = this.parent.querySelector(`.${inputRootClass}`);
@@ -90,7 +91,7 @@ export class Column extends Component {
         return element.classList.contains("hide");
     }
 
-    createEditCard(index, preCardData){
+    createEditCard(index, preCardData) {
         this.children[`card${index}`] = {
             object: new EditCard(
                 preCardData.title,
@@ -108,7 +109,7 @@ export class Column extends Component {
         }
     }
 
-    createDefaultCard(index, cardData){
+    createDefaultCard(index, cardData) {
         this.children[`card${index}`] = {
             object: new DefaultCard(
                 cardData,
@@ -130,11 +131,68 @@ export class Column extends Component {
     render(parent) {
         super.render(parent);
         this.hideAddCard();
+        this.applyAnimation();
     }
 
-    rerender(){
-        super.rerender();
-        this.hideAddCard();
+    applyAnimation() {
+        if (!previousPositions || !previousPositions[this.columnData.name]) {
+            this.remeberPreOrder();
+            return
+        }
+
+        const prev = previousPositions[this.columnData.name];
+
+        const newPositions = this.columnData.data.map((card) => {
+            const cardElement = this.parent.querySelector(`#card${card.cardId}`);
+            if (cardElement) {
+                const rect = cardElement.getBoundingClientRect(); 
+                return {
+                    id: card.cardId,
+                    top: rect.top,
+                    left: rect.left,
+                    element: cardElement,
+                };
+            }
+        });
+
+        newPositions.forEach((newPos) => {
+            const prevPos = prev.find((prev) => prev.id === newPos.id);
+
+            if (prevPos) {
+                const deltaX = prevPos.left - newPos.left;
+                const deltaY = prevPos.top - newPos.top;
+
+                newPos.element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+            }
+        });
+
+        requestAnimationFrame(() => {
+            newPositions.forEach((newPos) => {
+                const prevPos = prev.find((prev) => prev.id === newPos.id);
+                if (prevPos) {
+                    newPos.element.style.transition = "transform 0.5s ease";
+                    newPos.element.style.transform = "translate(0, 0)";
+                }
+
+                newPos.element.addEventListener("transitionend", () => {
+                    this.remeberPreOrder(); 
+                }, { once: true });
+            });
+        
+        });
     }
 
+    remeberPreOrder() {
+        previousPositions[this.columnData.name] = this.columnData.data.map((card) => {
+            const cardElement = this.parent.querySelector(`#card${card.cardId}`);
+            if (cardElement) {
+                const rect = cardElement.getBoundingClientRect(); // 현재 위치 저장
+                return {
+                    id: card.cardId,
+                    top: rect.top,
+                    left: rect.left,
+                };
+            }
+        });
+    }
 }

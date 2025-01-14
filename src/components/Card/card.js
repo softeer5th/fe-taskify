@@ -39,6 +39,7 @@ export class DefaultCard extends Component {
     render(parent) {
 
         super.render(parent);
+        this.current.id = `card${this.cardData.cardId}`;
 
         const close = this.current.querySelector("#close-icon");
 

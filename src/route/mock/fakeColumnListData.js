@@ -9,7 +9,12 @@ export const columnData = [
                     "제목1",
                     "내용1",
                     "web"
-                )
+                ),
+                new CardData(
+                    "제목2",
+                    "내용2",
+                    "web"
+                ),
             ]
 
         ),

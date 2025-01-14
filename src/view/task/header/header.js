@@ -63,8 +63,7 @@ export class Header extends Component {
     }
     
     rerender(){
-
-        remeberPreOrder();
+        
         this.setChildren();
 
         this.children.sort.object.addEvent("click", () => {

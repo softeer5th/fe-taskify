@@ -10,7 +10,6 @@ export class App extends Component {
 
     onSortClick = (newSortType) => {
 
-        console.log("newsort",newSortType);
         if (newSortType === sortType.create) {
             this.sortByCreated();
         } else {
@@ -40,7 +39,7 @@ export class App extends Component {
             parentSelector: "#header",
         }
     };
-    
+
     constructor() {
         super();
         this.setChildren();
