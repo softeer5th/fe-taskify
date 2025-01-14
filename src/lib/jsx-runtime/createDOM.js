@@ -1,8 +1,13 @@
 /**
  * @param {VNode} node - 변환할 가상 노드.
+ * @param {HTMLElement} [prev] - 이전에 생성된 실제 DOM.
  * @returns {HTMLElement | Text | DocumentFragment} - 변환된 실제 DOM.
  */
 export const createDOM = (node) => {
+  if (node instanceof HTMLElement) {
+    return node;
+  }
+
   if (!node || node === null || node === undefined) {
     return document.createDocumentFragment();
   }
@@ -22,6 +27,9 @@ export const createDOM = (node) => {
   };
 
   const element = createElement();
+
+  if (node.id) element.id = node.id;
+
   Object.entries(node.props).forEach(([key, value]) => {
     if (element.nodeName === "path" && (key === "stroke" || key === "fill")) {
       element.setAttribute(key, "current");

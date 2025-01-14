@@ -4,6 +4,8 @@ const DIRTY_PREFIX = "dirtyindex:";
 const DIRTY_REGEX = /dirtyindex:(\d+):/;
 const DIRTY_SEPERATOR_REGEX_G = /(dirtyindex:\d+:)/g;
 
+let VDOMId = 0;
+
 /**
  * html을 파싱하여 가상 DOM(VDOM)을 생성합니다.
  * @param {TemplateStringsArray} strings - 템플릿 문자열 배열
@@ -11,9 +13,6 @@ const DIRTY_SEPERATOR_REGEX_G = /(dirtyindex:\d+:)/g;
  * @returns {VDOM} - 생성된 가상 DOM
  */
 export const parser = (strings, ...args) => {
-  /**
-   *
-   */
   const getRootElement = () => {
     /**
      * @returns {string} - 템플릿 문자열
@@ -98,16 +97,17 @@ export const parser = (strings, ...args) => {
 
   /**
    * 자식 노드들을 파싱하여 자식 VDOM 배열로 변환합니다.
+   * @param {any} parentId - 부모 VDOM의 id
    * @param {any} childNodes - 자식 노드들
    * @param {Function} callback - VDOM으로 변환할 콜백 함수
    * @returns {VDOM[]} - 변환된 자식 노드들
    */
-  const getChildren = (childNodes, callback) => {
+  const getChildren = (parentId, childNodes, callback) => {
     const children = [];
     if (!childNodes) return children;
     Array.from(childNodes).forEach((child) => {
       if (child.nodeType === Node.ELEMENT_NODE) {
-        children.push(callback(child));
+        children.push(callback(child, parentId));
       } else if (child.nodeType === Node.TEXT_NODE) {
         const formattedText = handleTextNode(child.nodeValue);
         if (typeof formattedText === "string") {
@@ -121,16 +121,21 @@ export const parser = (strings, ...args) => {
   /**
    *
    * @param {ChildNode} element - 파싱할 HTML 요소
+   * @param {VDOM} parent - 부모 VDOM
    * @returns {VDOM} - 생성된 가상 DOM
    */
-  const parseElement = (element) => {
+  const parseElement = (element, parent) => {
+    const id = VDOMId;
+    VDOMId += 1;
+
     const type = element.tagName.toLowerCase();
     const props = getProps(element.attributes);
-    const children = getChildren(element.childNodes, parseElement);
+    const children = getChildren(id, element.childNodes, parseElement);
 
-    return createElement(type, props, ...children);
+    return createElement(parent, id, type, props, ...children);
   };
 
   const rootElement = getRootElement();
+
   return parseElement(rootElement);
 };

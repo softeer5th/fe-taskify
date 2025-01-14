@@ -1,6 +1,6 @@
 import { Icon } from "../../constants/icons/index.js";
 import { typos, colors } from "../../constants/tokens/index.js";
-import { useState, useRef } from "../../lib/hooks/index.js";
+import HamReact, { useRef } from "../../lib/hooks/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { checkUserAgent } from "../../utils/checkUserAgent.js";
 import { Button } from "../Button/index.js";
@@ -19,9 +19,9 @@ import styles from "./card.module.js";
 export const Card = ({
   title, body, type = "default", onClickDelBtn,
 }) => {
-  const [cardType, setCardType] = useState(type);
-  const [cardTitle, setCardTitle] = useState(title);
-  const [cardBody, setCardBody] = useState(body);
+  const [cardType, setCardType] = HamReact.useState(type);
+  const [cardTitle, setCardTitle] = HamReact.useState(title);
+  const [cardBody, setCardBody] = HamReact.useState(body);
 
   // TODO: diffing algorithm 구현 이후 제어 컴포넌트로 수정, 버튼 비활성화 구현하기.
   const titleRef = useRef(null);
@@ -38,8 +38,8 @@ export const Card = ({
     const handleClickCancelButton = () => setCardType("default");
 
     const handleClickEnrollButton = () => {
-      setCardTitle(titleRef.current.value);
-      setCardBody(bodyRef.current.value);
+      // setCardTitle(titleRef.current.value);
+      // setCardBody(bodyRef.current.value);
       setCardType("default");
     };
 
@@ -89,20 +89,10 @@ export const Card = ({
           <div class="${typos.display.medium[12]} ${styles.caption}">author by ${checkUserAgent()}</div>
       </div>`;
 
-  const mainContents = () => {
-    if (cardType === "add-edit") return FormContent();
-    return Content();
-  };
-
-  const actionContents = () => {
-    if (cardType === "add-edit") return Buttons();
-    return Icons();
-  };
-
-  return parser`
+  return HamReact.render(() => parser`
     <div class="${styles.container} ${styles[cardType]}">
-        ${mainContents()}
-        ${actionContents()}
+        ${cardType === "add-edit" ? FormContent() : Content()}
+        ${cardType === "add-edit" ? Buttons() : Icons()}
     </div>
-    `;
+    `);
 };

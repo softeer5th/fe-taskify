@@ -28,7 +28,7 @@ export const Alert = ({
             <div class="${styles.buttons}">
                 ${Button({
     label: "취소",
-    onClick: () => onClose(),
+    onClick: onClose,
     variant: "sub",
     isFull: true,
   })}
