@@ -1,3 +1,4 @@
+import historyStore from "../../../store/historyStore.js";
 import loadStyleSheet from "../../../utils/loadStyleSheet.js";
 import {
   loadLocalStorage,
@@ -35,6 +36,7 @@ const ColumnBody = ({ sectionId, items }) => {
 
   const handleDrop = (e) => {
     e.preventDefault();
+    const prevSectionId = e.dataTransfer.getData("text/prevSectionId");
     const draggedElement = document.querySelector(".dragging");
 
     if (shadowElement && draggedElement) {
@@ -43,10 +45,13 @@ const ColumnBody = ({ sectionId, items }) => {
       shadowElement = null;
     }
 
-    const newSectionId = $columnBody.closest(".column__container").id;
+    const sectionId = $columnBody.closest(".column__container").id;
     const itemId = Number(draggedElement.dataset.id);
+    const title = draggedElement.querySelector(
+      ".column__item__title"
+    ).textContent;
 
-    updateTodoList(newSectionId, itemId);
+    updateTodoList({ sectionId, itemId, prevSectionId, title });
   };
 
   const handleDragLeave = (e) => {
@@ -70,7 +75,7 @@ const ColumnBody = ({ sectionId, items }) => {
 };
 
 // TODO: 배열 메서드로 개선 필요
-const updateTodoList = (sectionId, itemId) => {
+const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
   const todoList = loadLocalStorage();
 
   let draggedItem = null;
@@ -98,6 +103,13 @@ const updateTodoList = (sectionId, itemId) => {
 
   updateCount(finalList);
   saveLocalStorage(finalList);
+
+  historyStore.action({
+    action: "move",
+    title,
+    prevColumn: prevSectionId,
+    nextColumn: sectionId,
+  });
 };
 
 const updateCount = (todoList) => {

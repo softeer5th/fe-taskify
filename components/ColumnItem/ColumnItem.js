@@ -19,7 +19,9 @@ const ColumnItem = ({
   });
 
   const handleDragStart = (e) => {
+    const prevSectionId = e.target.closest(".column__container").id;
     e.target.classList.add("dragging");
+    e.dataTransfer.setData("text/prevSectionId", prevSectionId);
   };
 
   const handleDragEnd = (e) => {
