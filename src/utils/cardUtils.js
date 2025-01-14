@@ -10,7 +10,7 @@ export function showCardList(element,cardList){
             type: item.type,
             content: item.content,
             author: item.author,
-            editId: 'card-edit',
+            editId: 'card-edit-toggle',
             deleteId: 'card-delete-toggle',
             checkId: "card-add",
             closeId: "card-add-toggle",
@@ -44,6 +44,7 @@ export function addCard({titleInput,contentInput,addForm,headerColumn}){
     const title = titleInput.value;
     const content = contentInput.value;
     
+
     if (title && content) {
         addForm.remove()
         const newCard =ColumnCard({
@@ -87,4 +88,53 @@ export function deleteCardToggle({app,columnCard}){
 
 export function deleteCard({columnCard}){
     columnCard.remove();
+}
+
+
+let originalTitle = ''; 
+let originalContent = '';  
+
+export function editCardToggle({editForm,columnCard}){
+    if(!editForm){
+        originalTitle = columnCard.querySelector('.column-card-title').textContent;
+        originalContent = columnCard.querySelector('.column-card-content').textContent;
+        const newForm = ColumnCard({
+            type: "edit-card",
+            title:originalTitle,
+            content:originalContent,
+            checkId: "card-edit",
+            closeId: "card-edit-toggle",
+            addText:"저장",
+            closeText: "취소",
+        });
+        columnCard.insertAdjacentElement('afterend',newForm);
+        columnCard.remove()  
+    }else{
+        const restoredCard = ColumnCard({
+            title:originalTitle,
+            content:originalContent,
+            author: "author by web",
+            editId: "card-edit-toggle",
+            deleteId: "card-delete-toggle",
+        });
+        editForm.insertAdjacentElement('afterend',restoredCard);
+        editForm.remove()
+    }
+    return;
+}
+
+export function editCard({editForm}){
+    if(editForm){
+        const newTitle = editForm.querySelector('#card-title').value;
+        const newContent = editForm.querySelector('#card-content').value;
+        const newForm = ColumnCard({
+            title:newTitle,
+            content:newContent,
+            author: "author by web",
+            editId: "card-edit-toggle",
+            deleteId: "card-delete-toggle",
+        });
+        editForm.insertAdjacentElement('afterend',newForm);
+        editForm.remove()  
+    }
 }

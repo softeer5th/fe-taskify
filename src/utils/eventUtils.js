@@ -1,16 +1,29 @@
-import { addCard, addCardToggle, deleteCard, deleteCardToggle } from './cardUtils.js';
+import { ColumnCard } from '../components/Card/ColumnCard.js';
+import { addCard, addCardToggle, deleteCard, deleteCardToggle, editCard, editCardToggle } from './cardUtils.js';
+
+
+
 
 export function handleEventListener(e) {
     const app =document.querySelector('#app')
     const target = e.target;
+    // 각각의 Column
     const parentColumn = target.closest('.column-box');
+    // 컬럼의 header
     const headerColumn =parentColumn.querySelector('.column-header')
     
     // card 
     const columnCard= target.closest('.column-card-container');
+    // 카드 추가 card
     const addForm = parentColumn.querySelector("#add-card");
+    // 카드 추가 title
     const titleInput = parentColumn.querySelector("#card-title");
+    // 카드 추가 content
     const contentInput = parentColumn.querySelector("#card-content");
+    // 카드 수정 card
+    const editForm =parentColumn.querySelector("#edit-card")
+
+
 
     if (target.closest('#history-toggle')) {
         return;
@@ -48,10 +61,12 @@ export function handleEventListener(e) {
     }
 
     else if (target.closest('#card-edit-toggle')) {
+        editCardToggle({editForm,columnCard});
         return;
     }
 
     else if (target.closest('#card-edit')) {
-    
+        editCard({editForm});
+        return;
     }
 }
