@@ -2,6 +2,7 @@ import { IMAGE } from "../../../assets/index.js";
 import { createButton, createElement, createImg } from "../../../dom.js";
 import { loadLocalStorage } from "../../../utils/localStorage.js";
 
+const ANIMATION_DURATION = 500;
 const INITIAL_SORT_TYPE = "생성 순";
 
 const toggleText = {
@@ -31,9 +32,7 @@ const getSortedTodoList = ({ todoList, sortType }) => {
 // 정렬 애니메이션 적용
 const applySortAnimation = (sortedTodoList) => {
   sortedTodoList.forEach((section) => {
-    const $columnBody = document
-      .querySelector(`#${section.id}`)
-      .querySelector(".column__body");
+    const $columnBody = document.querySelector(`#${section.id} .column__body`);
 
     const $items = Array.from($columnBody.children);
     const orderedIdList = section.items.map((item) => item.id);
@@ -55,7 +54,7 @@ const applySortAnimation = (sortedTodoList) => {
 
       setTimeout(() => {
         $item.classList.remove("item-move");
-      }, 500);
+      }, ANIMATION_DURATION);
     });
 
     setTimeout(() => {
@@ -64,7 +63,7 @@ const applySortAnimation = (sortedTodoList) => {
       );
 
       $columnBody.replaceChildren(...sortedItems);
-    }, 500);
+    }, ANIMATION_DURATION);
   });
 };
 

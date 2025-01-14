@@ -1,12 +1,8 @@
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
-import {
-  loadLocalStorage,
-  saveLocalStorage,
-} from "../../utils/localStorage.js";
 
 loadStyleSheet("/components/Modal/styles.css");
 
-const createModal = ({ title = "", content = "", sectionId, itemId }) => {
+const createModal = ({ title = "", content = "", onClick }) => {
   const $modalContainer = document.getElementById("modal-container");
   const $modal = document.createElement("div");
   const handleClose = () => {
@@ -31,8 +27,8 @@ const createModal = ({ title = "", content = "", sectionId, itemId }) => {
 
   $modal.querySelector(".modal__dimmed").addEventListener("click", handleClose);
 
-  $modal.querySelector(".delete__button").addEventListener("click", () => {
-    deleteCard({ sectionId, itemId });
+  $modal.querySelector(".delete__button").addEventListener("click", (e) => {
+    onClick();
     handleClose();
   });
 
@@ -41,36 +37,6 @@ const createModal = ({ title = "", content = "", sectionId, itemId }) => {
     .addEventListener("click", handleClose);
 
   $modalContainer.appendChild($modal);
-};
-
-const deleteCard = ({ sectionId, itemId }) => {
-  const $columnItem = document.querySelector(
-    `#${sectionId} .column__item[data-id="${itemId}"]`
-  );
-
-  const todoList = loadLocalStorage();
-
-  const filteredList = todoList.map((section) =>
-    section.id === sectionId
-      ? {
-          ...section,
-          items: section.items.filter((item) => item.id !== itemId),
-        }
-      : section
-  );
-
-  const itemLength = filteredList.find((section) => section.id === sectionId)
-    .items.length;
-
-  const $columnCount = $columnItem
-    .closest(".column__container")
-    .querySelector(".column__count");
-
-  $columnCount.textContent = itemLength;
-
-  saveLocalStorage(filteredList);
-
-  $columnItem.remove();
 };
 
 export default createModal;

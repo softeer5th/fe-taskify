@@ -4,4 +4,5 @@ export const IMAGE = {
   plus: "/assets/icon/plus.svg",
   edit: "/assets/icon/edit.svg",
   arrowBoth: "/assets/icon/arrowBoth.svg",
+  profile: "/assets/icon/profile.svg",
 };
