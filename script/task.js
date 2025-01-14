@@ -2,7 +2,7 @@ import ModalComponent from "../components/modal.js";
 import FormComponent from "../components/Form.js";
 import TaskComponent from "../components/task.js";
 
-export default function TaskController(state) {
+export default function TaskController(state, rerender) {
     const formComponent = FormComponent();
     const taskComponent = TaskComponent();
 
@@ -43,6 +43,7 @@ export default function TaskController(state) {
         modalComponent.render("선택한 카드를 삭제할까요?", ()=>{
             state.removeTask(task);
             taskElement.parentNode.removeChild(taskElement);
+            rerender(task.column);
         });
     };
 
@@ -60,7 +61,7 @@ export default function TaskController(state) {
 
         taskComponent.addEventListener(
             newTaskElement,
-            () => removeTask(task, newTaskElement),
+            () => removeTask(newTask, newTaskElement),
             () => taskComponent.renderSwap(newTaskElement, renderEditForm(newTask))
         );
 

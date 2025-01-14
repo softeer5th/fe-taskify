@@ -2,24 +2,38 @@ import FormComponent from "../components/Form.js";
 import ColumnComponent from "../components/column.js";
 import TaskController from "./task.js";
 
-
-export function ColumnController(state, bodyElement) {
-    let ordering = state.getOrder();
-
+export default function ColumnController(state, bodyElement) {
     const { columns: columnList, columnTasks } = state.getColumns();
     const columnComponent = ColumnComponent();
     const formComponent = FormComponent();
-    const taskController = TaskController(state);
+    const taskController = TaskController(state, (idx)=>{
+        console.log(idx, columnTasks[idx]);
+        columnComponent.rerenderHeader(idx, columnTasks[idx].length);
+    });
+    
 
     // 각 Column의 task들 렌더링
-    function renderColumn(idx) {
-        const tasks = columnTasks[idx];
+    function renderColumn(idx, tasks) {
 
         const columnElement = bodyElement.querySelectorAll(".card_list")[idx];
 
+        const currentTasksWithId = Array.from(columnElement.children).map((el) => {
+            return {
+                taskId: Number(el.getAttribute("taskid")),
+                element: el,
+            };
+        });
+
+
         const taskFragmentElement = document.createDocumentFragment();
-        
+
         for (let task of tasks) {
+            const matchedTask = currentTasksWithId.find(el => el.taskId === task.taskId);
+            
+            if(matchedTask) {
+                taskFragmentElement.appendChild(matchedTask.element);
+                continue;
+            }
             taskController.renderTask(taskFragmentElement, task);
         }
 
@@ -36,7 +50,8 @@ export function ColumnController(state, bodyElement) {
         };
 
         state.addTask(columnIdx, newTask);
-        renderColumn(columnIdx);
+        renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]));
+        columnComponent.rerenderHeader(columnIdx, columnTasks[columnIdx].length);
     }
 
     // Column의 + 버튼을 눌러 Task를 생성하기 위한 Form 생성
@@ -79,6 +94,7 @@ export function ColumnController(state, bodyElement) {
     }
 
     return {
-        renderInit
-    }
+        renderInit,
+        renderColumn,
+    };
 }
