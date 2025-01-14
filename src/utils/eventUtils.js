@@ -1,7 +1,4 @@
-import { ColumnCard } from '../components/Card/ColumnCard.js';
-import { Modal } from '../components/Modal/Modal.js';
-import { Background } from '../layout/Background/Background.js';
-import { addCard, addCardToggle } from './cardUtils.js';
+import { addCard, addCardToggle, deleteCard, deleteCardToggle } from './cardUtils.js';
 
 export function handleEventListener(e) {
     const app =document.querySelector('#app')
@@ -41,10 +38,12 @@ export function handleEventListener(e) {
         return;
     }
     else if (target.closest('#card-delete-toggle')) {
+        deleteCardToggle({app,columnCard});
         return;
     }
 
     else if (target.closest('#card-delete')) {
+        deleteCard({columnCard});
         return;
     }
 

@@ -1,4 +1,6 @@
 import { ColumnCard } from '../components/Card/ColumnCard.js';
+import { Modal } from '../components/Modal/Modal.js';
+import { Background } from '../layout/Background/Background.js';
 
 export function showCardList(element,cardList){
     const fragment = document.createDocumentFragment();
@@ -58,10 +60,31 @@ export function addCard({titleInput,contentInput,addForm,headerColumn}){
 
 }
 
-export function deleteCardToggle(){
+export function deleteCardToggle({app,columnCard}){
+    const background =app.querySelector('.background-container');
+        if(!background){
+            const fragment = document.createDocumentFragment()
+            const deleteModal = Modal({
+                content: '선택한 카드를 삭제할까요?',
+                checkId:'card-delete',
+                closeId:'card-delete-toggle',
+                closeText:'취소',
+                checkText:'삭제'
+            })
+
+            fragment.appendChild(Background());  
+            fragment.appendChild(deleteModal);  
+            columnCard.appendChild(fragment);
+        }
+        else{
+            const modal = columnCard.querySelector('.modal-container'); 
+            background.remove();
+            modal.remove();
+        }
+        return;
     
 }
 
-export function deleteCard(){
-    
+export function deleteCard({columnCard}){
+    columnCard.remove();
 }
