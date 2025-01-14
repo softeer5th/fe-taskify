@@ -1,22 +1,24 @@
-import { updateCardCount } from "../js/cardNavbar.js";
-
 let workList;
 
 const savedData = (updatedWorkList) => {
+  updatedWorkList, "저장될 리스트";
   localStorage.setItem("workList", JSON.stringify(updatedWorkList));
+  workList = loadData(); // 삭제가 되고, 다시 workList 변수에 업데이트 필수.
 };
 
 const loadData = () => {
-  if (!workList) {
-    const workList = {
+  const loadedWorkList = JSON.parse(localStorage.getItem("workList"));
+  if (!loadedWorkList) {
+    const blankWorkList = {
       todo: [],
       doing: [],
       done: [],
     };
-    return workList;
+    workList = blankWorkList;
+    return blankWorkList;
   }
-  workList = JSON.parse(localStorage.getItem("workList"));
-  return workList;
+  workList = loadedWorkList;
+  return loadedWorkList;
 };
 
 const deleteCardFormStorage = (cardId, sectionType) => {
@@ -28,7 +30,6 @@ const deleteCardFormStorage = (cardId, sectionType) => {
   };
 
   savedData(updatedWorkList);
-  updateCardCount(sectionType, updatedWorkList[sectionType].length);
 };
 
 const editStorage = (sectionType, cardId, newTitle, newContent) => {
@@ -55,9 +56,34 @@ const addStorage = (sectionType, title, content, CARD_ID) => {
     content,
   });
   savedData(workList);
-  updateCardCount(sectionType, workList[sectionType].length);
 };
 
-workList = loadData();
+const updateLocalStorageAfterDrop = (prevSection, nowSection, targetCard) => {
+  // if (!targetCard) return;
+  const targetCardData = workList[prevSection].find(
+    (item) => item.id === Number(targetCard.id)
+  );
 
-export { deleteCardFormStorage, savedData, loadData, addStorage, editStorage };
+  const workListAfterDeletePrev = {
+    ...workList,
+    [prevSection]: workList[prevSection].filter(
+      (item) => item.id !== Number(targetCard.id)
+    ),
+  };
+
+  const updatedWorkList = {
+    ...workListAfterDeletePrev,
+    [nowSection]: [targetCardData, ...workListAfterDeletePrev[nowSection]],
+  };
+
+  savedData(updatedWorkList);
+};
+
+export {
+  deleteCardFormStorage,
+  savedData,
+  loadData,
+  addStorage,
+  editStorage,
+  updateLocalStorageAfterDrop,
+};

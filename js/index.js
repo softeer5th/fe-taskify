@@ -9,6 +9,7 @@ import { updateCardCount } from "./cardNavbar.js";
 
 const SECTION_TYPE = ["todo", "doing", "done"];
 const workList = loadData();
+export const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 
 const eachColumnRender = () => {
   SECTION_TYPE.forEach((type) => {
@@ -27,7 +28,7 @@ const eachColumnRender = () => {
   });
 };
 
-const initRender = () => {
+const initRender = async () => {
   const root = document.querySelector("#root");
   // root 바로 뒤에 헤더 추가
   root.append(header());
@@ -38,10 +39,17 @@ const initRender = () => {
 
   eachColumnRender();
   loadPreviousCard();
+
+  // index.js가 로드되고 나서 로드 됨.
+  await import("./createCard.js");
+  await import("./editCard.js");
+  await import("./deleteCard.js");
+  await import("./cardNavbar.js");
 };
 
 const loadPreviousCard = () => {
   const fragment = new DocumentFragment();
+
   SECTION_TYPE.forEach((type) => {
     if (workList[type].length > 0) {
       //  최신순으로 default를 두어야할 것임. > 나중에 정렬 기능할 때 적용!

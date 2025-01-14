@@ -1,9 +1,8 @@
 import { parseToDoc } from "../utils/parseToDoc.js";
 
-const updateAddButtonState = () => {};
 export const cardForm = (sectionType) => {
   const cardFormHTML = /*html*/ `
-    <li class="${sectionType}-form-card card display-none">
+    <li class="${sectionType}-form-card form-card card display-none">
     <div class="card-contents-icons-box">
       <div class="card-texts">
         <input
@@ -25,16 +24,24 @@ export const cardForm = (sectionType) => {
   </li>
     `;
 
-  // DOM 요소로 변환
+  const isTitleAndContentHasValue = (title, content) => {
+    if (title.value.trim().length > 0 && content.value.trim().length > 0) {
+      return true;
+    }
+    return false;
+  };
+
   const cardFormElement = parseToDoc(cardFormHTML);
 
   const title = cardFormElement.querySelector(".title");
   const content = cardFormElement.querySelector(".content");
 
   const updateAddButtonState = () => {
-    if (title.value.trim().length > 0 && content.value.trim().length > 0) {
+    if (isTitleAndContentHasValue(title, content)) {
       cardFormElement.querySelector(".add-btn").disabled = false;
-    } else cardFormElement.querySelector(".add-btn").disabled = true;
+    } else {
+      cardFormElement.querySelector(".add-btn").disabled = true;
+    }
   };
 
   title.addEventListener("input", updateAddButtonState);

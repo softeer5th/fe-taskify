@@ -14,7 +14,7 @@ export const cardNavbar = (sectionType, count = 0) => {
       </div>
       <div class="add-container-icon">
         <button class="add-icon todo-add-icon" data-section="${sectionType}">
-          <img src="./assets/icons/add.svg" alt="" />
+          <img  src="./assets/icons/add.svg" alt="" />
         </button>
         <button class="delete-icon">
           <img src="./assets/icons/delete.svg" alt="" />

@@ -70,3 +70,15 @@ input:disabled,
 textarea:disabled {
   background-color: transparent;
 }
+
+.dragging {
+  opacity: 0.3;
+  cursor: grabbing;
+  box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
+  box-shadow: 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+}
+
+/* .ghost {
+  position: absolute;
+  background-color: black;
+} */
