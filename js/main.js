@@ -58,6 +58,8 @@ document.addEventListener("click", ({ target }) => {
     closeEditModal(false, task);
   } else if (target.closest(".history-btn")) {
     showHistoryModal();
+  } else if (target.closest(".history-modal-close-btn")) {
+    showHistoryModal();
   }
 });
 
