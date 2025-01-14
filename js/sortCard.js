@@ -63,6 +63,7 @@ export const sortCard = (sortFlag) => {
       taskElements.forEach((taskElement) => {
         taskElement.style.transition = "";
         taskElement.style.transform = "";
+        taskElement.style.order = "";
       });
 
       // DOM 순서를 최종 정렬 상태로 유지
