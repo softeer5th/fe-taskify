@@ -7,11 +7,11 @@ import { autoResize, limitTextLength } from './textAreaHelper.js';
  * @param {string} mode - 카드 모드
  * @param {Card} cardData - 카드 데이터
  * @param {function} columnState - 컬럼 상태
- * @returns {DocumentFragment} - 카드 요소를 포함하는 DocumentFragment
+ * @returns {HTMLElement} - 카드 요소를 포함하는 HTMLElement
  */
 
 const createCard = (mode, cardData, columnState) => {
-  return Card(
+  const cardElement = Card(
     mode,
     cardData,
     (newData) =>
@@ -33,6 +33,15 @@ const createCard = (mode, cardData, columnState) => {
         ),
       }))
   );
+  cardElement.addEventListener('dragstart', handleDragStart);
+
+  return cardElement
+};
+
+const handleDragStart = (event) => {
+  // console.log('타겟: ', event.target.id);
+  event.dataTransfer.setData('card-id', event.target.id);
+  event.dataTransfer.effectAllowed = 'move';
 };
 
 /**

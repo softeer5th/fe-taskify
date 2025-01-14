@@ -22,15 +22,16 @@ import createState from '../utils/helpers/stateHelper.js';
  * @param {function} addCard - 카드 추가 함수
  * @param {function} deleteCard - 카드 삭제 함수
  * @param {function} editCard - 카드 수정 함수
- * @returns {DocumentFragment} - 카드 요소를 포함하는 DocumentFragment
+ * @returns {HTMLElement} - 카드 요소를 포함하는 HTMLElement
  */
 const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
-  const card = document.getElementById('card-template').content.cloneNode(true);
-
   /**
    * @type {HTMLElement}
    */
-  const cardElement = card.querySelector('li');
+  const cardElement = document
+    .getElementById('card-template')
+    .content.cloneNode(true)
+    .querySelector('li');
 
   const cardState = createState(cardData);
   const cardMode = createState(mode);
@@ -45,6 +46,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
     updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
   });
 
+  cardElement.id = cardState.getState().id;
   initCardTextArea(cardElement, cardState.getState());
   initCardIconButtons(
     cardElement,
@@ -60,7 +62,10 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
     {
       name: 'cancel',
       handler: () => {
-        if (cardState.getState().title === null && cardState.getState().body === null) {
+        if (
+          cardState.getState().title === null &&
+          cardState.getState().body === null
+        ) {
           cardElement.parentElement.querySelector('#add-card').disabled = false;
           cardElement.remove();
         } else {
@@ -87,7 +92,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
 
   updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
 
-  return card;
+  return cardElement;
 };
 
 /**
