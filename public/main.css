@@ -38,6 +38,7 @@ header > span {
 }
 
 .column>ol {
+    height: 100%;
     list-style-type: none;
 }
 

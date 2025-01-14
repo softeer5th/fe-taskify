@@ -2,7 +2,7 @@ export default function HeaderComponent() {
 
     const sortText = {
         "1": '생성 순',
-        "-1": '오래된 순'
+        "-1": '최신 순'
     }
 
     function template() {

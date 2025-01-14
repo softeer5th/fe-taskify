@@ -45,13 +45,16 @@ export default function TaskComponent() {
     // Task 컴포넌트 이벤트 등록 함수
     // handleRemove : closed 버튼 클릭 callback
     // handleUpdate : edit 버튼 클릭 callback
-    function addEventListener(taskElement, handleRemove, handleUpdate) {
-        taskElement.addEventListener("dragstart", ()=>{});
+    function addEventListener(taskElement, handleRemove, handleUpdate, handleDrag) {
 
         const buttons = taskElement.getElementsByTagName("button");
         const [deleteButton, editButton] = buttons;
         deleteButton.addEventListener("click", handleRemove );
         editButton.addEventListener("click", handleUpdate );   
+    
+        taskElement.addEventListener('dragenter',(e)=>e.stopPropagation());
+        // taskElement.addEventListener('dragleave',(e)=>e.stopPropagation());
+        taskElement.addEventListener("dragstart", handleDrag);
     }
 
     return {
