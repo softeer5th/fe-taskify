@@ -95,6 +95,12 @@ export default class Model {
     this.#notify();
   }
 
+  setCreatingTaskColumn(columnId) {
+    this.#model.state.editingColumnId = columnId;
+    this.#model.state.editingTaskId = 0;
+    this.#notify();
+  }
+
   setMovingTaskId(taskId) {
     this.#model.state.movingTaskId = taskId;
     this.#notify();
