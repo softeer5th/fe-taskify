@@ -78,15 +78,26 @@ const Column = (columnData) => {
 
   columnElement.addEventListener('dragover', (event) => {
     event.preventDefault(); // 드롭을 허용
-    event.dataTransfer.dropEffect = 'move'; // 드롭 효과 설정
+    // console.log(event.target.closest('ul'));
+
+    const id = event.dataTransfer.getData('card-id'); // 드래그 중인 요소의 ID 가져오기
+    console.log('드래거블eeee', id);
+    const draggableElement = document.getElementById(id); // 드래그 중인 요소 선택
+    // console.log('드래거블', draggableElement);
+    const dropzone = event.target.closest('ui'); // 드롭된 위치 선택
+    dropzone.appendChild(draggableElement); // 드래그 중인 요소를 드롭된 위치에 추가
+    // if (event.target.closest('ul').id) {
+    // } else {
+    // }
   });
 
   columnElement.addEventListener('drop', (event) => {
     event.preventDefault(); // 기본 동작 방지
+    console.log('드래거블aaa', event.dataTransfer);
     const id = event.dataTransfer.getData('card-id'); // 드래그 중인 요소의 ID 가져오기
-    const draggableElement = document.getElementById(id);  // 드래그 중인 요소 선택
+    const draggableElement = document.getElementById(id); // 드래그 중인 요소 선택
     const dropzone = event.target.closest('ul'); // 드롭된 위치 선택
-    console.log('ee',id, '\neef', draggableElement, '\neea', dropzone);
+    console.log('ee', id, '\neef', draggableElement, '\neea', dropzone);
     dropzone.appendChild(draggableElement); // 드래그 중인 요소를 드롭된 위치에 추가
     event.dataTransfer.clearData(); // 드래그 데이터 초기화
   });

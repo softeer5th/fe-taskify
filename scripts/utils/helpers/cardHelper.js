@@ -33,15 +33,8 @@ const createCard = (mode, cardData, columnState) => {
         ),
       }))
   );
-  cardElement.addEventListener('dragstart', handleDragStart);
-
+  
   return cardElement
-};
-
-const handleDragStart = (event) => {
-  // console.log('타겟: ', event.target.id);
-  event.dataTransfer.setData('card-id', event.target.id);
-  event.dataTransfer.effectAllowed = 'move';
 };
 
 /**
