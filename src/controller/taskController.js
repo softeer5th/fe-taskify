@@ -2,10 +2,13 @@ import Model from "../model.js";
 
 import TaskView from "../view/taskView.js";
 
+function getCurrentDevice() {
+  return navigator.userAgentData.mobile ? "mobile" : "desktop";
+}
+
 export default function TaskController(model = new Model(), rootElement = document.getElementById("root")) {
   let tasks = [];
   // let taskViews: HTMLDivElement[] = [];
-  let taskViews = [];
   let ghostTaskView = TaskView({
     task: { id: 0, columnId: 0, title: "", description: "", createdAt: 0 },
     state: "default",
@@ -15,12 +18,7 @@ export default function TaskController(model = new Model(), rootElement = docume
   ghostTaskView.classList.add("task--ghost");
   rootElement.appendChild(ghostTaskView);
 
-  let addingTaskView = TaskView({
-    task: { id: 0, columnId: 0, title: "", description: "", createdAt: 0 },
-    state: "editing",
-    onFirstButtonClicked: handleTaskEditCancelButtonClicked,
-    onSecondButtonClicked: handleTaskEditSaveButtonClicked,
-  });
+  let addingTaskView;
 
   model.addListener(onModelChanged);
 
@@ -32,6 +30,8 @@ export default function TaskController(model = new Model(), rootElement = docume
 
     const taskId = +event.target.closest(".task").id;
 
+    model.removeTask(taskId);
+
     console.log("Delete task with id: ", taskId);
   }
 
@@ -41,16 +41,14 @@ export default function TaskController(model = new Model(), rootElement = docume
 
     const taskId = +event.target.closest(".task").id;
 
-    console.log("Edit task with id: ", taskId);
+    model.setEditingTaskId(taskId);
   }
 
   function handleTaskEditCancelButtonClicked(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    const taskId = +event.target.closest(".task").id;
-
-    console.log("Edit task with id: ", taskId);
+    model.unsetEditingColumnTask();
   }
 
   function handleTaskEditSaveButtonClicked(event) {
@@ -59,7 +57,18 @@ export default function TaskController(model = new Model(), rootElement = docume
 
     const taskId = +event.target.closest(".task").id;
 
-    console.log("Edit task with id: ", taskId);
+    const task = event.target.closest(".task");
+    const name = task.querySelector(".task__content-title").value;
+    const description = task.querySelector(".task__content-description").value;
+
+    if (taskId === 0) {
+      model.addTask(model.getCurrentState().editingColumnId, name, description, getCurrentDevice());
+    } else {
+      const originTask = model.getCurrentTaskData().find((t) => t.id === taskId);
+      model.updateTask(taskId, { ...originTask, name, description });
+    }
+
+    console.log("Save task with id: ", taskId, name, description);
   }
 
   function onModelChanged() {
@@ -72,6 +81,7 @@ export default function TaskController(model = new Model(), rootElement = docume
 
   function render() {
     const columnViews = [...rootElement.querySelectorAll(".column")];
+    let taskViews = [...rootElement.querySelectorAll(".task")];
 
     const tasksOnModel = model.getCurrentTaskData();
     const state = model.getCurrentState();
@@ -125,26 +135,41 @@ export default function TaskController(model = new Model(), rootElement = docume
     // Change editing task with state.editingTaskId
     const editingTaskView = taskViews.find((t) => +t.id === state.editingTaskId);
     if (editingTaskView) {
-      editingTaskView.innerHTML = TaskView({
-        task: tasksOnModel.find((t) => t.id === state.editingTaskId),
-        state: "editing",
-        onFirstButtonClicked: handleTaskEditCancelButtonClicked,
-        onSecondButtonClicked: handleTaskEditSaveButtonClicked,
-      }).innerHTML;
+      editingTaskView.replaceWith(
+        TaskView({
+          task: tasksOnModel.find((t) => t.id === state.editingTaskId),
+          state: "editing",
+          onFirstButtonClicked: handleTaskEditCancelButtonClicked,
+          onSecondButtonClicked: handleTaskEditSaveButtonClicked,
+        })
+      );
     }
 
     // Create Adding TaskView when state.editingTask is 0 and state.addingColumn is not -1
     const isAddingTask = state.editingColumnId !== -1 && state.editingTaskId === 0;
-    if (isAddingTask) {
-      const columnView = columnViews.find((c) => +c.id === state.editingColumnId);
-      addingTaskView.innerHTML = TaskView({
-        task: { id: 0, columnId: state.editingColumnId, title: "", description: "", createdAt: 0 },
+    const addingColumnTaskList = columnViews.find((c) => +c.id === state.editingColumnId)?.querySelector(".column__task-list");
+    if (addingTaskView && isAddingTask) {
+      addingTaskView.remove();
+      addingTaskView = TaskView({
+        task: { id: 0, columnId: state.editingColumnId, name: "", description: "", createdAt: 0 },
         state: "editing",
         onFirstButtonClicked: handleTaskEditCancelButtonClicked,
         onSecondButtonClicked: handleTaskEditSaveButtonClicked,
-      }).innerHTML;
+      });
       addingTaskView.style.order = -1;
-      columnView.querySelector(".column__task-list").appendChild(addingTaskView);
+      addingColumnTaskList.appendChild(addingTaskView);
+    } else if (isAddingTask) {
+      addingTaskView = TaskView({
+        task: { id: 0, columnId: state.editingColumnId, name: "", description: "", createdAt: 0 },
+        state: "editing",
+        onFirstButtonClicked: handleTaskEditCancelButtonClicked,
+        onSecondButtonClicked: handleTaskEditSaveButtonClicked,
+      });
+      addingTaskView.style.order = -1;
+      addingColumnTaskList.appendChild(addingTaskView);
+    } else {
+      addingTaskView?.remove();
+      addingTaskView = null;
     }
 
     // Relocate tasks
@@ -160,6 +185,8 @@ export default function TaskController(model = new Model(), rootElement = docume
     const newState = tasksOnDOM.map((task) => task.getBoundingClientRect());
 
     tasksOnDOM.forEach((task, index) => {
+      if (task.classList.contains("task--ghost")) return;
+
       const deltaX = oldState[index].left - newState[index].left;
       const deltaY = oldState[index].top - newState[index].top;
       task.animate(
@@ -176,6 +203,7 @@ export default function TaskController(model = new Model(), rootElement = docume
     });
 
     tasks = tasksOnModel;
+    taskViews = tasksOnDOM;
   }
 
   return {
