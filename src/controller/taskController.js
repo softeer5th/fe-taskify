@@ -3,7 +3,7 @@ import Model from "../model.js";
 import TaskView from "../view/taskView.js";
 
 function getCurrentDevice() {
-  return navigator.userAgentData.mobile ? "mobile" : "desktop";
+  return navigator.userAgentData.mobile ? "mobile" : "web";
 }
 
 export default function TaskController(model = new Model(), rootElement = document.getElementById("root")) {
@@ -31,8 +31,6 @@ export default function TaskController(model = new Model(), rootElement = docume
     const taskId = +event.target.closest(".task").id;
 
     model.removeTask(taskId);
-
-    console.log("Delete task with id: ", taskId);
   }
 
   function handleTaskEditButtonClicked(event) {
@@ -67,8 +65,6 @@ export default function TaskController(model = new Model(), rootElement = docume
       const originTask = model.getCurrentTaskData().find((t) => t.id === taskId);
       model.updateTask(taskId, { ...originTask, name, description });
     }
-
-    console.log("Save task with id: ", taskId, name, description);
   }
 
   function onModelChanged() {
@@ -133,17 +129,26 @@ export default function TaskController(model = new Model(), rootElement = docume
     });
 
     // Change editing task with state.editingTaskId
-    const editingTaskView = taskViews.find((t) => +t.id === state.editingTaskId);
-    if (editingTaskView) {
-      editingTaskView.replaceWith(
-        TaskView({
+    taskViews.map((taskView) => {
+      if (+taskView.id === state.editingTaskId) {
+        const newTaskView = TaskView({
           task: tasksOnModel.find((t) => t.id === state.editingTaskId),
           state: "editing",
           onFirstButtonClicked: handleTaskEditCancelButtonClicked,
           onSecondButtonClicked: handleTaskEditSaveButtonClicked,
-        })
-      );
-    }
+        });
+        taskView.replaceWith(newTaskView);
+      } else if (taskView.classList.contains("task--edit")) {
+        taskView.replaceWith(
+          TaskView({
+            task: tasksOnModel.find((t) => t.id === +taskView.id),
+            state: "default",
+            onFirstButtonClicked: handleTaskDeleteButtonClicked,
+            onSecondButtonClicked: handleTaskEditButtonClicked,
+          })
+        );
+      }
+    });
 
     // Create Adding TaskView when state.editingTask is 0 and state.addingColumn is not -1
     const isAddingTask = state.editingColumnId !== -1 && state.editingTaskId === 0;
@@ -204,6 +209,11 @@ export default function TaskController(model = new Model(), rootElement = docume
 
     tasks = tasksOnModel;
     taskViews = tasksOnDOM;
+
+    const editingTask = rootElement.querySelector(".task--edit");
+    if (editingTask) {
+      editingTask.querySelector(".task__content-title").focus();
+    }
   }
 
   return {
