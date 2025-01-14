@@ -1,4 +1,3 @@
-import { Button } from "../../../components/Button/button.js";
 import Component from "../../../components/component.js";
 import { DefaultCard } from "./Card/card.js";
 import { EditCard } from "./Card/editCard.js";
@@ -6,13 +5,13 @@ import { ColumnHeader } from "./columnHeader.js";
 
 export class Column extends Component {
 
-    onCardAdd = () => {
-        this.toggleAddCard();
-    }
+    onColumnDelete = () => {};
+
+    onCardAdd = () => this.toggleAddCard();
 
     onNewCardDismiss = () => {
         this.children.input.object.clearInput();
-        this.toggleAddCard();
+        this.hideAddCard();
     };
 
     onEditCard = (index) => {
@@ -31,13 +30,11 @@ export class Column extends Component {
 
     setCallback(onCardAdded, onCardDelete) {
 
-        this.onColumnDelete = () => {};
-
         this.onCardDelete = onCardDelete;
 
         this.onNewCardAdded = (newCardData) => {
             onCardAdded(newCardData);
-            this.toggleAddCard();
+            this.hideAddCard();
         };
 
     }
@@ -62,7 +59,33 @@ export class Column extends Component {
         const inputRootClass = this.children.input.object.rootSelectorClassName;
         const input = this.parent.querySelector(`.${inputRootClass}`);
 
-        input.classList.toggle("hide");
+        if (this.isHidden(input)) {
+            this.showAddCard(input);
+        } else {
+            this.hideAddCard(input);
+        }
+    }
+    
+    showAddCard() {
+        const inputRootClass = this.children.input.object.rootSelectorClassName;
+        const input = this.parent.querySelector(`.${inputRootClass}`);
+
+        if (this.isHidden(input)) {
+            input.classList.remove("hide");
+        }
+    }
+    
+    hideAddCard() {
+        const inputRootClass = this.children.input.object.rootSelectorClassName;
+        const input = this.parent.querySelector(`.${inputRootClass}`);
+
+        if (!this.isHidden(input)) {
+            input.classList.add("hide");
+        }
+    }
+
+    isHidden(element) {
+        return element.classList.contains("hide");
     }
 
     createEditCard(index, preCardData){
@@ -106,7 +129,12 @@ export class Column extends Component {
 
     render(parent) {
         super.render(parent);
-        this.toggleAddCard();
+        this.hideAddCard();
+    }
+
+    rerender(){
+        super.rerender();
+        this.hideAddCard();
     }
 
 }
