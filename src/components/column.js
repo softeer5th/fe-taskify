@@ -17,7 +17,7 @@ export class Column extends Component {
     };
 
     onEditCard = (index) => {
-        const preData = this.children[`card${index}`].object;
+        const preData = this.children[`card${index}`].object.cardData;
         this.createEditCard(index, preData);
         this.rerender();
     }
@@ -49,7 +49,7 @@ export class Column extends Component {
                 parentSelector: ".column"
             },
             input: {
-                object: new EditCard('', '', this.onNewCardAdded, this.onNewCardDismiss)
+                object: new EditCard(null, this.onNewCardAdded, this.onNewCardDismiss)
             }
         };
 
@@ -92,10 +92,10 @@ export class Column extends Component {
     }
 
     createEditCard(index, preCardData) {
+        console.log("precatd", preCardData);
         this.children[`card${index}`] = {
             object: new EditCard(
-                preCardData.title,
-                preCardData.body,
+                preCardData,
                 (newCardData) => {
                     this.createDefaultCard(index, newCardData);
                     this.rerender();
@@ -134,12 +134,18 @@ export class Column extends Component {
         this.applyAnimation();
     }
 
+    rerender(){
+        super.rerender(parent);
+        this.hideAddCard();
+    }
+
     applyAnimation() {
         if (!previousPositions || !previousPositions[this.columnData.name]) {
             this.remeberPreOrder();
             return
         }
 
+        console.log("animation", this.columnData);
         const prev = previousPositions[this.columnData.name];
 
         const newPositions = this.columnData.data.map((card) => {

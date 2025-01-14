@@ -22,6 +22,7 @@ export class App extends Component {
     onHistoryClick = () => { }
 
     onCardAdded = (columnIndex, cardData) => {
+        console.log("columnData",this.columnData);
         this.columnData[columnIndex].addData(cardData);
 
         this.rerender();
@@ -29,6 +30,7 @@ export class App extends Component {
 
     onCardDeleted = (columnIndex, cardIndex) => {
         this.columnData[columnIndex].removeData(cardIndex);
+        console.log("columnData",this.columnData);
 
         this.rerender();
     }
