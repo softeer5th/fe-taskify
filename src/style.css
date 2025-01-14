@@ -30,7 +30,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overflow: auto;
 }
 
 html,
@@ -40,6 +39,7 @@ body {
     min-width: 400px;
     background-color: var(--grayscale-100);
     user-select: none;
+    overflow: auto;
 }
 
 body {
@@ -272,12 +272,11 @@ textarea {
 
 .column__task-list {
     width: 320px;
-    height: auto;
+    height: 100%;
     gap: 10px;
     display: flex;
     flex-direction: column;
-    scrollbar-width: none;
-    justify-content: center;
+    flex-wrap: wrap;
 }
 
 /* task Style */
@@ -293,12 +292,6 @@ textarea {
     display: flex;
     flex-direction: row;
     box-shadow: 0px 1px 4px 0px rgba(110, 128, 145, 0.24);
-    transition: order 0.3s ease;
-    transform: translateY(calc(var(--order) * 100%));
-}
-
-.task:not(:first-child) {
-    transform: translateY(calc(var(--order) * 100%) + 10px);
 }
 
 .task--edit {
@@ -313,7 +306,14 @@ textarea {
 .task--drag {
     box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24),
         0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+}
 
+.task--ghost {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
 }
 
 .task__content {
