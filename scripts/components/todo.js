@@ -9,8 +9,13 @@ import {
 import { getState, setState } from '../utils/stateUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 import { manageDragEvents, manageDropEvents } from './dragManager.js'
+import { Category } from '../domain/category.js'
+
+const RESET = false
 
 export const initTodo = () => {
+    RESET && storeData(keys.TODO_CATEGORY_KEY, [])
+
     let categoryList = loadData(keys.TODO_CATEGORY_KEY)
     if (!categoryList) {
         storeData(keys.TODO_CATEGORY_KEY, [])
@@ -18,8 +23,10 @@ export const initTodo = () => {
     }
 
     // 더미 데이터
-    // categoryList = [Category(-1, '해야할 일'), Category(-1, '하고 있는 일')]
-    // storeData(keys.TODO_CATEGORY_KEY, categoryList)
+    if (RESET) {
+        categoryList = [Category(-1, '해야할 일'), Category(-1, '하고 있는 일')]
+        storeData(keys.TODO_CATEGORY_KEY, categoryList)
+    }
 
     const mainElement = document.querySelector('.main')
 
@@ -266,7 +273,7 @@ const editTodoItem = (identifier) => {
     )
 }
 
-const renewTodoCount = (category) => {
+export const renewTodoCount = (category) => {
     const todoCount = findDomElement(category.identifier).querySelector(
         `.${classNames.todoHeaderTodoCount}`
     )
