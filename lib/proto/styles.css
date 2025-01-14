@@ -7,3 +7,18 @@
 .test2 {
     border: 1px solid red;
 }
+
+body {
+    background-color: rgba(247, 247, 252, 1);
+    line-height: 1.2em;
+    font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, Helvetica, "Apple Color Emoji", Arial, "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body > div {
+    height: 100%;
+    margin: 0 80px;
+}
+
+button:hover {
+    cursor: pointer;
+}
