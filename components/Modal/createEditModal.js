@@ -1,3 +1,4 @@
+import historyStore from "../../store/historyStore.js";
 import {
   loadLocalStorage,
   saveLocalStorage,
@@ -70,6 +71,11 @@ const editCard = ({ sectionId, itemId }) => {
   );
 
   saveLocalStorage(editedList);
+
+  historyStore.action({
+    action: "update",
+    title: newTitle,
+  });
 };
 
 export default createEditModal;
