@@ -26,7 +26,7 @@ export default function TaskController(state, rerender) {
     }
 
     // Task 렌더링 함수
-    function renderTask(parentElement, taskId) {
+    function renderTask(parentElement, taskId, order) {
         const task = state.getTask(taskId);
         const newTaskElement = taskComponent.render(task);
 
@@ -40,6 +40,8 @@ export default function TaskController(state, rerender) {
                 ),
             (e) => dragTask(e, taskId)
         );
+
+        newTaskElement.style.order = order;
 
         parentElement.appendChild(newTaskElement);
     }

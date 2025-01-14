@@ -64,8 +64,18 @@ export default function ColumnController(state, bodyElement) {
 
     // 각 Column의 task들 렌더링
     function renderColumn(idx, tasks) {
-
         const columnElement = bodyElement.querySelectorAll(".card_list")[idx];
+
+        const originalPosition = [...columnElement.children].map(el => {
+            const {top} = el.getBoundingClientRect();
+            const taskId = Number( el.getAttribute('taskId'));
+
+            return {
+                element: el,
+                taskId: taskId,
+                top: top
+            }
+        });
 
         const currentTasksWithId = Array.from(columnElement.children).map((el) => {
             return {
@@ -77,8 +87,8 @@ export default function ColumnController(state, bodyElement) {
 
         const taskFragmentElement = document.createDocumentFragment();
 
-        for (let task of tasks) {
-
+        for (let i=0; i<tasks.length; i++) {
+            const task = tasks[i];
             const matchedTask = currentTasksWithId.find(el => el.taskId === task.taskId);
             
             if(matchedTask) {
@@ -89,6 +99,50 @@ export default function ColumnController(state, bodyElement) {
         }
 
         columnElement.appendChild(taskFragmentElement);
+
+        const newPosition = [...columnElement.children].map(el => {
+            const {top} = el.getBoundingClientRect();
+            const taskId = Number( el.getAttribute('taskId'));
+
+            return {
+                taskId: taskId,
+                top: top
+            }
+        });
+
+        originalPosition.forEach((el)=>{
+            const {top, taskId, element} = el;
+            
+            const {top: _top, taskId: _taskId} = newPosition.find(el => el.taskId === taskId);
+            const deltaY = top - _top;
+
+            element.style.transform = `translateY(${deltaY}px)`;
+            element.style.transition = `none`;
+
+            setTimeout(() => {
+                element.style.transition = "transform 0.3s ease";
+                element.style.transform = "translate(0, 0)";
+            }, 0);
+        })
+
+
+        /* GPT 도움 받은 영역 */
+        // originalPosition.forEach((el)=>{
+        //     const {top, taskId, element} = el;
+            
+        //     const {top: _top, taskId: _taskId} = newPosition.find(el => el.taskId === taskId);
+        //     const deltaY = top - _top;
+
+
+        //     element.style.transition = "none";
+        //     element.style.transform = `translateY(${deltaY}px)`;
+
+        //     requestAnimationFrame(() => {
+        //         element.style.transition = "transform 0.3s ease";
+        //         element.style.transform = "translate(0, 0)";
+        //     });
+        // })
+
     }
 
     // Task 생성 Form Submit handler
