@@ -1,3 +1,4 @@
+import { Alert } from "../../components/Alert/index.js";
 import { Card } from "../../components/Card/index.js";
 import { ColumnTitle } from "../../components/ColumnTitle/index.js";
 import { useState } from "../../lib/hooks/useState.js";
@@ -7,6 +8,7 @@ import styles from "./todoColumn.module.js";
 
 export const TodoColumn = ({ title }) => {
   const [todos, setTodos] = useState([]);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const handleClickAddTodo = () => {
     const newTodo = {
@@ -25,7 +27,13 @@ export const TodoColumn = ({ title }) => {
             <ul class="${styles.list}">
                 ${todos.map((todo) => parser`
                   <li key="${todo.id}">
-                    ${Card({ type: "add-edit", onClickDelBtn: () => handleClickDeleteTodo(todo.id) })}
+                    ${Card({ type: "add-edit", onClickDelBtn: () => setOpenAlert(true) })}
+                    ${openAlert && Alert({
+    text: "선택한 카드를 삭제할까요?",
+    isOpen: openAlert,
+    onClose: () => setOpenAlert(false),
+    rightOnClick: () => handleClickDeleteTodo(todo.id),
+  })}
                   </li>`)}
             </ul>
         </div>
