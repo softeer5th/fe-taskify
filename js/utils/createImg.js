@@ -1,7 +1,10 @@
-export default function createImg ({ src, alt }) {
-    const icon = document.createElement('img');
-    icon.src = src;
-    icon.alt = alt;
+export default function createImg({ src, alt, classList = [] }) {
+  const iconImg = document.createElement("img");
+  iconImg.src = src;
+  iconImg.alt = alt;
+  for (const c of classList) {
+    iconImg.classList.add(c);
+  }
 
-    return icon;
+  return iconImg;
 }
