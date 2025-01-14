@@ -57,12 +57,6 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
 
     updateColumnList({ $columnBody, sectionId, title, content });
     store.isTodoAdding = false;
-
-    historyStore.action({
-      action: "add",
-      column: sectionId,
-      title,
-    });
   };
 
   return createColumnInputItem({
@@ -90,11 +84,13 @@ const updateColumnList = ({ $columnBody, sectionId, title, content }) => {
   });
 
   $columnBody.replaceChild($newColumnItem, $columnBody.firstChild);
-  saveTodoList({ $columnBody, sectionId, newCard });
+  saveTodoList({ $columnBody, sectionId, newCard, title });
 };
 
-const saveTodoList = ({ $columnBody, sectionId, newCard }) => {
+const saveTodoList = ({ $columnBody, sectionId, newCard, title }) => {
   const todoList = loadLocalStorage();
+
+  const column = todoList.find((section) => section.id === sectionId).title;
 
   const newTodoList = todoList.map((section) =>
     section.id === sectionId
@@ -114,6 +110,12 @@ const saveTodoList = ({ $columnBody, sectionId, newCard }) => {
 
   $columnCount.textContent = itemLength;
   saveLocalStorage(newTodoList);
+
+  historyStore.action({
+    action: "add",
+    column,
+    title,
+  });
 };
 
 export default ColumnInputItem;
