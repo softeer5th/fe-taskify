@@ -80,6 +80,11 @@ const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
 
   let draggedItem = null;
 
+  const prevColumn = todoList.find(
+    (section) => section.id === prevSectionId
+  ).title;
+  const nextColumn = todoList.find((section) => section.id === sectionId).title;
+
   const filteredList = todoList.map((section) => {
     if (section.items.some((item) => item.id === itemId)) {
       draggedItem = section.items.find((item) => item.id === itemId);
@@ -104,12 +109,14 @@ const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
   updateCount(finalList);
   saveLocalStorage(finalList);
 
-  historyStore.action({
-    action: "move",
-    title,
-    prevColumn: prevSectionId,
-    nextColumn: sectionId,
-  });
+  if (prevColumn !== nextColumn) {
+    historyStore.action({
+      action: "move",
+      title,
+      prevColumn: prevColumn,
+      nextColumn: nextColumn,
+    });
+  }
 };
 
 const updateCount = (todoList) => {
