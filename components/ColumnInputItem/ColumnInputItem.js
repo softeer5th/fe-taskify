@@ -1,9 +1,11 @@
+import historyStore from "../../store/historyStore.js";
 import getDevice from "../../utils/getDevice.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
 import {
   loadLocalStorage,
   saveLocalStorage,
 } from "../../utils/localStorage.js";
+import { getRandomId } from "../../utils/random.js";
 import createColumnInputItem from "./ui/createColumnInputItem.js";
 import createNewColumnItem from "./ui/createNewColumnItem.js";
 
@@ -55,6 +57,11 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
 
     updateColumnList({ $columnBody, sectionId, title, content });
     store.isTodoAdding = false;
+
+    historyStore.addHistory({
+      title,
+      column: sectionId,
+    });
   };
 
   return createColumnInputItem({
@@ -66,11 +73,10 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
 };
 
 const updateColumnList = ({ $columnBody, sectionId, title, content }) => {
-  const randomValueArray = new Uint32Array(1);
-  crypto.getRandomValues(randomValueArray);
+  const uniqueId = getRandomId();
 
   const newCard = {
-    id: randomValueArray[0],
+    id: uniqueId,
     title,
     content,
     author: getDevice(),
