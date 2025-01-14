@@ -22,6 +22,7 @@ export default function State() {
     let dragged = {
         task: null,
         element: null,
+        dummyElement: null,
     };
 
     function setLog(log) {
@@ -53,10 +54,11 @@ export default function State() {
         }
     }
 
-    function setDragged({ task, element }) {
+    function setDragged({ task, element, dummyElement }) {
         dragged = {
             task: task,
             element: element,
+            dummyElement: dummyElement,
         };
     }
 
@@ -64,15 +66,25 @@ export default function State() {
         return dragged;
     }
 
-    function resetDragged(isOpacityChange) {
+    function resetDragged() {
         dragged = {
             task: null,
             element: null,
+            dummyElement: null,
         };
     }
 
     function getColumns() {
         return { columns, columnTasks };
+    }
+
+    function getTask(taskId) {
+        for(let i =0; i<columns.length; i++) {
+            const matchedTask = columnTasks[i].find(el => el.taskId === taskId)
+            if(matchedTask) {
+                return matchedTask;
+            }
+        }
     }
 
     function addTask(index, task) {
@@ -89,6 +101,21 @@ export default function State() {
         columnTasks[index].push(newTask);
 
         return newId;
+    }
+
+    function moveTask(destinationIndex, task) {
+        const newTask = {...task, column : destinationIndex};
+        const currentIndex = task.column;
+
+        setLog({
+            task: task,
+            type: "MOVE",
+            updated: new Date(),
+            destination: destinationIndex
+        })
+
+        columnTasks[currentIndex] = columnTasks[currentIndex].filter(el => el.taskId !== task.taskId);
+        columnTasks[destinationIndex].push(newTask);
     }
 
     function updateTask(index, currentTask, newTask) {
@@ -125,7 +152,9 @@ export default function State() {
         setDragged,
         resetDragged,
         getColumns,
+        getTask,
         addTask,
+        moveTask,
         updateTask,
         removeTask,
         getLog,
