@@ -4,7 +4,7 @@ import { updateLocalStorageAfterDrop } from "../store/workList.js";
 import { NUMBER_OF_CARD_FORM_PER_SECTION } from "./index.js";
 
 const dragStartHandler = (e) => {
-  const targetCard = e.target;
+  const { target: targetCard } = e;
   const prevSectionType = getSectionType(targetCard);
   targetCard.classList.add("dragging");
 
@@ -15,7 +15,7 @@ const dragStartHandler = (e) => {
   );
 };
 const dragEndHandler = (e) => {
-  const targetCard = e.target;
+  const { target: targetCard } = e;
   targetCard.classList.remove("dragging");
 };
 
@@ -40,15 +40,20 @@ const getPositionToDrop = (sectionWrapper, mouseYCoordinate) => {
 const dragOverHandler = (e) => {
   e.preventDefault();
 
-  const sectionContainer = e.target
-    .closest("section")
-    .querySelector(".card-container");
+  const { target: dragOverTarget } = e;
+
+  // 드래그 오버 위치가 유효한지 확인
+  const section = dragOverTarget.closest("section");
+  if (!section) return;
+
+  // 카드 컨테이너가 있는지 확인
+  const sectionContainer = section.querySelector(".card-container");
   if (!sectionContainer) return;
 
   const draggingCard = document.querySelector(".dragging");
   if (!draggingCard) return;
 
-  const mouseYCoordinate = e.clientY;
+  const { clientY: mouseYCoordinate } = e;
 
   const positionToDrop = getPositionToDrop(sectionContainer, mouseYCoordinate);
 

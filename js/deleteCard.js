@@ -17,14 +17,15 @@ const showDeleteModal = () => {
 };
 
 const deleteCardHandler = (e) => {
-  const card = e.target.closest(".card"); // 버튼을 누른 카드 찾기.
+  const { target: eventTargetElement } = e;
+  const card = eventTargetElement.closest(".card"); // 버튼을 누른 카드 찾기.
   if (!card) return;
 
   const sectionType = getSectionType(card);
   cardIdToDelete = card.id;
   sectionToDelete = sectionType;
 
-  if (e.target.matches(".card-delete-icon")) {
+  if (eventTargetElement.matches(".card-delete-icon")) {
     // 삭제 아이콘을 눌렀다면
     showDeleteModal();
   }
@@ -62,11 +63,12 @@ const closeDeleteModal = () => {
 };
 
 const deleteModalHandler = (e) => {
-  if (e.target.classList.contains("modal-cancel-btn")) {
+  const { target: eventTargetElement } = e;
+  if (eventTargetElement.classList.contains("modal-cancel-btn")) {
     closeDeleteModal();
   }
 
-  if (e.target.classList.contains("modal-delete-btn")) {
+  if (eventTargetElement.classList.contains("modal-delete-btn")) {
     deleteCard();
     closeDeleteModal();
   }
