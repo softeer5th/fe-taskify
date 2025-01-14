@@ -344,8 +344,8 @@ const createTaskElement = (type, id, title, content) => {
     };
     closedBtn.appendChild(closedImg);
 
-    btnWrapper.appendChild(editBtn);
     btnWrapper.appendChild(closedBtn);
+    btnWrapper.appendChild(editBtn);
 
     task.appendChild(taskWrapper);
     task.appendChild(btnWrapper);
