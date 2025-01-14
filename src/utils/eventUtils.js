@@ -1,10 +1,19 @@
 import { ColumnCard } from '../components/Card/ColumnCard.js';
+import { Modal } from '../components/Modal/Modal.js';
+import { Background } from '../layout/Background/Background.js';
+import { addCard, addCardToggle } from './cardUtils.js';
 
 export function handleEventListener(e) {
+    const app =document.querySelector('#app')
     const target = e.target;
     const parentColumn = target.closest('.column-box');
     const headerColumn =parentColumn.querySelector('.column-header')
+    
+    // card 
+    const columnCard= target.closest('.column-card-container');
     const addForm = parentColumn.querySelector("#add-card");
+    const titleInput = parentColumn.querySelector("#card-title");
+    const contentInput = parentColumn.querySelector("#card-content");
 
     if (target.closest('#history-toggle')) {
         return;
@@ -19,52 +28,19 @@ export function handleEventListener(e) {
     }
 
     else if (target.closest('#card-add-toggle')) {    
-        if (addForm) {
-            addForm.remove();
-        } else {
-            const newForm = ColumnCard({
-                type: "add-card",
-                title: "제목을 입력하세요.",
-                content: "내용을 입력하세요",
-                checkId: "card-add",
-                closeId: "card-add-toggle",
-                addText:"등록",
-                closeText: "취소",
-            });
-            
-            headerColumn.insertAdjacentElement('afterend', newForm); 
-        }
+        addCardToggle({addForm,headerColumn});
         return;
     }
 
     else if (target.closest('#card-close-toggle')) {
-        if (addForm) {
-            addForm.remove();
-        }
         return;
     }
 
     else if (target.closest('#card-add')) {
-        const titleInput = parentColumn.querySelector("#card-title");
-        const contentInput = parentColumn.querySelector("#card-content");
-        
-        const title = titleInput.value;
-        const content = contentInput.value;
-
-        if (title && content) {
-            addForm.remove()
-            const newCard =ColumnCard({
-                title,
-                content ,
-                author:"author by web" ,                
-                editId: 'card-edit',
-                deleteId: 'card-delete',
-            })
-        
-            headerColumn.insertAdjacentElement('afterend', newCard); 
-            
-            
-        }
+        addCard({titleInput,contentInput,addForm,headerColumn});
+        return;
+    }
+    else if (target.closest('#card-delete-toggle')) {
         return;
     }
 
