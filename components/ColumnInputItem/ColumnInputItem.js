@@ -58,9 +58,10 @@ const ColumnInputItem = ({ sectionId, store, handleCancel }) => {
     updateColumnList({ $columnBody, sectionId, title, content });
     store.isTodoAdding = false;
 
-    historyStore.addHistory({
-      title,
+    historyStore.action({
+      action: "add",
       column: sectionId,
+      title,
     });
   };
 

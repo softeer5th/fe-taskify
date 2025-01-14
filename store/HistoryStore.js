@@ -9,15 +9,18 @@ class HistoryStore extends Observable {
     super();
   }
 
-  addHistory({ title, column }) {
+  // ACTION TYPE: add, remove, update, move
+  // add: title, action, column
+  // remove: title, action
+  // update: title, action
+  // move: title, action, prevColumn, nextColumn
+  action(props) {
     const newHistory = {
+      ...props,
       id: getRandomId(),
-      action: "add",
       date: new Date(),
       nickname: "@멋진삼",
       profileImg: IMAGE.profile,
-      title,
-      column,
     };
 
     this.#histories = [newHistory, ...this.#histories];
