@@ -2,37 +2,28 @@ import { createComponent } from "./global/createComponent.js";
 import { columnStore } from "./store/column.js";
 import { Navbar } from "./container/navbar.js";
 import { ColumnList } from "./container/columnList.js";
+import { initializeGlobalInputEvents } from "./event/index.js";
 
 export const App = () => {
 
     const store = columnStore();
+
+    initializeGlobalInputEvents();
 
     return createComponent({
         initialState: {
             columns: store.getColumns(),
         },
         render: ({ state, setState }) => {
-            console.log(store.getColumns());
+            const fragment = document.createDocumentFragment();
             const app = document.createElement("div");
-
             app.appendChild(Navbar());
             const columnList = ColumnList({
                 columnList: state,
-                onAddCard: (columnId) => {
-                    store.createCard(columnId);
-                    setState({ columns: store.getColumns() });
-                },
-                onDeleteCard: (columnId, cardId) => {
-                    store.deleteCard(columnId, cardId);
-                    setState({ columns: store.getColumns() });
-                },
-                onUpdateCard: (columnId, cardId, updatedCard) => {
-                    store.updateCard(columnId, cardId, updatedCard);
-                    setState({ columns: store.getColumns() });
-                },
+                setState
             });
             app.appendChild(columnList);
-
+            fragment.appendChild(app);
             return app;
         }
     })

@@ -1,17 +1,19 @@
+import { onDeleteCard, onUpdateCard } from "../action/stateActions.js";
 import { Card } from "../components/card/card.js";
-import { createComponent } from "../global/createComponent.js";
 
-export function CardList({ cards, columnId, onDeleteCard, onUpdateCard }) {
+export function CardList({ cards, columnId, setState }) {
 
   const cardContainer = document.createElement("ol");
+
   cardContainer.className = "column-card-list";
-  console.log(cards)
   cards.forEach((card) => {
+    const { id } = card;
+    const onCardDelete = () => onDeleteCard(columnId, id, setState);
+    const onCardUpdate = (cardData) => onUpdateCard(columnId, id, cardData, setState)
     const cardElement = Card({
       card,
-      columnId,
-      onDeleteCard,
-      onUpdateCard,
+      onCardDelete,
+      onCardUpdate,
     });
     cardContainer.appendChild(cardElement);
   });

@@ -49,7 +49,6 @@ export const columnStore = () => {
             })
         },
         deleteCard: (columnId, cardId) => {
-            console.log(columnStorage)
             columnStorage = deleteCard(columnStorage, columnId, cardId)
             columnStorage = columnStorage.map(column => column.id !== columnId ? column : {
                 ...column,

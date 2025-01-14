@@ -13,7 +13,6 @@ export function createComponent({ initialState, render, props }) {
   };
 
   const rerender = () => {
-    console.log("State updated:", state);
     const updatedElement = render({ state, setState, props });
     rootElement.replaceChildren(...updatedElement.childNodes);
   };
