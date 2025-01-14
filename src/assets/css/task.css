@@ -5,20 +5,22 @@
     align-items: center;
 }
 
-#headerContent{
+#headerContent {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 #header-logo {
+    flex: 1;
     font-size: 24px;
     font-weight: 700;
     line-height: 28.64px;
     color: var(--color_text_strong);
 }
 
-#history-icon{
+#history-icon {
     padding: 5px;
 }
 

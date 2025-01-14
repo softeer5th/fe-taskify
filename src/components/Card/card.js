@@ -12,9 +12,10 @@ export class DefaultCard extends Component {
     editIconRef = "/assets/images/edit.svg";
 
     constructor(title, body, author, onCloseClick = () => {
-        console.log("!!!")
     }, onEditClick = () => { }) {
         super();
+        super.addRootclass("card");
+        super.addRootclass("card-default");
         this.title = title;
         this.body = body;
         this.author = author;
@@ -25,7 +26,6 @@ export class DefaultCard extends Component {
 
     template() {
         return `
-        <div class="card card-default"> 
             <div class = "card-text_area">
                 <div class = "card-title display-bold24">
                     ${this.title}
@@ -41,15 +41,14 @@ export class DefaultCard extends Component {
                 <img src=${this.closeIconRef} alt="close-icon" class="card-icon" id = "close-icon" />
                 <img src=${this.editIconRef} alt="edit-icon" class="card-icon" id = "edit-icon" />
             </div>
-        </div>
     `;
     }
-
     render(parent) {
 
         super.renderTree(parent);
 
-        const close = parent.querySelector("#close-icon");
+        const component = parent.querySelector(`.${this.rootSelectorClassName}`);
+        const close = component.querySelector("#close-icon");
 
         if (close) {
             close.addEventListener("click", (event) => {
@@ -57,7 +56,7 @@ export class DefaultCard extends Component {
             });
         }
 
-        const edit = parent.querySelector("#edit-icon");
+        const edit = component.querySelector("#edit-icon");
 
         if (edit) {
 

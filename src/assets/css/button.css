@@ -1,26 +1,29 @@
-.confirm-button{
+.confirm-button {
     background-color: var(--color_surface_brand);
     color: #ffffff;
+    flex: 1;
 }
 
-.dismiss-button{
+.dismiss-button {
     background-color: var(--color_surface_alt);
     color: #000000;
+    flex: 1;
 }
 
-.alert-button{
+.alert-button {
     background-color: var(--color_surface_danger);
     color: #ffffff;
+    flex: 1;
 }
 
-.fab-button{
+.fab-button {
     border-radius: var(--border_radius_50);
     box-shadow: var(--shadow_floating);
     background-color: var(--color_surface_brand);
     color: #ffffff;
 }
 
-.button-background{
+.button-background {
     border-radius: var(--number_100);
     padding: var(--number_100);
     display: flex;
@@ -38,12 +41,12 @@
     cursor: not-allowed;
 }
 
-.button-icon{
+.button-icon {
     width: 16px;
     height: 16px;
     padding: var(--number_50);
 }
 
-.button-text{
+.button-text {
     padding: 0px var(--number_50) 0px var(--number_50);
 }

@@ -3,8 +3,13 @@ export default class Component {
     children = {};
     events = [];
 
+    rootId;
+    rootClass = [];
+    rootSelectorClassName = "";
+
     constructor() {
-        this.rootId = this.generateRandomString(16);
+        this.rootSelectorClassName = this.generateRandomString(16);
+        this.rootClass.push(this.rootSelectorClassName);
         this.children = {};
         this.events = [];
     }
@@ -21,38 +26,57 @@ export default class Component {
         return result;
     }
 
+    addRootclass(className) {
+        this.rootClass.push(className);
+    }
+
     template() {
         return '';
     }
 
     renderTree(parent) {
-        const wrapper = document.createElement("div"); 
-        wrapper.id = this.rootId; 
-        wrapper.innerHTML = this.template(); 
-        parent.appendChild(wrapper); 
+        const wrapper = document.createElement("div");
 
-        console.log(parent, this.rootId);
+        if (this.rootId) {
+            wrapper.id = this.rootId;
+        }
+
+        this.rootClass.forEach((className) => {
+            wrapper.classList.add(className);
+        });
+
+        wrapper.innerHTML = this.template();
+
+        parent.appendChild(wrapper);
+
+
         for (const key in this.children) {
             const childParent = wrapper.querySelector(this.children[key].parentSelector);
-            this.children[key].object.render(childParent);
-        }
-    }
-
-    setEvents(parent) {
-        if (this.rootId) {
-            const root = parent.querySelector(`#${this.rootId}`);
-
-            if (root) {
-                this.events.forEach(({ listenerName, callback }) => {
-                    root.addEventListener(listenerName, (event) => {
-                            callback();
-                    }, false);
-                });
+            if (childParent) {
+                this.children[key].object.render(childParent);
+            }
+            else {
+                this.children[key].object.render(wrapper);
             }
         }
     }
 
+    setEvents(parent) {
+        const root = parent.querySelector(`.${this.rootSelectorClassName}`);
+        if (root) {
+            this.events.forEach(({ listenerName, callback }) => {
+                root.addEventListener(listenerName, () => callback());
+
+            });
+        }
+    }
+
+    clear(parent) {
+        parent.innerHTML = '';
+    }
+
     render(parent) {
+        this.parent = parent;
         this.renderTree(parent);
         this.setEvents(parent);
     }

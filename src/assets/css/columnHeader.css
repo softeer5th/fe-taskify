@@ -1,14 +1,14 @@
 .columnHeader{
-    padding: 0px var(--number_200) 0px var(--number_200);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--number_100);
+    box-sizing: border-box;
 }
 
 .columnHeader-textArea{
-    width: auto;
-    flex: 1;
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -16,13 +16,17 @@
 }
 
 .columnHeader-icons{
-    width: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: var(--number_100);
+    cursor: pointer;
 }
 
 .columnHeader-icon{
     padding: 5px;
+}
+
+.columnHeader-icon:hover{
+    color: red;
 }
