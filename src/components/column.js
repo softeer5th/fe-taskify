@@ -6,68 +6,98 @@ import { ColumnHeader } from "./columnHeader.js";
 
 export class Column extends Component {
 
-    events = [];
+    onCardAdd = () => {
+        this.toggleAddCard();
+    }
 
-    constructor(columnData, onCardAdded = (newCardData) => {}, onCardDelete = (cardIndex) => {}) {
+    onNewCardDismiss = () => {
+        this.children.input.object.clearInput();
+        this.toggleAddCard();
+    };
+
+    onEditCard = (index) => {
+        const preData = this.children[`card${index}`].object;
+        this.createEditCard(index, preData);
+        this.rerender();
+    }
+
+    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }) {
         super();
-        super.addRootclass("column");
+        this.addRootclass("column");
         this.setCallback(onCardAdded, onCardDelete);
 
         this.setChildren(columnData);
-        
     }
 
-    setCallback(onCardAdded, onCardDelete){
-        
-        this.onCardAdd = () => {
-           this.toggleAddCard();
-        }
+    setCallback(onCardAdded, onCardDelete) {
 
-        this.onColumnDelete = () => {
-            
-        };
+        this.onColumnDelete = () => {};
 
         this.onCardDelete = onCardDelete;
 
         this.onNewCardAdded = (newCardData) => {
             onCardAdded(newCardData);
             this.toggleAddCard();
-        }; 
-        this.onNewCardDismiss = () => {
-            this.children.input.object.clearInput();
-            this.toggleAddCard();
         };
 
-        this.onEditCard = () => {
-
-        }
     }
 
-    setChildren(columnData){
+    setChildren(columnData) {
         this.children = {
             header: {
                 object: new ColumnHeader(columnData.name, columnData.data.length, this.onCardAdd, this.onColumnDelete),
-                parentSelector: `.column`
+                parentSelector: ".column"
             },
             input: {
-                object: new EditCard('','', this.onNewCardAdded, this.onNewCardDismiss )
+                object: new EditCard('', '', this.onNewCardAdded, this.onNewCardDismiss)
             }
         };
-    
+
         columnData.data.forEach((cardData, index) => {
-            this.children[`card${index}`] = {
-                object: new DefaultCard(
-                    cardData.title,
-                    cardData.body,
-                    cardData.author,
-                    () => {
-                        this.onCardDelete(index);
-                    },
-                    this.onEditCard,
-                ),
-                parentSelector:`.column`
-            };
+            this.createDefaultCard(index, cardData);
         });
+    }
+
+    toggleAddCard() {
+        const inputRootClass = this.children.input.object.rootSelectorClassName;
+        const input = this.parent.querySelector(`.${inputRootClass}`);
+
+        input.classList.toggle("hide");
+    }
+
+    createEditCard(index, preCardData){
+        this.children[`card${index}`] = {
+            object: new EditCard(
+                preCardData.title,
+                preCardData.body,
+                (newCardData) => {
+                    this.createDefaultCard(index, newCardData);
+                    this.rerender();
+                },
+                () => {
+                    this.createDefaultCard(index, preCardData);
+                    this.rerender();
+                }
+            ),
+            parentSelector: '.column'
+        }
+    }
+
+    createDefaultCard(index, cardData){
+        this.children[`card${index}`] = {
+            object: new DefaultCard(
+                cardData.title,
+                cardData.body,
+                cardData.author,
+                () => {
+                    this.onCardDelete(index);
+                },
+                () => {
+                    this.onEditCard(index);
+                }
+            ),
+            parentSelector: '.column'
+        }
     }
 
     template() {
@@ -76,19 +106,7 @@ export class Column extends Component {
 
     render(parent) {
         super.render(parent);
-        this.toggleAddCard()
-    }
-    
-    toggleAddCard(){
-        const inputRootClass = this.children.input.object.rootSelectorClassName;
-        const input = this.parent.querySelector(`.${inputRootClass}`);
-
-        input.classList.toggle("hide");
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
-
+        this.toggleAddCard();
     }
 
 }

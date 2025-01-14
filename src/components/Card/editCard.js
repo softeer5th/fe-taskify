@@ -15,8 +15,6 @@ export class EditCard extends Component {
         },
     };
 
-    events = [];
-
     closeIconRef = "/assets/images/closed.svg";
     editIconRef = "/assets/images/edit.svg";
 
@@ -30,7 +28,6 @@ export class EditCard extends Component {
 
         this.onConfirm = () => {
             const newCardData = this.addCardData();
-            console.log("newCard Data", newCardData);
             onConfirm(newCardData);
         };
         this.onDismiss = onDismiss;
@@ -73,10 +70,6 @@ export class EditCard extends Component {
 
         super.render(parent);
 
-    }
-
-    addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
     }
 
 }

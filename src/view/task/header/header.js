@@ -1,25 +1,15 @@
-import { Badge } from "../../../components/badge.js";
-import { IconButton } from "../../../components/Button/iconButton.js";
-import { Chip } from "../../../components/chip.js";
 import Component from "../../../components/component.js";
-import { Logo } from "./logo.js";
-
 
 export class Header extends Component {
 
-    children = {
-    };
-
-    events = [];
-
     rootId = "headerContent";
+
+    historyIconRef ="/assets/images/clock.svg";
 
     constructor(onHistoryClick = () => {}) {
         super();
         this.onHistoryClick = onHistoryClick;
     }
-
-    historyIconRef ="/assets/images/clock.svg"
 
     template() {
         return `
@@ -37,9 +27,7 @@ export class Header extends Component {
         const history = parent.querySelector("#history-icon");
 
         if (history) {
-            history.addEventListener("click", (event) => {
-                this.onHistoryClick
-            },false);
+            history.addEventListener("click", this.onHistoryClick);
         }
 
     }

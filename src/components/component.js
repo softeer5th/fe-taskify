@@ -34,7 +34,15 @@ export default class Component {
         return '';
     }
 
-    renderTree(parent) {
+    render(parent) {
+        this.parent = parent;
+
+        this.createRoot();
+        this.renderTree();
+        this.setEvents();
+    }
+
+    createRoot() {
         const wrapper = document.createElement("div");
 
         if (this.rootId) {
@@ -47,22 +55,24 @@ export default class Component {
 
         wrapper.innerHTML = this.template();
 
-        parent.appendChild(wrapper);
+        this.parent.appendChild(wrapper);
+        this.current = wrapper;
+    }
 
-
+    renderTree() {
         for (const key in this.children) {
-            const childParent = wrapper.querySelector(this.children[key].parentSelector);
+            const childParent = this.current.querySelector(this.children[key].parentSelector);
             if (childParent) {
                 this.children[key].object.render(childParent);
             }
             else {
-                this.children[key].object.render(wrapper);
+                this.children[key].object.render(this.current);
             }
         }
     }
 
-    setEvents(parent) {
-        const root = parent.querySelector(`.${this.rootSelectorClassName}`);
+    setEvents() {
+        const root = this.parent.querySelector(`.${this.rootSelectorClassName}`);
         if (root) {
             this.events.forEach(({ listenerName, callback }) => {
                 root.addEventListener(listenerName, () => callback());
@@ -71,14 +81,14 @@ export default class Component {
         }
     }
 
-    clear(parent) {
-        parent.innerHTML = '';
+    rerender() {
+        this.clear();
+        this.renderTree();
+        this.setEvents();
     }
 
-    render(parent) {
-        this.parent = parent;
-        this.renderTree(parent);
-        this.setEvents(parent);
+    clear() {
+        this.current.innerHTML = this.template();
     }
 
     addEvent(listenerName, callback) {

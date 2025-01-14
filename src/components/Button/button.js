@@ -4,8 +4,9 @@ export class Button extends Component {
 
     constructor(text = '', iconRef, buttonType = "confirm-button" ) {
         super();
-        super.addRootclass(buttonType);
-        super.addRootclass("button-background");
+        this.addRootclass(buttonType);
+        this.addRootclass("button-background");
+
         this.iconRef = iconRef;
         this.text = text;
         this.buttonType = buttonType;
@@ -24,14 +25,6 @@ export class Button extends Component {
                 ${this.text}
             </div>
         `;
-    }
-
-    render(parent) {
-        super.render(parent);
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
     }
 
 }

@@ -2,16 +2,10 @@ import Component from "../component.js";
 
 export class IconButton extends Component {
 
-    children = {
-
-    };
-
-    events = [];
-
     constructor(iconRef, buttonType = "confirm-button") {
         super();
-        super.addRootclass(buttonType);
-        super.addRootclass("button-background");
+        this.addRootclass(buttonType);
+        this.addRootclass("button-background");
         this.iconRef = iconRef;
         this.buttonType = buttonType;
     }
@@ -26,15 +20,6 @@ export class IconButton extends Component {
         return `
             ${iconTemplate}
         `;
-    }
-
-    render(parent) {
-        super.render(parent);
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
-
     }
 
 }

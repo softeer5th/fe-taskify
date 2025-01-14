@@ -2,20 +2,14 @@ import Component from "../component.js";
 
 export class DefaultCard extends Component {
 
-    children = {
-
-    };
-
-    events = [];
-
     closeIconRef = "/assets/images/closed.svg";
     editIconRef = "/assets/images/edit.svg";
 
-    constructor(title, body, author, onCloseClick = () => {
-    }, onEditClick = () => { }) {
+    constructor(title, body, author, onCloseClick = () => {}, onEditClick = () => {}) {
         super();
-        super.addRootclass("card");
-        super.addRootclass("card-default");
+        this.addRootclass("card");
+        this.addRootclass("card-default");
+        
         this.title = title;
         this.body = body;
         this.author = author;
@@ -43,12 +37,12 @@ export class DefaultCard extends Component {
             </div>
     `;
     }
+
     render(parent) {
 
-        super.renderTree(parent);
+        super.render(parent);
 
-        const component = parent.querySelector(`.${this.rootSelectorClassName}`);
-        const close = component.querySelector("#close-icon");
+        const close = this.current.querySelector("#close-icon");
 
         if (close) {
             close.addEventListener("click", (event) => {
@@ -56,7 +50,7 @@ export class DefaultCard extends Component {
             });
         }
 
-        const edit = component.querySelector("#edit-icon");
+        const edit = this.current.querySelector("#edit-icon");
 
         if (edit) {
 
@@ -65,12 +59,6 @@ export class DefaultCard extends Component {
             }, false);
 
         }
-
-        super.setEvents(parent);
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
     }
 
 }
