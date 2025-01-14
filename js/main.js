@@ -1,15 +1,10 @@
-import { closeCardModal, makeCard, popupCardModal } from "./addCard.js";
-import {
-  getColumnTasks,
-  removeTask,
-  editTask,
-  getTaskByTimestamp,
-  moveTask,
-} from "../utils/storage/taskManager.js";
-import { getColumn, setDefaultColumn } from "./setColumn.js";
-import { editCard, closeEditModal } from "./editCard.js";
-import { sortCard } from "./sortCard.js";
-import { deleteCard, closeDeleteModal } from "./deleteCard.js";
+import { closeCardModal, makeCard, popupCardModal } from "./card/addCard.js";
+import { getColumnTasks } from "../utils/storage/taskManager.js";
+import { setDefaultColumn } from "./setColumn.js";
+import { editCard, closeEditModal } from "./card/editCard.js";
+import { sort } from "./sort.js";
+import { deleteCard, closeDeleteModal } from "./card/deleteCard.js";
+import { dragendCard, dragoverCard, dragStartCard } from "./card/moveCard.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   setDefaultColumn();
@@ -47,8 +42,7 @@ document.addEventListener("click", ({ target }) => {
     // 취소 버튼 클릭시
     closeCardModal(parentColumn);
   } else if (target.closest(".sort-btn")) {
-    console.log(target.closest(".sort-btn").getAttribute("card-sort"));
-    sortCard(target.closest(".sort-btn").getAttribute("card-sort"));
+    sort(target.closest(".sort-btn").getAttribute("card-sort"));
   } else if (target.closest(".card-close-btn")) {
     deleteCard(task);
   } else if (target.closest(".task-delete-cancel-btn")) {
@@ -61,64 +55,18 @@ document.addEventListener("click", ({ target }) => {
     closeEditModal(true, task);
   } else if (target.closest(".task-edit-can-btn")) {
     closeEditModal(false, task);
-    console.log(task);
   }
 });
 
-//드래그 구현, 차후 refactor
+//드래그
 document.addEventListener("dragstart", ({ target }) => {
-  target.classList.add("dragging");
-
-  const startColumnKey = target
-    .closest(".column")
-    .getAttribute("data-column-key");
-
-  target.setAttribute("data-start-column", startColumnKey);
+  dragStartCard(target);
 });
 
 document.addEventListener("dragend", ({ target }) => {
-  target.classList.remove("dragging");
-  const startColNum = target.getAttribute("data-start-column");
-  const startCol = document.querySelector(
-    `.column[data-column-key="${startColNum}"]`
-  );
-  startCol.querySelector(".column-count").textContent--;
-  const endCol = target.closest(".column").querySelector(".column-count")
-    .textContent++;
-
-  target.removeAttribute("data-start-column");
+  dragendCard(target);
 });
 
 document.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  const draggingCard = document.querySelector(".dragging");
-  const columns = document.querySelectorAll(".column");
-
-  if (!draggingCard || !columns) return;
-
-  columns.forEach((column) => {
-    if (e.target.closest(".column") === column) {
-      const cards = [...column.querySelectorAll(".task:not(.dragging)")];
-      const afterCard = cards.find((card) => {
-        const rect = card.getBoundingClientRect();
-        return e.clientY <= rect.top + rect.height / 2;
-      });
-
-      if (afterCard) {
-        column.insertBefore(draggingCard, afterCard);
-        moveTask(
-          parseInt(draggingCard.getAttribute("data-timestamp")),
-          parseInt(draggingCard.getAttribute("data-start-column")),
-          parseInt(column.getAttribute("data-column-key"))
-        );
-      } else {
-        column.appendChild(draggingCard);
-        moveTask(
-          parseInt(draggingCard.getAttribute("data-timestamp")),
-          parseInt(draggingCard.getAttribute("data-start-column")),
-          parseInt(column.getAttribute("data-column-key"))
-        );
-      }
-    }
-  });
+  dragoverCard(e);
 });

@@ -1,4 +1,4 @@
-export const sortCard = (sortFlag) => {
+export const sort = (sortFlag) => {
   const cols = document.querySelectorAll(".column");
 
   cols.forEach((col) => {
@@ -37,16 +37,12 @@ export const sortCard = (sortFlag) => {
       task.getBoundingClientRect()
     );
 
-    console.log(initialPositions);
-    console.log(finalPositions);
-
     // 애니메이션 적용
     taskElements.forEach((taskElement, index) => {
       const initialPosition = initialPositions[index];
       const finalPosition = finalPositions[index];
 
       const deltaY = -finalPosition.top + initialPosition.top;
-      console.log(deltaY);
 
       taskElement.style.transition = "none";
       taskElement.style.transform = `translateY(${deltaY}px)`;

@@ -1,3 +1,5 @@
+import { moveTask } from "../../utils/storage/taskManager.js";
+
 export const dragStartCard = (target) => {
   target.classList.add("dragging");
 

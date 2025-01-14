@@ -31,7 +31,7 @@
 │   └── main.js           # Main JavaScript file
 │
 ├── `utils`                      # Data storage files (e.g. `localStorage.js` )
-    
+
 ```
 
 ### Development Plan
@@ -41,7 +41,7 @@
 2. Card adding ✅
 3. Card Sorting ✅
 4. Card editing ( + delete) ✅
-5. Card moving
+5. Card moving ✅
 6. History manager
 7. Column manager
 8. FAB button
@@ -53,65 +53,64 @@
 ### Things to do
 
 - [x] Skeleton Layout
-    - [x] Header
-    - [x] Main
-    - [x] Footer
+  - [x] Header
+  - [x] Main
+  - [x] Footer
 
 ---
 
 - [x] storage
-    - [x] Add
-    - [x] Delete
-    - [x] Edit
-    - [x] Move
-    - [x] History
+  - [x] Add
+  - [x] Delete
+  - [x] Edit
+  - [x] Move
+  - [x] History
 
 ---
 
 - [ ] Header
-    - [ ] Logo
-    - [ ] History Modal
-        - [ ] Pop up
-        - [ ] List of Tasks
-        - [ ] Clear History
-            - [ ] Warning Modal
-        - [ ] Close Modal
-        - [ ] Animation
-        - [ ] Bold for important words
+  - [ ] Logo
+  - [ ] History Modal
+    - [ ] Pop up
+    - [ ] List of Tasks
+    - [ ] Clear History
+      - [ ] Warning Modal
+    - [ ] Close Modal
+    - [ ] Animation
+    - [ ] Bold for important words
 
---- 
+---
 
 - [ ] Main
-    - [ ] Card Move
-        - [ ] Drag
-        - [ ] Drop
-    - [x] Sort
-        - [x] 생성 순
-        - [x] 최신 순
-        - [x] animation
-    - [x] Card
-        - [x] delete
-            - [x] warning modal
-        - [x] edit
-            - [x] edit modal
-    - [ ] CardList (Column)
-        - [x] Count of Cards
-        - [x] Add Card
-        - [ ] Delete Card
-        - [ ] Edit Column Name
-        - [ ] OverFlow Control
-            - [ ] Scroll
+  - [x] Card Move
+    - [x] Drag
+    - [x] Drop
+  - [x] Sort
+    - [x] 생성 순
+    - [x] 최신 순
+    - [x] animation
+  - [x] Card
+    - [x] delete
+      - [x] warning modal
+    - [x] edit
+      - [x] edit modal
+  - [ ] CardList (Column)
+    - [x] Count of Cards
+    - [x] Add Card
+    - [ ] Delete Card
+    - [ ] Edit Column Name
+    - [ ] OverFlow Control
+      - [ ] Scroll
 
 ---
 
 - [ ] Footer
-    - [ ] FAB btn
-        - [ ] Add Column
-            - [ ] Add Column Modal
-        - [ ] Delete Column
-            - [ ] Warning Modal
-        - [ ] Undo
-        - [ ] Redo
+  - [ ] FAB btn
+    - [ ] Add Column
+      - [ ] Add Column Modal
+    - [ ] Delete Column
+      - [ ] Warning Modal
+    - [ ] Undo
+    - [ ] Redo
 
 ---
- 
