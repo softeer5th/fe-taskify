@@ -34,6 +34,7 @@ const Column = (columnData) => {
     // TODO: 바뀐 데이터를 로컬스토리지나 서버에 저장해야함
     columnElement.querySelector('.textlabel').textContent =
       columnState.getState().cards.length;
+    console.log(columnState.getState());
   });
 
   columnElement.querySelector('h2').textContent = columnData.columnName;
@@ -46,21 +47,17 @@ const Column = (columnData) => {
         'default',
         cardData,
         (newData) =>
-          columnState.setState((prevState) => {
-            return {
-              ...prevState,
-              cards: prevState.cards.map((card) =>
-                card.id === newData.id ? newData : card
-              ),
-            };
-          }),
+          columnState.setState((prevState) => ({
+            ...prevState,
+            cards: prevState.cards.map((card) =>
+              card.id === newData.id ? newData : card
+            ),
+          })),
         (removeCardId) =>
-          columnState.setState((prev) => {
-            return {
-              ...prev,
-              cards: prev.cards.filter((card) => card.id !== removeCardId),
-            };
-          })
+          columnState.setState((prev) => ({
+            ...prev,
+            cards: prev.cards.filter((card) => card.id !== removeCardId),
+          }))
       )
     );
   });
@@ -74,22 +71,16 @@ const Column = (columnData) => {
         body: null,
         createdDate: new Date().toISOString(),
       },
-      (cardData) => {
-        columnState.setState((prevState) => {
-          return {
-            ...prevState,
-            cards: [cardData, ...prevState.cards],
-          };
-        });
-      },
-      (removeCardId) => {
-        columnState.setState((prevState) => {
-          return {
-            ...prevState,
-            cards: prevState.cards.filter((card) => card.id !== removeCardId),
-          };
-        });
-      }
+      (cardData) =>
+        columnState.setState((prevState) => ({
+          ...prevState,
+          cards: [cardData, ...prevState.cards],
+        })),
+      (removeCardId) =>
+        columnState.setState((prevState) => ({
+          ...prevState,
+          cards: prevState.cards.filter((card) => card.id !== removeCardId),
+        }))
     );
 
     const firstChild = columnElement.querySelector('li'); // 첫 번째 자식 요소 선택

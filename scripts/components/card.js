@@ -37,10 +37,11 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
 
   cardState.subscribe(() => {
     cardMode.setState(new CardMode('default', false));
+    addCard(cardState.getState());
   });
 
   cardMode.subscribe(() => {
-    setCardState(cardElement, cardState.getState(), cardMode.getState());
+    updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
   });
 
   initCardTextArea(cardElement, cardData);
@@ -51,9 +52,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
       deleteCard(cardData.id);
     },
     () => {
-      cardMode.setState(() => {
-        return { currentMode: 'add', isEditMode: true };
-      });
+      cardMode.setState(() => ({ currentMode: 'add', isEditMode: true }));
     }
   );
   initCardButtons(cardElement, [
@@ -72,7 +71,6 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
       name: 'add',
       handler: () => {
         applyCardChanges(cardElement, cardState);
-        addCard(cardState.getState());
         cardElement.parentElement.querySelector('#add-card').disabled = false;
       },
       // TODO: 바뀐 데이터를 상위 요소에게 알려줘야 함
@@ -81,13 +79,12 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
       name: 'edit',
       handler: () => {
         applyCardChanges(cardElement, cardState);
-        addCard(cardState.getState());
       },
       // TODO: 바뀐 데이터를 상위 요소에게 알려줘야 함
     },
   ]);
 
-  setCardState(cardElement, cardData, cardMode.getState());
+  updateCardDisplay(cardElement, cardData, cardMode.getState());
 
   return card;
 };
@@ -98,7 +95,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard) => {
  * @param {Card} cardData
  * @param {CardMode} mode
  */
-const setCardState = (cardElement, cardData, mode) => {
+const updateCardDisplay = (cardElement, cardData, mode) => {
   toggleDisplay(
     cardElement.querySelector('#freezed-text'),
     mode.currentMode !== 'add'
@@ -145,11 +142,11 @@ const setCardState = (cardElement, cardData, mode) => {
 };
 
 const applyCardChanges = (cardElement, cardState) => {
-  cardState.setState({
-    ...cardState.getState(),
+  cardState.setState((prev) => ({
+    ...prev,
     title: cardElement.querySelector('input').value,
     body: cardElement.querySelector('textarea').value,
-  });
+  }));
 };
 
 export default Card;
