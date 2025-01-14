@@ -27,6 +27,31 @@ header {
 
     .activity__list{
         display: none;
+        background-color: var(--grayscale-50);
+        
+        .activity__list__header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+
+            .title {
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--grayscale-900);
+            } 
+
+            > div {
+                display: flex;
+                align-items: center;
+
+                > span {
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: var(--grayscale-600);
+                }
+            }
+        }        
     }
 
     .clock__btn {
@@ -39,5 +64,14 @@ header {
         top: 60px;
         display: flex;
         flex-direction: column;
+    }
+
+    .record__container {
+        display: flex;
+
+        .textBox {   
+            display: flex;
+            flex-direction: column;
+        }
     }
 }
