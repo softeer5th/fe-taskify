@@ -90,8 +90,18 @@ export default class Model {
     this.#notify();
   }
 
+  unsetEditingTaskId() {
+    this.#model.state.editingTaskId = -1;
+    this.#notify();
+  }
+
   setEditingColumnId(columnId) {
     this.#model.state.editingColumnId = columnId;
+    this.#notify();
+  }
+
+  unsetEditingColumnId() {
+    this.#model.state.editingColumnId = -1;
     this.#notify();
   }
 
@@ -101,8 +111,19 @@ export default class Model {
     this.#notify();
   }
 
+  unsetCreatingTaskColumn() {
+    this.#model.state.editingTaskId = -1;
+    this.#model.state.editingColumnId = -1;
+    this.#notify();
+  }
+
   setMovingTaskId(taskId) {
     this.#model.state.movingTaskId = taskId;
+    this.#notify();
+  }
+
+  unsetMovingTaskId() {
+    this.#model.state.movingTaskId = -1;
     this.#notify();
   }
 
@@ -118,6 +139,11 @@ export default class Model {
 
   setMouseOverColumnId(columnId) {
     this.#model.state.mouseOverColumnId = columnId;
+    this.#notify();
+  }
+
+  unsetMouseOverColumnId() {
+    this.#model.state.mouseOverColumnId = -1;
     this.#notify();
   }
 
