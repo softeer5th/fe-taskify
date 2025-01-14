@@ -4,6 +4,7 @@ export const classNames = {
     todoHeaderTitle: 'todos__header__title',
     todoHeaderTodoCount: 'todos__header__todo-count',
     todoBody: 'todos__body',
+    todoDragZone: 'todos__drag-zone',
 
     todoItemBody: 'todos__body__item',
     todoItemTitle: 'todos__body__item__title',
@@ -24,19 +25,23 @@ export const classNames = {
     todoEditFormCancelBtn: 'todos__add-form__cancel-btn',
     todoEditFormSubmitBtn: 'todos__add-form__submit-btn',
 
+    afterImage: 'after-image',
+
     button: 'btn',
     addButton: 'add-btn',
     deleteButton: 'delete-btn',
     editButton: 'edit-btn',
-
-    skeleton: 'skeleton',
 }
 
 export const templateNames = {
     todoHeader: 'todo-header-template',
     todoItem: 'todo-item-template',
-    todoItemSkeleton: 'todo-item-skeleton',
     todoCategory: 'todo-category-template',
     todoItemAddForm: 'todo-item-add-form-template',
     todoItemEditForm: 'todo-item-edit-form-template',
+}
+
+export const keys = {
+    TODO_CATEGORY_KEY: 'todoCategory',
+    DRAG_ELEMENT_KEY: 'dragElement',
 }

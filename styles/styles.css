@@ -101,13 +101,10 @@ body {
 }
 
 .todos {
+    display: flex;
+    flex-direction: column;
     width: 320px;
     margin: 0px 8px;
-    padding: 0px 0px 200px 0px;
-    min-height: 500px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
 }
 
 .todos__header {
@@ -143,7 +140,6 @@ body {
 
 .todos__body {
     list-style-type: none;
-    /* min-height: 300px; */
 }
 .todos__body__item {
     display: flex;
@@ -179,6 +175,15 @@ body {
     position: relative;
     top: -6px;
     right: -6px;
+}
+
+.todos__drag-zone {
+    flex: 1;
+    width: 100%;
+    padding: 100px 0px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
 }
 
 .todos__add-form {
@@ -232,9 +237,8 @@ body {
     font: var(--font-medium-r);
 }
 
-.skeleton {
-    margin: 0px;
-    padding: 0px;
+.after-image {
+    opacity: 0.35;
 }
 
 .btn {
