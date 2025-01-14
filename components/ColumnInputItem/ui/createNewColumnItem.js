@@ -1,7 +1,7 @@
 import { createElement } from "../../../dom.js";
 import ColumnItem from "../../ColumnItem/ColumnItem.js";
 
-const createNewColumnItem = ({ id, title, content, author, sectionId }) => {
+const createNewColumnItem = ({ id, title, content, author }) => {
   const $userAgent = createElement("span", {
     className: "userAgent display-medium12",
     text: `author by ${author}`,
@@ -12,7 +12,6 @@ const createNewColumnItem = ({ id, title, content, author, sectionId }) => {
     title,
     content,
     author,
-    sectionId,
   });
 
   $newColumnItem.replaceChild($userAgent, $newColumnItem.lastChild);

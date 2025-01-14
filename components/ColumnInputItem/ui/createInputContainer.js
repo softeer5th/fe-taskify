@@ -1,14 +1,16 @@
 import { createElement } from "../../../dom.js";
 import createInputBox from "./createInputBox.js";
 
-const createInputContainer = ({ handleInputTitle, handleInputContent }) => {
+const createInputContainer = ({ title = "", content = "" }) => {
   const $inputTextContainer = createElement("div", {
     className: "column__item__textContainer",
   });
-  const $inputBox = createInputBox({ handleInputTitle, handleInputContent });
+  const $inputBox = createInputBox({
+    title,
+    content,
+  });
 
   $inputTextContainer.appendChild($inputBox);
-
   return $inputTextContainer;
 };
 

@@ -1,6 +1,6 @@
 import { createElement, createTextarea } from "../../../dom.js";
 
-const createInputBox = ({ handleInputTitle, handleInputContent }) => {
+const createInputBox = ({ title = "", content = "" }) => {
   const $textBox = createElement("div", {
     className: "column__item__textBox",
   });
@@ -9,13 +9,13 @@ const createInputBox = ({ handleInputTitle, handleInputContent }) => {
     id: "title",
     className: "column__item__title display-bold14",
     placeholder: "제목을 입력하세요",
-    handleInput: handleInputTitle,
+    value: title,
   });
   const $content = createTextarea({
     id: "content",
     className: "column__item__content display-medium14",
     placeholder: "내용을 입력하세요",
-    handleInput: handleInputContent,
+    value: content,
   });
 
   $textBox.appendChild($title);

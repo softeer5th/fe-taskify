@@ -1,19 +1,21 @@
 import { createButton, createElement } from "../../../dom.js";
 
-const createAddButtonContainer = ({ handleCancel, handleSubmit }) => {
+const createAddButtonContainer = ({ type = "add" }) => {
   const $addButtonContainer = createElement("div", {
     className: "column__item__addButtonContainer",
   });
+
   const $closeButton = createButton({
     className: "close__button",
     text: "취소",
-    handleClick: handleCancel,
+    type,
   });
+
   const $submitButton = createButton({
     className: "submit__button",
-    text: "등록",
-    handleClick: handleSubmit,
+    text: type === "add" ? "등록" : "저장",
     disabled: true,
+    type,
   });
 
   $addButtonContainer.appendChild($closeButton);

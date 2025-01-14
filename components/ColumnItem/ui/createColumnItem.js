@@ -2,7 +2,7 @@ import { createElement } from "../../../dom.js";
 import createAuthor from "./createAuthor.js";
 import createTextContainer from "./createTextContainer.js";
 
-const createColumnItem = ({ sectionId, itemId, title, content, author }) => {
+const createColumnItem = ({ itemId, title, content, author }) => {
   const $columnItem = createElement("div", {
     className: "column__item",
     "data-id": itemId,
@@ -10,8 +10,6 @@ const createColumnItem = ({ sectionId, itemId, title, content, author }) => {
   });
 
   const $textContainer = createTextContainer({
-    sectionId,
-    itemId,
     title,
     content,
   });

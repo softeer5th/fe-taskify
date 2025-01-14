@@ -1,13 +1,11 @@
+import { createElement } from "../../dom.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
 
 loadStyleSheet("/components/Modal/styles.css");
 
-const createModal = ({ title = "", content = "", onClick }) => {
+const createModal = ({ title = "", content = "" }) => {
   const $modalContainer = document.getElementById("modal-container");
-  const $modal = document.createElement("div");
-  const handleClose = () => {
-    $modal.remove();
-  };
+  const $modal = createElement("div", { id: "modal" });
 
   $modal.innerHTML = /*html*/ `
       <div class="modal__dimmed"></div>
@@ -24,17 +22,6 @@ const createModal = ({ title = "", content = "", onClick }) => {
         </div>
       </div>
     `;
-
-  $modal.querySelector(".modal__dimmed").addEventListener("click", handleClose);
-
-  $modal.querySelector(".delete__button").addEventListener("click", (e) => {
-    onClick();
-    handleClose();
-  });
-
-  $modal
-    .querySelector(".cancel__button")
-    .addEventListener("click", handleClose);
 
   $modalContainer.appendChild($modal);
 };

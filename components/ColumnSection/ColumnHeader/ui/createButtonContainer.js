@@ -6,13 +6,12 @@ import {
   createImg,
 } from "../../../../dom.js";
 
-const createButtonContainer = ({ handleClickAdd }) => {
+const createButtonContainer = () => {
   const $buttonContainer = createElement("div", {
     className: "column__header__buttonContainer",
   });
   const $addButton = createButton({
     className: "add__button",
-    handleClick: handleClickAdd,
   });
   const $addImg = createImg({
     src: IMAGE.plus,
