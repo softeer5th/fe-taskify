@@ -10,8 +10,7 @@ const App = () => {
   const [isOpen, setIsOpen] = useState(false);
   const button = Button({
     label: "알럿창 열기",
-
-    onClick: () => {
+    onClick() {
       setIsOpen(true);
     },
   });
@@ -53,8 +52,7 @@ const App = () => {
     body: "BODY",
     caption: "author by web",
     type: "place",
-
-    onClickRB: () => {
+    onClickRB() {
       console.log("rb");
     },
   });
@@ -62,8 +60,12 @@ const App = () => {
   const alert = Alert({
     text: "선택한 카드를 삭제할까요?",
     isOpen,
-    onClose: () => setIsOpen(false),
-    rightOnClick: () => console.log("삭제"),
+    onClose() {
+      setIsOpen(false);
+    },
+    rightOnClick() {
+      console.log("삭제");
+    },
   });
 
   return (
