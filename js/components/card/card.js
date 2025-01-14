@@ -10,7 +10,7 @@ export const Card = ({
 
     if (readOnly) {
         // 카드 조회
-        return ViewCard(card);
+        return ViewCard(card, onCardDelete, onCardUpdate);
     }
 
     // 카드 생성/편집

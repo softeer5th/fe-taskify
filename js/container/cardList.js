@@ -10,6 +10,7 @@ export function CardList({ cards, columnId, setState }) {
     const { id } = card;
     const onCardDelete = () => onDeleteCard(columnId, id, setState);
     const onCardUpdate = (cardData) => onUpdateCard(columnId, id, cardData, setState)
+    console.log(card)
     const cardElement = Card({
       card,
       onCardDelete,

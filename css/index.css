@@ -181,3 +181,67 @@ button {
     background-color: var(--todo-gray-color-700);
 }
 
+.modal-background {
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100vw;
+    height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(78, 75, 102, 0.5);
+}
+.modal-container{
+    width: 400px;
+    color: white;
+    padding : var(--todo-number-300);
+    border:red;
+    background-color: var(--todo-surface-default);
+    border-radius: var(--todo-number-100);
+    box-shadow: 0px 1px 4px rgb(110,128,145,0.24);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-text{
+    color: var(--todo-text-default);
+    margin : 8px;
+    border: 1px;
+    width: 100%;
+    text-align: center;
+
+}
+.modal-button-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap:8px;
+    margin-top: 24px;
+}
+
+.modal-cancel-button{
+    background-color: var(--todo-surface-alt);
+    border: 0;
+    flex:1;
+    border-radius: var(--todo-number-100);
+    padding:7.5px;
+    color:var(--todo-text-default);
+    transition: all 0.2s;
+}
+.modal-cancel-button:hover{
+    background-color: var(--todo-border-default);
+}
+
+.modal-submit-button{
+    background-color: var(--todo-surface-danger);
+    border:0;
+    flex:1;
+    border-radius: var(--todo-number-100);
+    color:var(--todo-text-white-default);
+    background-color: var(--todo-surface-danger);
+    transition: all 0.2s;
+}
+.modal-submit-button:hover{
+    background-color: var(--todo-gray-color-700);
+}
