@@ -6,6 +6,10 @@
     justify-content: center;
     align-items: center;
 
+    position: fixed;
+    right: var(--gap-600);
+    bottom: var(--gap-600);
+
     border-radius: 50%;
     background-color: var(--surface-brand);
 }

@@ -1,4 +1,7 @@
 .container {
+    width: calc(100% - 160px);
+    overflow-x: scroll;
+    
     display: flex;
     gap: var(--gap-300);
     padding: 20px 80px;
