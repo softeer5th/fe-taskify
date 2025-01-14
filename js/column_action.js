@@ -1,5 +1,6 @@
 import { overlay, createDeleteAllCardAlert, hideAlert } from "./alert.js";
 import { checkCardInput, confirmAddCard } from "./card_action.js";  
+import { addListener } from "./main.js";
 
 export function addCard(id) {
     const parentElement = document.querySelector('#column-id'+id);
@@ -23,15 +24,17 @@ export function addCard(id) {
         </div>
     `;
 
-    newDiv.querySelector('.confirm-button').addEventListener('click', (event)=> {
+    addListener(newDiv.querySelector('.confirm-button'), (event)=>{
         confirmAddCard(id);
         let curCard = childElement.querySelector('.new-card');
         curCard.remove();
     });
-    newDiv.querySelector('.cancel-button').addEventListener('click', (event)=> {
+
+    addListener(newDiv.querySelector('.cancel-button'),(event)=>{
         let curCard = childElement.querySelector('.new-card');
         curCard.remove();
     });
+
     newDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
     });

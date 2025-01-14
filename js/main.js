@@ -1,5 +1,5 @@
 import { addCard, delAllCard, updateChildCount  } from "./column_action.js";
-import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion } from "./card_action.js";
+import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion, isEditing } from "./card_action.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -135,7 +135,7 @@ export async function renderTemplate(templateFile, templateId, targetId, props) 
     }
 }
 
-function addListener(element, listener) {
+export function addListener(element, listener) {
     if (!eventListeners.has(element)) {
       eventListeners.set(element, []); // 요소에 대한 리스너 배열 초기화
     }
@@ -170,7 +170,9 @@ document.addEventListener('click', (event) => {
 });
 
 document.addEventListener('mousedown', (event) => {
-    triggerListeners(event, event.target);
+    if (!isEditing) {
+        triggerListeners(event, event.target);
+    }
 });
 
 document.addEventListener('mousemove', (event) => {

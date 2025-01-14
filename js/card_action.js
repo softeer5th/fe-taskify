@@ -1,4 +1,4 @@
-import { renderTemplate, setEventForCard } from "./main.js";
+import { addListener, renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
 
@@ -39,10 +39,10 @@ export function delCard(cardId) {
     delCardAlert.style.display = "block";
     let card = document.querySelector("#card-id"+cardId);
     delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
-    delCardAlert.querySelector('#cancel-delete-card-button').addEventListener('click',(event)=>{
+    addListener(delCardAlert.querySelector('#cancel-delete-card-button'),(event)=>{
         hideAlert();
     });
-    delCardAlert.querySelector('#confirm-delete-card-button').addEventListener('click',(event)=>{
+    addListener(delCardAlert.querySelector('#confirm-delete-card-button'),(event)=>{
         hideAlert();
         if (card) {
             card.remove();
@@ -50,6 +50,7 @@ export function delCard(cardId) {
     });
 }
 
+export let isEditing = false;
 
 // 카드 수정
 export function editCard(cardId) {
@@ -58,6 +59,7 @@ export function editCard(cardId) {
     const tempMemory = [...card.children];
     
     card.style.display = "block";
+    isEditing = true;
 
     let curTitle = card.querySelector(".card-title").textContent;
     let curContent = card.querySelector(".card-content").textContent;
@@ -80,12 +82,16 @@ export function editCard(cardId) {
         </button>
     `;
 
-    newActionDiv.querySelector('.confirm-button').addEventListener('click', (event)=> {
+    addListener(newActionDiv.querySelector('.confirm-button'),(event)=>{
+        isEditing = false;
         confirmEdit(card,cardId)
     });
-    newActionDiv.querySelector('.cancel-button').addEventListener('click', (event)=> {
+
+    addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
+        isEditing = false;
         cancelEdit(card,tempMemory);
     });
+    
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
@@ -103,12 +109,11 @@ export function editCard(cardId) {
 
 // 수정사항 반영
 function confirmEdit(card, cardId){
-    let columnId = card.parentElement.id;
     const titleInput = card.querySelector('#title-input');
     const titleValue = titleInput.value.trim();
     const contentInput = card.querySelector('#content-input');
     const contentValue = contentInput.value.trim();
-    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:cardId, title:titleValue, content:contentValue,});
+    renderTemplate('./html/card_template.html', 'card-template', card.parentElement.id, {cardId:cardId, title:titleValue, content:contentValue,});
     card.parentNode.removeChild(card);
 }
 
