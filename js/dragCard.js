@@ -1,23 +1,20 @@
 import { getSectionType } from "../utils/getSectionType.js";
 import { updateCardCount } from "./cardNavbar.js";
 import { updateLocalStorageAfterDrop } from "../store/workList.js";
+import { NUMBER_OF_CARD_FORM_PER_SECTION } from "./index.js";
 
-const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 const dragStartHandler = (e) => {
-  console.log("dragstart!!!!");
-
   const targetCard = e.target;
   const prevSectionType = getSectionType(targetCard);
   targetCard.classList.add("dragging");
 
-  // 출발 섹션 정보와 카드 정보 저장
+  // 출발 섹션 정보와 이전 카드 section 영역이 무엇인지 저장
   e.dataTransfer.setData(
     "text/plain",
     JSON.stringify({ targetCardId: targetCard.id, prevSectionType })
   );
 };
 const dragEndHandler = (e) => {
-  console.log("dragend");
   const targetCard = e.target;
   targetCard.classList.remove("dragging");
 };
@@ -25,7 +22,6 @@ const dragEndHandler = (e) => {
 const getPositionToDrop = (sectionWrapper, mouseYCoordinate) => {
   // 마우스현재 y축 값을 보고, 현재 section의 어느 카드와 가장 가까운가 반환.
   const cards = [...sectionWrapper.querySelectorAll(".card:not(.dragging)")];
-  console.log(sectionWrapper);
   return cards.reduce(
     (closest, childCard) => {
       const box = childCard.getBoundingClientRect(); //element의 크기, 위치 정보를 담은 정보 반환.
@@ -65,8 +61,26 @@ const dragOverHandler = (e) => {
   } catch (error) {
     console.error("Drop failed:", error);
     // 실패 시 기본 동작으로 마지막에 추가
-    section.appendChild(draggingCard);
+    sectionContainer.appendChild(draggingCard);
   }
+};
+
+const updateUI = (
+  prevSection,
+  prevSectionCardList,
+  currentSection,
+  currentCardList
+) => {
+  updateCardCount(
+    // 옮겨진 섹션 count update
+    currentSection,
+    currentCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION
+  );
+  updateCardCount(
+    // 옮기기전 섹션 count update
+    prevSection,
+    prevSectionCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION
+  );
 };
 
 const dropCardHandler = (e) => {
@@ -74,29 +88,26 @@ const dropCardHandler = (e) => {
   const draggingCard = document.querySelector(".dragging");
   if (!draggingCard) return;
 
-  draggingCard.classList.remove("dragging");
-  const nowSectionType = getSectionType(draggingCard);
+  const draggCardInfo = e.dataTransfer.getData("text/plain");
 
+  const nowSectionType = getSectionType(draggingCard);
   const currentCardList = document.querySelectorAll(
     `.${nowSectionType}-wrapper .card-container .card`
   );
 
-  updateCardCount(
-    nowSectionType,
-    currentCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION
+  const prevSection = JSON.parse(draggCardInfo).prevSectionType;
+  const prevCardList = document.querySelectorAll(
+    `.${prevSection}-wrapper .card-container .card`
   );
 
-  const cardInfo = e.dataTransfer.getData("text/plain");
-  const prevSection = JSON.parse(cardInfo).prevSectionType;
+  updateUI(prevSection, prevCardList, nowSectionType, currentCardList);
   updateLocalStorageAfterDrop(prevSection, nowSectionType, draggingCard);
-
-  console.log(nowSectionType);
 };
 
-const cards = document.querySelectorAll(".card");
-cards.forEach((eachCard) => {
-  eachCard.addEventListener("dragstart", dragStartHandler);
-  eachCard.addEventListener("dragend", dragEndHandler); // 드래그를 중간에 취소했다면
-  eachCard.addEventListener("dragover", dragOverHandler);
-  eachCard.addEventListener("drop", dropCardHandler);
+const sections = document.querySelectorAll("section");
+sections.forEach((section) => {
+  section.addEventListener("dragstart", dragStartHandler);
+  section.addEventListener("dragend", dragEndHandler); // 드래그를 중간에 취소했다면
+  section.addEventListener("dragover", dragOverHandler);
+  section.addEventListener("drop", dropCardHandler);
 });

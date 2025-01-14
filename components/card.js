@@ -11,6 +11,7 @@ export const card = (id, title = "", content = "") => {
               <!-- x 아이콘 -->
               <div class="card-delete-icon">
               <svg
+              draggable="false"
                 class="card-delete-icon"
                 width="24"
                 height="24"
@@ -25,7 +26,7 @@ export const card = (id, title = "", content = "") => {
               </div>
               <!-- 편집 아이콘 -->
               <div class="card-edit-icon">
-              <img class="card-edit-icon" src="./assets/icons/edit.svg" alt="" />
+              <img draggable="false" class="card-edit-icon" src="./assets/icons/edit.svg" alt="" />
               </div>
           </div>
           </div>

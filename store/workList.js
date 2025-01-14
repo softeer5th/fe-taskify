@@ -49,7 +49,6 @@ const editStorage = (sectionType, cardId, newTitle, newContent) => {
   savedData(updatedWorkList);
 };
 const addStorage = (sectionType, title, content, CARD_ID) => {
-  console.log(workList, "??");
   workList[sectionType].unshift({
     id: CARD_ID,
     createdDate: new Date().toISOString(),
@@ -60,6 +59,7 @@ const addStorage = (sectionType, title, content, CARD_ID) => {
 };
 
 const updateLocalStorageAfterDrop = (prevSection, nowSection, targetCard) => {
+  // if (!targetCard) return;
   const targetCardData = workList[prevSection].find(
     (item) => item.id === Number(targetCard.id)
   );

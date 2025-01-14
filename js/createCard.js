@@ -1,14 +1,14 @@
 import { card } from "../components/card.js";
 import { addStorage } from "../store/workList.js";
 import { updateCardCount } from "./cardNavbar.js";
+import { NUMBER_OF_CARD_FORM_PER_SECTION } from "./index.js";
 import "./dragCard.js";
 
-const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 const columnArea = document.querySelector(".column-area");
 
 const todoFormInit = (formCard) => {
   // form 초기화
-  formCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록.
+  formCard.classList.toggle("display-none"); // 입력 폼은 다시 안보이도록 초기화.
   formCard.querySelector(".title").value = "";
   formCard.querySelector(".content").value = "";
 };

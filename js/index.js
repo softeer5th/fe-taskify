@@ -9,6 +9,7 @@ import { updateCardCount } from "./cardNavbar.js";
 
 const SECTION_TYPE = ["todo", "doing", "done"];
 const workList = loadData();
+export const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 
 const eachColumnRender = () => {
   SECTION_TYPE.forEach((type) => {

@@ -2,11 +2,11 @@ import { modal } from "../components/modal.js";
 import { deleteCardFormStorage } from "../store/workList.js";
 import { updateCardCount } from "./cardNavbar.js";
 import { getSectionType } from "../utils/getSectionType.js";
+import { NUMBER_OF_CARD_FORM_PER_SECTION } from "./index.js";
+
 const cardContainer = document.querySelectorAll(".card-container");
 
 let [cardIdToDelete, sectionToDelete] = ["", ""];
-
-const NUMBER_OF_CARD_FORM_PER_SECTION = 1;
 
 const showDeleteModal = () => {
   const root = document.querySelector("#root");
