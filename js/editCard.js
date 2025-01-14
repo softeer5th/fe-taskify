@@ -31,7 +31,8 @@ const backToCard = (targetCard) => {
 };
 
 const editBtnHandler = (e) => {
-  const card = e.target.closest(".card"); // 버튼을 누른 카드 찾기.
+  const { target: targetCard } = e;
+  const card = targetCard.closest(".card"); // 버튼을 누른 카드 찾기.
   if (!card) return;
 
   const sectionType = getSectionType(card);
@@ -39,12 +40,12 @@ const editBtnHandler = (e) => {
   const cardTitle = card.querySelector(".title");
   const cardContent = card.querySelector(".content");
 
-  if (e.target.matches(".card-edit-icon")) {
+  if (targetCard.matches(".card-edit-icon")) {
     // 편집 아이콘을 눌렀다면
     showEditCard(card);
   }
 
-  if (e.target.matches(".save-btn")) {
+  if (targetCard.matches(".save-btn")) {
     // 저장
     if (
       previousTitle === cardTitle.value &&
@@ -56,7 +57,7 @@ const editBtnHandler = (e) => {
     backToCard(card);
   }
 
-  if (e.target.matches(".edit-cancel-btn")) {
+  if (targetCard.matches(".edit-cancel-btn")) {
     // 취소 버튼이라면, 이전 값을 저장.
     cardTitle.value = previousTitle;
     cardContent.value = previousContent;

@@ -1,0 +1,28 @@
+.sort-btn {
+  display: flex;
+
+  top: 20px;
+  left: 194px;
+  padding: 3.5px 8px;
+  gap: 0px;
+  border-radius: 8px;
+  border: 1px solid var(--border-bord);
+  opacity: 0px;
+  margin-left: 16px;
+}
+.sort-btn:hover {
+  cursor: pointer;
+}
+.sort-method {
+  padding: 1.5px 4px;
+  width: 46px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14.32px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: var(--text-bold);
+}

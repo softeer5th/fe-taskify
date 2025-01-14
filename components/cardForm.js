@@ -25,22 +25,23 @@ export const cardForm = (sectionType) => {
     `;
 
   const isTitleAndContentHasValue = (title, content) => {
-    if (title.value.trim().length > 0 && content.value.trim().length > 0) {
-      return true;
-    }
-    return false;
+    const titleLength = title.value.trim().length;
+    const contentLength = content.value.trim().length;
+
+    return titleLength > 0 && contentLength > 0 ? true : false;
   };
 
   const cardFormElement = parseToDoc(cardFormHTML);
 
   const title = cardFormElement.querySelector(".title");
   const content = cardFormElement.querySelector(".content");
+  const addBtn = cardFormElement.querySelector(".add-btn");
 
   const updateAddButtonState = () => {
     if (isTitleAndContentHasValue(title, content)) {
-      cardFormElement.querySelector(".add-btn").disabled = false;
+      addBtn.disabled = false;
     } else {
-      cardFormElement.querySelector(".add-btn").disabled = true;
+      addBtn.disabled = true;
     }
   };
 

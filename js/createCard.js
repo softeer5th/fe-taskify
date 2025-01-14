@@ -1,6 +1,6 @@
 import { card } from "../components/card.js";
 import { addStorage } from "../store/workList.js";
-import { updateCardCount } from "./cardNavbar.js";
+import { updateCardCount } from "./cardCountUpdate.js";
 import { NUMBER_OF_CARD_FORM_PER_SECTION } from "./index.js";
 import "./dragCard.js";
 
@@ -42,7 +42,8 @@ const showCardForm = (formCard) => {
 };
 
 const createCardBtnHandler = (e) => {
-  const submitBtn = e.target.closest(".add-btn");
+  const { target: eventTargetElement } = e;
+  const submitBtn = eventTargetElement.closest(".add-btn");
   if (!submitBtn) return;
 
   const sectionType = submitBtn.dataset.section;
@@ -53,7 +54,9 @@ const createCardBtnHandler = (e) => {
 columnArea.addEventListener("click", createCardBtnHandler);
 
 const submitBtnHandler = (e) => {
-  const submitBtn = e.target.closest(".add-icon");
+  const { target: eventTargetElement } = e;
+
+  const submitBtn = eventTargetElement.closest(".add-icon");
 
   if (submitBtn) {
     // 등록버튼
@@ -63,8 +66,9 @@ const submitBtnHandler = (e) => {
   }
 
   // 취소 버튼.
-  if (e.target.matches(".cancel-btn")) {
-    const formCard = e.target.closest(".form-card"); // 버튼을 누른 카드 찾기.
+
+  if (eventTargetElement.matches(".cancel-btn")) {
+    const formCard = eventTargetElement.closest(".form-card"); // 버튼을 누른 카드 찾기.
     if (formCard) {
       todoFormInit(formCard);
     }
