@@ -7,7 +7,7 @@ export class CardData {
         this.title = title;
         this.body = body;
         this.author = author;
-        this.cardId = `${cardId}`;
+        this.cardId = cardId;
         cardId++;
     }
 

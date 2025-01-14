@@ -15,22 +15,26 @@ export class EditCard extends Component {
         },
     };
 
-    events = [];
-
     closeIconRef = "/assets/images/closed.svg";
     editIconRef = "/assets/images/edit.svg";
 
-    constructor(title, body, onConfirm = (newCardData) => { }, onDismiss = () => { }) {
+    title = '';
+    body = '';
+
+    constructor(cardData, onConfirm = (newCardData) => { }, onDismiss = () => { }) {
         super();
         super.addRootclass("card");
         super.addRootclass("card-edit");
 
-        this.title = title;
-        this.body = body;
+        console.log("cardData", cardData);
+        if (cardData) {
+            this.cardData = cardData;
+            this.title = cardData.title;
+            this.body = cardData.body;
+        }
 
         this.onConfirm = () => {
             const newCardData = this.addCardData();
-            console.log("newCard Data", newCardData);
             onConfirm(newCardData);
         };
         this.onDismiss = onDismiss;
@@ -73,10 +77,9 @@ export class EditCard extends Component {
 
         super.render(parent);
 
-    }
-
-    addEvent(listenerName, callback) {
-        this.events.push({ listenerName, callback });
+        if (this.cardData) {
+            this.current.id = `card${this.cardData.cardId}`;
+        }
     }
 
 }

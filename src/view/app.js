@@ -1,59 +1,45 @@
 import Component from "../components/component.js";
 import { Header } from "./task/header/header.js";
 import { ColumnList } from "./task/column/columnList.js";
-import { ColumnData } from "../route/data/columnData.js";
-import { CardData } from "../route/data/cardData.js";
+import { columnData } from "../route/mock/fakeColumnListData.js";
+import { sortType } from "../route/data/sortType.js";
 
 export class App extends Component {
 
-    columnData = [
-        new ColumnData(
-            "해야할 일",
-            [
-                new CardData(
-                    "제목1",
-                    "내용1",
-                    "web"
-                )
-            ]
+    columnData = columnData;
 
-        ),
-        new ColumnData(
-            "하고 있는 일",
-            [
-                new CardData(
-                    "제목1",
-                    "내용1",
-                    "web"
-                ),
-                new CardData(
-                    "제목2",
-                    "내용2",
-                    "web"
-                ),
-                new CardData(
-                    "제목3",
-                    "내용3",
-                    "web"
-                )
-            ]
-        ),
-        new ColumnData(
-            "완료한 일"
+    onSortClick = (newSortType) => {
 
-        ),
-    ]
+        if (newSortType === sortType.create) {
+            this.sortByCreated();
+        } else {
+            this.sortByRecent();
+        }
 
-    onCardAdd = (columnIndex, cardData) => {
+        this.rerender();
+    }
+
+    onHistoryClick = () => { }
+
+    onCardAdded = (columnIndex, cardData) => {
+        console.log("columnData",this.columnData);
         this.columnData[columnIndex].addData(cardData);
 
-        this.rerendering();
-    };
+        this.rerender();
+    }
 
-    onCardDelete = (columnIndex, cardIndex) => {
+    onCardDeleted = (columnIndex, cardIndex) => {
         this.columnData[columnIndex].removeData(cardIndex);
+        console.log("columnData",this.columnData);
 
-        this.rerendering();
+        this.rerender();
+    }
+
+    children = {
+        header: {
+            object: new Header(this.onSortClick, this.onHistoryClick),
+            parentSelector: "#header",
+        }
     };
 
     constructor() {
@@ -61,17 +47,26 @@ export class App extends Component {
         this.setChildren();
     }
 
-    setChildren(){
-        this.children = {
-            header: {
-                object: new Header(),
-                parentSelector: "#header",
-            },
-            column: {
-                object: new ColumnList(this.columnData, this.onCardAdd, this.onCardDelete),
-                parentSelector: "#taskContent",
-            },
-        };
+    setChildren() {
+
+        this.children["column"] = {
+            object: new ColumnList(this.columnData, this.onCardAdded, this.onCardDeleted),
+            parentSelector: "#taskContent",
+        }
+    }
+
+    sortByCreated() {
+        this.columnData = this.columnData.map((columnData) => {
+            columnData.data = columnData.data.sort((cardData1, cardData2) => cardData1.cardId - cardData2.cardId);
+            return columnData;
+        });
+    }
+
+    sortByRecent() {
+        this.columnData = this.columnData.map((columnData) => {
+            columnData.data = columnData.data.sort((cardData1, cardData2) => cardData2.cardId - cardData1.cardId);
+            return columnData;
+        });
     }
 
     template() {
@@ -81,17 +76,13 @@ export class App extends Component {
         `;
     }
 
-    rerendering(){
-        this.setChildren();
-        this.clear(this.parent);
-        this.render(this.parent);
-    }
-
     render(parent) {
         super.render(parent);
     }
 
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
+    rerender() {
+        this.setChildren();
+        super.rerender();
     }
+
 }

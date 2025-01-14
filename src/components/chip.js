@@ -2,37 +2,22 @@ import Component from "./component.js";
 
 export class Chip extends Component {
 
-    children = {
+    sortIconRef = "/assets/images/arrowBoth.svg";
 
-    };
-
-    events = [];
-
-    sortIconRef = "/assets/images/arrowBoth.svg"
     constructor(sort) {
         super();
+        this.addRootclass("chip");
+
         this.currentSort = sort;
     }
 
     template() {
-
         return `
-        <div id = "${this.rootId}" class="chip">
             <img src=${this.sortIconRef} alt="icon" class="chip-icon" />
-            <div class = "chip-text">
+            <div class = "chip-text display-medium12">
                 ${this.currentSort}
             </div>
-        </div >
         `;
-    }
-
-    render(parent) {
-        super.render(parent);
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
-
     }
 
 }

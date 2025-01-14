@@ -1,25 +1,39 @@
-import { Badge } from "../../../components/badge.js";
-import { IconButton } from "../../../components/Button/iconButton.js";
 import { Chip } from "../../../components/chip.js";
 import Component from "../../../components/component.js";
-import { Logo } from "./logo.js";
-
+import { sortType } from "../../../route/data/sortType.js";
 
 export class Header extends Component {
 
-    children = {
-    };
-
-    events = [];
-
     rootId = "headerContent";
 
-    constructor(onHistoryClick = () => {}) {
+    historyIconRef = "/assets/images/clock.svg";
+
+    currentSortType = sortType.create;
+
+    constructor(onSortClick = (sortType) => { }, onHistoryClick = () => { }) {
         super();
+        this.setChildren();
+        this.onSortClick = onSortClick;
         this.onHistoryClick = onHistoryClick;
     }
 
-    historyIconRef ="/assets/images/clock.svg"
+    setChildren() {
+        this.children = {
+            sort: {
+                object: new Chip(this.currentSortType),
+                parentSelector: "#header-logo"
+            }
+        }
+    }
+
+    switchSortType() {
+        if (this.currentSortType === sortType.create) {
+            this.currentSortType = sortType.recent;
+        } else {
+            this.currentSortType = sortType.create;
+        }
+        this.setChildren();
+    }
 
     template() {
         return `
@@ -32,16 +46,39 @@ export class Header extends Component {
 
     render(parent) {
 
+        this.children.sort.object.addEvent("click", () => {
+            this.switchSortType();
+            this.onSortClick(this.currentSortType);
+            this.rerender();
+        });
+
         super.render(parent);
-        
+
         const history = parent.querySelector("#history-icon");
 
         if (history) {
-            history.addEventListener("click", (event) => {
-                this.onHistoryClick
-            },false);
+            history.addEventListener("click", this.onHistoryClick);
         }
 
+    }
+    
+    rerender(){
+        
+        this.setChildren();
+
+        this.children.sort.object.addEvent("click", () => {
+            this.switchSortType();
+            this.onSortClick(this.currentSortType);
+            this.rerender();
+        });
+
+        super.rerender();
+
+        const history = this.parent.querySelector("#history-icon");
+
+        if (history) {
+            history.addEventListener("click", this.onHistoryClick);
+        }
     }
 
     addEvent(listenerName, callback) {

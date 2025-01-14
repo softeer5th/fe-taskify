@@ -2,18 +2,14 @@ import Component from "./component.js";
 
 export class Badge extends Component {
 
-    children = {
-
-    };
-
-    events = [];
+    maxDisplayNumber = 99;
 
     constructor(num) {
         super();
-        if(num > 99){
+        if (num > this.maxDisplayNumber) {
             this.num = "99+";
         }
-        else{
+        else {
             this.num = num;
         }
     }
@@ -25,14 +21,6 @@ export class Badge extends Component {
                 ${this.num}
             </div>
          `;
-    }
-
-    render(parent) {
-        super.render(parent);
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent( listenerName, callback );
     }
 
 }

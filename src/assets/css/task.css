@@ -18,6 +18,10 @@
     font-weight: 700;
     line-height: 28.64px;
     color: var(--color_text_strong);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--number_100);
 }
 
 #history-icon {

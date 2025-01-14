@@ -1,14 +1,14 @@
-import { Button } from "../../../components/Button/button.js";
 import Component from "../../../components/component.js";
 import { Badge } from "./badge.js";
 
 export class ColumnHeader extends Component {
 
-    events = [];
+    addIconRef = "/assets/images/plus.svg";
+    deleteIconRef = "/assets/images/closed.svg";
 
     constructor(name = '',numOfColumns = 0, onAddClick = () => { }, onDeleteClick = () => { }) {
         super();
-        super.addRootclass("columnHeader");
+        this.addRootclass("columnHeader");
         this.name = name;
         this.children = {
             badge: {
@@ -19,9 +19,6 @@ export class ColumnHeader extends Component {
         this.onAddClick = onAddClick;
         this.onDeleteClick = onDeleteClick;
     }
-
-    addIconRef = "/assets/images/plus.svg";
-    deleteIconRef = "/assets/images/closed.svg";
 
     template() {
         return `
@@ -49,13 +46,8 @@ export class ColumnHeader extends Component {
 
         const deleteIcon = component.querySelector("#delete-icon");
         if(deleteIcon){
-            deleteIcon.addEventListener("click", this.onAddClick);
+            deleteIcon.addEventListener("click", this.onDeleteClick);
         }
-
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
 
     }
 

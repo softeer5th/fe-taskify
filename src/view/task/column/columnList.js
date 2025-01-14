@@ -1,11 +1,7 @@
-import { Button } from "../../../components/Button/button.js";
 import { Column } from "../../../components/column.js";
 import Component from "../../../components/component.js";
 
 export class ColumnList extends Component {
-
-    children = {};
-    events = [];
 
     rootId = "columnList";
 
@@ -28,15 +24,6 @@ export class ColumnList extends Component {
 
     template() {
         return '';
-    }
-
-    render(parent) {
-        super.render(parent);
-    }
-
-    addEvent(listenerName, callback) {
-        super.addEvent(listenerName, callback);
-
     }
 
 }
