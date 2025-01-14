@@ -106,7 +106,13 @@ export default function State() {
     function moveTask(destinationIndex, task) {
         const newTask = {...task, column : destinationIndex};
         const currentIndex = task.column;
-        console.log(`origin index : ${task.column} / dest index : ${destinationIndex}`);
+
+        setLog({
+            task: task,
+            type: "MOVE",
+            updated: new Date(),
+            destination: destinationIndex
+        })
 
         columnTasks[currentIndex] = columnTasks[currentIndex].filter(el => el.taskId !== task.taskId);
         columnTasks[destinationIndex].push(newTask);
