@@ -261,6 +261,17 @@
     align-items: center;
     justify-content: space-between;
 }
+.container-9cba6f3 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list-9cba6f3 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 .container-3660315 {
     display: flex;
     gap: var(--gap-300);
