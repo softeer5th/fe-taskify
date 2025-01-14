@@ -1,5 +1,6 @@
 import renderTemplate from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
+import { createNewId } from "./utility.js";
 
 // 입력창 확인 후 버튼 활성화 결정
 export function checkCardInput() {
@@ -25,7 +26,7 @@ export function confirmAddCard(columnId){
     const titleValue = titleInput.value.trim();
     const contentInput = document.getElementById('content-input');
     const contentValue = contentInput.value.trim();
-    const newCardId = document.getElementById('card-list'+columnId).childElementCount;
+    const newCardId = createNewId();
     renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:newCardId, title:titleValue, content:contentValue,});
 }
 
@@ -81,10 +82,10 @@ export function editCard(columnId, cardId) {
     `;
 
     newActionDiv.querySelector('.confirm-button').addEventListener('click', (event)=> {
-        applyChanges(card, columnId, cardId)
+        confirmEdit(card, columnId, cardId)
     });
     newActionDiv.querySelector('.cancel-button').addEventListener('click', (event)=> {
-        undoChanges(card,tempMemory);
+        cancelEdit(card,tempMemory);
     });
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
@@ -102,7 +103,7 @@ export function editCard(columnId, cardId) {
 }
 
 // 수정사항 반영
-function applyChanges(card, columnId, cardId){
+function confirmEdit(card, columnId, cardId){
     const titleInput = card.querySelector('#title-input');
     const titleValue = titleInput.value.trim();
     const contentInput = card.querySelector('#content-input');
@@ -112,7 +113,7 @@ function applyChanges(card, columnId, cardId){
 }
 
 // 수정사항 취소
-function undoChanges(card, tempMemory){
+function cancelEdit(card, tempMemory){
     card.style.display = "flex";
     [...card.children].forEach(element => {
         card.removeChild(element);
@@ -156,6 +157,13 @@ export function moveCard(event, clone) {
 
     clone.style.left = `${event.clientX-gapX}px`;
     clone.style.top = `${event.clientY-gapY}px`;
+}
+
+export function moveCardIllusion(newParent, clone) {
+    console.log(newParent);
+    console.log(clone);
+    curParent.removeChild(clone);
+    newParent.appendChild(clone);
 }
 
 export function finishDragCard(clone) {

@@ -65,3 +65,15 @@ export function delAllCard(columnId) {
         cardList.innerHTML = ``;
     });
 }
+
+export function updateChildCount(parentElement) {
+    const countDisplay = parentElement.querySelector('.card-count');
+
+    const childCount = parentElement.querySelector('.card-list').children.length;
+    
+    if (parseInt(childCount)>99) {
+        countDisplay.textContent = "99+";
+    } else {
+        countDisplay.textContent = childCount;
+    }
+}
