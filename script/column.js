@@ -7,10 +7,61 @@ export default function ColumnController(state, bodyElement) {
     const columnComponent = ColumnComponent();
     const formComponent = FormComponent();
     const taskController = TaskController(state, (idx)=>{
-        console.log(idx, columnTasks[idx]);
         columnComponent.rerenderHeader(idx, columnTasks[idx].length);
     });
     
+    function handleDrop(e) {
+        const {task, element, dummyElement} = state.getDragged();
+        const columnListElement = e.currentTarget;
+        const startIdx = task.column;
+        const columnIdx = Number(columnListElement.parentNode.getAttribute('index'));
+
+
+        if(task.column !== columnIdx) columnListElement.removeChild(dummyElement);
+        element.style.opacity = 1;
+        columnListElement.appendChild(element);
+
+        state.moveTask(columnIdx, task)
+        state.resetDragged();
+
+        console.log(columnTasks)
+
+        columnComponent.rerenderHeader(startIdx, columnTasks[startIdx].length);
+        columnComponent.rerenderHeader(columnIdx, columnTasks[columnIdx].length);
+    }
+
+    function handleDragEnter(e) {
+        if(e.currentTarget.contains(e.relatedTarget)) return;
+        const {task, element, dummyElement} = state.getDragged();
+
+
+        const columnListElement = e.currentTarget;
+        const columnIdx = Number(columnListElement.parentNode.getAttribute('index'));
+
+        if(task.column === columnIdx) {
+            element.style.opacity = 0.3;
+            return;
+        }
+
+        columnListElement.appendChild(dummyElement);
+    }
+
+    function handleDragLeave(e) {
+        if(e.currentTarget.contains(e.relatedTarget)) return;
+        const {task, element, dummyElement} = state.getDragged();
+
+        const columnListElement = e.currentTarget;
+        const columnIdx = Number(columnListElement.parentNode.getAttribute('index'));
+
+        if(task.column === columnIdx) {
+            element.style.opacity = 0;
+            return;
+        }
+
+        if(columnListElement.contains(dummyElement)) {
+            columnListElement.removeChild(dummyElement);
+        }
+    }
 
     // 각 Column의 task들 렌더링
     function renderColumn(idx, tasks) {
@@ -83,7 +134,10 @@ export default function ColumnController(state, bodyElement) {
             columnComponent.addEventListener(
                 columnElement,
                 (formContainer, columnIdx) =>
-                    renderAddForm(formContainer, columnIdx)
+                    renderAddForm(formContainer, columnIdx),
+                handleDrop,
+                handleDragEnter,
+                handleDragLeave
             );
             columnListFragment.appendChild(columnElement);
         }

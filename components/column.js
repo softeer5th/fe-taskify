@@ -1,7 +1,6 @@
 export default function ColumnComponent() {
-    
     // Column 컴포넌트 템플릿
-    function template({title}) {
+    function template({ title }) {
         return `
             <h3 class="column_title text-bold display-bold16">
                 ${title}
@@ -20,7 +19,7 @@ export default function ColumnComponent() {
     
             </ol>
         `;
-    }    
+    }
 
     // Column 컴포넌트 렌더링 함수
     function render(column) {
@@ -33,8 +32,14 @@ export default function ColumnComponent() {
     }
 
     // 생성된 Column에 이벤트 등록 함수
-    // handleAdd : + 버튼을 눌러서 Task를 생성하기 위한 Form을 생성하는 Callback 
-    function addEventListener(columnElement, handleAdd) {
+    // handleAdd : + 버튼을 눌러서 Task를 생성하기 위한 Form을 생성하는 Callback
+    function addEventListener(
+        columnElement,
+        handleAdd,
+        handleDrop,
+        handleDragEnter,
+        handleDragLeave
+    ) {
         const [addButton, removeButton] =
             columnElement.getElementsByTagName("button");
         const columnIdx = columnElement.getAttribute("index");
@@ -43,18 +48,25 @@ export default function ColumnComponent() {
         addButton.addEventListener("click", () =>
             handleAdd(formContainer, columnIdx)
         );
+        const listElement = columnElement.querySelector('.card_list')
+        listElement.addEventListener("dragover", (e) => e.preventDefault());
+        listElement.addEventListener("drop", handleDrop);
+        listElement.addEventListener("dragenter", handleDragEnter);
+        listElement.addEventListener("dragleave", handleDragLeave);
     }
 
     function rerenderHeader(idx, n) {
-        const counterElement = document.body.querySelectorAll('.column_task_counter')[idx];
-        if(n > MAX_TASKS) counterElement.textContent `${MAX_TASKS}+`;
+        const counterElement = document.body.querySelectorAll(
+            ".column_task_counter"
+        )[idx];
+        if (n > MAX_TASKS) counterElement.textContent`${MAX_TASKS}+`;
         else counterElement.textContent = n;
     }
 
     return {
         render,
         addEventListener,
-        rerenderHeader
+        rerenderHeader,
     };
 }
 

@@ -22,6 +22,7 @@ export default function State() {
     let dragged = {
         task: null,
         element: null,
+        dummyElement: null,
     };
 
     function setLog(log) {
@@ -53,10 +54,11 @@ export default function State() {
         }
     }
 
-    function setDragged({ task, element }) {
+    function setDragged({ task, element, dummyElement }) {
         dragged = {
             task: task,
             element: element,
+            dummyElement: dummyElement,
         };
     }
 
@@ -64,10 +66,11 @@ export default function State() {
         return dragged;
     }
 
-    function resetDragged(isOpacityChange) {
+    function resetDragged() {
         dragged = {
             task: null,
             element: null,
+            dummyElement: null,
         };
     }
 
@@ -89,6 +92,14 @@ export default function State() {
         columnTasks[index].push(newTask);
 
         return newId;
+    }
+
+    function moveTask(destinationIndex, task) {
+        const newTask = {...task, column : destinationIndex};
+        const currentIndex = task.column;
+
+        columnTasks[currentIndex] = columnTasks[currentIndex].filter(el => el.taskId !== task.taskId);
+        columnTasks[destinationIndex].push(newTask);
     }
 
     function updateTask(index, currentTask, newTask) {
@@ -126,6 +137,7 @@ export default function State() {
         resetDragged,
         getColumns,
         addTask,
+        moveTask,
         updateTask,
         removeTask,
         getLog,
