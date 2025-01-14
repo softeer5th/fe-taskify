@@ -1,4 +1,8 @@
 .modal-container{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width:400px;
     display: flex;
     flex-direction: column;
@@ -8,6 +12,7 @@
     background-color: var(--surface-default);
     box-shadow: var(--shadow-up);
     gap:var(--Number-400);
+    z-index: 10;
     
 }
 
