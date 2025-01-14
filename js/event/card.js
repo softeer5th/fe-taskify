@@ -66,31 +66,6 @@ export const attachCommandEvent = (cardElement) => {
             }
         }
     }, true);
-
-    cardElement.querySelectorAll("input, textarea").forEach(card => card.addEventListener("input", function (event) {
-        const inputElement = event.target;
-        // 유동적인 크기 조절
-        if (inputElement.tagName === "TEXTAREA") {
-            const card = inputElement.closest(".card-template");
-            let textarea = card.querySelector("textarea");
-            textarea.style.height = 0;
-            textarea.style.height = textarea.scrollHeight + "px";
-        }
-        // 등록 버튼 활성화
-        if (inputElement.tagName === "INPUT" || inputElement.tagName === "TEXTAREA") {
-            const card = inputElement.closest(".card-template");
-            const isInputEmpty = [card.querySelector("input"), card.querySelector("textarea")].filter(card => card.value !== "").length < 2 ? false : true;
-            let cardSubmitButton = card.querySelector(".card-button-submit");
-            if (isInputEmpty) {
-                cardSubmitButton.disabled = false;
-                return;
-            }
-            cardSubmitButton.disabled = true;
-        }
-
-    }))
-
-    return cardElement;
 }
 
 // 일반 카드 뷰에서 사용하는 이벤트

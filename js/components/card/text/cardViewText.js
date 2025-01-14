@@ -5,6 +5,7 @@ import { CardViewTitle } from "./cardTitle.js";
 export const CardViewText = (card) => {
 
     const { title, content, author } = card;
+    console.log(card)
     const cardViewText = document.createElement("div");
     cardViewText.className = "card-view-text";
 

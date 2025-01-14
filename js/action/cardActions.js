@@ -11,13 +11,13 @@ const createCard = () => {
 const appendCard = (columnArray, columnId, newCard) => {
 
     const newColumnArray = columnArray.map(column => column.id !== columnId ? column : {
-        ...column, cards: [...column.cards, { id: ++column.cumuluativeCount, ...newCard }]
+        ...column, cards: [...column.cards, { id: column.cumuluativeCount, ...newCard }]
     })
     return { newColumnArray };
 }
 
 const deleteCard = (columnArray, columnId, cardId) => columnArray.map(column => column.id !== columnId ? column :
-    { ...column, cards: column.cards.filter(card => card.id + 1 === cardId) }
+    { ...column, cards: column.cards.filter(card => card.id !== cardId) }
 )
 
 const updateCard = (columnArray, columnId, cardId, newCardData) => columnArray.map(column => column.id !== columnId ? column :
@@ -30,3 +30,4 @@ export const cardActions = {
     deleteCard,
     updateCard
 }
+
