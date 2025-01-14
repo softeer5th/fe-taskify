@@ -1,6 +1,6 @@
 import { card } from "../components/card.js";
 import { addStorage } from "../store/workList.js";
-import { updateCardCount } from "./cardNavbar.js";
+import { updateCardCount } from "./cardCountUpdate.js";
 import { NUMBER_OF_CARD_FORM_PER_SECTION } from "./index.js";
 import "./dragCard.js";
 

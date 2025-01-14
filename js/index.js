@@ -5,7 +5,7 @@ import { eachColumn } from "../components/eachColumn.js";
 import { header } from "../components/header.js";
 import { loadData } from "../store/workList.js";
 import { card } from "../components/card.js";
-import { updateCardCount } from "./cardNavbar.js";
+import { updateCardCount } from "./cardCountUpdate.js";
 
 const SECTION_TYPE = ["todo", "doing", "done"];
 const workList = loadData();
@@ -44,7 +44,7 @@ const initRender = async () => {
   await import("./createCard.js");
   await import("./editCard.js");
   await import("./deleteCard.js");
-  await import("./cardNavbar.js");
+  await import("./cardCountUpdate.js");
 };
 
 const loadPreviousCard = () => {

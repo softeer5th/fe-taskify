@@ -1,5 +1,5 @@
 import { getSectionType } from "../utils/getSectionType.js";
-import { updateCardCount } from "./cardNavbar.js";
+import { updateCardCount } from "./cardCountUpdate.js";
 import { updateLocalStorageAfterDrop } from "../store/workList.js";
 import { NUMBER_OF_CARD_FORM_PER_SECTION } from "./index.js";
 
