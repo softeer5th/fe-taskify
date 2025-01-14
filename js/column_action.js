@@ -1,4 +1,4 @@
-import { overlay, delAllCardAlert } from "./alert.js";
+import { overlay, createDeleteAllCardAlert, hideAlert } from "./alert.js";
 import { checkCardInput, confirmAddCard } from "./card_action.js";  
 
 export function addCard(id) {
@@ -50,17 +50,30 @@ export function addCard(id) {
 
 export function delAllCard(columnId) {
     overlay.style.display = "block";
+    createDeleteAllCardAlert(columnId);
+    let delAllCardAlert = document.getElementById(`deleteAllCardAlert-${columnId}`);
     delAllCardAlert.style.display = "block";
     delAllCardAlert.querySelector('.delObj').textContent = "칼럼의 모든 카드를 삭제하시겠습니까?";
     let cardList = document.getElementById("card-list"+columnId);
 
     delAllCardAlert.querySelector('#cancel-delete-all-button').addEventListener('click',(event)=>{
-        overlay.style.display = "none";
-        delAllCardAlert.style.display = "none";
+        hideAlert();
     });
     delAllCardAlert.querySelector('#confirm-delete-all-button').addEventListener('click',(event)=>{
         overlay.style.display = "none";
-        delAllCardAlert.style.display = "none";
+        hideAlert();
         cardList.innerHTML = ``;
     });
+}
+
+export function updateChildCount(parentElement) {
+    const countDisplay = parentElement.querySelector('.card-count');
+
+    const childCount = parentElement.querySelector('.card-list').children.length;
+    
+    if (parseInt(childCount)>99) {
+        countDisplay.textContent = "99+";
+    } else {
+        countDisplay.textContent = childCount;
+    }
 }

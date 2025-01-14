@@ -2,11 +2,11 @@
     list-style: none;
     padding-left: 0;
     width: 100%;
+    height: calc(100vh - 210px);
 }
 
 .card-list li {
-    background-color: #FEFEFE;;
-    width: 100%;
+    background-color: #FEFEFE;
     min-height: 80px;
     max-width: 280px;
     display: flex;
@@ -19,7 +19,6 @@
 
 .new-card {
     background-color: #FEFEFE;;
-    width: 100%;
     min-height: 80px;
     max-width: 280px;
     display: block;
@@ -52,6 +51,7 @@ textarea{
     overflow-wrap: break-word;
     resize: none;
     scrollbar-color: transparent;
+    line-height: 20px;
 }
 
 .action-buttons {
@@ -63,6 +63,7 @@ button{
     flex: 1;
     border-radius: 5px;
     padding: 7px 0;
+    transition: opacity 0.2s ease;
 }
 
 .cancel-button {
@@ -81,6 +82,12 @@ button{
     background-color: #007AFF;
     color: #FEFEFE;
     opacity: 0.3;
+}
+
+.confirm-button:hover {
+    background-color: #007AFF;
+    color: #FEFEFE;
+    opacity: 0.8;
 }
 
 .card-actions button{
@@ -122,4 +129,18 @@ button{
 
 #del-card-button:hover {
     color: red;
+}
+
+
+.dragging{
+    background-color: #FEFEFE;
+    min-height: 80px;
+    display: flex;
+    margin-top: 10px;
+    box-shadow: 0 16px 16px 0 #6E80913D;
+    border-radius: 5px;
+    padding: 20px;
+    position: absolute;
+    pointer-events: none; /* 복사된 요소가 클릭을 막지 않음 */
+    opacity: 0.7; /* 복사본을 반투명하게 */
 }
