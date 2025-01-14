@@ -1,5 +1,8 @@
 import Column from './components/column.js';
 import { updateColumn, loadTodos } from './utils/helpers/localStorageHelper.js';
+import createState from './utils/helpers/stateHelper.js';
+
+export let draggedCardIdState = createState(null);
 
 const App = () => {
   const main = document.querySelector('main');

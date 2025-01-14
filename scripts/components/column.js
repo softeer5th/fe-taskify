@@ -1,3 +1,4 @@
+import { draggedCardIdState } from '../main.js';
 import { createCard } from '../utils/helpers/cardHelper.js';
 import { updateColumn } from '../utils/helpers/localStorageHelper.js';
 import createState from '../utils/helpers/stateHelper.js';
@@ -78,26 +79,40 @@ const Column = (columnData) => {
 
   columnElement.addEventListener('dragover', (event) => {
     event.preventDefault(); // 드롭을 허용
-    // console.log(event.target.closest('ul'));
 
-    const id = event.dataTransfer.getData('card-id'); // 드래그 중인 요소의 ID 가져오기
-    console.log('드래거블eeee', id);
-    const draggableElement = document.getElementById(id); // 드래그 중인 요소 선택
-    // console.log('드래거블', draggableElement);
-    const dropzone = event.target.closest('ui'); // 드롭된 위치 선택
-    dropzone.appendChild(draggableElement); // 드래그 중인 요소를 드롭된 위치에 추가
-    // if (event.target.closest('ul').id) {
-    // } else {
-    // }
+    const draggedCard = document.getElementById(draggedCardIdState.getState()); // 드래그 중인 요소 선택
+    
+    const dropzone_li = event.target.closest('li'); // 드롭된 위치 선택
+    const dropzone_ul = event.target.closest('ul'); // 드롭된 위치 선택
+
+    if (dropzone_li) {
+      const rect = dropzone_li.getBoundingClientRect();
+      const isUpper = event.clientY - rect.top < rect.height / 2;
+      if (isUpper) {
+        dropzone_li.before(draggedCard); // 절반보다 위인 경우 위에 추가
+      } else {
+        dropzone_li.after(draggedCard); // 절반보다 아래인 경우 아래에 추가
+      }
+    } else if (dropzone_ul) {
+      const cards = columnElement.querySelectorAll('li');
+      if (cards.length === 0) {
+        dropzone_ul.appendChild(draggedCard); // 드래그 중인 요소를 드롭된 위치에 추가
+        return;
+      }
+      const lastCard = cards[cards.length - 1];
+      const rect = lastCard.getBoundingClientRect();
+      const lastCardBottom = rect.top + rect.height;
+      if (event.clientY > lastCardBottom) {
+        dropzone_ul.appendChild(draggedCard); // 드래그 중인 요소를 드롭된 위치에 추가
+      }
+    }
   });
 
   columnElement.addEventListener('drop', (event) => {
     event.preventDefault(); // 기본 동작 방지
-    console.log('드래거블aaa', event.dataTransfer);
-    const id = event.dataTransfer.getData('card-id'); // 드래그 중인 요소의 ID 가져오기
-    const draggableElement = document.getElementById(id); // 드래그 중인 요소 선택
+    const draggableElement = document.getElementById(draggedCardId.getState()); // 드래그 중인 요소 선택
     const dropzone = event.target.closest('ul'); // 드롭된 위치 선택
-    console.log('ee', id, '\neef', draggableElement, '\neea', dropzone);
+    console.log('eef', draggableElement, '\neea', dropzone);
     dropzone.appendChild(draggableElement); // 드래그 중인 요소를 드롭된 위치에 추가
     event.dataTransfer.clearData(); // 드래그 데이터 초기화
   });

@@ -1,3 +1,4 @@
+import { draggedCardIdState } from '../main.js';
 import {
   initCardTextArea,
   initCardIconButtons,
@@ -93,14 +94,13 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
   updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
 
   cardElement.addEventListener('dragstart', (event) => {
-    event.dataTransfer.setData('card-id', cardElement.id);
+    draggedCardIdState.setState(cardElement.id);
     event.dataTransfer.effectAllowed = 'move';
     cardMode.setState('place');
   });
 
   cardElement.addEventListener('dragend', () => {
     cardMode.setState('default');
-    console.log(cardElement.closest('ul').id);
   });
 
   return cardElement;
