@@ -2,7 +2,7 @@ import { loadCss } from '../../utils/loadcss.js';
 import { Badge } from '../Badge/Badge.js';
 import { Button } from '../Button/Button.js';
 
-export function ColumnHeader(title,badgeContent,plusEvent,closedEvent){
+export function ColumnHeader({title,badgeContent,addId,closeId}){
     const columnHeader = document.createElement('div');
     columnHeader.className = "column-header";
     columnHeader.innerHTML = `
@@ -14,8 +14,8 @@ export function ColumnHeader(title,badgeContent,plusEvent,closedEvent){
     `;
     
 
-    const plusButton = Button({type:'icon',icon:'plus',backgroundColor:'grayscale100',textColor:"grayscale500"});
-    const closedButton = Button({type:'icon',icon:'close',backgroundColor:'grayscale100',textColor:'grayscale500'});
+    const plusButton = Button({type:'icon',icon:'plus',backgroundColor:'grayscale100',textColor:"grayscale500",id:addId});
+    const closedButton = Button({type:'icon',icon:'close',backgroundColor:'grayscale100',textColor:'grayscale500',id:closeId});
 
     const columnTitle = columnHeader.querySelector('.column-header-title');
     const titleContainer = columnHeader.querySelector('.column-title-container');
@@ -24,13 +24,6 @@ export function ColumnHeader(title,badgeContent,plusEvent,closedEvent){
     columnTitle.insertAdjacentElement('afterend', badge);
     titleContainer.insertAdjacentElement('afterend',closedButton);
     titleContainer.insertAdjacentElement('afterend', plusButton);
-    
-
-
-
-    plusButton.addEventListener('click', plusEvent);
-  
-    closedButton.addEventListener('click', closedEvent);
 
 
     loadCss('../src/components/Column/ColumnHeader.css')

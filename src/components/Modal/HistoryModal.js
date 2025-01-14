@@ -49,7 +49,6 @@ export function HistoryModal({title,content,buttonProps,historyData}){
         text:'닫기',
         icon:'close',
         textColor:'grayscale600',
-        eventFuntion:()=>{}
     })
 
 

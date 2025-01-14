@@ -1,7 +1,7 @@
 import { loadCss } from '../../utils/loadcss.js';
 import { Button } from '../Button/Button.js';
 
-export function Modal({content,buttonProps}){
+export function Modal({content,closeId,checkId,closeText,checkText}){
     const modal = document.createElement('div');
     modal.className = 'modal-container';
     modal.innerHTML =`
@@ -12,26 +12,27 @@ export function Modal({content,buttonProps}){
     buttonBox.className = 'card-button-box';
 
     // 버튼 인자값을 받아 올거임 
-    
-    const leftButton = Button({
+
+    const closeButton = Button({
         type:'text',
-        text:'button',
+        text:closeText,
         backgroundColor: 'grayscale100',
         textColor:'grayscale600',
-        eventFuntion:()=>{}
+        id : closeId
     })
 
-    const rightButton = Button({
+    const checkButton = Button({
         type:'text',
-        text:'button',
+        text:checkText,
         backgroundColor: 'accentRed',
         textColor:'grayscale50',
-        eventFuntion:()=>{}
+        id: checkId
     })
-    // 여기까지 
+
     
-    buttonBox.insertAdjacentElement('beforeend',leftButton);
-    buttonBox.insertAdjacentElement('beforeend',rightButton);
+    
+    buttonBox.insertAdjacentElement('beforeend',closeButton);
+    buttonBox.insertAdjacentElement('beforeend',checkButton);
 
     modal.insertAdjacentElement('beforeend', buttonBox);            
     

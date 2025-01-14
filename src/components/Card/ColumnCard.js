@@ -1,75 +1,60 @@
 import { loadCss } from '../../utils/loadcss.js';
 import { Button } from '../Button/Button.js';
 
-export function ColumnCard({type,title,content,author,buttonProps}){
+export function ColumnCard({type,title,content,author,addText,closeText,checkId,editId,closeId,deleteId}){
     const columnCard = document.createElement('div');
     columnCard.className = 'column-card-container';
     columnCard.innerHTML =`
         <div class='column-content-container'>
-            <div class='column-content-box'>
-                <div class='column-card-title'>${title}</div>
-                <div class='column-card-content'>${content}</div>
-            </div>
+            <div class='column-content-box'></div>
         </div>
         
     `
     const contentBox = columnCard.querySelector('.column-content-box');
     const cardContainer = columnCard.querySelector('.column-content-container');
 
-    if(type === 'add' || type === 'edit'){
-        const buttonBox = document.createElement('div');
-        buttonBox.className = 'card-button-box';
+    if(type === 'add-card' ){
+        contentBox.innerHTML = `
+        <input id="card-title" type='text' placeholder='${title}' class='column-card-title' />
+        <input id="card-content" type='text' placeholder='${content}' class='column-card-content' />
+        `;
+        createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId})
 
-        // 버튼 인자값을 받아 올거임 
-        const leftButton = Button({
-            type:'text',
-            text:'button',
-            backgroundColor: 'grayscale100',
-            textColor:'grayscale600',
-            eventFuntion:()=>{}
-        })
-
-        const rightButton = Button({
-            type:'text',
-            text:'button',
-            backgroundColor: 'accentBlue',
-            textColor:'grayscale50',
-            eventFuntion:()=>{}
-        })
-        // 여기까지 
-
-        buttonBox.insertAdjacentElement('beforeend',leftButton);
-        buttonBox.insertAdjacentElement('beforeend',rightButton);
-
-        contentBox.insertAdjacentElement('afterend', buttonBox);
+    }
+    else if ( type==='edit-card'){
+        contentBox.innerHTML = `
+        <input id="card-title" type='text' value='${title}' class='column-card-title' />
+        <input id="card-content" type='text' value='${content}' class='column-card-content' />
+        `;
+        createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId})
     }
     else{
+        contentBox.innerHTML = `
+            <div class='column-card-title'>${title}</div>
+            <div class='column-card-content'>${content}</div>
+            <div class='column-card-author'>${author}</div>
+        `;
         const iconBox = document.createElement('div');
         iconBox.className = 'column-card-icon-box';
         cardContainer.insertAdjacentElement('afterend', iconBox)
-
-        const authorElement = `<div class='column-card-author'>${author}</div>`;
-        contentBox.insertAdjacentHTML('afterend', authorElement);
-        
 
         const editButton = Button({
             type:'icon',
             icon:'edit',
             textColor:'grayscale500',
-            eventFuntion:()=>{}
+            id:editId
         })
 
-        const closedButton = Button({
+        const deleteButton = Button({
             type:'icon',
             icon:'close',
             textColor:'grayscale500',
-            eventFuntion:()=>{}
+            id:deleteId
         })
 
         iconBox.insertAdjacentElement('beforeend',editButton);
-        iconBox.insertAdjacentElement('beforeend',closedButton);
+        iconBox.insertAdjacentElement('beforeend',deleteButton);
         if(type === 'drag'){
-
             columnCard.classList.add('card-drag-container');
         }else if (type === 'place'){
             columnCard.classList.add('card-place-container');
@@ -78,11 +63,35 @@ export function ColumnCard({type,title,content,author,buttonProps}){
     }
 
 
-   
-
-
     loadCss('../src/components/Card/ColumnCard.css')
     return columnCard;
 }
 
+
+export function createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId}){
+    const buttonBox = document.createElement('div');
+    buttonBox.className = 'card-button-box';
+    columnCard.id=type
+    
+    const closeButton = Button({
+        type:'text',
+        text:closeText,
+        backgroundColor: 'grayscale100',
+        textColor:'grayscale600',
+        id : closeId
+    })
+
+    const checkButton = Button({
+        type:'text',
+        text:addText,
+        backgroundColor: 'accentBlue',
+        textColor:'grayscale50',
+        id: checkId
+    })
+
+    buttonBox.insertAdjacentElement('beforeend',closeButton);
+    buttonBox.insertAdjacentElement('beforeend',checkButton);
+
+    contentBox.insertAdjacentElement('afterend', buttonBox);
+}
 

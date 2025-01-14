@@ -2,9 +2,10 @@ import { getIconSVG } from '../../utils/iconUtils.js';
 import { loadCss } from '../../utils/loadcss.js';
 import { colors, setButtonColor } from '../../utils/styleUtils.js';
 
-export function Button({type,text,icon,backgroundColor,textColor,eventFuntion}){
+export function Button({type,text,icon,backgroundColor,textColor,id}){
     const primaryButton = document.createElement('button');
     primaryButton.className = "primary-button";
+    primaryButton.id=id;
     setButtonColor(primaryButton,backgroundColor,textColor)
     
     switch(type){
@@ -27,7 +28,6 @@ export function Button({type,text,icon,backgroundColor,textColor,eventFuntion}){
         default:
             break;
     }
-    primaryButton.addEventListener('click', eventFuntion);
 
 
     loadCss('../src/components/button/button.css')
