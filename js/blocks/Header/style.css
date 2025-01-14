@@ -3,4 +3,24 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 2rem 0;
+
+    .logo-section {
+        display: flex;
+
+        gap: 16px;
+
+        .change__btn {
+            padding: 4px 8px;
+            color: var(--grayscale-600);
+            border: 1px solid var(--grayscale-600);
+            border-radius: 8px;
+
+            font-size: 12px;
+            font-weight: 500;
+
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    }
 }
