@@ -13,36 +13,20 @@ export function ColumnCard({type,title,content,author,addText,closeText,checkId,
     const contentBox = columnCard.querySelector('.column-content-box');
     const cardContainer = columnCard.querySelector('.column-content-container');
 
-    if(type === 'add-card' || type === 'edit-card'){
+    if(type === 'add-card' ){
         contentBox.innerHTML = `
         <input id="card-title" type='text' placeholder='${title}' class='column-card-title' />
         <input id="card-content" type='text' placeholder='${content}' class='column-card-content' />
         `;
+        createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId})
 
-        const buttonBox = document.createElement('div');
-        buttonBox.className = 'card-button-box';
-        columnCard.id=type
-        
-        const closeButton = Button({
-            type:'text',
-            text:closeText,
-            backgroundColor: 'grayscale100',
-            textColor:'grayscale600',
-            id : closeId
-        })
-
-        const checkButton = Button({
-            type:'text',
-            text:addText,
-            backgroundColor: 'accentBlue',
-            textColor:'grayscale50',
-            id: checkId
-        })
-
-        buttonBox.insertAdjacentElement('beforeend',closeButton);
-        buttonBox.insertAdjacentElement('beforeend',checkButton);
-
-        contentBox.insertAdjacentElement('afterend', buttonBox);
+    }
+    else if ( type==='edit-card'){
+        contentBox.innerHTML = `
+        <input id="card-title" type='text' value='${title}' class='column-card-title' />
+        <input id="card-content" type='text' value='${content}' class='column-card-content' />
+        `;
+        createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId})
     }
     else{
         contentBox.innerHTML = `
@@ -79,11 +63,35 @@ export function ColumnCard({type,title,content,author,addText,closeText,checkId,
     }
 
 
-   
-
-
     loadCss('../src/components/Card/ColumnCard.css')
     return columnCard;
 }
 
+
+export function createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId}){
+    const buttonBox = document.createElement('div');
+    buttonBox.className = 'card-button-box';
+    columnCard.id=type
+    
+    const closeButton = Button({
+        type:'text',
+        text:closeText,
+        backgroundColor: 'grayscale100',
+        textColor:'grayscale600',
+        id : closeId
+    })
+
+    const checkButton = Button({
+        type:'text',
+        text:addText,
+        backgroundColor: 'accentBlue',
+        textColor:'grayscale50',
+        id: checkId
+    })
+
+    buttonBox.insertAdjacentElement('beforeend',closeButton);
+    buttonBox.insertAdjacentElement('beforeend',checkButton);
+
+    contentBox.insertAdjacentElement('afterend', buttonBox);
+}
 
