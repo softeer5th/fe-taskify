@@ -90,12 +90,6 @@ export const initTodo = () => {
                             currentCategory.identifier
                         ) {
                             // 카테고리가 바뀌면 skeleton update
-                            console.log(
-                                'category change',
-                                prevCategory?.identifier,
-                                'to',
-                                currentCategory.identifier
-                            )
                             updateFlag = true
                         }
 
@@ -110,12 +104,6 @@ export const initTodo = () => {
                                 if (prevIndex !== currentIndex) {
                                     // index가 바뀌면 skeleton update
                                     updateFlag = true
-                                    console.log(
-                                        'index change',
-                                        prevIndex,
-                                        'to',
-                                        currentIndex
-                                    )
                                 }
                                 break
                             }
@@ -133,22 +121,7 @@ export const initTodo = () => {
                             }
                             updateFlag = true
                             isInDragZone = true
-                            console.log('dragzone')
-                            console.log(
-                                'prevCategory',
-                                prevCategory.identifier,
-                                'prevIndex',
-                                prevIndex
-                            )
-                            console.log(
-                                'currentCategory',
-                                currentCategory.identifier,
-                                'currentIndex',
-                                currentIndex
-                            )
                         }
-
-                        updateFlag && console.log('flag', updateFlag)
 
                         if (!updateFlag) return
 
