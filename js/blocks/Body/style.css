@@ -54,6 +54,10 @@ section {
     }
 
     width: 312px;
+
+    &.dragging {
+        opacity: 0.5;
+    }
 }
 
 .task-box {
