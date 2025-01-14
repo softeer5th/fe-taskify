@@ -105,10 +105,6 @@ const initializeDragAndDrop = () => {
 
         list.addEventListener('dragover', (e) => {
             e.preventDefault();
-        });
-
-        list.addEventListener('drop', (e) => {
-            e.preventDefault();
 
             const afterElement = getDragAfterElement(list, e.clientY);
             const draggable = document.querySelector('.dragging'); // 드래그 요소
@@ -125,9 +121,9 @@ const initializeDragAndDrop = () => {
                 const parentElementId = previousParentId;
                 const targetListId = list.id;
 
-                console.log(parentElementId, targetListId); // 기존의 섹션 id, 이동된 섹션 id
-                console.log('draggable', draggable); // 이동된 요소 id
-                console.log('item', e.target); // drop된 위치 (ul, li 둘 중 하나)
+                // console.log(parentElementId, targetListId); // 기존의 섹션 id, 이동된 섹션 id
+                // console.log('draggable', draggable); // 이동된 요소 id
+                // console.log('item', e.target); // drop된 위치 (ul, li 둘 중 하나)
                 
                 const tasks = loadTasksFromLocalStorage();
                 const draggableId = parseInt(draggable.id.split('-')[1]);
@@ -158,6 +154,10 @@ const initializeDragAndDrop = () => {
                 saveTasksToLocalStorage(updatedTasks);
                 updateBadgeCount();
             }
+        });
+
+        list.addEventListener('drop', (e) => {
+            e.preventDefault();
         });
     });
 };
