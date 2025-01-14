@@ -1,4 +1,5 @@
 header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,7 +36,7 @@ header {
     .clock__toggle {
         position: absolute;
         right: 10px;
-        top: 40px;
+        top: 60px;
         display: flex;
         flex-direction: column;
     }
