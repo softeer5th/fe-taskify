@@ -177,7 +177,7 @@ textarea {
 /* Column List Style */
 .column-list {
     width: 1280px;
-    height: auto;
+    height: 100%;
     margin-top: 96px;
     margin-left: 80px;
     gap: 24px;
@@ -190,7 +190,7 @@ textarea {
 
 .column {
     width: 320px;
-    height: auto;
+    height: 100%;
     gap: 10px;
     display: flex;
     flex-direction: column;
