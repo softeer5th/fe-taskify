@@ -65,7 +65,7 @@ const dragOverHandler = (e) => {
   }
 };
 
-const updateUI = (
+const updateCountValue = (
   prevSection,
   prevSectionCardList,
   currentSection,
@@ -74,12 +74,12 @@ const updateUI = (
   updateCardCount(
     // 옮겨진 섹션 count update
     currentSection,
-    currentCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION
+    currentCardList.length
   );
   updateCardCount(
     // 옮기기전 섹션 count update
     prevSection,
-    prevSectionCardList.length - NUMBER_OF_CARD_FORM_PER_SECTION
+    prevSectionCardList.length
   );
 };
 
@@ -92,16 +92,25 @@ const dropCardHandler = (e) => {
 
   const nowSectionType = getSectionType(draggingCard);
   const currentCardList = document.querySelectorAll(
-    `.${nowSectionType}-wrapper .card-container .card`
+    `.${nowSectionType}-wrapper .card-container .card:not(.form-card)`
   );
 
   const prevSection = JSON.parse(draggCardInfo).prevSectionType;
   const prevCardList = document.querySelectorAll(
-    `.${prevSection}-wrapper .card-container .card`
+    `.${prevSection}-wrapper .card-container .card:not(.form-card)`
   );
 
-  updateUI(prevSection, prevCardList, nowSectionType, currentCardList);
-  updateLocalStorageAfterDrop(prevSection, nowSectionType, draggingCard);
+  const changedIdx = [...currentCardList].findIndex(
+    (card) => card.id === draggingCard.id
+  );
+
+  updateCountValue(prevSection, prevCardList, nowSectionType, currentCardList);
+  updateLocalStorageAfterDrop(
+    prevSection,
+    nowSectionType,
+    draggingCard,
+    changedIdx
+  );
 };
 
 const sections = document.querySelectorAll("section");
