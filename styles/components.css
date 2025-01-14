@@ -18,3 +18,11 @@
   padding: var(--number-100);
   border-radius: var(--number-100);
 }
+
+button svg path {
+  transition: fill 0.3s ease; /* transition 효과 추가 */
+}
+
+button:hover svg path {
+  fill: #ff0000; /* 원하는 색상으로 변경 */
+}
