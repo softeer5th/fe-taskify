@@ -187,10 +187,6 @@ export const initTodo = () => {
                     dragDepth--
                     if (dragDepth > 0) return
                     console.log('dragleave', category.identifier)
-                    // e.stopPropagation()
-                    findDomElement(identifier)
-                        .querySelector(`.${classNames.skeleton}`)
-                        .remove()
                 })
                 component.addEventListener('drop', (e) => {
                     console.log('drop', category.identifier)
@@ -198,9 +194,7 @@ export const initTodo = () => {
                     prevIndex = null
                     currentCategory = null
                     currentIndex = null
-                    findDomElement(identifier)
-                        .querySelector(`.${classNames.skeleton}`)
-                        .remove()
+                    storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
                 })
             }
         )
