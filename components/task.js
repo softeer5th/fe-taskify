@@ -22,7 +22,6 @@ export default function TaskComponent() {
     // currentElement : 현재 Element
     // tobeElement : 새로운 Element
     function renderSwap(currentElement, tobeElement) {
-        console.log(currentElement, currentElement.parentNode,  tobeElement)
         const parentNode = currentElement.parentNode;
         parentNode.replaceChild(tobeElement, currentElement);
     }

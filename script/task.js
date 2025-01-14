@@ -53,7 +53,6 @@ export default function TaskController(state, rerender) {
 
         modalComponent.render("선택한 카드를 삭제할까요?", () => {
             state.removeTask(task);
-            taskElement.parentNode.removeChild(taskElement);
             rerender(task.column);
         });
     }
