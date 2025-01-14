@@ -9,25 +9,26 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
   if (state === "editing") {
     taskElement.classList.add("task--edit");
 
-    const contentBody = document.createElement("form");
+    const contentBody = document.createElement("div");
     contentBody.classList.add("task__content-body");
+    contentBody.addEventListener("input", (event) => {
+      const title = contentTitle.value;
+      const description = contentDescription.value;
 
-    const contentTitle = document.createElement("input");
-    contentTitle.classList.add("task__content-title");
-    contentTitle.placeholder = "제목을 입력하세요";
-    contentTitle.autofocus = true;
-    contentTitle.maxLength = 500;
-    contentTitle.required = true;
-    contentTitle.value = task.name;
-    contentTitle.addEventListener("input", (event) => {
-      const description = event.target.parentElement.querySelector(".task__content-description");
-      const saveButton = event.target.parentElement.parentElement.querySelector(".task__editorButton").querySelector("button:last-child");
-      if (event.target.value.length > 0 && description.value.length > 0) {
+      if (title.length > 0 && description.length > 0) {
         saveButton.disabled = false;
       } else {
         saveButton.disabled = true;
       }
     });
+
+    const contentTitle = document.createElement("input");
+    contentTitle.setAttribute("type", "text");
+    contentTitle.classList.add("task__content-title");
+    contentTitle.placeholder = "제목을 입력하세요";
+    contentTitle.maxLength = 500;
+    contentTitle.required = true;
+    contentTitle.value = task.name || "";
     contentTitle.addEventListener("click", (event) => {
       event.stopPropagation();
       event.target.focus();
@@ -38,21 +39,12 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
     contentDescription.maxLength = 500;
     contentDescription.required = true;
     contentDescription.placeholder = "내용을 입력하세요";
-    contentDescription.addEventListener("input", (event) => {
-      const title = event.target.parentElement.querySelector(".task__content-title");
-      const saveButton = event.target.parentElement.parentElement.querySelector(".task__editorButton").querySelector("button:last-child");
-      if (event.target.value.length > 0 && title.value.length > 0) {
-        saveButton.disabled = false;
-      } else {
-        saveButton.disabled = true;
-      }
-    });
     contentDescription.addEventListener("click", (event) => {
       event.stopPropagation();
       event.target.focus();
     });
 
-    contentDescription.value = task.description;
+    contentDescription.value = task.description || "";
 
     const editorButton = document.createElement("div");
     editorButton.classList.add("task__editorButton");
@@ -64,7 +56,7 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
     const saveButton = document.createElement("button");
     saveButton.textContent = "등록";
     saveButton.addEventListener("click", onSecondButtonClicked);
-    saveButton.disabled = true;
+    saveButton.disabled = task.name.length === 0 || task.description.length === 0;
 
     editorButton.appendChild(cancelButton);
     editorButton.appendChild(saveButton);
@@ -120,12 +112,6 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
     buttonGroup.appendChild(editButton);
 
     taskElement.appendChild(buttonGroup);
-  }
-
-  if (state === "moving") {
-    taskElement.classList.add("task--move");
-  } else if (state === "dragging") {
-    taskElement.classList.add("task--drag");
   }
 
   return taskElement;
