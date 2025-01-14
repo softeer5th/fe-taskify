@@ -14,7 +14,7 @@ const HistoryMain = ({ histories }) => {
   });
 
   if (histories.length > 0) {
-    $historyMain.append(
+    $historyMain.replaceChildren(
       ...histories.map((history) => HistoryItem({ history }))
     );
     return $historyMain;

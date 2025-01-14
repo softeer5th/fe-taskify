@@ -1,7 +1,9 @@
 import { createButton, createElement } from "../../../dom.js";
 import createModal from "../../Modal/createModal.js";
 
-const createHistoryFooter = ({ handleDeleteHistory }) => {
+const createHistoryFooter = ({ handleDeleteHistory, histories }) => {
+  if (histories.length === 0) return "";
+
   const $historyFooter = createElement("div", {
     className: "history__footer",
   });
