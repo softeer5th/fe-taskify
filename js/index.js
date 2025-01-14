@@ -45,6 +45,7 @@ const initRender = async () => {
   await import("./editCard.js");
   await import("./deleteCard.js");
   await import("./cardCountUpdate.js");
+  await import("./cardSort.js");
 };
 
 const loadPreviousCard = () => {
