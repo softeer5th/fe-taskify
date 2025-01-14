@@ -1,4 +1,4 @@
-import { addTask, getTaskByTimestamp } from "../utils/storage/taskManager.js";
+import { addTask, getTaskByTimestamp } from "../../utils/storage/taskManager.js";
 
 export const popupCardModal = (parentColumn) => {
   const newTask = document.createElement("li");
@@ -46,10 +46,10 @@ export const makeCard = (task, parentColumn) => {
     </div>
     <div class="card-delete-edit">
       <button class = "card-close-btn"> 
-        <img src="../assets/icon/closed.svg" alt="close">
+        <img src="../../assets/icon/closed.svg" alt="close">
       </button>
       <button class = "card-edit-btn"> 
-        <img src="../assets/icon/edit.svg" alt="edit" >
+        <img src="../../assets/icon/edit.svg" alt="edit" >
       </button>
     </div>
   `;
