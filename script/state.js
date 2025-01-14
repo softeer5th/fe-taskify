@@ -78,6 +78,15 @@ export default function State() {
         return { columns, columnTasks };
     }
 
+    function getTask(taskId) {
+        for(let i =0; i<columns.length; i++) {
+            const matchedTask = columnTasks[i].find(el => el.taskId === taskId)
+            if(matchedTask) {
+                return matchedTask;
+            }
+        }
+    }
+
     function addTask(index, task) {
         const newId = taskId++;
         const newTask = {
@@ -97,6 +106,7 @@ export default function State() {
     function moveTask(destinationIndex, task) {
         const newTask = {...task, column : destinationIndex};
         const currentIndex = task.column;
+        console.log(`origin index : ${task.column} / dest index : ${destinationIndex}`);
 
         columnTasks[currentIndex] = columnTasks[currentIndex].filter(el => el.taskId !== task.taskId);
         columnTasks[destinationIndex].push(newTask);
@@ -136,6 +146,7 @@ export default function State() {
         setDragged,
         resetDragged,
         getColumns,
+        getTask,
         addTask,
         moveTask,
         updateTask,

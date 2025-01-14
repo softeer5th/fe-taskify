@@ -24,7 +24,6 @@ export default function ColumnController(state, bodyElement) {
         state.moveTask(columnIdx, task)
         state.resetDragged();
 
-        console.log(columnTasks)
 
         columnComponent.rerenderHeader(startIdx, columnTasks[startIdx].length);
         columnComponent.rerenderHeader(columnIdx, columnTasks[columnIdx].length);
@@ -79,13 +78,14 @@ export default function ColumnController(state, bodyElement) {
         const taskFragmentElement = document.createDocumentFragment();
 
         for (let task of tasks) {
+
             const matchedTask = currentTasksWithId.find(el => el.taskId === task.taskId);
             
             if(matchedTask) {
                 taskFragmentElement.appendChild(matchedTask.element);
                 continue;
             }
-            taskController.renderTask(taskFragmentElement, task);
+            taskController.renderTask(taskFragmentElement, task.taskId);
         }
 
         columnElement.appendChild(taskFragmentElement);
@@ -100,7 +100,7 @@ export default function ColumnController(state, bodyElement) {
             created: new Date(),
         };
 
-        state.addTask(columnIdx, newTask);
+        const newId = state.addTask(columnIdx, newTask);
         renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]));
         columnComponent.rerenderHeader(columnIdx, columnTasks[columnIdx].length);
     }
