@@ -232,28 +232,29 @@ export default class Model {
     this.unsetEditingColumnTask();
   }
 
-  updateTask(taskId, updatedTask) {
+  moveTask(taskId, toColumnId) {
     const currentData = this.getCurrentData();
-    const task = currentData.task.find((task) => task.id === taskId);
-    Object.assign(task, updatedTask);
-    let historyAction;
-    if (task.columnId !== updatedTask.columnId) {
-      historyAction = {
-        type: "moveTask",
-        updatedTaskName: updatedTask.name,
-        fromColumnId: task.columnId,
-        toColumnId: updatedTask.columnId,
-      };
-      this.#model.state.movingTaskId = -1;
-    } else {
-      historyAction = {
-        type: "updateTask",
-        updatedTaskName: updatedTask.name,
-      };
-      this.#model.state.editingTaskId = -1;
-    }
-    this.#pushHistory(currentData, historyAction);
-    this.unsetEditingColumnTask();
+    let task = currentData.task.find((task) => task.id === taskId);
+    const fromColumnId = task.columnId;
+    task.columnId = toColumnId;
+    this.#pushHistory(currentData, {
+      type: "moveTask",
+      movedTaskName: task.name,
+      fromColumnId,
+      toColumnId,
+    });
+    this.unsetMovingTaskId();
+  }
+
+  editTask(taskId, updatedTask) {
+    const currentData = this.getCurrentData();
+    const taskIdx = currentData.task.findIndex((task) => task.id === taskId);
+    currentData.task[taskIdx] = updatedTask;
+    this.#pushHistory(currentData, {
+      type: "editTask",
+      updatedTaskName: updatedTask.name,
+    });
+    this.unsetEditingTaskId();
   }
 
   removeTask(taskId) {
