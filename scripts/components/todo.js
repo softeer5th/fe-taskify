@@ -73,9 +73,7 @@ export const initTodo = () => {
                         getState(DRAG_ELEMENT_KEY)
 
                     const originElement = findDomElement(originElementId)
-                    let skeletonUpdateFlag = false
-                    // if (!e.target.contains(`.${classNames.todoItemBody}`))
-                    //     return
+                    let updateFlag = false
                     const categoryList = getState(TODO_CATEGORY_KEY)
                     for (let category of categoryList) {
                         // 카테고리 식별
@@ -83,83 +81,121 @@ export const initTodo = () => {
                             category.identifier
                         )
                         if (!parentElement.contains(e.target)) continue
+                        prevCategory = currentCategory ?? category
+                        currentCategory = category
+                        // console.log(
+                        //     'prevCategory',
+                        //     prevCategory?.identifier,
+                        //     'currentCategory',
+                        //     currentCategory.identifier
+                        // )
                         if (
-                            currentCategory?.identifier !== category.identifier
+                            prevCategory.identifier !==
+                            currentCategory.identifier
                         ) {
                             // 카테고리가 바뀌면 skeleton update
                             console.log(
                                 'category change',
-                                currentCategory?.identifier,
+                                prevCategory?.identifier,
                                 'to',
-                                category.identifier
+                                currentCategory.identifier
                             )
-                            // if (currentCategory !== null) {
-                            skeletonUpdateFlag = true
-                            // }
+                            updateFlag = true
                         }
-                        prevCategory = currentCategory
-                        currentCategory = category
+
                         // todoList의 몇 번째 index인지 식별
                         for (let [
                             idx,
                             todoItem,
                         ] of category.values.todoList.entries()) {
                             if (todoItem.identifier === e.target.id) {
-                                // 순서 바뀐 후 다시 origin으로 초기화되는 현상 방지
-                                if (e.target.id === originElementId) break
-                                if (currentIndex !== idx) {
+                                // 순서 바뀐 후 다시 index가 origin index로 되돌아가는 현상 방지
+                                // if (e.target.id === originElementId) {
+                                //     break
+                                // }
+                                prevIndex = currentIndex ?? originIndex
+                                currentIndex = idx
+                                if (prevIndex !== currentIndex) {
                                     // index가 바뀌면 skeleton update
+                                    updateFlag = true
                                     console.log(
                                         'index change',
-                                        currentIndex,
+                                        prevIndex,
                                         'to',
-                                        idx
+                                        currentIndex
                                     )
-                                    // if (currentIndex !== null) {
-                                    skeletonUpdateFlag = true
-                                    // }
-                                    prevIndex = currentIndex ?? originIndex
-                                    currentIndex = idx
                                 }
                                 break
                             }
                         }
                         // 컨테이너 빈 영역에 대해서는 todo 리스트의 맨 끝에 추가
-                        if (e.target.className === classNames.todoContainer) {
-                            skeletonUpdateFlag = true
-                            currentIndex = category.values.todoList.length
-                        }
-                        // 자식 요소에 이벤트 전달되면 null값이 들어감...
-                        // if (currentIndex === null) {
+                        // if (
+                        //     e.target.classList.contains(
+                        //         classNames.todoContainer
+                        //     )
+                        // ) {
                         //     return
                         // }
-                        skeletonUpdateFlag &&
-                            console.log('flag', skeletonUpdateFlag)
-                        // console.log(
-                        //     'dragenter',
-                        //     currentCategory.identifier,
-                        //     currentIndex
-                        // )
-                        if (!skeletonUpdateFlag) return
 
+                        let isInDragZone = false
+                        if (
+                            e.target.classList.contains(classNames.todoDragZone)
+                        ) {
+                            currentIndex =
+                                currentCategory.values.todoList.length - 1
+                            updateFlag = true
+                            isInDragZone = true
+                            console.log('dragzone')
+                            console.log(
+                                'prevCategory',
+                                prevCategory.identifier,
+                                'prevIndex',
+                                prevIndex
+                            )
+                            console.log(
+                                'currentCategory',
+                                currentCategory.identifier,
+                                'currentIndex',
+                                currentIndex
+                            )
+                        }
+
+                        updateFlag && console.log('flag', updateFlag)
+
+                        if (!updateFlag) return
+
+                        const targetElement = findDomElement(
+                            currentCategory.values.todoList[currentIndex]
+                                .identifier
+                        )
                         if (prevCategory !== currentCategory) {
+                            if (isInDragZone) {
+                                targetElement.after(originElement)
+                                currentCategory.values.todoList.push(
+                                    prevCategory.values.todoList[prevIndex]
+                                )
+                                prevCategory.values.todoList.splice(
+                                    prevIndex,
+                                    1
+                                )
+                                return
+                            }
+                            targetElement.before(originElement)
+                            const originTodoItem =
+                                prevCategory.values.todoList[prevIndex]
+                            const todoList = currentCategory.values.todoList
+                            prevCategory.values.todoList.splice(prevIndex, 1)
+                            currentCategory.values.todoList = [
+                                ...todoList.slice(0, currentIndex),
+                                originTodoItem,
+                                ...todoList.slice(currentIndex),
+                            ]
                             return
                         }
 
-                        const bodyElement = parentElement.querySelector(
-                            `.${classNames.todoBody}`
-                        )
-                        const targetElement = findDomElement(
-                            category.values.todoList[currentIndex].identifier
-                        )
                         const todoList = category.values.todoList
-                        const originTodoItem = todoList[currentIndex]
                         if (prevIndex < currentIndex) {
-                            // bodyElement.childNodes[currentIndex].after(
-                            //     originElement
-                            // )
                             targetElement.after(originElement)
-                            // todoList.splice(prevIndex, 1)
                             category.values.todoList = [
                                 ...todoList.slice(0, prevIndex),
                                 ...todoList.slice(
@@ -170,9 +206,6 @@ export const initTodo = () => {
                                 ...todoList.slice(currentIndex + 1),
                             ]
                         } else if (prevIndex > currentIndex) {
-                            // bodyElement.childNodes[currentIndex].before(
-                            //     originElement
-                            // )
                             targetElement.before(originElement)
                             category.values.todoList = [
                                 ...todoList.slice(0, currentIndex),
@@ -194,7 +227,7 @@ export const initTodo = () => {
                     prevIndex = null
                     currentCategory = null
                     currentIndex = null
-                    storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
+                    // storeData(TODO_CATEGORY_KEY, getState(TODO_CATEGORY_KEY))
                 })
             }
         )

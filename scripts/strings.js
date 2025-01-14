@@ -4,6 +4,7 @@ export const classNames = {
     todoHeaderTitle: 'todos__header__title',
     todoHeaderTodoCount: 'todos__header__todo-count',
     todoBody: 'todos__body',
+    todoDragZone: 'todos__drag-zone',
 
     todoItemBody: 'todos__body__item',
     todoItemTitle: 'todos__body__item__title',
