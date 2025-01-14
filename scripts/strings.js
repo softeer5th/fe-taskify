@@ -1,8 +1,11 @@
 export const classNames = {
+    todoContainer: 'todos',
     todoHeader: 'todos__header',
     todoHeaderTitle: 'todos__header__title',
     todoHeaderTodoCount: 'todos__header__todo-count',
+    todoBody: 'todos__body',
 
+    todoItemBody: 'todos__body__item',
     todoItemTitle: 'todos__body__item__title',
     todoItemContent: 'todos__body__item__content',
     todoItemAuthor: 'todos__body__item__author',
@@ -25,12 +28,15 @@ export const classNames = {
     addButton: 'add-btn',
     deleteButton: 'delete-btn',
     editButton: 'edit-btn',
+
+    skeleton: 'skeleton',
 }
 
 export const templateNames = {
     todoHeader: 'todo-header-template',
     todoItem: 'todo-item-template',
+    todoItemSkeleton: 'todo-item-skeleton',
     todoCategory: 'todo-category-template',
-    todoItemAddForm: 'todo-item-form-template',
-    todoItemEditForm: 'todo-item-form-template',
+    todoItemAddForm: 'todo-item-add-form-template',
+    todoItemEditForm: 'todo-item-edit-form-template',
 }
