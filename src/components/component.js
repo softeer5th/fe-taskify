@@ -1,4 +1,3 @@
-
 export default class Component {
     children = {};
     events = [];
@@ -61,13 +60,8 @@ export default class Component {
 
     renderTree() {
         for (const key in this.children) {
-            const childParent = this.current.querySelector(this.children[key].parentSelector);
-            if (childParent) {
-                this.children[key].object.render(childParent);
-            }
-            else {
-                this.children[key].object.render(this.current);
-            }
+            const childParent = this.current.querySelector(this.children[key].parentSelector) || this.current;
+            this.children[key].object.render(childParent);
         }
     }
 
@@ -76,7 +70,6 @@ export default class Component {
         if (root) {
             this.events.forEach(({ listenerName, callback }) => {
                 root.addEventListener(listenerName, () => callback());
-
             });
         }
     }

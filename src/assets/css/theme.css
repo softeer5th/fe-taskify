@@ -47,11 +47,6 @@ body{
     background-color: var(--color_surface_alt);
 }
 
-.wrapper{
-    width: 100%;
-    box-sizing: border-box;
-}
-
 .display-bold24 {
     font-weight: 700;
     font-size: 24px;

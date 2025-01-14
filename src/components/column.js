@@ -40,6 +40,7 @@ export class Column extends Component {
     }
 
     setChildren(columnData) {
+        console.log(columnData);
         this.children = {
             header: {
                 object: new ColumnHeader(columnData.name, columnData.data.length, this.onCardAdd, this.onColumnDelete),
@@ -51,6 +52,7 @@ export class Column extends Component {
         };
 
         columnData.data.forEach((cardData, index) => {
+            console.log(index, cardData);
             this.createDefaultCard(index, cardData);
         });
     }
@@ -109,15 +111,13 @@ export class Column extends Component {
     createDefaultCard(index, cardData){
         this.children[`card${index}`] = {
             object: new DefaultCard(
-                cardData.title,
-                cardData.body,
-                cardData.author,
+                cardData,
                 () => {
                     this.onCardDelete(index);
                 },
                 () => {
                     this.onEditCard(index);
-                }
+                },
             ),
             parentSelector: '.column'
         }

@@ -5,14 +5,12 @@ export class DefaultCard extends Component {
     closeIconRef = "/assets/images/closed.svg";
     editIconRef = "/assets/images/edit.svg";
 
-    constructor(title, body, author, onCloseClick = () => {}, onEditClick = () => {}) {
+    constructor(cardData, onCloseClick = () => { }, onEditClick = () => { }) {
         super();
         this.addRootclass("card");
         this.addRootclass("card-default");
-        
-        this.title = title;
-        this.body = body;
-        this.author = author;
+
+        this.cardData = cardData;
         this.onCloseClick = onCloseClick;
         this.onEditClick = onEditClick;
 
@@ -22,13 +20,13 @@ export class DefaultCard extends Component {
         return `
             <div class = "card-text_area">
                 <div class = "card-title display-bold24">
-                    ${this.title}
+                    ${this.cardData.title}
                 </div>
                 <div class = "card-body display-medium14">
-                    ${this.body}
+                    ${this.cardData.body}
                 </div>
                 <div class = "card-author display-medium12">
-                    author by ${this.author}
+                    author by ${this.cardData.author}
                 </div>
             </div>
             <div class = "card-icons">
