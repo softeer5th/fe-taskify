@@ -11,10 +11,10 @@ import { loadData, storeData } from '../utils/storageUtil.js'
 import { manageDragEvents, manageDropEvents } from './dragManager.js'
 import { Category } from '../domain/category.js'
 
-const RESET = false
+const RESET_DATA = true
 
 export const initTodo = () => {
-    RESET && storeData(keys.TODO_CATEGORY_KEY, [])
+    RESET_DATA && storeData(keys.TODO_CATEGORY_KEY, [])
 
     let categoryList = loadData(keys.TODO_CATEGORY_KEY)
     if (!categoryList) {
@@ -22,9 +22,37 @@ export const initTodo = () => {
         categoryList = []
     }
 
-    // 더미 데이터
-    if (RESET) {
-        categoryList = [Category(-1, '해야할 일'), Category(-1, '하고 있는 일')]
+    // 임시 데이터 초기화
+    if (RESET_DATA) {
+        let id = 1
+        let categoryCnt = 3
+        let eleCnt = 3
+
+        const res = []
+        for (let i = 0; i < categoryCnt; i++) {
+            res.push(Category(`id-${id}`, `id-${id}`))
+            id += eleCnt + 1
+        }
+        console.log(res)
+        categoryList = res
+
+        id = 1
+        categoryList.forEach((category, index) => {
+            const res = []
+            for (let i = 0; i < eleCnt; i++) {
+                id++
+                res.push(
+                    TodoItem(
+                        `id-${id}`,
+                        `id-${id}`,
+                        `내용 - ${index}-${i}`,
+                        'web'
+                    )
+                )
+            }
+            id += 1
+            category.values.todoList = res
+        })
         storeData(keys.TODO_CATEGORY_KEY, categoryList)
     }
 
