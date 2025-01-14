@@ -232,9 +232,8 @@ body {
     font: var(--font-medium-r);
 }
 
-.skeleton {
-    margin: 0px;
-    padding: 0px;
+.after-image {
+    opacity: 0.35;
 }
 
 .btn {

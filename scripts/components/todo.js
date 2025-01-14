@@ -313,13 +313,16 @@ const manageDrag = (element) => {
     element.addEventListener('dragstart', (e) => {
         // console.log(e.target)
         // console.log(element.offsetHeight)
+        element.classList.add(classNames.afterImage)
         const index = Array.from(element.parentNode.children).indexOf(element)
         setState(DRAG_ELEMENT_KEY, [e.target.id, index])
     })
     element.addEventListener('drag', (e) => {
         // console.log('drag', e.target)
     })
-    element.addEventListener('dragend', (e) => {})
+    element.addEventListener('dragend', (e) => {
+        element.classList.remove(classNames.afterImage)
+    })
 }
 
 const addTodoItem = (title, content, author, category) => {
