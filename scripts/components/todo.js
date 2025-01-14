@@ -72,7 +72,7 @@ export const initTodo = () => {
                     const [originElementId, originIndex] =
                         getState(DRAG_ELEMENT_KEY)
 
-                    const originElement = findDomElement(originElementId)
+                    const ghostElement = findDomElement(originElementId)
                     let updateFlag = false
                     const categoryList = getState(TODO_CATEGORY_KEY)
                     for (let category of categoryList) {
@@ -83,11 +83,7 @@ export const initTodo = () => {
                         if (!parentElement.contains(e.target)) continue
                         prevCategory = currentCategory ?? category
                         currentCategory = category
-                        // console.log(
-                        //     'prevCategory',
-                        //     prevCategory?.identifier,
-                        //     'currentCategory',
-                        //     currentCategory.identifier
+                        currentCategory.identifier
                         // )
                         if (
                             prevCategory.identifier !==
@@ -109,10 +105,6 @@ export const initTodo = () => {
                             todoItem,
                         ] of category.values.todoList.entries()) {
                             if (todoItem.identifier === e.target.id) {
-                                // 순서 바뀐 후 다시 index가 origin index로 되돌아가는 현상 방지
-                                // if (e.target.id === originElementId) {
-                                //     break
-                                // }
                                 prevIndex = currentIndex ?? originIndex
                                 currentIndex = idx
                                 if (prevIndex !== currentIndex) {
@@ -128,21 +120,17 @@ export const initTodo = () => {
                                 break
                             }
                         }
-                        // 컨테이너 빈 영역에 대해서는 todo 리스트의 맨 끝에 추가
-                        // if (
-                        //     e.target.classList.contains(
-                        //         classNames.todoContainer
-                        //     )
-                        // ) {
-                        //     return
-                        // }
 
                         let isInDragZone = false
                         if (
                             e.target.classList.contains(classNames.todoDragZone)
                         ) {
-                            currentIndex =
-                                currentCategory.values.todoList.length - 1
+                            if (currentCategory.values.todoList.length > 0) {
+                                currentIndex =
+                                    currentCategory.values.todoList.length - 1
+                            } else {
+                                currentIndex = 0
+                            }
                             updateFlag = true
                             isInDragZone = true
                             console.log('dragzone')
@@ -164,13 +152,26 @@ export const initTodo = () => {
 
                         if (!updateFlag) return
 
-                        const targetElement = findDomElement(
-                            currentCategory.values.todoList[currentIndex]
-                                .identifier
-                        )
+                        const targetElement =
+                            currentCategory.values.todoList.length > 0
+                                ? findDomElement(
+                                      currentCategory.values.todoList[
+                                          currentIndex
+                                      ].identifier
+                                  )
+                                : null
+
                         if (prevCategory !== currentCategory) {
                             if (isInDragZone) {
-                                targetElement.after(originElement)
+                                if (targetElement === null) {
+                                    component
+                                        .querySelector(
+                                            `.${classNames.todoBody}`
+                                        )
+                                        .appendChild(ghostElement)
+                                } else {
+                                    targetElement.after(ghostElement)
+                                }
                                 currentCategory.values.todoList.push(
                                     prevCategory.values.todoList[prevIndex]
                                 )
@@ -180,7 +181,7 @@ export const initTodo = () => {
                                 )
                                 return
                             }
-                            targetElement.before(originElement)
+                            targetElement.before(ghostElement)
                             const originTodoItem =
                                 prevCategory.values.todoList[prevIndex]
                             const todoList = currentCategory.values.todoList
@@ -195,7 +196,7 @@ export const initTodo = () => {
 
                         const todoList = category.values.todoList
                         if (prevIndex < currentIndex) {
-                            targetElement.after(originElement)
+                            targetElement.after(ghostElement)
                             category.values.todoList = [
                                 ...todoList.slice(0, prevIndex),
                                 ...todoList.slice(
@@ -206,7 +207,7 @@ export const initTodo = () => {
                                 ...todoList.slice(currentIndex + 1),
                             ]
                         } else if (prevIndex > currentIndex) {
-                            targetElement.before(originElement)
+                            targetElement.before(ghostElement)
                             category.values.todoList = [
                                 ...todoList.slice(0, currentIndex),
                                 todoList[prevIndex],
