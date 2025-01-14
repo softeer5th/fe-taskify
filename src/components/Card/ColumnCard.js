@@ -1,75 +1,76 @@
 import { loadCss } from '../../utils/loadcss.js';
 import { Button } from '../Button/Button.js';
 
-export function ColumnCard({type,title,content,author,buttonProps}){
+export function ColumnCard({type,title,content,author,addText,closeText,checkId,editId,closeId,deleteId}){
     const columnCard = document.createElement('div');
     columnCard.className = 'column-card-container';
     columnCard.innerHTML =`
         <div class='column-content-container'>
-            <div class='column-content-box'>
-                <div class='column-card-title'>${title}</div>
-                <div class='column-card-content'>${content}</div>
-            </div>
+            <div class='column-content-box'></div>
         </div>
         
     `
     const contentBox = columnCard.querySelector('.column-content-box');
     const cardContainer = columnCard.querySelector('.column-content-container');
 
-    if(type === 'add' || type === 'edit'){
+    if(type === 'add-card' || type === 'edit-card'){
+        contentBox.innerHTML = `
+        <input id="card-title" type='text' placeholder='${title}' class='column-card-title' />
+        <input id="card-content" type='text' placeholder='${content}' class='column-card-content' />
+        `;
+
         const buttonBox = document.createElement('div');
         buttonBox.className = 'card-button-box';
-
-        // 버튼 인자값을 받아 올거임 
-        const leftButton = Button({
+        columnCard.id=type
+        
+        const closeButton = Button({
             type:'text',
-            text:'button',
+            text:closeText,
             backgroundColor: 'grayscale100',
             textColor:'grayscale600',
-            eventFuntion:()=>{}
+            id : closeId
         })
 
-        const rightButton = Button({
+        const checkButton = Button({
             type:'text',
-            text:'button',
+            text:addText,
             backgroundColor: 'accentBlue',
             textColor:'grayscale50',
-            eventFuntion:()=>{}
+            id: checkId
         })
-        // 여기까지 
 
-        buttonBox.insertAdjacentElement('beforeend',leftButton);
-        buttonBox.insertAdjacentElement('beforeend',rightButton);
+        buttonBox.insertAdjacentElement('beforeend',closeButton);
+        buttonBox.insertAdjacentElement('beforeend',checkButton);
 
         contentBox.insertAdjacentElement('afterend', buttonBox);
     }
     else{
+        contentBox.innerHTML = `
+            <div class='column-card-title'>${title}</div>
+            <div class='column-card-content'>${content}</div>
+            <div class='column-card-author'>${author}</div>
+        `;
         const iconBox = document.createElement('div');
         iconBox.className = 'column-card-icon-box';
         cardContainer.insertAdjacentElement('afterend', iconBox)
-
-        const authorElement = `<div class='column-card-author'>${author}</div>`;
-        contentBox.insertAdjacentHTML('afterend', authorElement);
-        
 
         const editButton = Button({
             type:'icon',
             icon:'edit',
             textColor:'grayscale500',
-            eventFuntion:()=>{}
+            id:editId
         })
 
-        const closedButton = Button({
+        const deleteButton = Button({
             type:'icon',
             icon:'close',
             textColor:'grayscale500',
-            eventFuntion:()=>{}
+            id:closeId
         })
 
         iconBox.insertAdjacentElement('beforeend',editButton);
-        iconBox.insertAdjacentElement('beforeend',closedButton);
+        iconBox.insertAdjacentElement('beforeend',deleteButton);
         if(type === 'drag'){
-
             columnCard.classList.add('card-drag-container');
         }else if (type === 'place'){
             columnCard.classList.add('card-place-container');

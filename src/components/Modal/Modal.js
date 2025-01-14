@@ -18,7 +18,7 @@ export function Modal({content,buttonProps}){
         text:'button',
         backgroundColor: 'grayscale100',
         textColor:'grayscale600',
-        eventFuntion:()=>{}
+
     })
 
     const rightButton = Button({
@@ -26,7 +26,6 @@ export function Modal({content,buttonProps}){
         text:'button',
         backgroundColor: 'accentRed',
         textColor:'grayscale50',
-        eventFuntion:()=>{}
     })
     // 여기까지 
     

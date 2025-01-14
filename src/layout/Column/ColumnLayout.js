@@ -10,22 +10,22 @@ export function ColumnLayout(data) {
    const todoColumn = ColumnHeader({
     title: "해야할 일",
     badgeContent: data.todos.length,
-    plusEvent: () => {},
-    closedEvent: () => {}
+    addId: "card-add-toggle",
+    closeId: "card-close-toggle"
 });
 
 const inProgressColumn = ColumnHeader({
     title: "하고 있는 일",
     badgeContent: data.progress.length,
-    plusEvent: () => {},
-    closedEvent: () => {}
+    addId: "card-add-toggle",
+    closeId: "card-close-toggle"
 });
 
 const doneColumn = ColumnHeader({
     title: "완료한 일",
     badgeContent: data.done.length,
-    plusEvent: () => {},
-    closedEvent: () => {}
+     addId: "card-add-toggle",
+    closeId: "card-close-toggle"
 });
 
     columnLayout.innerHTML=`
