@@ -8,6 +8,10 @@ export function showCardList(element,cardList){
             type: item.type,
             content: item.content,
             author: item.author,
+            editId: 'card-edit',
+            deleteId: 'card-delete-toggle',
+            checkId: "card-add",
+            closeId: "card-add-toggle",
         
         }))
         
