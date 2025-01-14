@@ -1,4 +1,4 @@
-import renderTemplate from "./main.js";
+import { addListener, renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
 
@@ -27,38 +27,39 @@ export function confirmAddCard(columnId){
     const contentInput = document.getElementById('content-input');
     const contentValue = contentInput.value.trim();
     const newCardId = createNewId();
-    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:newCardId, title:titleValue, content:contentValue,});
+    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,});
 }
 
 
 // 카드 삭제 묻기
-export function delCard(columnId, cardId) {
+export function delCard(cardId) {
     overlay.style.display = "block";
-    createDeleteCardAlert(columnId, cardId);
-    let delCardAlert = document.getElementById(`deleteCardAlert-${columnId}-${cardId}`);
+    createDeleteCardAlert(cardId);
+    let delCardAlert = document.getElementById(`deleteCardAlert-${cardId}`);
     delCardAlert.style.display = "block";
-    let column = document.getElementById("card-list"+columnId);
-    let card = column.querySelector("#card-id"+cardId);
+    let card = document.querySelector("#card-id"+cardId);
     delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
-    delCardAlert.querySelector('#cancel-delete-card-button').addEventListener('click',(event)=>{
+    addListener(delCardAlert.querySelector('#cancel-delete-card-button'),(event)=>{
         hideAlert();
     });
-    delCardAlert.querySelector('#confirm-delete-card-button').addEventListener('click',(event)=>{
+    addListener(delCardAlert.querySelector('#confirm-delete-card-button'),(event)=>{
         hideAlert();
-        if (column.contains(card)) {
-            column.removeChild(card);
+        if (card) {
+            card.remove();
         }
     });
 }
 
+export let isEditing = false;
 
 // 카드 수정
-export function editCard(columnId, cardId) {
-    let column = document.getElementById("card-list"+columnId);
-    let card = column.querySelector("#card-id"+cardId);
+export function editCard(cardId) {
+    let card = document.querySelector("#card-id"+cardId);
+    let columnId = card.parentElement.id;
     const tempMemory = [...card.children];
     
     card.style.display = "block";
+    isEditing = true;
 
     let curTitle = card.querySelector(".card-title").textContent;
     let curContent = card.querySelector(".card-content").textContent;
@@ -81,12 +82,16 @@ export function editCard(columnId, cardId) {
         </button>
     `;
 
-    newActionDiv.querySelector('.confirm-button').addEventListener('click', (event)=> {
-        confirmEdit(card, columnId, cardId)
+    addListener(newActionDiv.querySelector('.confirm-button'),(event)=>{
+        isEditing = false;
+        confirmEdit(card,cardId)
     });
-    newActionDiv.querySelector('.cancel-button').addEventListener('click', (event)=> {
+
+    addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
+        isEditing = false;
         cancelEdit(card,tempMemory);
     });
+    
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
@@ -103,12 +108,12 @@ export function editCard(columnId, cardId) {
 }
 
 // 수정사항 반영
-function confirmEdit(card, columnId, cardId){
+function confirmEdit(card, cardId){
     const titleInput = card.querySelector('#title-input');
     const titleValue = titleInput.value.trim();
     const contentInput = card.querySelector('#content-input');
     const contentValue = contentInput.value.trim();
-    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {columnId: columnId, cardId:cardId, title:titleValue, content:contentValue,});
+    renderTemplate('./html/card_template.html', 'card-template', card.parentElement.id, {cardId:cardId, title:titleValue, content:contentValue,});
     card.parentNode.removeChild(card);
 }
 
@@ -126,18 +131,23 @@ function cancelEdit(card, tempMemory){
 export let isDragging = false;
 let gapX = 0;
 let gapY = 0;
-let draggingColumnId = 0;
 let draggingCardId = 0;
 
-export function startDragCard(event, clone, columnId, cardId) {
+export function startDragCard(event, original, clone, cardId) {
     isDragging = true;
-    const parentElement = document.querySelector('#card-list'+columnId);
-    const childElement = parentElement.querySelector("#card-id"+cardId);
+    const childElement = document.querySelector("#card-id"+cardId);
     clone.style.width = window.getComputedStyle(childElement).width;
     draggingCardId = cardId;
-    draggingColumnId = columnId;
+    const columnArea = document.getElementById("column-area");
+    [...columnArea.children].forEach((column)=> {
+        let tempCard = original.cloneNode(true);
+        tempCard.id = `temp-${clone.id}`;
+        tempCard.className = `temp-card`;
+        tempCard.style.opacity = 0.3;
+        tempCard.style.display = 'none';
+        column.querySelector(".card-list").prepend(tempCard);
+    });
     document.body.appendChild(clone);
-    childElement.style.opacity = 0.3;
 
     const parentRect = childElement.getBoundingClientRect(); // 부모 요소의 경계 정보
 
@@ -150,6 +160,7 @@ export function startDragCard(event, clone, columnId, cardId) {
     clone.style.left = `${event.clientX-gapX}px`;
     clone.style.top = `${event.clientY-gapY}px`;
     document.body.classList.add('no-select');
+    childElement.remove();
 }
 
 export function moveCard(event, clone) {
@@ -160,17 +171,34 @@ export function moveCard(event, clone) {
 }
 
 export function moveCardIllusion(newParent, clone) {
-    console.log(newParent);
-    console.log(clone);
-    curParent.removeChild(clone);
-    newParent.appendChild(clone);
+    const columnArea = document.getElementById("column-area");
+    [...columnArea.children].forEach((column)=> {
+        console.log(column);
+        console.log(clone.id);
+        let tempCard = column.querySelector(`#temp-${clone.id}`);
+        if (tempCard) {
+            tempCard.className = "temp-card"
+            tempCard.style.display = 'none';
+        }
+    });
+    let tempRealCard = newParent.querySelector(`#temp-${clone.id}`);
+    if (tempRealCard) {
+        tempRealCard.className = "temp-card-true"
+        tempRealCard.style.display = 'flex';
+    }
 }
 
 export function finishDragCard(clone) {
     if (isDragging && clone) {
-        const parentElement = document.querySelector('#card-list'+draggingColumnId);
-        const childElement = parentElement.querySelector("#card-id"+draggingCardId);
-        childElement.style.opacity = 1;
+        const tempCards = document.querySelectorAll('.temp-card');
+        [...tempCards].forEach((tempCard)=>tempCard.remove());
+        const realCard = document.querySelector('.temp-card-true');
+        realCard.id = "card-id"+draggingCardId;
+        realCard.className = "card-id"
+        realCard.style.opacity = 1;
+        setEventForCard({"cardId": draggingCardId});
+
+        console.log(realCard);
         isDragging = false;
         clone.remove();
         document.body.classList.remove('no-select');

@@ -3,10 +3,10 @@ const alertArea = document.getElementById('alert-area');
 
 
 // 특정 카드 삭제
-export function createDeleteCardAlert(columnId, cardId) {
+export function createDeleteCardAlert(cardId) {
     const delCardAlertDiv = document.createElement('div');
     delCardAlertDiv.className = 'modal';
-    delCardAlertDiv.id = `deleteCardAlert-${columnId}-${cardId}`;
+    delCardAlertDiv.id = `deleteCardAlert-${cardId}`;
     delCardAlertDiv.innerHTML = `
         <p class="delObj"></p>
         <button id="cancel-delete-card-button" class="modal-cancel-button">취소</button>

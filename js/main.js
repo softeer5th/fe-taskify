@@ -1,5 +1,5 @@
-import { addCard, delAllCard, updateChildCount  } from "./column_action.js";
-import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion } from "./card_action.js";
+import { addCard, delAllCard, updateChildCount, toggleSortOrder, isMoving  } from "./column_action.js";
+import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion, isEditing } from "./card_action.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -72,11 +72,12 @@ function setEventForColumn(props) {
         }
     });
 
-    // addListener(parentElement,(event, clone)=>{
-    //     if (event.type === "mousemove") {
-    //         moveCardIllusion(parentElement, clone);
-    //     }
-    // })
+    addListener(parentElement,(event)=>{
+        if (event.type === "mousemove") {
+            moveCard(event, clone);
+            moveCardIllusion(parentElement, clone);
+        }
+    })
 
     // MutationObserver 설정
     const observer = new MutationObserver(() => {
@@ -90,13 +91,13 @@ function setEventForColumn(props) {
 }
 
 // 카드 이벤트 적용
-function setEventForCard(props) {
-    const parentElement = document.querySelector('#card-list'+props.columnId);
-    const childElement = parentElement.querySelector("#card-id"+props.cardId);
+export function setEventForCard(props) {
+    const childElement = document.querySelector("#card-id"+props.cardId);
+    const parentElement = childElement.parentElement;
     // 카드 수정 버튼에 이벤트 추가
     addListener(childElement.querySelector('#edit-card-button'), (event)=>{
         if (event.type === "click") {
-            editCard(props.columnId, props.cardId);
+            editCard(props.cardId);
         } else if (event.type === "mousemove") {
             moveCard(event, clone);
         }
@@ -104,7 +105,7 @@ function setEventForCard(props) {
     // 카드 삭제 버튼에 이벤트 추가
     addListener(childElement.querySelector('#del-card-button'), (event)=>{
         if (event.type === "click") {
-            delCard(props.columnId, props.cardId);
+            delCard(props.cardId);
         } else if (event.type === "mousemove") {
             moveCard(event, clone);
         }
@@ -115,16 +116,17 @@ function setEventForCard(props) {
             if (!clone) {
                 clone = childElement.cloneNode(true);
                 clone.classList.add('dragging');
-                startDragCard(event, clone, props.columnId, props.cardId);
+                startDragCard(event, childElement, clone, props.cardId);
             }
         } else if (event.type === "mousemove") {
             moveCard(event, clone);
+            moveCardIllusion(parentElement, clone);
         }
     });
 }
 
 // 타겟 엘리먼트에 템플릿 렌더링하기
-export default async function renderTemplate(templateFile, templateId, targetId, props) {
+export async function renderTemplate(templateFile, templateId, targetId, props) {
     const templateContent = await loadTemplate(templateFile, templateId, props);
     if (templateContent) {
         const target = document.getElementById(targetId);
@@ -133,7 +135,7 @@ export default async function renderTemplate(templateFile, templateId, targetId,
     }
 }
 
-function addListener(element, listener) {
+export function addListener(element, listener) {
     if (!eventListeners.has(element)) {
       eventListeners.set(element, []); // 요소에 대한 리스너 배열 초기화
     }
@@ -145,7 +147,6 @@ function triggerListeners(event, startElement) {
 
     while (currentElement) {
         if (eventListeners.has(currentElement)) {
-            // console.log(currentElement);
             const listeners = eventListeners.get(currentElement);
             if (listeners) {
                 listeners.forEach((listener) => listener(event, currentElement)); // 등록된 모든 리스너 실행
@@ -163,12 +164,22 @@ addListener(document.body, (event)=>{
     moveCard(event, clone);
 })
 
+addListener(document.querySelector('.chip'), (event) =>{
+    if (event.type === "click") {
+        toggleSortOrder();
+    }
+});
+
 document.addEventListener('click', (event) => {
-    triggerListeners(event, event.target);
+    if (!isMoving) {
+        triggerListeners(event, event.target);
+    }
 });
 
 document.addEventListener('mousedown', (event) => {
-    triggerListeners(event, event.target);
+    if (!isEditing && !isMoving) {
+        triggerListeners(event, event.target);
+    }
 });
 
 document.addEventListener('mousemove', (event) => {
