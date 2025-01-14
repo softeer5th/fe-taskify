@@ -65,7 +65,7 @@ export function ColumnCard({type,title,content,author,addText,closeText,checkId,
             type:'icon',
             icon:'close',
             textColor:'grayscale500',
-            id:closeId
+            id:deleteId
         })
 
         iconBox.insertAdjacentElement('beforeend',editButton);
