@@ -17,7 +17,6 @@ export default function ColumnController(state, bodyElement) {
         const startIdx = task.column;
         const columnIdx = Number(columnListElement.parentNode.getAttribute('index'));
 
-
         if(task.column !== columnIdx) columnListElement.removeChild(dummyElement);
         element.style.opacity = 1;
         columnListElement.appendChild(element);

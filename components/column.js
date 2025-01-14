@@ -63,6 +63,12 @@ export default function ColumnComponent() {
         else counterElement.textContent = n;
     }
 
+    function rerenderHeader(idx, n) {
+        const counterElement = document.body.querySelectorAll('.column_task_counter')[idx];
+        if(n > MAX_TASKS) counterElement.textContent `${MAX_TASKS}+`;
+        else counterElement.textContent = n;
+    }
+
     return {
         render,
         addEventListener,
