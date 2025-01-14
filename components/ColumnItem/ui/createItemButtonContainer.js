@@ -5,6 +5,7 @@ import {
   createElement,
   createImg,
 } from "../../../dom.js";
+import historyStore from "../../../store/historyStore.js";
 import {
   loadLocalStorage,
   saveLocalStorage,
@@ -37,10 +38,17 @@ const createItemButtonContainer = ({ sectionId, itemId }) => {
       .querySelector(".column__count");
 
     $columnCount.textContent = itemLength;
-
     saveLocalStorage(filteredList);
-
     $columnItem.remove();
+
+    const deletedCard = todoList
+      .find((section) => section.id === sectionId)
+      .items.find((item) => item.id === itemId);
+
+    historyStore.action({
+      action: "remove",
+      title: deletedCard.title,
+    });
   };
 
   const handleClickDelete = () => {
