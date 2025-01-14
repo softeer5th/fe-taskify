@@ -1,5 +1,6 @@
 import { Model } from "./model.js";
-import { HeaderController, ColumnListController } from "./controller.js";
+import { HeaderController } from "./controller/headerController.js";
+import { ColumnListController } from "./controller/columnListController.js";
 import { TaskView } from "./view/taskView.js";
 
 const mockData = {
@@ -76,8 +77,9 @@ const ghostTask = TaskView({
     device: "web",
     columnId: -1,
   },
-  state: "moving",
+  state: "default",
 });
+ghostTask.classList.add("task--drag");
 ghostTask.style.position = "absolute";
 ghostTask.style.opacity = 0;
 ghostTask.style.pointerEvents = "none";
@@ -93,11 +95,10 @@ function moveGhostTask(event) {
   if (task) {
     ghostTask.innerHTML = TaskView({
       task: task,
-      state: "dragging",
+      state: "default",
       onFirstButtonClicked: () => {},
       onSecondButtonClicked: () => {},
     }).innerHTML;
-    ghostTask.classList.add("task--drag");
   }
   if (state.movingTaskId !== -1) {
     ghostTask.style.top = event.clientY + "px";

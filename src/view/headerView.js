@@ -1,7 +1,7 @@
 import { arrowBoth } from "../../public/arrowBoth.js";
 import { clock } from "../../public/clock.js";
 
-export function HeaderView({ onSortButtonClick, onHistoryButtonClick }) {
+export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) {
   const headerElement = document.createElement("header");
   headerElement.classList.add("header");
 
