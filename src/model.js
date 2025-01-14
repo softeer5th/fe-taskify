@@ -111,7 +111,7 @@ export default class Model {
     this.#notify();
   }
 
-  unsetCreatingTaskColumn() {
+  unsetEditingColumnTask() {
     this.#model.state.editingTaskId = -1;
     this.#model.state.editingColumnId = -1;
     this.#notify();
@@ -198,7 +198,8 @@ export default class Model {
       type: "updateColumn",
       updatedColumnName: updatedColumTitle,
     });
-    this.setEditingColumnId(-1);
+
+    this.unsetEditingColumnId();
   }
 
   removeColumn(columnId) {
@@ -210,7 +211,7 @@ export default class Model {
       type: "removeColumn",
       removedColumnName: removedColumn.title,
     });
-    this.#notify();
+    this.unsetEditingColumnTask();
   }
 
   addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
@@ -228,7 +229,7 @@ export default class Model {
       type: "addTask",
       addedTaskName: addedTaskName,
     });
-    this.#notify();
+    this.unsetEditingColumnTask();
   }
 
   updateTask(taskId, updatedTask) {
@@ -252,7 +253,7 @@ export default class Model {
       this.#model.state.editingTaskId = -1;
     }
     this.#pushHistory(currentData, historyAction);
-    this.#notify();
+    this.unsetEditingColumnTask();
   }
 
   removeTask(taskId) {
