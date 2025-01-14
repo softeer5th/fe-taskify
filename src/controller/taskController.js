@@ -76,6 +76,14 @@ export default function TaskController(model = new Model(), rootElement = docume
     const tasksOnModel = model.getCurrentTaskData();
     const state = model.getCurrentState();
 
+    // Sort tasksOnModel by createdAt with order state
+    const orderState = state.order;
+    if (orderState === "latest") {
+      tasksOnModel.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    } else {
+      tasksOnModel.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    }
+
     // Handle removed tasks
     const removedTasks = tasks.filter((task) => !tasksOnModel.some((t) => t.id === task.id));
     removedTasks.forEach((task) => {
@@ -86,7 +94,7 @@ export default function TaskController(model = new Model(), rootElement = docume
     tasks = tasks.filter((task) => tasksOnModel.some((t) => t.id === task.id));
 
     // Handle added tasks
-    const addedTasks = tasksOnModel.filter((task) => !taskViews.some((t) => t.id === task.id));
+    const addedTasks = tasksOnModel.filter((task) => !taskViews.some((t) => +t.id === task.id));
     addedTasks.forEach((task) => {
       const newTaskView = TaskView({
         task: task,
@@ -95,6 +103,8 @@ export default function TaskController(model = new Model(), rootElement = docume
         onSecondButtonClicked: handleTaskEditButtonClicked,
       });
       taskViews.push(newTaskView);
+      const columnView = columnViews.find((c) => +c.id === task.columnId);
+      columnView.querySelector(".column__task-list").appendChild(newTaskView);
     });
 
     // Handle updated tasks
@@ -112,12 +122,15 @@ export default function TaskController(model = new Model(), rootElement = docume
       }
     });
 
-    // Sort tasksOnModel by createdAt with order state
-    const orderState = state.order;
-    if (orderState === "latest") {
-      tasksOnModel.sort((a, b) => b.createdAt - a.createdAt);
-    } else {
-      tasksOnModel.sort((a, b) => a.createdAt - b.createdAt);
+    // Change editing task with state.editingTaskId
+    const editingTaskView = taskViews.find((t) => +t.id === state.editingTaskId);
+    if (editingTaskView) {
+      editingTaskView.innerHTML = TaskView({
+        task: tasksOnModel.find((t) => t.id === state.editingTaskId),
+        state: "editing",
+        onFirstButtonClicked: handleTaskEditCancelButtonClicked,
+        onSecondButtonClicked: handleTaskEditSaveButtonClicked,
+      }).innerHTML;
     }
 
     // Create Adding TaskView when state.editingTask is 0 and state.addingColumn is not -1
@@ -135,11 +148,31 @@ export default function TaskController(model = new Model(), rootElement = docume
     }
 
     // Relocate tasks
+    const tasksOnDOM = [...rootElement.querySelectorAll(".task")];
+
+    const oldState = tasksOnDOM.map((task) => task.getBoundingClientRect());
+
     tasksOnModel.forEach((task, index) => {
-      const taskView = taskViews.find((t) => +t.id === task.id);
-      const columnView = columnViews.find((c) => +c.id === task.columnId);
+      const taskView = tasksOnDOM.find((t) => +t.id === task.id);
       taskView.style.order = index;
-      columnView.querySelector(".column__task-list").appendChild(taskView);
+    });
+
+    const newState = tasksOnDOM.map((task) => task.getBoundingClientRect());
+
+    tasksOnDOM.forEach((task, index) => {
+      const deltaX = oldState[index].left - newState[index].left;
+      const deltaY = oldState[index].top - newState[index].top;
+      task.animate(
+        [
+          { transformOrigin: "top left", transform: `translate(${deltaX}px, ${deltaY}px)` },
+          { transformOrigin: "top left", transform: "none" },
+        ],
+        {
+          duration: 800,
+          easing: "ease-in-out",
+          fill: "both",
+        }
+      );
     });
 
     tasks = tasksOnModel;
