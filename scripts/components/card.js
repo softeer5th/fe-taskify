@@ -45,12 +45,12 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
     updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
   });
 
-  initCardTextArea(cardElement, cardData);
+  initCardTextArea(cardElement, cardState.getState());
   initCardIconButtons(
     cardElement,
     () => {
       cardElement.remove();
-      deleteCard(cardData.id);
+      deleteCard(cardState.getState().id);
     },
     () => {
       cardMode.setState('edit');
@@ -60,7 +60,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
     {
       name: 'cancel',
       handler: () => {
-        if (cardData.title === null && cardData.body === null) {
+        if (cardState.getState().title === null && cardState.getState().body === null) {
           cardElement.parentElement.querySelector('#add-card').disabled = false;
           cardElement.remove();
         } else {
@@ -85,7 +85,7 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
     },
   ]);
 
-  updateCardDisplay(cardElement, cardData, cardMode.getState());
+  updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
 
   return card;
 };
@@ -93,35 +93,35 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
 /**
  *
  * @param {HTMLElement} cardElement
- * @param {Card} cardData
- * @param {'default' | 'add' | 'drag' | 'place' | 'edit'} mode - 카드 모드
+ * @param {Card} cardState
+ * @param {'default' | 'add' | 'drag' | 'place' | 'edit'} cardMode - 카드 모드
  */
-const updateCardDisplay = (cardElement, cardData, mode) => {
+const updateCardDisplay = (cardElement, cardState, cardMode) => {
   toggleDisplay(
     cardElement.querySelector('#freezed-text'),
-    mode !== 'add' && mode !== 'edit'
+    cardMode !== 'add' && cardMode !== 'edit'
   );
   toggleDisplay(
     cardElement.querySelector('#icon-area'),
-    mode !== 'add' && mode !== 'edit'
+    cardMode !== 'add' && cardMode !== 'edit'
   );
   toggleDisplay(
     cardElement.querySelector('#text-form'),
-    mode === 'add' || mode === 'edit'
+    cardMode === 'add' || cardMode === 'edit'
   );
   toggleDisplay(
     cardElement.querySelector('#button-area'),
-    mode === 'add' || mode === 'edit'
+    cardMode === 'add' || cardMode === 'edit'
   );
 
-  toggleDisplay(cardElement.querySelector('#add-button'), mode !== 'edit');
-  toggleDisplay(cardElement.querySelector('#edit-button'), mode === 'edit');
+  toggleDisplay(cardElement.querySelector('#add-button'), cardMode !== 'edit');
+  toggleDisplay(cardElement.querySelector('#edit-button'), cardMode === 'edit');
 
   cardElement
     .querySelectorAll('#button-area button')
     .forEach((button, index) => {
       if (index !== 0) {
-        button.disabled = cardData.title === null || cardData.body === null;
+        button.disabled = cardState.title === null || cardState.body === null;
       }
     });
 
@@ -130,12 +130,12 @@ const updateCardDisplay = (cardElement, cardData, mode) => {
   const _input = cardElement.querySelector('form input');
   const _textArea = cardElement.querySelector('form textarea');
 
-  _input.value = _h3.textContent = cardData.title;
-  _textArea.value = _p.textContent = cardData.body;
+  _input.value = _h3.textContent = cardState.title;
+  _textArea.value = _p.textContent = cardState.body;
 
-  setCardShadow(cardElement, mode);
+  setCardShadow(cardElement, cardMode);
 
-  if (mode == 'place') {
+  if (cardMode == 'place') {
     cardElement.style.opacity = '0.3';
   } else {
     cardElement.style.opacity = '1';
@@ -144,9 +144,10 @@ const updateCardDisplay = (cardElement, cardData, mode) => {
 
 const applyCardChanges = (cardElement, cardState) => {
   cardState.setState((prev) => ({
-    ...prev,
+    id: prev.id ?? Date.now() + Math.random(),
     title: cardElement.querySelector('input').value,
     body: cardElement.querySelector('textarea').value,
+    createdDate: prev.createdDate ?? new Date().toISOString(),
   }));
 };
 

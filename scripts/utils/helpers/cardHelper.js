@@ -1,5 +1,39 @@
 import Button from '../../components/button.js';
+import Card from '../../components/card.js';
 import { autoResize, limitTextLength } from './textAreaHelper.js';
+
+/**
+ * 카드 생성 함수
+ * @param {string} mode - 카드 모드
+ * @param {Card} cardData - 카드 데이터
+ * @param {function} columnState - 컬럼 상태
+ * @returns {DocumentFragment} - 카드 요소를 포함하는 DocumentFragment
+ */
+
+const createCard = (mode, cardData, columnState) => {
+  return Card(
+    mode,
+    cardData,
+    (newData) =>
+      columnState.setState((prevState) => ({
+        ...prevState,
+        cards: [newData, ...prevState.cards],
+      })),
+    (removeCardId) => {
+      columnState.setState((prev) => ({
+        ...prev,
+        cards: prev.cards.filter((card) => card.id !== removeCardId),
+      }));
+    },
+    (newData) =>
+      columnState.setState((prevState) => ({
+        ...prevState,
+        cards: prevState.cards.map((card) =>
+          newData.id === card.id ? newData : card
+        ),
+      }))
+  );
+};
 
 /**
  * @typedef {Object} Card
@@ -105,6 +139,7 @@ const setCardShadow = (cardElement, mode) => {
 };
 
 export {
+  createCard,
   initCardTextArea,
   initCardIconButtons,
   initCardButtons,

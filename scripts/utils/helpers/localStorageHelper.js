@@ -20,88 +20,79 @@
 
 /**
  * 투두 데이터를 로컬스토리지로부터 불러오는 함수
- * @returns {Todos} 투두 데이터
+ * @returns {todos} 투두 데이터
  */
 const loadTodos = () => {
-  let Todos = JSON.parse(localStorage.getItem('columns'));
+  let todos = JSON.parse(localStorage.getItem('todos'));
 
-  if (!Todos) {
-    Todos = {
-      columns: [
-        {
-          columnId: 0,
-          columnName: '해야할 일',
-          cards: [
-            // 더미데이터
-            {
-              id: 1,
-              title: '모던 자바스크립트 예제 실습',
-              body: '1장 예제 내용 실습 후, 커밋까지',
-              createdDate: '2021-08-10',
-            },
-            {
-              id: 2,
-              title: 'GitHub 공부하기',
-              body: 'add, commit, push',
-              createdDate: '2021-08-10',
-            },
-            {
-              id: 3,
-              title: '카드 제목',
-              body: '카드 내용',
-              createdDate: '2021-08-10',
-            },
-            {
-              id: 4,
-              title: '카드 제목',
-              body: '카드 내용',
-              createdDate: '2021-08-10',
-            },
-          ],
-        },
-        {
-          columnId: 1,
-          columnName: '하고 있는 일',
-          cards: [],
-        },
-        {
-          columnId: 2,
-          columnName: '완료한 일',
-          cards: [],
-        },
-      ],
-    };
-    localStorage.setItem('columns', JSON.stringify(Todos));
+  if (!todos) {
+    todos = [
+      {
+        columnId: 0,
+        columnName: '해야할 일',
+        cards: [
+          // 더미데이터
+          {
+            id: 1,
+            title: '모던 자바스크립트 예제 실습',
+            body: '1장 예제 내용 실습 후, 커밋까지',
+            createdDate: '2021-08-10',
+          },
+          {
+            id: 2,
+            title: 'GitHub 공부하기',
+            body: 'add, commit, push',
+            createdDate: '2021-08-10',
+          },
+          {
+            id: 3,
+            title: '카드 제목',
+            body: '카드 내용',
+            createdDate: '2021-08-10',
+          },
+          {
+            id: 4,
+            title: '카드 제목',
+            body: '카드 내용',
+            createdDate: '2021-08-10',
+          },
+        ],
+      },
+      {
+        columnId: 1,
+        columnName: '하고 있는 일',
+        cards: [],
+      },
+      {
+        columnId: 2,
+        columnName: '완료한 일',
+        cards: [],
+      },
+    ];
+
+    localStorage.setItem('todos', JSON.stringify(todos));
   }
 
-  return Todos;
+  return todos;
 };
 
 /**
- * 투두 카드를 로컬스토리지에 추가하는 함수
- * @param {Object} options - 옵션 객체
- * @param {string} options.title - 제목
- * @param {string} options.body - 내용
- * @param {string} options.createdDate - 생성일
- * @param {number} targetColumnId - 추가되는 columnId
+ * 특정 컬럼을 업데이트하는 함수
+ * @param {Column} updatedColumn - 업데이트 되는 column
  */
-const addTodos = ({ title, body, createdDate }, targetColumnId) => {
-  const Todos = JSON.parse(localStorage.getItem('columns')) || [];
-  const targetColumn = Todos.find(
-    (column) => column.columnId === targetColumnId
+const updateColumn = (updatedColumn) => {
+  console.log(updatedColumn);
+  const oldTodos = JSON.parse(localStorage.getItem('todos'));
+  if (!oldTodos) {
+    console.warn('Todos not found');
+    return;
+  }
+
+  const newTodos = oldTodos.map((column) =>
+    column.columnId === updatedColumn.columnId ? updatedColumn : column
   );
 
-  if (targetColumn) {
-    targetColumn.cards.push({
-      id: targetColumn.cards.length + 1,
-      title,
-      body,
-      createdDate,
-    });
-    localStorage.setItem('columns', JSON.stringify(Todos));
-  } else {
-    console.warn(`Column with id ${targetColumnId} not found`);
-  }
+  localStorage.setItem('todos', JSON.stringify(newTodos));
 };
 
 /**
@@ -129,19 +120,19 @@ const deleteTodos = (targetColumnId, targetCardId) => {
  * 특정 투두 카드를 로컬스토리지에서 수정하는 함수
  */
 const editTodos = (targetColumnId, targetCardId) => {
-    const Todos = JSON.parse(localStorage.getItem('columns')) || [];
-    const targetColumn = Todos.find(
-        (column) => column.columnId === targetColumnId
+  const Todos = JSON.parse(localStorage.getItem('columns')) || [];
+  const targetColumn = Todos.find(
+    (column) => column.columnId === targetColumnId
+  );
+
+  if (targetColumn) {
+    targetColumn.cards = targetColumn.cards.map((card) =>
+      card.id === targetCardId ? { ...card, title, body } : card
     );
-    
-    if (targetColumn) {
-        targetColumn.cards = targetColumn.cards.map((card) =>
-        card.id === targetCardId ? { ...card, title, body } : card
-        );
-        localStorage.setItem('columns', JSON.stringify(todos));
-    } else {
-        console.warn(`Column with id ${targetColumnId} not found`);
-    } 
+    localStorage.setItem('columns', JSON.stringify(todos));
+  } else {
+    console.warn(`Column with id ${targetColumnId} not found`);
+  }
 };
 
-export { loadTodos, addTodos, deleteTodos, editTodos };
+export { loadTodos, updateColumn, deleteTodos, editTodos };

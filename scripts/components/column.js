@@ -1,3 +1,5 @@
+import { createCard } from '../utils/helpers/cardHelper.js';
+import { updateColumn } from '../utils/helpers/localStorageHelper.js';
 import createState from '../utils/helpers/stateHelper.js';
 import Card from './card.js';
 /**
@@ -32,6 +34,7 @@ const Column = (columnData) => {
   const columnState = createState(columnData);
   columnState.subscribe(() => {
     // TODO: 바뀐 데이터를 로컬스토리지나 서버에 저장해야함
+    updateColumn(columnState.getState());
     columnElement.querySelector('.textlabel').textContent =
       columnState.getState().cards.length;
   });
@@ -41,57 +44,19 @@ const Column = (columnData) => {
     columnState.getState().cards.length;
 
   columnData.cards.forEach((cardData) => {
-    columnElement.appendChild(
-      Card(
-        'default',
-        cardData,
-        (newData) =>
-          columnState.setState((prevState) => ({
-            ...prevState,
-            cards: [newData, ...prevState.cards],
-          })),
-        (removeCardId) =>
-          columnState.setState((prev) => ({
-            ...prev,
-            cards: prev.cards.filter((card) => card.id !== removeCardId),
-          })),
-        (newData) =>
-          columnState.setState((prevState) => ({
-            ...prevState,
-            cards: prevState.cards.map((card) =>
-              newData.id === card.id ? newData : card
-            ),
-          }))
-      )
-    );
+    columnElement.appendChild(createCard('default', cardData, columnState));
   });
 
   columnElement.querySelector('#add-card').addEventListener('click', (e) => {
-    const newCard = Card(
+    const newCard = createCard(
       'add',
       {
-        id: Date.now + Math.random(),
+        id: null,
         title: null,
         body: null,
-        createdDate: new Date().toISOString(),
+        createdDate: null,
       },
-      (newData) =>
-        columnState.setState((prevState) => ({
-          ...prevState,
-          cards: [newData, ...prevState.cards],
-        })),
-      (removeCardId) =>
-        columnState.setState((prevState) => ({
-          ...prevState,
-          cards: prevState.cards.filter((card) => card.id !== removeCardId),
-        })),
-      (newData) =>
-        columnState.setState((prevState) => ({
-          ...prevState,
-          cards: prevState.cards.map((card) =>
-            newData.id === card.id ? newData : card
-          ),
-        }))
+      columnState
     );
 
     const firstChild = columnElement.querySelector('li'); // 첫 번째 자식 요소 선택
