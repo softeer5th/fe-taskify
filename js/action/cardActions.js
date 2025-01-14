@@ -21,7 +21,7 @@ const deleteCard = (columnArray, columnId, cardId) => columnArray.map(column => 
 )
 
 const updateCard = (columnArray, columnId, cardId, newCardData) => columnArray.map(column => column.id !== columnId ? column :
-    { ...column, cards: column.cards.map(card => card.id !== cardId ? card : { ...newCardData, id: card.id, date: card.date, readOnly: true }) }
+    { ...column, cards: column.cards.map(card => card.id !== cardId ? card : { ...newCardData, id: card.id, date: card.date }) }
 )
 
 export const cardActions = {

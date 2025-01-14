@@ -1,10 +1,9 @@
-import { onUpdateCard, onDeleteCard } from "../../action/stateActions.js";
 import { CardDynamicButtons } from "./buttons/cardDynamicButtons.js";
 import { CardContentInput } from "./input/cardContentInput.js";
 import { CardTitleInput } from "./input/cardTitleInput.js";
 
 export const DynamicCard = (card, onCardDelete, onCardUpdate) => {
-    const { title, content } = card;
+    const { title, content, date } = card;
 
     const fragment = document.createDocumentFragment();
 
@@ -13,6 +12,7 @@ export const DynamicCard = (card, onCardDelete, onCardUpdate) => {
 
     let currentTitle = title;
     let currentContent = content;
+    let isNew = title === "" && content === "";
 
     const titleInput = CardTitleInput({ title });
     cardFormContainer.appendChild(titleInput);
@@ -33,10 +33,10 @@ export const DynamicCard = (card, onCardDelete, onCardUpdate) => {
         }
         if (e.target.closest("button").classList.contains("card-button-submit")) {
             onCardUpdate({
+                ...card,
                 title: currentTitle,
                 content: currentContent,
-                date: new Date(),
-                author: '박준혁',
+                date: isNew ? new Date() : date,
                 readOnly: true,
             })
         }
