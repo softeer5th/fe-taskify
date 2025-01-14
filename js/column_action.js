@@ -68,8 +68,8 @@ export function delAllCard(columnId) {
 
 export function updateChildCount(parentElement) {
     const countDisplay = parentElement.querySelector('.card-count');
-
-    const childCount = parentElement.querySelector('.card-list').children.length;
+    let cardList = parentElement.querySelector('.card-list')
+    let childCount = cardList.children.length;
     
     if (parseInt(childCount)>99) {
         countDisplay.textContent = "99+";

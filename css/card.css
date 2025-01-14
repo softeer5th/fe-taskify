@@ -142,5 +142,4 @@ button{
     padding: 20px;
     position: absolute;
     pointer-events: none; /* 복사된 요소가 클릭을 막지 않음 */
-    opacity: 0.7; /* 복사본을 반투명하게 */
 }

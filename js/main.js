@@ -72,11 +72,12 @@ function setEventForColumn(props) {
         }
     });
 
-    // addListener(parentElement,(event, clone)=>{
-    //     if (event.type === "mousemove") {
-    //         moveCardIllusion(parentElement, clone);
-    //     }
-    // })
+    addListener(parentElement,(event)=>{
+        if (event.type === "mousemove") {
+            moveCard(event, clone);
+            moveCardIllusion(parentElement, clone);
+        }
+    })
 
     // MutationObserver 설정
     const observer = new MutationObserver(() => {
@@ -90,13 +91,13 @@ function setEventForColumn(props) {
 }
 
 // 카드 이벤트 적용
-function setEventForCard(props) {
-    const parentElement = document.querySelector('#card-list'+props.columnId);
-    const childElement = parentElement.querySelector("#card-id"+props.cardId);
+export function setEventForCard(props) {
+    const childElement = document.querySelector("#card-id"+props.cardId);
+    const parentElement = childElement.parentElement;
     // 카드 수정 버튼에 이벤트 추가
     addListener(childElement.querySelector('#edit-card-button'), (event)=>{
         if (event.type === "click") {
-            editCard(props.columnId, props.cardId);
+            editCard(props.cardId);
         } else if (event.type === "mousemove") {
             moveCard(event, clone);
         }
@@ -104,7 +105,7 @@ function setEventForCard(props) {
     // 카드 삭제 버튼에 이벤트 추가
     addListener(childElement.querySelector('#del-card-button'), (event)=>{
         if (event.type === "click") {
-            delCard(props.columnId, props.cardId);
+            delCard(props.cardId);
         } else if (event.type === "mousemove") {
             moveCard(event, clone);
         }
@@ -115,16 +116,17 @@ function setEventForCard(props) {
             if (!clone) {
                 clone = childElement.cloneNode(true);
                 clone.classList.add('dragging');
-                startDragCard(event, clone, props.columnId, props.cardId);
+                startDragCard(event, childElement, clone, props.cardId);
             }
         } else if (event.type === "mousemove") {
             moveCard(event, clone);
+            moveCardIllusion(parentElement, clone);
         }
     });
 }
 
 // 타겟 엘리먼트에 템플릿 렌더링하기
-export default async function renderTemplate(templateFile, templateId, targetId, props) {
+export async function renderTemplate(templateFile, templateId, targetId, props) {
     const templateContent = await loadTemplate(templateFile, templateId, props);
     if (templateContent) {
         const target = document.getElementById(targetId);
