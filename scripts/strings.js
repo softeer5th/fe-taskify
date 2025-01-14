@@ -40,3 +40,8 @@ export const templateNames = {
     todoItemAddForm: 'todo-item-add-form-template',
     todoItemEditForm: 'todo-item-edit-form-template',
 }
+
+export const keys = {
+    TODO_CATEGORY_KEY: 'todoCategory',
+    DRAG_ELEMENT_KEY: 'dragElement',
+}
