@@ -1,4 +1,4 @@
-import { addCard, delAllCard, updateChildCount  } from "./column_action.js";
+import { addCard, delAllCard, updateChildCount, toggleSortOrder, isMoving  } from "./column_action.js";
 import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion, isEditing } from "./card_action.js";
 
 // 탬플릿에 Props 적용
@@ -147,7 +147,6 @@ function triggerListeners(event, startElement) {
 
     while (currentElement) {
         if (eventListeners.has(currentElement)) {
-            // console.log(currentElement);
             const listeners = eventListeners.get(currentElement);
             if (listeners) {
                 listeners.forEach((listener) => listener(event, currentElement)); // 등록된 모든 리스너 실행
@@ -165,12 +164,20 @@ addListener(document.body, (event)=>{
     moveCard(event, clone);
 })
 
+addListener(document.querySelector('.chip'), (event) =>{
+    if (event.type === "click") {
+        toggleSortOrder();
+    }
+});
+
 document.addEventListener('click', (event) => {
-    triggerListeners(event, event.target);
+    if (!isMoving) {
+        triggerListeners(event, event.target);
+    }
 });
 
 document.addEventListener('mousedown', (event) => {
-    if (!isEditing) {
+    if (!isEditing && !isMoving) {
         triggerListeners(event, event.target);
     }
 });
