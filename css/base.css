@@ -4,9 +4,27 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 
 body {
-  font-family: "Pretendard Bold", sans-serif;
   padding: 0 80px;
   background-color: rgba(247, 247, 252, 1);
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+input {
+  border: none;
+  outline: none;
+  font: inherit;
 }
 
 header {
@@ -16,6 +34,44 @@ header {
   align-items: center;
   font-size: 24px;
   font-weight: 700;
+}
+
+.display-bold14 {
+  font-family: "Pretendard Variable";
+  font-size: 14px;
+  line-height: 16.41px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  font-weight: 700;
+}
+
+.display-bold16 {
+  font-family: "Pretendard Variable";
+  font-size: 16px;
+  line-height: 18.75px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  font-weight: 700;
+}
+
+.display-Medium14 {
+  font-family: Pretendard Variable;
+  font-size: 14px;
+  line-height: 16.41px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.display-Medium12 {
+  font-family: Pretendard Variable;
+  font-size: 12px;
+  line-height: 14.06px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }
 
 .logo {
@@ -213,4 +269,85 @@ footer {
 
 .dragging {
   opacity: 30%;
+}
+
+.history-modal {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 64px;
+  right: -366px; /* 시작 위치를 화면 밖으로 */
+  width: 350px;
+  min-height: 121px;
+  max-height: 680px;
+  padding: 8px;
+  gap: 8px;
+  border-radius: 16px;
+  background-color: rgba(254, 254, 254, 1);
+  box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24);
+}
+
+.history-modal.show {
+  transition: right 0.3s ease-in-out;
+  right: 48px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
+}
+.history-modal.close {
+  transition: right 0.3s ease-in-out;
+  right: -400px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
+}
+
+.history-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  padding-left: 16px;
+}
+
+.history-modal-close-btn {
+  display: flex;
+  align-items: center;
+  width: 65px;
+  height: 32px;
+  background: none;
+  border: none;
+  color: rgba(110, 113, 145, 1);
+  font-weight: 600;
+  gap: 4px;
+}
+
+.history-modal-close-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.history {
+  display: flex;
+  flex-direction: row;
+  width: 312px;
+  height: 81px;
+  padding: 16px;
+  gap: 16px;
+  box-shadow: 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+}
+
+.history-profile-icon {
+  display: flex;
+  width: 40px;
+  height: 40px;
+}
+
+.history-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-modal-footer {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: end;
+  color: rgba(255, 59, 48, 1);
+  padding-right: 20px;
 }

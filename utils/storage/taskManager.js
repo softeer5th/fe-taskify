@@ -25,6 +25,7 @@ export const addTask = (key, task) => {
   const updatedTasks = [...storedTasks, task];
   localStorage.setItem(key, JSON.stringify(updatedTasks));
 };
+
 export const removeTask = (key, taskTimestamp) => {
   const tasks = getColumnTasks(key) || [];
   const updatedTasks = tasks.filter(
@@ -38,8 +39,11 @@ export const editTask = (key, taskTimestamp, newTask) => {
   addTask(key, newTask);
 };
 
+//num, num , num
 export const moveTask = (taskTimestamp, columnNow, columnTogo) => {
+  console.log(taskTimestamp, columnNow, columnTogo);
   const task = getTaskByTimestamp(columnNow, taskTimestamp);
+  if (!task) return;
   removeTask(columnNow, taskTimestamp);
   addTask(columnTogo, task);
 };

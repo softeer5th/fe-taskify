@@ -1,5 +1,5 @@
-import { removeTask } from "../utils/storage/taskManager.js";
-import { getTaskByTimestamp } from "../utils/storage/taskManager.js";
+import { removeTask } from "../../utils/storage/taskManager.js";
+import { getTaskByTimestamp } from "../../utils/storage/taskManager.js";
 
 export const deleteCard = (task) => {
   deleteCardModal(task);
@@ -26,7 +26,7 @@ export const closeDeleteModal = (isConfirm, task) => {
     task.closest(".column").getAttribute("data-column-key"),
     parseInt(task.getAttribute("data-timestamp"))
   );
-  console.log(storedTask);
+
   if (isConfirm) {
     removeTask(
       task.closest(".column").getAttribute("data-column-key"),
@@ -45,10 +45,10 @@ export const closeDeleteModal = (isConfirm, task) => {
       </div>
       <div class="card-delete-edit">
         <button class = "card-close-btn"> 
-          <img src="../assets/icon/closed.svg" alt="close">
+          <img src="../../assets/icon/closed.svg" alt="close">
         </button>
         <button class = "card-edit-btn"> 
-          <img src="../assets/icon/edit.svg" alt="edit" >
+          <img src="../../assets/icon/edit.svg" alt="edit" >
         </button>
       </div>
     `;

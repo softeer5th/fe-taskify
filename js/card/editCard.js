@@ -1,5 +1,5 @@
-import { editTask } from "../utils/storage/taskManager.js";
-import { getTaskByTimestamp } from "../utils/storage/taskManager.js";
+import { editTask } from "../../utils/storage/taskManager.js";
+import { getTaskByTimestamp } from "../../utils/storage/taskManager.js";
 
 export const editCard = (task) => {
   popupEditModal(task);
@@ -53,10 +53,10 @@ export const closeEditModal = (isEdited, task) => {
       </div>
       <div class="card-delete-edit">
         <button class = "card-close-btn"> 
-          <img src="../assets/icon/closed.svg" alt="close">
+          <img src="../../assets/icon/closed.svg" alt="close">
         </button>
         <button class = "card-edit-btn"> 
-          <img src="../assets/icon/edit.svg" alt="edit" >
+          <img src="../../assets/icon/edit.svg" alt="edit" >
         </button>
       </div>
     `;
@@ -72,10 +72,10 @@ export const closeEditModal = (isEdited, task) => {
       </div>
       <div class="card-delete-edit">
         <button class = "card-close-btn"> 
-          <img src="../assets/icon/closed.svg" alt="close">
+          <img src="../../assets/icon/closed.svg" alt="close">
         </button>
         <button class = "card-edit-btn"> 
-          <img src="../assets/icon/edit.svg" alt="edit" >
+          <img src="../../assets/icon/edit.svg" alt="edit" >
         </button>
       </div>
     `;

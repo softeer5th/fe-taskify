@@ -1,4 +1,4 @@
-export const sortCard = (sortFlag) => {
+export const sort = (sortFlag) => {
   const cols = document.querySelectorAll(".column");
 
   cols.forEach((col) => {
@@ -37,16 +37,12 @@ export const sortCard = (sortFlag) => {
       task.getBoundingClientRect()
     );
 
-    console.log(initialPositions);
-    console.log(finalPositions);
-
     // 애니메이션 적용
     taskElements.forEach((taskElement, index) => {
       const initialPosition = initialPositions[index];
       const finalPosition = finalPositions[index];
 
       const deltaY = -finalPosition.top + initialPosition.top;
-      console.log(deltaY);
 
       taskElement.style.transition = "none";
       taskElement.style.transform = `translateY(${deltaY}px)`;
@@ -63,6 +59,7 @@ export const sortCard = (sortFlag) => {
       taskElements.forEach((taskElement) => {
         taskElement.style.transition = "";
         taskElement.style.transform = "";
+        taskElement.style.order = "";
       });
 
       // DOM 순서를 최종 정렬 상태로 유지
