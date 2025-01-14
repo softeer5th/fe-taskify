@@ -8,15 +8,20 @@ function getCurrentDevice() {
 
 export default function TaskController(model = new Model(), rootElement = document.getElementById("root")) {
   let tasks = [];
-  // let taskViews: HTMLDivElement[] = [];
+
   let ghostTaskView = TaskView({
     task: { id: 0, columnId: 0, title: "", description: "", createdAt: 0 },
     state: "default",
     onFirstButtonClicked: () => {},
     onSecondButtonClicked: () => {},
   });
-  ghostTaskView.classList.add("task--ghost");
+  ghostTaskView.classList.add("task--ghost", "task--drag");
   rootElement.appendChild(ghostTaskView);
+
+  window.addEventListener("mousemove", handleMoveGhostTask);
+  window.addEventListener("mouseup", handleMoveGhostTask);
+  window.addEventListener("mousedown", handleMoveGhostTask);
+  window.addEventListener("mouseup", handleUnselectTask);
 
   let addingTaskView;
 
@@ -63,7 +68,41 @@ export default function TaskController(model = new Model(), rootElement = docume
       model.addTask(model.getCurrentState().editingColumnId, name, description, getCurrentDevice());
     } else {
       const originTask = model.getCurrentTaskData().find((t) => t.id === taskId);
-      model.updateTask(taskId, { ...originTask, name, description });
+      model.editTask(taskId, { ...originTask, name, description });
+    }
+  }
+
+  function handleSelectTask(event) {
+    event.stopPropagation();
+    const state = model.getCurrentState();
+    if (state.editingTaskId > 0) return;
+    const taskId = +event.target.closest(".task").id;
+    const ghostTaskView = rootElement.querySelector(".task--ghost");
+    ghostTaskView.innerHTML = event.target.closest(".task").innerHTML;
+    model.setMovingTaskId(taskId);
+  }
+
+  function handleUnselectTask(event) {
+    event.stopPropagation();
+
+    const state = model.getCurrentState();
+    if (state.movingTaskId !== -1 && state.mouseOverColumnId !== -1) {
+      model.moveTask(state.movingTaskId, state.mouseOverColumnId);
+    }
+  }
+
+  function handleMoveGhostTask(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const state = model.getCurrentState();
+    const ghostTaskView = rootElement.querySelector(".task--ghost");
+    if (state.movingTaskId !== -1) {
+      ghostTaskView.style.top = event.clientY + "px";
+      ghostTaskView.style.left = event.clientX + "px";
+      ghostTaskView.style.opacity = 1;
+    } else {
+      ghostTaskView.style.opacity = 0;
     }
   }
 
@@ -108,6 +147,7 @@ export default function TaskController(model = new Model(), rootElement = docume
         onFirstButtonClicked: handleTaskDeleteButtonClicked,
         onSecondButtonClicked: handleTaskEditButtonClicked,
       });
+      newTaskView.addEventListener("mousedown", handleSelectTask);
       taskViews.push(newTaskView);
       const columnView = columnViews.find((c) => +c.id === task.columnId);
       columnView.querySelector(".column__task-list").appendChild(newTaskView);
@@ -124,7 +164,10 @@ export default function TaskController(model = new Model(), rootElement = docume
           onFirstButtonClicked: handleTaskDeleteButtonClicked,
           onSecondButtonClicked: handleTaskEditButtonClicked,
         });
+        newTaskView.addEventListener("mousedown", handleSelectTask);
         taskView.replaceWith(newTaskView);
+        const columnView = columnViews.find((c) => +c.id === task.columnId);
+        columnView.querySelector(".column__task-list").appendChild(newTaskView);
       }
     });
 
@@ -139,14 +182,14 @@ export default function TaskController(model = new Model(), rootElement = docume
         });
         taskView.replaceWith(newTaskView);
       } else if (taskView.classList.contains("task--edit")) {
-        taskView.replaceWith(
-          TaskView({
-            task: tasksOnModel.find((t) => t.id === +taskView.id),
-            state: "default",
-            onFirstButtonClicked: handleTaskDeleteButtonClicked,
-            onSecondButtonClicked: handleTaskEditButtonClicked,
-          })
-        );
+        const newTaskView = TaskView({
+          task: tasksOnModel.find((t) => t.id === +taskView.id),
+          state: "default",
+          onFirstButtonClicked: handleTaskDeleteButtonClicked,
+          onSecondButtonClicked: handleTaskEditButtonClicked,
+        });
+        newTaskView.addEventListener("mousedown", handleSelectTask);
+        taskView.replaceWith(newTaskView);
       }
     });
 
@@ -191,6 +234,21 @@ export default function TaskController(model = new Model(), rootElement = docume
 
     tasksOnDOM.forEach((task, index) => {
       if (task.classList.contains("task--ghost")) return;
+      if (task.classList.contains("task--edit")) {
+        task.querySelector(".task__content-title").focus();
+      }
+      if (task.classList.contains("task--move") && state.movingTaskId !== +task.id) {
+        task.classList.remove("task--move");
+      }
+      if (+task.id === state.movingTaskId) {
+        task.classList.add("task--move");
+        if (+task.closest(".column").id !== state.mouseOverColumnId) {
+          const mouseOverColumn = columnViews.find((c) => +c.id === state.mouseOverColumnId);
+          if (mouseOverColumn) {
+            mouseOverColumn.querySelector(".column__task-list").appendChild(task);
+          }
+        }
+      }
 
       const deltaX = oldState[index].left - newState[index].left;
       const deltaY = oldState[index].top - newState[index].top;
@@ -209,11 +267,6 @@ export default function TaskController(model = new Model(), rootElement = docume
 
     tasks = tasksOnModel;
     taskViews = tasksOnDOM;
-
-    const editingTask = rootElement.querySelector(".task--edit");
-    if (editingTask) {
-      editingTask.querySelector(".task__content-title").focus();
-    }
   }
 
   return {

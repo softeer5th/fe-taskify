@@ -49,6 +49,16 @@ export default function ColumnController(model = new Model(), rootElement = docu
     model.removeColumn(columnId);
   }
 
+  function handleColumnMouseEnter(event) {
+    event.stopPropagation();
+    const column = event.target.closest(".column");
+    const columnId = +column.id;
+
+    if (model.getCurrentState().setMouseOverColumnId !== columnId) {
+      model.setMouseOverColumnId(columnId);
+    }
+  }
+
   function onModelChanged() {
     render();
   }
@@ -92,6 +102,7 @@ export default function ColumnController(model = new Model(), rootElement = docu
           onAddButtonClicked: handleAddTaskButtonClick,
           onColumnDeleteButtonClicked: handleColumnDeleteButtonClicked,
         });
+        newColumnView.addEventListener("mouseenter", handleColumnMouseEnter);
         columnListView.appendChild(newColumnView);
         columnViews.push(newColumnView);
       }
