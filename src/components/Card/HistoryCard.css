@@ -1,0 +1,45 @@
+.historyCard-container{
+    width:344px;
+    padding: var(--Number-200);
+    display: flex;
+    background-color: var(--surface-default);
+    gap:var(--Number-200);
+}
+
+.profile-img{
+    min-width: 40px;
+    height: 40px;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--border-default);
+    border-radius: 50%;
+
+}
+
+.history-content-box{
+    display: inline-flex;
+    flex-direction: column;
+    gap:var(--Number-100);
+    flex-grow: 1;
+}
+
+.history-username{
+    font: var(--display-medium14);
+    color:var(--text-default);
+}
+
+.history-content{
+    font: var(--display-medium14);
+    color:var(--text-default);
+
+}
+
+.strong-content{
+    font: var(--display-bold14);
+    color:var(--text-bold);
+
+}
+
+.history-timestamp{
+    font: var(--display-medium12);
+    color:var(--text-weak);
+}

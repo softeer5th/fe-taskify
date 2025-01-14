@@ -9,11 +9,13 @@ export function Button({type,text,icon,backgroundColor,textColor,eventFuntion}){
     
     switch(type){
         case 'icon':
-            primaryButton.innerHTML = getIconSVG(icon,textColor)
+            primaryButton.innerHTML = getIconSVG(icon,textColor);
+            primaryButton.classList.remove('primary-button');
+            primaryButton.classList.add('icon-button');
             break;
         case 'text':
             primaryButton.innerHTML = `
-                <div class="button-content" style="color: ${colors[textColor]};>${text}</div>
+                <div class="button-content" style="color: ${colors[textColor]}">${text}</div>
             `;
             break;
         case 'iconText':

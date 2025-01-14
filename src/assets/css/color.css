@@ -1,48 +1,99 @@
-.grayscale50 {
+.bg-grayscale50 {
     background-color: var(--grayscale-50);
 }
 
-.grayscale100 {
+.bg-grayscale100 {
     background-color: var(--grayscale-100);
 }
 
-.grayscale200 {
+.bg-grayscale200 {
     background-color: var(--grayscale-200);
 }
 
-.grayscale300 {
+.bg-grayscale300 {
     background-color: var(--grayscale-300);
 }
 
-.grayscale400 {
+.bg-grayscale400 {
     background-color: var(--grayscale-400);
 }
 
-.grayscale500 {
+.bg-grayscale500 {
     background-color: var(--grayscale-500);
 }
 
-.grayscale600 {
+.bg-grayscale600 {
     background-color: var(--grayscale-600);
 }
 
-.grayscale700 {
+.bg-grayscale700 {
     background-color: var(--grayscale-700);
 }
 
-.grayscale800 {
+.bg-grayscale800 {
     background-color: var(--grayscale-800);
 }
 
-.grayscale900 {
+.bg-grayscale900 {
     background-color: var(--grayscale-900);
 }
 
-.accentBlue {
+.bg-accentBlue {
     background-color: var(--accent-blue);
 }
 
-.accentRed {
+.bg-accentRed {
     background-color: var(--accent-red);
+}
+
+
+
+
+.text-grayscale50 {
+    color: var(--grayscale-50);
+}
+
+.text-grayscale100 {
+    color: var(--grayscale-100);
+}
+
+.text-grayscale200 {
+    color: var(--grayscale-200);
+}
+
+.text-grayscale300 {
+    color: var(--grayscale-300);
+}
+
+.text-grayscale400 {
+    color: var(--grayscale-400);
+}
+
+.text-grayscale500 {
+    color: var(--grayscale-500);
+}
+
+.text-grayscale600 {
+    color: var(--grayscale-600);
+}
+
+.text-grayscale700 {
+    color: var(--grayscale-700);
+}
+
+.text-grayscale800 {
+    color: var(--grayscale-800);
+}
+
+.text-grayscale900 {
+    color: var(--grayscale-900);
+}
+
+.text-accentBlue {
+    color: var(--accent-blue);
+}
+
+.text-accentRed {
+    color: var(--accent-red);
 }
 

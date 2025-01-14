@@ -17,8 +17,8 @@
     --display-bold16: var(--Bold-M);
     --display-bold14: var(--Bold-R);
     --display-medium16:var(--Medium-M);
-    --display-mediym14: var(--Medium-R);
-    --display-mediym12: var(--Medium-S);
+    --display-medium14: var(--Medium-R);
+    --display-medium12: var(--Medium-S);
     --selected-bold16:var(--Bold-M);
     --selected-bold14:var(--Bold-R);
     --available-medium16:var(--Bold-M);

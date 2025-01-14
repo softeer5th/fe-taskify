@@ -1,0 +1,30 @@
+.column-header-container{
+    display: inline-flex;
+    align-items: center;
+    width:320px;
+    padding: 0 16px;
+    gap:8px
+
+}
+
+.column-title-container{
+    display: flex;
+    align-items: center;
+    gap:8px;
+    flex-grow: 1;
+}
+
+.column-header-title{
+    font:var(--display-bold16);
+    color:var(--text-bold);
+
+}
+
+.card-plus-btn{
+
+}
+
+
+.card-cancel-btn{
+
+}
