@@ -16,6 +16,7 @@ export default function ColumnView({ column, count, state, onColumnTitleEvent, o
     columnTextInput.value = column.title;
     columnTextInput.classList.add("column__textarea-title");
     columnTextInput.autofocus = true;
+    columnTextInput.maxLength = 50;
     columnTextInput.addEventListener("focusout", onColumnTitleEvent);
 
     const columnAddButton = document.createElement("button");
