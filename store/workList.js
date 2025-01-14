@@ -58,8 +58,14 @@ const addStorage = (sectionType, title, content, CARD_ID) => {
   savedData(workList);
 };
 
-const updateLocalStorageAfterDrop = (prevSection, nowSection, targetCard) => {
+const updateLocalStorageAfterDrop = (
+  prevSection,
+  nowSection,
+  targetCard,
+  changedIdx
+) => {
   // if (!targetCard) return;
+  console.log(changedIdx, "바뀐 인덱스");
   const targetCardData = workList[prevSection].find(
     (item) => item.id === Number(targetCard.id)
   );
@@ -73,7 +79,11 @@ const updateLocalStorageAfterDrop = (prevSection, nowSection, targetCard) => {
 
   const updatedWorkList = {
     ...workListAfterDeletePrev,
-    [nowSection]: [targetCardData, ...workListAfterDeletePrev[nowSection]],
+    [nowSection]: [
+      ...workListAfterDeletePrev[nowSection].slice(0, changedIdx),
+      targetCardData,
+      ...workListAfterDeletePrev[nowSection].slice(changedIdx),
+    ],
   };
 
   savedData(updatedWorkList);
