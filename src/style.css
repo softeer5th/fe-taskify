@@ -39,6 +39,7 @@ body {
     min-width: 400px;
     background-color: var(--grayscale-100);
     user-select: none;
+    overflow: scroll;
 }
 
 body {
@@ -98,18 +99,21 @@ textarea {
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
 }
-
 
 /* Header Style */
 
 .header {
+    position: fixed;
+    width: 100%;
     height: 64px;
     display: flex;
     flex-direction: row;
     padding: 0px 80px;
     align-items: center;
     justify-content: center;
+    z-index: 100;
 }
 
 .header__title {
@@ -173,22 +177,24 @@ textarea {
 /* Column List Style */
 .column-list {
     width: 1280px;
-    height: 100%;
-    margin-top: 32px;
+    height: auto;
+    margin-top: 96px;
     margin-left: 80px;
     gap: 24px;
     display: flex;
     flex-direction: row;
+    overflow-y: scroll;
 }
 
 /* Column Style */
 
 .column {
     width: 320px;
-    height: 100%;
+    height: auto;
     gap: 10px;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 .column__title {
@@ -198,6 +204,26 @@ textarea {
     gap: 8px;
     display: flex;
     flex-direction: row;
+}
+
+
+.column__title-edit {
+    width: 320px;
+    height: auto;
+    padding: 0px 16px;
+    gap: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+.column__title-edit input {
+    width: 100%;
+    height: 24px;
+    font-size: 16px;
+    font-weight: 700;
+    background-color: var(--grayscale-50);
+    border-radius: 8px;
+    border: 1px solid var(--grayscale-200);
 }
 
 .column__textarea {
@@ -235,18 +261,27 @@ textarea {
     text-align: center;
 }
 
-.column__add-button,
-.column__close-button {
+.column__title button,
+.column__title-edit button {
     width: 24px;
     height: 24px;
     display: block;
     color: var(--grayscale-500);
 }
 
-.column__add-button svg,
-.column__close-button svg {
+.column__title button svg,
+.column__title-edit button svg {
     width: 24px;
     height: 24px;
+}
+
+.column__task-list {
+    width: 320px;
+    height: 100%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 /* task Style */
@@ -276,7 +311,14 @@ textarea {
 .task--drag {
     box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24),
         0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+}
 
+.task--ghost {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
 }
 
 .task__content {
@@ -309,7 +351,6 @@ textarea {
 }
 
 .task__content-device {
-    display: flex;
     width: 100%;
     height: auto;
     font-size: 12px;
@@ -326,8 +367,13 @@ textarea {
 .task__iconButton-icon {
     width: 24px;
     height: 24px;
-    display: block;
     color: var(--grayscale-500);
+}
+
+.task__iconButton-icon:first-child {
+    &:hover {
+        color: var(--accent-red);
+    }
 }
 
 .task__editorButton {

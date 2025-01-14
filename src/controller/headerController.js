@@ -17,7 +17,6 @@ export default function HeaderController(model, rootElement) {
   function handleSortButtonClick(event) {
     event.stopPropagation();
     model.toggleOrder();
-    console.log("Sort Button Clicked");
   }
 
   function handleHistoryButtonClick(event) {

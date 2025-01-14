@@ -4,14 +4,12 @@ import ColumnListView from "../view/columnListView.js";
 import ColumnView from "../view/columnView.js";
 
 export default function ColumnController(model = new Model(), rootElement = document.getElementById("root")) {
-  // export default function ColumnController(model, rootElement) {
   const columnListView = ColumnListView();
   rootElement.appendChild(columnListView);
 
-  // let columnViews: HTMLElement[] = [];
   let columnViews = [];
 
-  model.addListener(render);
+  model.addListener(onModelChanged);
 
   render();
 
@@ -24,7 +22,7 @@ export default function ColumnController(model = new Model(), rootElement = docu
   function handleColumnTitleClicked(event) {
     event.stopPropagation();
     const column = event.target.closest(".column");
-    const columnId = parseInt(column.id);
+    const columnId = +column.id;
 
     model.setEditingColumnId(columnId);
   }
@@ -32,7 +30,7 @@ export default function ColumnController(model = new Model(), rootElement = docu
   function handleColumnTitleFocusOut(event) {
     event.stopPropagation();
     const column = event.target.closest(".column");
-    const columnId = parseInt(column.id);
+    const columnId = +column.id;
 
     console.log(event.target.value);
     model.updateColumn(columnId, event.target.value);
@@ -40,15 +38,19 @@ export default function ColumnController(model = new Model(), rootElement = docu
 
   function handleAddTaskButtonClick(event) {
     event.stopPropagation();
-    const columnId = parseInt(event.target.closest(".column").id);
+    const columnId = +event.target.closest(".column").id;
 
-    console.log("Add Task Button Clicked:", columnId);
+    model.setCreatingTaskColumn(columnId);
   }
 
   function handleColumnDeleteButtonClicked(event) {
     event.stopPropagation();
-    const columnId = parseInt(event.target.closest(".column").id);
+    const columnId = +event.target.closest(".column").id;
     model.removeColumn(columnId);
+  }
+
+  function onModelChanged() {
+    render();
   }
 
   function destroy() {
@@ -60,15 +62,15 @@ export default function ColumnController(model = new Model(), rootElement = docu
     const tasksOnModel = model.getCurrentTaskData();
     const state = model.getCurrentState();
 
-    const removedColumn = columnViews.filter((columnView) => !columnOnModel.some((column) => column.id === parseInt(columnView.id)));
+    const removedColumn = columnViews.filter((columnView) => !columnOnModel.some((column) => column.id === +columnView.id));
     removedColumn.forEach((columnView) => {
       columnView.remove();
     });
-    columnViews = columnViews.filter((columnView) => columnOnModel.some((column) => column.id === parseInt(columnView.id)));
+    columnViews = columnViews.filter((columnView) => columnOnModel.some((column) => column.id === +columnView.id));
 
     columnOnModel.forEach((column) => {
-      const columnView = columnViews.find((columnView) => parseInt(columnView.id) === column.id);
-      const columnState = state.editingColumnId === column.id ? "editing" : "default";
+      const columnView = columnViews.find((columnView) => +columnView.id === column.id);
+      const columnState = state.editingColumnId === column.id && state.editingTaskId === -1 ? "editing" : "default";
 
       if (columnView) {
         const newColumnHeader = ColumnView({

@@ -7,13 +7,13 @@ export default function MainController(model, rootElement) {
   const columnController = ColumnController(model, rootElement);
   const taskController = TaskController(model, rootElement);
 
+  function destroy() {
+    [headerController, columnController, taskController].forEach((controller) => {
+      controller.destroy();
+    });
+  }
+
   return {
     destroy,
   };
-
-  function destroy() {
-    headerController.destroy();
-    columnController.destroy();
-    taskController.destroy();
-  }
 }

@@ -90,13 +90,40 @@ export default class Model {
     this.#notify();
   }
 
+  unsetEditingTaskId() {
+    this.#model.state.editingTaskId = -1;
+    this.#notify();
+  }
+
   setEditingColumnId(columnId) {
     this.#model.state.editingColumnId = columnId;
     this.#notify();
   }
 
+  unsetEditingColumnId() {
+    this.#model.state.editingColumnId = -1;
+    this.#notify();
+  }
+
+  setCreatingTaskColumn(columnId) {
+    this.#model.state.editingColumnId = columnId;
+    this.#model.state.editingTaskId = 0;
+    this.#notify();
+  }
+
+  unsetEditingColumnTask() {
+    this.#model.state.editingTaskId = -1;
+    this.#model.state.editingColumnId = -1;
+    this.#notify();
+  }
+
   setMovingTaskId(taskId) {
     this.#model.state.movingTaskId = taskId;
+    this.#notify();
+  }
+
+  unsetMovingTaskId() {
+    this.#model.state.movingTaskId = -1;
     this.#notify();
   }
 
@@ -112,6 +139,11 @@ export default class Model {
 
   setMouseOverColumnId(columnId) {
     this.#model.state.mouseOverColumnId = columnId;
+    this.#notify();
+  }
+
+  unsetMouseOverColumnId() {
+    this.#model.state.mouseOverColumnId = -1;
     this.#notify();
   }
 
@@ -166,7 +198,8 @@ export default class Model {
       type: "updateColumn",
       updatedColumnName: updatedColumTitle,
     });
-    this.setEditingColumnId(-1);
+
+    this.unsetEditingColumnId();
   }
 
   removeColumn(columnId) {
@@ -178,7 +211,7 @@ export default class Model {
       type: "removeColumn",
       removedColumnName: removedColumn.title,
     });
-    this.#notify();
+    this.unsetEditingColumnTask();
   }
 
   addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
@@ -196,7 +229,7 @@ export default class Model {
       type: "addTask",
       addedTaskName: addedTaskName,
     });
-    this.#notify();
+    this.unsetEditingColumnTask();
   }
 
   updateTask(taskId, updatedTask) {
@@ -220,7 +253,7 @@ export default class Model {
       this.#model.state.editingTaskId = -1;
     }
     this.#pushHistory(currentData, historyAction);
-    this.#notify();
+    this.unsetEditingColumnTask();
   }
 
   removeTask(taskId) {
