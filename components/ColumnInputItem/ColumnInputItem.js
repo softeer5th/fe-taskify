@@ -1,3 +1,4 @@
+import { STORAGE_KEY } from "../../constants/storageKey.js";
 import historyStore from "../../store/historyStore.js";
 import getDevice from "../../utils/getDevice.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
@@ -88,7 +89,7 @@ const updateColumnList = ({ $columnBody, sectionId, title, content }) => {
 };
 
 const saveTodoList = ({ $columnBody, sectionId, newCard, title }) => {
-  const todoList = loadLocalStorage();
+  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
 
   const column = todoList.find((section) => section.id === sectionId).title;
 
@@ -109,7 +110,7 @@ const saveTodoList = ({ $columnBody, sectionId, newCard, title }) => {
     .querySelector(".column__count");
 
   $columnCount.textContent = itemLength;
-  saveLocalStorage(newTodoList);
+  saveLocalStorage(STORAGE_KEY.todoList, newTodoList);
 
   historyStore.action({
     action: "add",

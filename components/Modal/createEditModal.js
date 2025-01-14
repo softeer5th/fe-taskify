@@ -1,3 +1,4 @@
+import { STORAGE_KEY } from "../../constants/storageKey.js";
 import historyStore from "../../store/historyStore.js";
 import {
   loadLocalStorage,
@@ -55,7 +56,7 @@ const editCard = ({ sectionId, itemId }) => {
   $columnItem.querySelector(".column__item__title").textContent = newTitle;
   $columnItem.querySelector(".column__item__content").textContent = newContent;
 
-  const todoList = loadLocalStorage();
+  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
 
   const editedList = todoList.map((section) =>
     section.id === sectionId
@@ -70,7 +71,7 @@ const editCard = ({ sectionId, itemId }) => {
       : section
   );
 
-  saveLocalStorage(editedList);
+  saveLocalStorage(STORAGE_KEY.todoList, editedList);
 
   historyStore.action({
     action: "update",

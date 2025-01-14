@@ -1,3 +1,4 @@
+import { STORAGE_KEY } from "../../../constants/storageKey.js";
 import historyStore from "../../../store/historyStore.js";
 import loadStyleSheet from "../../../utils/loadStyleSheet.js";
 import {
@@ -76,7 +77,7 @@ const ColumnBody = ({ sectionId, items }) => {
 
 // TODO: 배열 메서드로 개선 필요
 const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
-  const todoList = loadLocalStorage();
+  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
 
   let draggedItem = null;
 
@@ -107,7 +108,7 @@ const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
   });
 
   updateCount(finalList);
-  saveLocalStorage(finalList);
+  saveLocalStorage(STORAGE_KEY.todoList, finalList);
 
   if (prevColumn !== nextColumn) {
     historyStore.action({

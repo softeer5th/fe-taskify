@@ -1,4 +1,5 @@
 import { IMAGE } from "../../../assets/index.js";
+import { STORAGE_KEY } from "../../../constants/storageKey.js";
 import { createButton, createElement, createImg } from "../../../dom.js";
 import { loadLocalStorage } from "../../../utils/localStorage.js";
 
@@ -80,7 +81,7 @@ const createSortButton = () => {
 
   function handleClickSort(e) {
     // 1. 로컬 스토리지에서 데이터를 불러온다.
-    const todoList = loadLocalStorage();
+    const todoList = loadLocalStorage(STORAGE_KEY.todoList);
 
     // 2. 토글된 정렬 기준으로 데이터를 정렬한다.
     const sortType = toggleText[e.currentTarget.textContent];

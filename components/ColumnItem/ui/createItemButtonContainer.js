@@ -1,4 +1,5 @@
 import { IMAGE } from "../../../assets/index.js";
+import { STORAGE_KEY } from "../../../constants/storageKey.js";
 import {
   createButton,
   createDeleteSvg,
@@ -19,7 +20,7 @@ const createItemButtonContainer = ({ sectionId, itemId }) => {
       `#${sectionId} .column__item[data-id="${itemId}"]`
     );
 
-    const todoList = loadLocalStorage();
+    const todoList = loadLocalStorage(STORAGE_KEY.todoList);
 
     const filteredList = todoList.map((section) =>
       section.id === sectionId
@@ -38,7 +39,8 @@ const createItemButtonContainer = ({ sectionId, itemId }) => {
       .querySelector(".column__count");
 
     $columnCount.textContent = itemLength;
-    saveLocalStorage(filteredList);
+    saveLocalStorage(STORAGE_KEY.todoList, filteredList);
+
     $columnItem.remove();
 
     const deletedCard = todoList
