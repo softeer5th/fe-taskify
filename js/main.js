@@ -85,7 +85,7 @@ function setEventForColumn(props) {
     addListener(parentElement,(event)=>{
         if (event.type === "mousemove") {
             moveCard(event, getClone());
-            moveCardIllusion(parentElement, getClone());
+            moveCardIllusion(event, parentElement, getClone());
         }
     })
 
@@ -140,7 +140,7 @@ export function setEventForCard(props) {
             }
         } else if (event.type === "mousemove") {
             moveCard(event, getClone());
-            moveCardIllusion(parentElement, getClone());
+            moveCardIllusion(event, parentElement, getClone());
         }
     });
 }

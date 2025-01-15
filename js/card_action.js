@@ -170,7 +170,8 @@ export function moveCard(event, clone) {
     clone.style.top = `${event.clientY-gapY}px`;
 }
 
-export function moveCardIllusion(newParent, clone) {
+export function moveCardIllusion(event, newParent, clone) {
+    if (!getIsDragging() || !clone) return;
     const columnArea = document.getElementById("column-area");
     [...columnArea.children].forEach((column)=> {
         let tempCard = column.querySelector(`#temp-${clone.id}`);
@@ -180,6 +181,18 @@ export function moveCardIllusion(newParent, clone) {
         }
     });
     let tempRealCard = newParent.querySelector(`#temp-${clone.id}`);
+    let cardList = event.target.closest('.card-list');
+    let closestCard = event.target.closest('.card-id');
+    let closestTempCard = event.target.closest('.temp-card');
+    if (cardList) {
+        if (closestCard) {
+            console.log(closestCard);
+            cardList.insertBefore(tempRealCard, closestCard);
+        } else if (!closestTempCard){
+            console.log("no!");
+            cardList.appendChild(tempRealCard);
+        }
+    }
     if (tempRealCard) {
         tempRealCard.className = "temp-card-true"
         tempRealCard.style.display = 'flex';
@@ -187,17 +200,17 @@ export function moveCardIllusion(newParent, clone) {
 }
 
 export function finishDragCard(clone) {
-    if (getIsDragging() && clone) {
-        const tempCards = document.querySelectorAll('.temp-card');
-        [...tempCards].forEach((tempCard)=>tempCard.remove());
-        const realCard = document.querySelector('.temp-card-true');
-        realCard.id = "card-id"+draggingCardId;
-        realCard.className = "card-id"
-        realCard.style.opacity = 1;
-        setEventForCard({"cardId": draggingCardId});
+    if (!getIsDragging() || !clone) return ;
 
-        toggleIsDragging();
-        clone.remove();
-        document.body.classList.remove('no-select');
-    }
+    const tempCards = document.querySelectorAll('.temp-card');
+    [...tempCards].forEach((tempCard)=>tempCard.remove());
+    const realCard = document.querySelector('.temp-card-true');
+    realCard.id = "card-id"+draggingCardId;
+    realCard.className = "card-id"
+    realCard.style.opacity = 1;
+    setEventForCard({"cardId": draggingCardId});
+
+    toggleIsDragging();
+    clone.remove();
+    document.body.classList.remove('no-select');
 }
