@@ -10,57 +10,39 @@ import createColumnBody from "./ui/createColumnBody.js";
 loadStyleSheet("/components/ColumnSection/ColumnBody/styles.css");
 
 const ColumnBody = ({ sectionId, items }) => {
-  let shadowElement = null;
-
   const handleDragOver = (e) => {
     e.preventDefault();
+    const $draggedElement = document.querySelector(".dragging");
+
+    // 드래그가 이동한 좌표에서 가장 가까운 columnItem
     const $target = e.target.closest(".column__item");
 
-    if (!shadowElement) {
-      shadowElement = document.createElement("div");
-      shadowElement.classList.add("after-image", "shadow-normal");
-    }
-
-    if ($target) {
+    if ($draggedElement && $target) {
+      // offset: target의 DOM 요소를 가져와서, 마우스 y좌표와 요소의 상단부분의 차이
+      // 차이가 target의 height의 절반보다 작으면 위로, 크면 아래로 이동
       const rect = $target.getBoundingClientRect();
       const offset = e.clientY - rect.top;
 
       if (offset < rect.height / 2) {
-        $columnBody.insertBefore(shadowElement, $target);
+        $columnBody.insertBefore($draggedElement, $target);
       } else {
-        $columnBody.insertBefore(shadowElement, $target.nextSibling);
+        $columnBody.insertBefore($draggedElement, $target.nextSibling);
       }
-    } else {
-      $columnBody.appendChild(shadowElement);
     }
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const prevSectionId = e.dataTransfer.getData("text/prevSectionId");
-    const draggedElement = document.querySelector(".dragging");
-
-    if (shadowElement && draggedElement) {
-      $columnBody.replaceChild(draggedElement, shadowElement);
-      shadowElement.remove();
-      shadowElement = null;
-    }
+    const $draggedElement = document.querySelector(".dragging");
 
     const sectionId = $columnBody.closest(".column__container").id;
-    const itemId = Number(draggedElement.dataset.id);
-    const title = draggedElement.querySelector(
+    const itemId = Number($draggedElement.dataset.id);
+    const title = $draggedElement.querySelector(
       ".column__item__title"
     ).textContent;
 
     updateTodoList({ sectionId, itemId, prevSectionId, title });
-  };
-
-  const handleDragLeave = (e) => {
-    // 칼럼 벗어남 & 잔상 존재
-    if (!e.currentTarget.contains(e.relatedTarget) && shadowElement) {
-      shadowElement.remove();
-      shadowElement = null;
-    }
   };
 
   const $columnBody = createColumnBody({
@@ -70,7 +52,6 @@ const ColumnBody = ({ sectionId, items }) => {
 
   $columnBody.addEventListener("dragover", handleDragOver);
   $columnBody.addEventListener("drop", handleDrop);
-  $columnBody.addEventListener("dragleave", handleDragLeave);
 
   return $columnBody;
 };
