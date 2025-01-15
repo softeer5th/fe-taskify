@@ -61,6 +61,11 @@ header {
         > ul li:not(:last-child) {
             border-bottom: 1px solid var(--grayscale-200);
           }
+
+        .activity__close__btn {
+            display: flex;
+            align-items: center;
+        }
     }
 
     .clock__btn {

@@ -11,6 +11,11 @@ export const toggleClockBtn = () => {
     clockBtn.addEventListener('click', (e) => {
         activityList.classList.toggle('clock__toggle');
     });
+
+    const activityCloseBtn = document.querySelector('.activity__close__btn');
+    activityCloseBtn.addEventListener('click', (e) => {
+        activityList.classList.toggle('clock__toggle');
+    });
 }
 
 export const renderRecords = () => {
@@ -67,7 +72,6 @@ export const renderRecords = () => {
         time.textContent = `3분전`;
         time.className = 'medium12';
         time.style.color = '#A0A3BD';
-        
 
         textBox.appendChild(username);
         textBox.appendChild(content);
