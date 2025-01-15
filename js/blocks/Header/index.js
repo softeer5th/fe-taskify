@@ -11,6 +11,11 @@ export const toggleClockBtn = () => {
     clockBtn.addEventListener('click', (e) => {
         activityList.classList.toggle('clock__toggle');
     });
+
+    const activityCloseBtn = document.querySelector('.activity__close__btn');
+    activityCloseBtn.addEventListener('click', (e) => {
+        activityList.classList.toggle('clock__toggle');
+    });
 }
 
 export const renderRecords = () => {
@@ -31,10 +36,16 @@ export const renderRecords = () => {
         textBox.className = 'text__box';
 
         const userImg = document.createElement('img');
-        userImg.src = '/assets/user.png';
+        // userImg.src = '/assets/user.png';
+        userImg.src = 'https://s3-alpha-sig.figma.com/img/238e/defe/eede02d1a80e6ccab7a760738eef7e21?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oft77sJUvrzVXcj~vC8LlQnduFFgr-UQ~-VpzAOiAeeVMl7Np5J-~E4nlgwLH36pgPx0NsfLiGZnQXpBk21sgXkUMtMeqYCrTmHqzQtwIx~w83u-qSDh8GxxjFB37u0o5GONz6UnD~0w-lEYf8M8v3W9a2UzdzoqfPyOf2RC2aJQUzhd0jA-moETtmyQH02c~z3DIE1r5XmirKviUD-XG5VjbtOXqIQ1FH6Kwj9mIpjiHF3hmIqy7xIGCAgnCU9Xox9mmmY50WYB7-J5KtFGw8u1UX46lFdPPlOS4DNraA5Wgn7S7NmT82-yK1ZCkeAhL8VyRvh7AAvvajt-0g-SsA__';
         const username = document.createElement('p');
         username.textContent = '@이름이용';
+        username.className = 'medium14';
+        username.style.color = '#6E7191';
         const content = document.createElement('p');
+        content.className = 'medium14';
+        content.style.color = '#6E7191';
+
         let type;
         switch (record.type) {
             case 'add':
@@ -56,9 +67,11 @@ export const renderRecords = () => {
                 type = '알 수 없음';
                 break;
         }
-        content.innerHTML = `<strong>${record.title}</strong>을(를) <strong>${CATEGORY[record.beforeCategory]}</strong>에서 <strong>${CATEGORY[record.afterCategory]}</strong>으로 <strong>${type}</strong> 하였습니다.`;
+        content.innerHTML = `<strong style="color: black;">${record.title}</strong>을(를) <strong style="color: black;">${CATEGORY[record.beforeCategory]}</strong>에서 <strong style="color: black;">${CATEGORY[record.afterCategory]}</strong>으로 <strong style="color: black;">${type}</strong> 하였습니다.`;
         const time = document.createElement('p');
         time.textContent = `3분전`;
+        time.className = 'medium12';
+        time.style.color = '#A0A3BD';
 
         textBox.appendChild(username);
         textBox.appendChild(content);

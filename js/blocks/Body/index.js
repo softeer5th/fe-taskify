@@ -300,8 +300,15 @@ const createTaskElement = (type, id, title, content) => {
     taskContent.className = 'medium14';
     taskContent.style.color = '#6E7191';
 
+    const writer = document.createElement('p');
+    writer.innerText = 'author by web';
+    writer.className = 'medium12';
+    writer.style.color = '#A0A3BD';
+    writer.style.marginTop = '10px';
+
     taskWrapper.appendChild(taskTitle);
     taskWrapper.appendChild(taskContent);
+    taskWrapper.appendChild(writer);
 
     const btnWrapper = document.createElement('div');
     const editBtn = document.createElement('button');
