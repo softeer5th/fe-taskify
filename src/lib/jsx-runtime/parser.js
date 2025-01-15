@@ -83,12 +83,14 @@ export const parser = (strings, ...args) => {
 
     Array.from(attributes).forEach((attr) => {
       const { name, value } = attr;
-      if (name === "class") {
+
+      if (name.includes(DIRTY_PREFIX)) {
+        const arg = formatAttributes(name);
+        if (arg) props[arg] = true;
+      } else if (name === "class") {
         const classes = value.split(" ").map((className) => formatAttributes(className)).join(" ");
         props[name] = classes;
-        return;
-      }
-      props[name] = formatAttributes(value);
+      } else props[name] = formatAttributes(value);
     });
     return props;
   };
