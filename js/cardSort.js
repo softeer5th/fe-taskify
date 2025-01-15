@@ -34,6 +34,34 @@ const getGapBetweenCards = () => {
   return gapBetweenCards;
 };
 
+// 특정 id를 가진 카드의 정렬 후 Y 좌표 계산 함수
+const calculateSortedYPosition = (cardId, orderedListId, cardListArr) => {
+  const sortedIdx = orderedListId.indexOf(Number(cardId));
+  let yPosition = 0;
+
+  // 해당 카드 위에 있는 모든 카드들의 높이 + gap 합산
+  for (let i = 0; i < sortedIdx; i++) {
+    const prevCardId = orderedListId[i];
+    const prevCard = cardListArr.find((card) => Number(card.id) === prevCardId);
+    yPosition += prevCard.offsetHeight + getGapBetweenCards();
+  }
+
+  return yPosition;
+};
+
+// 정렬 전 현재 Y 좌표 계산 함수
+const calculateCurrentYPosition = (card, cardListArr) => {
+  const currentIdx = cardListArr.indexOf(card);
+  let yPosition = 0;
+
+  // 현재 카드 위에 있는 모든 카드들의 높이 + gap 합산
+  for (let i = 0; i < currentIdx; i++) {
+    yPosition += cardListArr[i].offsetHeight + getGapBetweenCards();
+  }
+
+  return yPosition;
+};
+
 const sortingAnimation = (sortedList) => {
   sortedList.map(([sectionType, dataArr], index) => {
     const cardList = document.querySelectorAll(
@@ -42,18 +70,22 @@ const sortingAnimation = (sortedList) => {
     const cardListArr = Array.from(cardList);
     const orderedListId = dataArr.map((item) => item.id);
 
-    const gapBetweenCards = getGapBetweenCards();
-
     cardListArr.forEach((card) => {
-      const UIIdx = cardListArr.indexOf(card);
+      // 정렬 후의 Y 좌표
+      const sortedYPosition = calculateSortedYPosition(
+        card.id,
+        orderedListId,
+        cardListArr
+      );
 
-      const sortedIdx = orderedListId.indexOf(Number(card.id));
+      // 현재 Y 좌표
+      const currentYPosition = calculateCurrentYPosition(card, cardListArr);
 
-      const offset =
-        (sortedIdx - UIIdx) * (gapBetweenCards + card.offsetHeight); // (최근 위치 - 현재 위치) * (섹션 간 gap과 +카드의 크기 만큼) 이동.
+      // 이동해야 할 거리 계산
+      const yOffset = sortedYPosition - currentYPosition;
 
       card.classList.add("sorting-card");
-      card.style.setProperty("--translateY-offset", `${offset}px`);
+      card.style.setProperty("--translateY-offset", `${yOffset}px`);
       setTimeout(() => {
         card.classList.remove("sorting-card"); // 정렬된 이후에는 애니메이션 제거.
       }, 700);
