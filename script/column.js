@@ -196,9 +196,9 @@ export default function ColumnController(state, bodyElement, logStore) {
             created: new Date(),
         };
 
-        state.addTask(columnIdx, newTask);
+        const newId = state.addTask(columnIdx, newTask);
         logStore.addLog({
-            task: newTask,
+            task: {...newTask, taskId: newId},
             type: "ADD",
             updated: new Date(),
         })

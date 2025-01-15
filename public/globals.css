@@ -161,3 +161,9 @@ body {
 .rounded-500 {
     border-radius: 50%;
 }
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
