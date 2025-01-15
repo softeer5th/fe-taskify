@@ -153,6 +153,8 @@ header > span {
 }
 
 #log_layer_list {
+    overflow: auto;
+    max-height: 600px;
     margin: 8px 0;
 }
 
