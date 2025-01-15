@@ -50,7 +50,7 @@ const sortingAnimation = (sortedList) => {
       const sortedIdx = orderedListId.indexOf(Number(card.id));
 
       const offset =
-        (sortedIdx - UIIdx) * (gapBetweenCards + card.offsetHeight); // (최근 위치 - 현재 위치) * (섹션 간 gap과 +카드의 크기 만큼) Y축으로 이동.
+        (sortedIdx - UIIdx) * (gapBetweenCards + card.offsetHeight); // (최근 위치 - 현재 위치) * (섹션 간 gap과 +카드의 크기 만큼) 이동.
 
       card.classList.add("sorting-card");
       card.style.setProperty("--translateY-offset", `${offset}px`);
