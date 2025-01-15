@@ -1,6 +1,7 @@
 import { Action } from '../domain/Action.js'
 import { classNames, keys, templateNames } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
+import { formatDateToTimeAgo } from '../utils/dateUtil.js'
 import { createDomElementAsChild } from '../utils/domUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 
@@ -55,8 +56,9 @@ const renderHistoryView = () => {
                 // TODO: time 가공하기
                 component.querySelector(
                     `.${classNames.historyItemTime}`
-                ).textContent = action.timeStamp
-            }
+                ).textContent = formatDateToTimeAgo(new Date(action.timeStamp))
+            },
+            false
         )
     })
 }
