@@ -1,5 +1,5 @@
-import { arrowBoth } from "../../public/arrowBoth.js";
-import { clock } from "../../public/clock.js";
+import arrowBoth from "../../public/arrowBoth.js";
+import clock from "../../public/clock.js";
 
 export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) {
   const headerElement = document.createElement("header");

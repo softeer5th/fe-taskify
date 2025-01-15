@@ -19,8 +19,6 @@ export default function TaskController(model = new Model(), rootElement = docume
   rootElement.appendChild(ghostTaskView);
 
   window.addEventListener("mousemove", handleMoveGhostTask);
-  window.addEventListener("mouseup", handleMoveGhostTask);
-  window.addEventListener("mousedown", handleMoveGhostTask);
   window.addEventListener("mouseup", handleUnselectTask);
 
   let addingTaskView;
@@ -28,6 +26,8 @@ export default function TaskController(model = new Model(), rootElement = docume
   model.addListener(onModelChanged);
 
   render();
+
+  // Event Handlers
 
   function handleTaskDeleteButtonClicked(event) {
     event.preventDefault();
@@ -55,12 +55,10 @@ export default function TaskController(model = new Model(), rootElement = docume
   }
 
   function handleTaskEditSaveButtonClicked(event) {
-    event.preventDefault();
     event.stopPropagation();
 
-    const taskId = +event.target.closest(".task").id;
-
     const task = event.target.closest(".task");
+    const taskId = +task.id;
     const name = task.querySelector(".task__content-title").value;
     const description = task.querySelector(".task__content-description").value;
 
@@ -74,11 +72,17 @@ export default function TaskController(model = new Model(), rootElement = docume
 
   function handleSelectTask(event) {
     event.stopPropagation();
+
     const state = model.getCurrentState();
+
     if (state.editingTaskId > 0) return;
+
     const taskId = +event.target.closest(".task").id;
     const ghostTaskView = rootElement.querySelector(".task--ghost");
     ghostTaskView.innerHTML = event.target.closest(".task").innerHTML;
+    ghostTaskView.style.top = event.clientY + "px";
+    ghostTaskView.style.left = event.clientX + "px";
+    ghostTaskView.style.opacity = 1;
     model.setMovingTaskId(taskId);
   }
 
@@ -89,14 +93,17 @@ export default function TaskController(model = new Model(), rootElement = docume
     if (state.movingTaskId !== -1 && state.mouseOverColumnId !== -1) {
       model.moveTask(state.movingTaskId, state.mouseOverColumnId);
     }
+
+    const ghostTaskView = rootElement.querySelector(".task--ghost");
+    ghostTaskView.style.opacity = 0;
   }
 
   function handleMoveGhostTask(event) {
     event.stopPropagation();
-    event.preventDefault();
 
     const state = model.getCurrentState();
     const ghostTaskView = rootElement.querySelector(".task--ghost");
+
     if (state.movingTaskId !== -1) {
       ghostTaskView.style.top = event.clientY + "px";
       ghostTaskView.style.left = event.clientX + "px";
@@ -110,16 +117,20 @@ export default function TaskController(model = new Model(), rootElement = docume
     render();
   }
 
+  // Destroy observer
   function destroy() {
     model.removeListener(onModelChanged);
   }
 
+  // Render
   function render() {
-    const columnViews = [...rootElement.querySelectorAll(".column")];
-    let taskViews = [...rootElement.querySelectorAll(".task")];
-
+    // Get current tasks and state
     const tasksOnModel = model.getCurrentTaskData();
     const state = model.getCurrentState();
+
+    // Get current column views and task views
+    const columnViews = [...rootElement.querySelectorAll(".column")];
+    let taskViews = [...rootElement.querySelectorAll(".task")];
 
     // Sort tasksOnModel by createdAt with order state
     const orderState = state.order;
@@ -133,7 +144,7 @@ export default function TaskController(model = new Model(), rootElement = docume
     const removedTasks = tasks.filter((task) => !tasksOnModel.some((t) => t.id === task.id));
     removedTasks.forEach((task) => {
       const taskView = taskViews.find((t) => +t.id === task.id);
-      taskView.remove();
+      taskView?.remove();
     });
     taskViews = taskViews.filter((taskView) => tasksOnModel.some((task) => task.id === +taskView.id));
     tasks = tasks.filter((task) => tasksOnModel.some((t) => t.id === task.id));
@@ -147,6 +158,7 @@ export default function TaskController(model = new Model(), rootElement = docume
         onFirstButtonClicked: handleTaskDeleteButtonClicked,
         onSecondButtonClicked: handleTaskEditButtonClicked,
       });
+      newTaskView.style.order = -1;
       newTaskView.addEventListener("mousedown", handleSelectTask);
       taskViews.push(newTaskView);
       const columnView = columnViews.find((c) => +c.id === task.columnId);
@@ -154,59 +166,54 @@ export default function TaskController(model = new Model(), rootElement = docume
     });
 
     // Handle updated tasks
-    tasksOnModel.forEach((task) => {
-      const prevTask = tasks.find((t) => t.id === task.id);
-      if (JSON.stringify(task) !== JSON.stringify(prevTask)) {
+    tasks.forEach((task) => {
+      const updatedTask = tasksOnModel.find((t) => t.id === task.id);
+      if (JSON.stringify(task) !== JSON.stringify(updatedTask)) {
         const taskView = taskViews.find((t) => +t.id === task.id);
         const newTaskView = TaskView({
-          task: task,
+          task: updatedTask,
           state: "default",
           onFirstButtonClicked: handleTaskDeleteButtonClicked,
           onSecondButtonClicked: handleTaskEditButtonClicked,
         });
+        newTaskView.style.order = taskView.style.order;
         newTaskView.addEventListener("mousedown", handleSelectTask);
         taskView.replaceWith(newTaskView);
-        const columnView = columnViews.find((c) => +c.id === task.columnId);
+        const columnView = columnViews.find((c) => +c.id === updatedTask.columnId);
         columnView.querySelector(".column__task-list").appendChild(newTaskView);
       }
     });
 
-    // Change editing task with state.editingTaskId
-    taskViews.map((taskView) => {
-      if (+taskView.id === state.editingTaskId) {
-        const newTaskView = TaskView({
-          task: tasksOnModel.find((t) => t.id === state.editingTaskId),
-          state: "editing",
-          onFirstButtonClicked: handleTaskEditCancelButtonClicked,
-          onSecondButtonClicked: handleTaskEditSaveButtonClicked,
-        });
-        taskView.replaceWith(newTaskView);
-      } else if (taskView.classList.contains("task--edit")) {
-        const newTaskView = TaskView({
-          task: tasksOnModel.find((t) => t.id === +taskView.id),
-          state: "default",
-          onFirstButtonClicked: handleTaskDeleteButtonClicked,
-          onSecondButtonClicked: handleTaskEditButtonClicked,
-        });
-        newTaskView.addEventListener("mousedown", handleSelectTask);
-        taskView.replaceWith(newTaskView);
-      }
-    });
-
-    // Create Adding TaskView when state.editingTask is 0 and state.addingColumn is not -1
-    const isAddingTask = state.editingColumnId !== -1 && state.editingTaskId === 0;
-    const addingColumnTaskList = columnViews.find((c) => +c.id === state.editingColumnId)?.querySelector(".column__task-list");
-    if (addingTaskView && isAddingTask) {
-      addingTaskView.remove();
-      addingTaskView = TaskView({
-        task: { id: 0, columnId: state.editingColumnId, name: "", description: "", createdAt: 0 },
+    // Handle editing tasks
+    const prevEditingTask = taskViews.find((t) => t.classList.contains("task--edit"));
+    if (prevEditingTask && state.editingTaskId !== +prevEditingTask.id) {
+      const newTaskView = TaskView({
+        task: tasksOnModel.find((t) => t.id === +prevEditingTask.id),
+        state: "default",
+        onFirstButtonClicked: handleTaskDeleteButtonClicked,
+        onSecondButtonClicked: handleTaskEditButtonClicked,
+      });
+      newTaskView.style.order = prevEditingTask.style.order;
+      newTaskView.addEventListener("mousedown", handleSelectTask);
+      prevEditingTask.replaceWith(newTaskView);
+    }
+    const currentEditingTask = taskViews.find((t) => +t.id === state.editingTaskId);
+    if (currentEditingTask && !currentEditingTask.classList.contains("task--edit")) {
+      const newTaskView = TaskView({
+        task: tasksOnModel.find((t) => t.id === state.editingTaskId),
         state: "editing",
         onFirstButtonClicked: handleTaskEditCancelButtonClicked,
         onSecondButtonClicked: handleTaskEditSaveButtonClicked,
       });
-      addingTaskView.style.order = -1;
-      addingColumnTaskList.appendChild(addingTaskView);
-    } else if (isAddingTask) {
+      newTaskView.style.order = currentEditingTask.style.order;
+      currentEditingTask.replaceWith(newTaskView);
+    }
+
+    // Create Adding TaskView when state.editingTask is 0 and state.addingColumn is not -1
+    const isAddingTask = state.editingColumnId !== -1 && state.editingTaskId === 0;
+    const addingColumnTaskList = columnViews.find((c) => +c.id === state.editingColumnId)?.querySelector(".column__task-list");
+    if (isAddingTask) {
+      addingTaskView?.remove();
       addingTaskView = TaskView({
         task: { id: 0, columnId: state.editingColumnId, name: "", description: "", createdAt: 0 },
         state: "editing",

@@ -1,5 +1,5 @@
-import { closed } from "../../public/closed.js";
-import { edit } from "../../public/edit.js";
+import closed from "../../public/closed.js";
+import edit from "../../public/edit.js";
 
 export default function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
   const taskElement = document.createElement("div");
