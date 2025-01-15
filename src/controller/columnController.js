@@ -2,10 +2,14 @@ import Model from "../model.js";
 
 import ColumnListView from "../view/columnListView.js";
 import ColumnView from "../view/columnView.js";
+import Fab from "../component/fab.js";
 
 export default function ColumnController(model = new Model(), rootElement = document.getElementById("root")) {
   const columnListView = ColumnListView();
   rootElement.appendChild(columnListView);
+
+  const fab = Fab({ onButtonClick: handleAddColumnButtonClick });
+  rootElement.appendChild(fab);
 
   model.addListener(onModelChanged);
 
