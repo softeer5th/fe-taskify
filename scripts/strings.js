@@ -25,6 +25,8 @@ export const classNames = {
     todoEditFormCancelBtn: 'todos__add-form__cancel-btn',
     todoEditFormSubmitBtn: 'todos__add-form__submit-btn',
 
+    historyView: 'activity-history',
+    historyToggleBtn: 'activity-history__toggle-btn',
     afterImage: 'after-image',
 
     button: 'btn',
@@ -39,6 +41,7 @@ export const templateNames = {
     todoCategory: 'todo-category-template',
     todoItemAddForm: 'todo-item-add-form-template',
     todoItemEditForm: 'todo-item-edit-form-template',
+    historyView: 'activity-history-template',
 }
 
 export const keys = {

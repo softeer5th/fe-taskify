@@ -28,6 +28,7 @@ body {
     display: flex;
     flex-direction: column;
     position: absolute;
+    z-index: 1;
     top: -16px;
     right: 20px;
     width: 320px;
@@ -48,15 +49,11 @@ body {
     font: var(--font-bold-m);
     color: var(--color-text-bold);
 }
-.activity-history__close-container {
+.activity-history__close-btn {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-}
-.activity-history__close-btn {
-    width: 24px;
-    height: 24px;
 }
 .activity-history__close-label {
     font: var(--font-bold-s);
