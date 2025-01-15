@@ -56,12 +56,12 @@ export function handleEventListener(e) {
         return;
     }
     else if (target.closest('#card-delete-toggle')) {
-        deleteCardToggle({app,columnCard});
+        deleteCardToggle({columnCard});
         return;
     }
 
     else if (target.closest('#card-delete')) {
-        deleteCard({columnCard});
+        deleteCard({columnCard,columnName,tasksData});
         return;
     }
 

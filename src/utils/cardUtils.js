@@ -1,13 +1,18 @@
 
-import { ColumnCard } from '../components/Card/ColumnCard.js';
-import { Modal } from '../components/Modal/Modal.js';
-import { Background } from '../layout/Background/Background.js';
-import { doneModel, progressModel, todoModel } from './mockup.js';
+import { ColumnCard, modalInstances } from '../components/Card/ColumnCard.js';
+import {  doneModel, progressModel, todoModel } from './mockup.js';
 
 export function showCardList(element,cardList){
+
+    //여기서 추가를하는게 아니라 삭제를 해야함 그걸 어떻게 해야할지 고민 
+    while (element.children.length > 1) {
+        element.removeChild(element.lastChild);
+    }
+
     const fragment = document.createDocumentFragment();
     cardList.map((item)=>{
         fragment.appendChild(ColumnCard({
+            id : item.id,
             title:item.title,
             type: item.type,
             content: item.content,
@@ -50,6 +55,7 @@ export function addCard({titleInput,contentInput,addForm,columnName,tasksData}){
     if (title && content) {
         addForm.remove()
         const newTodo ={
+            id:Date.now(),
             title,
             content ,
             author:"author by web" ,                
@@ -68,33 +74,24 @@ export function addCard({titleInput,contentInput,addForm,columnName,tasksData}){
 
 }
 
-export function deleteCardToggle({app,columnCard}){
-    const background =app.querySelector('.background-container');
-        if(!background){
-            const fragment = document.createDocumentFragment()
-            const deleteModal = Modal({
-                content: '선택한 카드를 삭제할까요?',
-                checkId:'card-delete',
-                closeId:'card-delete-toggle',
-                closeText:'취소',
-                checkText:'삭제'
-            })
+export function deleteCardToggle({columnCard}){
+    const cardId=columnCard.id
+    modalInstances[cardId].toggle()
 
-            fragment.appendChild(Background());  
-            fragment.appendChild(deleteModal);  
-            columnCard.appendChild(fragment);
-        }
-        else{
-            const modal = columnCard.querySelector('.modal-container'); 
-            background.remove();
-            modal.remove();
-        }
-        return;
-    
+    return;
+
 }
 
-export function deleteCard({columnCard}){
-    columnCard.remove();
+export function deleteCard({columnCard,columnName,tasksData}){
+    const cardId=columnCard.id
+    const [model, columnSort] = handleColumn(columnName);
+    model.deleteTask(cardId)
+        
+    const newData = {...tasksData,[columnSort]:model.tasks}
+    localStorage.setItem('tasks',JSON.stringify(newData)) ;  
+
+
+    modalInstances[cardId].toggle()
 }
 
 

@@ -1,9 +1,16 @@
+import { Background } from '../../layout/Background/Background.js';
+import { PrimaryModal } from '../../observer/observer.js';
 import { loadCss } from '../../utils/loadcss.js';
 import { Button } from '../Button/Button.js';
+import { Modal } from '../Modal/Modal.js';
 
-export function ColumnCard({type,title,content,author,addText,closeText,checkId,editId,closeId,deleteId}){
+
+export const modalInstances = {};
+
+export function ColumnCard({id,type,title,content,author,addText,closeText,checkId,editId,closeId,deleteId}){
     const columnCard = document.createElement('div');
     columnCard.className = 'column-card-container';
+    columnCard.id= id;
     columnCard.innerHTML =`
         <div class='column-content-container'>
             <div class='column-content-box'></div>
@@ -61,6 +68,34 @@ export function ColumnCard({type,title,content,author,addText,closeText,checkId,
         }
             
     }
+    if (!modalInstances[id]) {
+        modalInstances[id] = new PrimaryModal();
+    }
+
+    modalInstances[id].subscribe((isOpen)=>{
+        const modal = columnCard.querySelector('.modal-container'); 
+        const background = columnCard.querySelector('.background-container'); 
+        if(isOpen){    
+        const fragment = document.createDocumentFragment()
+        const deleteModal = Modal({
+            content: '선택한 카드를 삭제할까요?',
+            checkId:'card-delete',
+            closeId:'card-delete-toggle',
+            closeText:'취소',
+            checkText:'삭제'
+        })
+
+        fragment.appendChild(Background());  
+        fragment.appendChild(deleteModal);  
+        columnCard.appendChild(fragment);
+        return
+        }else{
+            if(background)background.remove();
+            if(modal)modal.remove()            
+            return
+        }
+        
+    })
 
 
     loadCss('../src/components/Card/ColumnCard.css')
