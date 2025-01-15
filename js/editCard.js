@@ -12,11 +12,13 @@ const showEditCard = (targetCard) => {
 
   const cardTitle = targetCard.querySelector(".title");
   const cardContent = targetCard.querySelector(".content");
-  previousTitle = cardTitle.value;
-  previousContent = cardContent.value;
+  previousTitle = cardTitle.textContent;
+  previousContent = cardContent.textContent;
 
-  cardTitle.disabled = false; // 수정할 수 있게 변경
+  cardTitle.disabled = false;
   cardContent.disabled = false;
+  cardTitle.focus();
+  cardContent.focus();
 };
 
 const backToCard = (targetCard) => {
@@ -39,6 +41,8 @@ const editBtnHandler = (e) => {
 
   const cardTitle = card.querySelector(".title");
   const cardContent = card.querySelector(".content");
+  const newTitle = cardTitle.value;
+  const newContent = cardContent.value;
 
   if (targetCard.matches(".card-edit-icon")) {
     // 편집 아이콘을 눌렀다면
@@ -47,13 +51,12 @@ const editBtnHandler = (e) => {
 
   if (targetCard.matches(".save-btn")) {
     // 저장
-    if (
-      previousTitle === cardTitle.value &&
-      previousContent === cardContent.value
-    ) {
+
+    if (previousTitle === newTitle && previousContent === newContent) {
       return;
     }
-    editStorage(sectionType, card.id, cardTitle.value, cardContent.value);
+
+    editStorage(sectionType, card.id, newTitle, newContent);
     backToCard(card);
   }
 

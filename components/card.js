@@ -4,8 +4,8 @@ export const card = (id, title = "", content = "") => {
       <div class="card" id="${id}" draggable="true">
           <div class="card-contents-icons-box">
           <div class="card-texts">
-              <input class="title text-strong" value="${title}" aria-placeholder="제목" />
-              <input class="content text-default" value="${content}" aria-placeholder="내용"/>
+              <textarea class="title text-strong" aria-placeholder="제목">${title}</textarea>
+              <textarea class="content text-default" aria-placeholder="내용">${content}</textarea>
           </div>
           <div class="card-icons">
               <!-- x 아이콘 -->
@@ -40,5 +40,6 @@ export const card = (id, title = "", content = "") => {
       </div>
       </div>
       `;
+
   return parseToDoc(cardHTML);
 };

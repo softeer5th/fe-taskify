@@ -5,14 +5,18 @@ export const cardForm = (sectionType) => {
     <li class="${sectionType}-form-card form-card card display-none">
     <div class="card-contents-icons-box">
       <div class="card-texts">
-        <input
+        <textarea
           class="title text-strong"
           placeholder="제목을 입력하세요"
-          aria-placeholder="제목" />
-        <input
+          max-length="500"
+          rows="1"
+          aria-placeholder="제목" ></textarea>
+        <textarea
           class="content text-default"
           placeholder="내용을 입력하세요"
-          aria-placeholder="내용" />
+          max-length="500"
+          rows="1"
+          aria-placeholder="내용" ></textarea>
       </div>
     </div>
     <div class="card-btn-box">
@@ -37,7 +41,10 @@ export const cardForm = (sectionType) => {
   const content = cardFormElement.querySelector(".content");
   const addBtn = cardFormElement.querySelector(".add-btn");
 
-  const updateAddButtonState = () => {
+  const updateAddButtonState = (e) => {
+    const input = e.target;
+    input.style.height = `${input.scrollHeight}px`; //  글의 길이에 맞춰 입력창 높이 조절
+
     if (isTitleAndContentHasValue(title, content)) {
       addBtn.disabled = false;
     } else {
