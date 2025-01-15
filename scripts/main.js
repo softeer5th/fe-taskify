@@ -1,8 +1,8 @@
 import Column from './components/column.js';
 import { updateColumn, loadTodos } from './utils/helpers/localStorageHelper.js';
-import createState from './utils/helpers/stateHelper.js';
+import createState from './store/models/stateHelper.js';
 
-export let draggedCardIdState = createState(null);
+export let draggedCardState = createState(null);
 
 const App = () => {
   const main = document.querySelector('main');
