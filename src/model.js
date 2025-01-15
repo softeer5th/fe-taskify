@@ -54,6 +54,7 @@ export default class Model {
 
   #notify() {
     this.#listeners.forEach((listener) => listener());
+    console.log("Rendered");
   }
 
   #pushHistory(newData, action) {
@@ -105,7 +106,7 @@ export default class Model {
     this.#notify();
   }
 
-  setCreatingTaskColumn(columnId) {
+  setEditingTaskColumn(columnId) {
     this.#model.state.editingColumnId = columnId;
     this.#model.state.editingTaskId = 0;
     this.#notify();
@@ -139,7 +140,9 @@ export default class Model {
 
   setMouseOverColumnId(columnId) {
     this.#model.state.mouseOverColumnId = columnId;
-    this.#notify();
+    if (this.#model.state.movingTaskId !== -1) {
+      this.#notify();
+    }
   }
 
   unsetMouseOverColumnId() {
@@ -175,7 +178,7 @@ export default class Model {
     }
   }
 
-  addColumn(addedColumnName) {
+  addColumn(addedColumnName = "New Column") {
     const currentData = this.getCurrentData();
     const newColumn = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
@@ -186,7 +189,6 @@ export default class Model {
       type: "addColumn",
       addedColumnName: addedColumnName,
     });
-    this.#notify();
   }
 
   updateColumn(columnId, updatedColumTitle) {
@@ -194,12 +196,12 @@ export default class Model {
     const columnIdx = currentData.column.findIndex((column) => column.id === columnId);
     currentData.column[columnIdx].title = updatedColumTitle;
 
+    this.#model.state.editingColumnId = -1;
+
     this.#pushHistory(currentData, {
       type: "updateColumn",
       updatedColumnName: updatedColumTitle,
     });
-
-    this.unsetEditingColumnId();
   }
 
   removeColumn(columnId) {
@@ -207,11 +209,13 @@ export default class Model {
     const removedColumn = currentData.column.find((column) => column.id === columnId);
     currentData.column = currentData.column.filter((column) => column.id !== columnId);
     currentData.task = currentData.task.filter((task) => task.columnId !== columnId);
+
+    this.#model.state.editingColumnId = -1;
+
     this.#pushHistory(currentData, {
       type: "removeColumn",
       removedColumnName: removedColumn.title,
     });
-    this.unsetEditingColumnTask();
   }
 
   addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
@@ -225,11 +229,14 @@ export default class Model {
       columnId,
     };
     currentData.task.push(newTask);
+
+    this.#model.state.editingTaskId = -1;
+    this.#model.state.editingColumnId = -1;
+
     this.#pushHistory(currentData, {
       type: "addTask",
       addedTaskName: addedTaskName,
     });
-    this.unsetEditingColumnTask();
   }
 
   moveTask(taskId, toColumnId) {
@@ -237,24 +244,28 @@ export default class Model {
     let task = currentData.task.find((task) => task.id === taskId);
     const fromColumnId = task.columnId;
     task.columnId = toColumnId;
+
+    this.#model.state.movingTaskId = -1;
+
     this.#pushHistory(currentData, {
       type: "moveTask",
       movedTaskName: task.name,
       fromColumnId,
       toColumnId,
     });
-    this.unsetMovingTaskId();
   }
 
   editTask(taskId, updatedTask) {
     const currentData = this.getCurrentData();
     const taskIdx = currentData.task.findIndex((task) => task.id === taskId);
     currentData.task[taskIdx] = updatedTask;
+
+    this.#model.state.editingTaskId = -1;
+
     this.#pushHistory(currentData, {
       type: "editTask",
       updatedTaskName: updatedTask.name,
     });
-    this.unsetEditingTaskId();
   }
 
   removeTask(taskId) {
@@ -265,7 +276,6 @@ export default class Model {
       type: "removeTask",
       removedTaskName: removedTask.name,
     });
-    this.#notify();
   }
 
   getCurrentColumnData() {
