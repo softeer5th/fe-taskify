@@ -2,11 +2,11 @@ import FormComponent from "../components/Form.js";
 import ColumnComponent from "../components/column.js";
 import TaskController from "./task.js";
 
-export default function ColumnController(state, bodyElement) {
+export default function ColumnController(state, bodyElement, logStore) {
     const { columns: columnList, columnTasks } = state.getColumns();
     const columnComponent = ColumnComponent();
     const formComponent = FormComponent();
-    const taskController = TaskController(state, (idx)=>{
+    const taskController = TaskController(state, logStore, (idx)=>{
         renderColumn(idx, columnTasks[idx]);
     });
     
@@ -21,7 +21,13 @@ export default function ColumnController(state, bodyElement) {
         resetDrop();
         columnListElement.appendChild(element);
 
-        state.moveTask(columnIdx, task)
+        state.moveTask(columnIdx, task);
+        logStore.addLog({
+            task: task,
+            type: "MOVE",
+            updated: new Date(),
+            destination: columnIdx
+        })
         state.resetDragged();
 
         renderColumn(startIdx, state.sortTask(columnTasks[startIdx]))
@@ -191,6 +197,11 @@ export default function ColumnController(state, bodyElement) {
         };
 
         state.addTask(columnIdx, newTask);
+        logStore.addLog({
+            task: newTask,
+            type: "ADD",
+            updated: new Date(),
+        })
         renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]));
     }
 
