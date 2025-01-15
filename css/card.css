@@ -4,7 +4,6 @@
 .card-contents-icons-box {
   display: flex;
   justify-content: space-between;
-  height: 42px;
   margin-bottom: 16px;
 }
 .card {
@@ -15,15 +14,20 @@
   margin-bottom: 10px;
 }
 
+.card-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .title {
   font-size: 14px;
-  line-height: 16.41px;
-  margin-bottom: 8px;
+
   font-weight: bold;
 }
 .content {
   font-size: 14px;
-  line-height: 16.41px;
+
   font-weight: 500;
   color: var(--text-default);
 }
@@ -66,11 +70,6 @@ button:disabled {
   opacity: 0.3;
 }
 
-input:disabled,
-textarea:disabled {
-  background-color: transparent;
-}
-
 .dragging {
   opacity: 0.3;
   cursor: grabbing;
@@ -82,6 +81,8 @@ textarea:disabled {
   transform: translateY(var(--translateY-offset));
   transition: transform 0.7s ease;
 }
-.card:not(.form-card) {
-  /* transition: translateY 1s ease; */
+
+.title,
+.content {
+  white-space: pre;
 }

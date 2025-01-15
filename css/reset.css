@@ -139,3 +139,18 @@ button {
 body {
   min-height: 100vh;
 }
+
+input:disabled,
+textarea:disabled {
+  background-color: transparent;
+}
+
+textarea {
+  border: none;
+  resize: none;
+  outline: none;
+  white-space: pre;
+  padding: 0;
+  display: block;
+  field-sizing: content;
+}

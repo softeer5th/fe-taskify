@@ -19,8 +19,10 @@ const addCard = (formCard, sectionType) => {
 
   const CARD_ID = Date.now();
   const cardDoc = card(CARD_ID, titleText, contentText);
+
   cardDoc.querySelector(".title").disabled = true;
   cardDoc.querySelector(".content").disabled = true;
+
   // newform 카드 바로 뒤에 추가
   formCard.after(cardDoc);
 
