@@ -80,5 +80,8 @@ textarea:disabled {
 
 .sorting-card {
   transform: translateY(var(--translateY-offset));
-  transition: transform 1s ease;
+  transition: transform 0.7s ease;
+}
+.card:not(.form-card) {
+  /* transition: translateY 1s ease; */
 }

@@ -1,18 +1,18 @@
 import { loadData } from "../store/workList.js";
 import { SORT_METHOD } from "../constant/sortMethod.js";
-const sortBtnTextToggle = (btn) => {
-  const sortMethod = btn.textContent;
-  if (sortMethod === SORT_METHOD.created) {
-    btn.textContent = SORT_METHOD.current;
+
+const sortBtnTextToggle = (currentSortMethodString, sortMethodElement) => {
+  if (currentSortMethodString === SORT_METHOD.created) {
+    sortMethodElement.textContent = SORT_METHOD.current;
   } else {
-    btn.textContent = SORT_METHOD.created;
+    sortMethodElement.textContent = SORT_METHOD.created;
   }
 };
 
-const getSortedWorkList = (workList, nowSortMethod) => {
+const getSortedWorkList = (workList, sortMethodElement) => {
   return workList.map(([sectionType, dataArr], i) => {
     dataArr.sort((a, b) => {
-      if (nowSortMethod === SORT_METHOD.created)
+      if (sortMethodElement === SORT_METHOD.created)
         return (
           new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime()
         );
@@ -54,13 +54,35 @@ const sortingAnimation = (sortedList) => {
 
       card.classList.add("sorting-card");
       card.style.setProperty("--translateY-offset", `${offset}px`);
+      setTimeout(() => {
+        card.classList.remove("sorting-card"); // 정렬된 이후에는 애니메이션 제거.
+      }, 700);
+      setTimeout(() => {
+        updateUI(sectionType, cardListArr, orderedListId); // 애니메이션에 시점에 맞춰서 UI도 업데이트 되도록 바뀜.
+      }, 700);
     });
   });
 };
+
+const updateUI = (sectionType, cardNodeList, orderedListId) => {
+  const cardContainer = document.querySelector(
+    `.${sectionType}-wrapper .card-container`
+  );
+  const formCard = document.querySelector(`.${sectionType}-form-card`);
+
+  const orderedCardNodeList = orderedListId.map((cardId) =>
+    cardNodeList.find((card) => Number(card.id) === cardId)
+  );
+
+  cardContainer.replaceChildren(formCard, ...orderedCardNodeList);
+};
+
 const sortHandler = (e) => {
-  const { target: sortBtn } = e;
-  const currentSortMethod = sortBtn.textContent;
-  sortBtnTextToggle(sortBtn); // 텍스트 토글
+  const { currentTarget: sortBtn } = e;
+  const sortMethodElement = sortBtn.querySelector(".sort-method");
+  const currentSortMethod = sortMethodElement.textContent;
+
+  sortBtnTextToggle(currentSortMethod, sortMethodElement); // 텍스트 토글
 
   const workList = Object.entries(loadData()); // storage에서 데이터 가져오기.
 

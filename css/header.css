@@ -9,14 +9,22 @@
   border: 1px solid var(--border-bord);
   opacity: 0px;
   margin-left: 16px;
+
+  width: max-content;
+  display: flex;
+  align-items: center;
+}
+.sort-btn img {
+  width: 16px;
+  height: 16px;
 }
 .sort-btn:hover {
   cursor: pointer;
 }
 .sort-method {
   padding: 1.5px 4px;
-  width: 46px;
   display: flex;
+  width: max-content;
   align-items: center;
   font-size: 12px;
   font-weight: 500;
