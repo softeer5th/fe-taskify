@@ -1,7 +1,10 @@
 import { classNames, keys } from '../strings.js'
+import { makeTodoMoveAction } from '../utils/actionFactory.js'
 import { findDomElement } from '../utils/domUtil.js'
 import { getState } from '../utils/stateUtil.js'
 import { storeData } from '../utils/storageUtil.js'
+import { addAction } from './actionManager.js'
+import { addHistory } from './historyManager.js'
 import { renewTodoCount } from './todoManager.js'
 
 const DEBUG = false
@@ -9,6 +12,7 @@ const DEBUG = false
 let originElementId = null
 let originCategory = null
 let originIndex = null
+let originTodoItem = null
 
 let prevCategory = null
 let prevIndex = null
@@ -29,6 +33,7 @@ export const manageDragEvents = (dragTargetElement) => {
         originElementId = e.target.id
         originCategory = category
         originIndex = index
+        originTodoItem = category.values.todoList[index]
         prevCategory = category
         currentCategory = category
         prevIndex = index
@@ -48,21 +53,6 @@ export const manageDropEvents = (dragReceiverElement, category) => {
         // 드롭을 허용하기 위해 기본 동작 취소
         e.preventDefault()
     })
-    component.addEventListener('drop', (e) => {
-        // 일부 요소의 링크 열기와 같은 기본 동작 취소
-        e.preventDefault()
-        renewTodoCount(originCategory)
-        renewTodoCount(currentCategory)
-
-        originElementId = null
-        originCategory = null
-        originIndex = null
-        prevCategory = null
-        prevIndex = null
-        currentCategory = null
-        currentIndex = null
-    })
-
     let dragDepth = 0
     component.addEventListener('dragenter', (e) => {
         dragDepth++
@@ -208,11 +198,40 @@ export const manageDropEvents = (dragReceiverElement, category) => {
             )
     })
     component.addEventListener('drop', (e) => {
-        DEBUG && console.log('drop', category.identifier)
+        DEBUG &&
+            console.log(
+                'drop',
+                originCategory.identifier,
+                originIndex,
+                'to ',
+                currentCategory.identifier,
+                currentIndex
+            )
+        // 일부 요소의 링크 열기와 같은 기본 동작 취소
+        e.preventDefault()
+        renewTodoCount(originCategory)
+        renewTodoCount(currentCategory)
+
+        storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
+
+        if (originCategory !== currentCategory) {
+            const todoMoveAction = makeTodoMoveAction(
+                originCategory,
+                currentCategory,
+                originTodoItem,
+                currentCategory.values.todoList[currentIndex]
+            )
+
+            addAction(todoMoveAction)
+            addHistory(todoMoveAction)
+        }
+
+        originElementId = null
+        originCategory = null
+        originIndex = null
         prevCategory = null
         prevIndex = null
         currentCategory = null
         currentIndex = null
-        storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
     })
 }
