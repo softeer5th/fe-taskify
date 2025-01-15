@@ -97,6 +97,7 @@ const makeContentLabel = (action) => {
 const openHistoryView = () => {
     historyViewElement.style.display = 'flex'
     isHistoryViewOpen = true
+    renderHistoryView()
 }
 
 const closeHistoryView = () => {
@@ -107,7 +108,7 @@ const closeHistoryView = () => {
 export const addHistory = (action) => {
     historyList.push(action)
     storeData(keys.HISTORY_STORAGE_KEY, historyList)
-    renderHistoryView()
+    isHistoryViewOpen && renderHistoryView()
 }
 
 export const removeAllHistory = () => {
