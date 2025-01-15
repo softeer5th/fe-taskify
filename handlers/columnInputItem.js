@@ -1,10 +1,9 @@
-import createNewColumnItem from "../components/ColumnInputItem/ui/createNewColumnItem.js";
 import ColumnItem from "../components/ColumnItem/ColumnItem.js";
 import { STORAGE_KEY } from "../constants/storageKey.js";
 import historyStore from "../store/historyStore.js";
+import todoStore from "../store/TodoStore.js";
 import getDevice from "../utils/getDevice.js";
 import { loadLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
-import { getRandomId } from "../utils/random.js";
 
 export const handleInputTitle = (e) => {
   const $input = e.target;
@@ -67,15 +66,18 @@ export const handleCancelEdit = (e, store) => {
 
 // add일 때 등록 기능 | edit 일 때 편집 기능
 export const handleSubmit = (e, store, type) => {
-  const sectionId = e.target.closest(".column__container").id;
   const $columnItem = e.target.closest(".column__item");
-  const $columnBody = $columnItem.closest(".column__body");
+  const $columnContainer = e.target.closest(".column__container");
+  const sectionId = $columnContainer.id;
+  const sectionTitle = $columnContainer.querySelector(
+    ".column__header .column__title"
+  ).textContent;
 
   const title = $columnItem.querySelector("#title").value.trim();
   const content = $columnItem.querySelector("#content").value.trim();
 
   type === "add"
-    ? addColumnList({ $columnBody, sectionId, title, content })
+    ? addColumnList({ sectionId, sectionTitle, title, content })
     : editColumnList({ $columnItem, sectionId, title, content });
 
   store.isTodoAdding = false;
@@ -122,49 +124,15 @@ const saveEditTodoList = ({ todoList, sectionId, itemId, title, content }) => {
   });
 };
 
-const addColumnList = ({ $columnBody, sectionId, title, content }) => {
-  const uniqueId = getRandomId();
-
-  const newCard = {
-    id: uniqueId,
+const addColumnList = ({ sectionId, sectionTitle, title, content }) => {
+  const column = sectionTitle;
+  const newTodo = {
     title,
     content,
     author: getDevice(),
-    createdAt: new Date(),
   };
 
-  const $newColumnItem = createNewColumnItem({
-    ...newCard,
-  });
-
-  $columnBody.replaceChild($newColumnItem, $columnBody.firstChild);
-  saveAddTodoList({ $columnBody, sectionId, newCard, title });
-};
-
-const saveAddTodoList = ({ $columnBody, sectionId, newCard, title }) => {
-  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
-
-  const column = todoList.find((section) => section.id === sectionId).title;
-
-  const newTodoList = todoList.map((section) =>
-    section.id === sectionId
-      ? {
-          ...section,
-          items: [...section.items, newCard],
-        }
-      : section
-  );
-
-  const itemLength = newTodoList.find((section) => section.id === sectionId)
-    .items.length;
-
-  const $columnCount = $columnBody
-    .closest(".column__container")
-    .querySelector(".column__count");
-
-  $columnCount.textContent = itemLength;
-  saveLocalStorage(STORAGE_KEY.todoList, newTodoList);
-
+  todoStore.add({ sectionId, todo: newTodo });
   historyStore.action({
     action: "add",
     column,

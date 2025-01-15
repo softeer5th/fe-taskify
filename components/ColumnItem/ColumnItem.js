@@ -1,3 +1,4 @@
+import todoStore from "../../store/TodoStore.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
 import createColumnItem from "./ui/createColumnItem.js";
 
@@ -12,6 +13,29 @@ const ColumnItem = ({ id, title = "", content = "", author = "web" }) => {
   });
 
   return $columnItem;
+};
+
+todoStore.subscribe(({ sectionId, newTodo, todoList }) => {
+  const $columnBody = document.querySelector(`#${sectionId} .column__body`);
+
+  $columnBody.replaceChild(ColumnItem({ ...newTodo }), $columnBody.firstChild);
+
+  updateCount({
+    $columnBody,
+    newTodoList: todoList,
+    sectionId,
+  });
+});
+
+const updateCount = ({ $columnBody, newTodoList, sectionId }) => {
+  const itemLength = newTodoList.find((section) => section.id === sectionId)
+    .items.length;
+
+  const $columnCount = $columnBody
+    .closest(".column__container")
+    .querySelector(".column__count");
+
+  $columnCount.textContent = itemLength;
 };
 
 export default ColumnItem;
