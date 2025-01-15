@@ -1,0 +1,97 @@
+
+
+
+.card {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 104px;
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(254, 254, 254, 1);
+    box-shadow: 0px 1px 4px 0px rgba(110, 128, 145, 0.24);
+
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.textArea {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.iconButtons {
+    display: flex;
+    flex-direction: column;
+}
+
+.textArea > h3 {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2em;
+    margin-bottom: 8px;
+}
+
+.textArea > h3[contenteditable="true"], .textArea > pre[contenteditable="true"] {
+    outline: none;
+    min-width: 100%;
+}
+
+.empty:before {
+    content: attr(data_placeholder);
+}
+
+.textArea > pre {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2em;
+    color: rgba(110, 113, 145, 1);
+    margin-bottom: 18px;
+    white-space: pre-wrap
+}
+
+.textArea > span {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2em;
+    color: rgba(160, 163, 189, 1)
+}
+
+
+.cardModifyButton {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cardModifyButton > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    height: 32px;
+    font-size:14px;
+    font-weight: 700;
+    border-radius: 8px;
+
+    background: rgba(247, 247, 252, 1);
+    color: rgba(110, 113, 145, 1)
+}
+
+.cardModifyButton > button:hover {
+    opacity: 0.8;
+}
+.cardModifyButton > button:active {
+    opacity: 1;
+}
+.cardModifyButton > button:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.cardModifyButton > button:last-child {
+    background: rgba(0, 122, 255, 1);
+    color: rgba(254, 254, 254, 1);
+
+}
