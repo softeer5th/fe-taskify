@@ -91,6 +91,11 @@ body {
     font: var(--font-medium-s);
     color: var(--color-text-weak);
 }
+.activity-history__clear-btn {
+    font: var(--font-bold-r);
+    color: var(--color-text-danger);
+    align-self: last baseline;
+}
 
 .main {
     display: flex;

@@ -16,6 +16,10 @@ export const initHistoryView = () => {
     const historyCloseBtn = historyViewElement.querySelector(
         `.${classNames.historyCloseBtn}`
     )
+    const historyClearBtn = historyViewElement.querySelector(
+        `.${classNames.historyClearBtn}`
+    )
+
     closeHistoryView()
     historyToggleBtn.addEventListener('click', () => {
         if (isHistoryViewOpen) {
@@ -27,6 +31,10 @@ export const initHistoryView = () => {
     historyCloseBtn.addEventListener('click', () => {
         closeHistoryView()
     })
+    historyClearBtn.addEventListener('click', () => {
+        removeAllHistory()
+    })
+
     renderHistoryView()
 }
 

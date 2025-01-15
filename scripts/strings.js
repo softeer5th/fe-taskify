@@ -29,6 +29,7 @@ export const classNames = {
     historyToggleBtn: 'activity-history__toggle-btn',
     historyCloseBtn: 'activity-history__close-btn',
     historyBody: 'activity-history__body',
+    historyClearBtn: 'activity-history__clear-btn',
 
     historyItemCreator: 'activity-history__item__nickname',
     historyItemContent: 'activity-history__item__content',
