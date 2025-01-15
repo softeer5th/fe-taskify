@@ -27,6 +27,13 @@ export const classNames = {
 
     historyView: 'activity-history',
     historyToggleBtn: 'activity-history__toggle-btn',
+    historyCloseBtn: 'activity-history__close-btn',
+    historyBody: 'activity-history__body',
+
+    historyItemCreator: 'activity-history__item__nickname',
+    historyItemContent: 'activity-history__item__content',
+    historyItemTime: 'activity-history__item__time',
+
     afterImage: 'after-image',
 
     button: 'btn',
@@ -42,6 +49,7 @@ export const templateNames = {
     todoItemAddForm: 'todo-item-add-form-template',
     todoItemEditForm: 'todo-item-edit-form-template',
     historyView: 'activity-history-template',
+    historyItem: 'activity-history-item-template',
 }
 
 export const keys = {

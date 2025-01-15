@@ -1,9 +1,9 @@
-import { generateUid } from '../utils/dataManager.js'
+import { generateUid } from '../utils/dataUtil.js'
 
 const createAction = (actionType, userName, timeStamp, data) => {
     return {
         uid: generateUid(),
-        actionType,
+        type: actionType,
         userName,
         timeStamp,
         data,

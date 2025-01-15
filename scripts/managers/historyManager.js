@@ -1,14 +1,26 @@
-import { classNames, keys } from '../strings.js'
+import { Action } from '../domain/Action.js'
+import { classNames, keys, templateNames } from '../strings.js'
+import { actionTypes } from '../types/actionTypes.js'
+import { createDomElementAsChild } from '../utils/domUtil.js'
 import { loadData } from '../utils/storageUtil.js'
 
 let historyList = loadData(keys.HISTORY_STORAGE_KEY) ?? []
 let isHistoryViewOpen = false
 let historyViewElement = null
 
+historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
+historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
+historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
+historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
+historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
+
 export const initHistoryView = () => {
     historyViewElement = document.querySelector(`.${classNames.historyView}`)
     const historyToggleBtn = document.querySelector(
         `.${classNames.historyToggleBtn}`
+    )
+    const historyCloseBtn = historyViewElement.querySelector(
+        `.${classNames.historyCloseBtn}`
     )
     closeHistoryView()
     historyToggleBtn.addEventListener('click', () => {
@@ -18,6 +30,58 @@ export const initHistoryView = () => {
             openHistoryView()
         }
     })
+    historyCloseBtn.addEventListener('click', () => {
+        closeHistoryView()
+    })
+
+    const historyBody = historyViewElement.querySelector(
+        `.${classNames.historyBody}`
+    )
+    historyList.forEach((action) => {
+        createDomElementAsChild(
+            templateNames.historyItem,
+            historyBody,
+            (identifier, component) => {
+                let content = makeContentLabel(action.type)
+                console.log(content)
+                component.querySelector(
+                    `.${classNames.historyItemContent}`
+                ).textContent = content
+                // TODO: time 가공하기
+                component.querySelector(
+                    `.${classNames.historyItemTime}`
+                ).textContent = action.timeStamp
+            }
+        )
+    })
+}
+
+const makeContentLabel = (actionType) => {
+    let content = ''
+    const todoTitle = 'ㅈㅁ'
+    const category = 'ㅋㅌㄱㄹ'
+    const prevCat = 'ㅇㅈㅋㅌㄱㄹ'
+    const curCat = 'ㅈㄱㅋㅌㄱㄹ'
+    switch (actionType) {
+        case actionTypes.todoCreate:
+            content = `${todoTitle}을(를) ${category}에 등록하였습니다.`
+            break
+        case actionTypes.todoDelete:
+            content = `${todoTitle}을(를) ${category}에서 삭제하였습니다.`
+            break
+        case actionTypes.todoEdit:
+            content = `${todoTitle}을(를) 변경하였습니다.`
+            break
+        case actionTypes.todoMove:
+            content = `${todoTitle}을(를) ${prevCat}에서 ${curCat}으로 이동하였습니다.`
+            break
+        case actionTypes.todoSort:
+            // content = ``
+            break
+        default:
+            break
+    }
+    return content
 }
 
 const openHistoryView = () => {
