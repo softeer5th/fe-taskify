@@ -1,7 +1,7 @@
-import { Action } from '../domain/Action'
-import { keys } from '../strings'
-import { actionTypes } from '../types/actionTypes'
-import { loadData, storeData } from '../utils/storageUtil'
+import { Action } from '../domain/Action.js'
+import { keys } from '../strings.js'
+import { actionTypes } from '../types/actionTypes.js'
+import { loadData, storeData } from '../utils/storageUtil.js'
 
 let actionList = loadData(keys.ACTION_STORAGE_KEY) ?? []
 let pointer = loadData(keys.ACTION_POINTER_STORAGE_KEY) ?? -1
@@ -45,26 +45,31 @@ export const redoRecentAction = (callback) => {
     callback(action.actionType, action.data)
 }
 
-export const makeTodoAddAction = (categoryUid, todoIndex) => {
+export const makeTodoAddAction = (categoryUid, todoItem) => {
     const data = {
         categoryUid,
-        todoIndex,
+        todoItem,
     }
     return Action(actionTypes.todoCreate, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoDeleteAction = (categoryUid, todoIndex) => {
+export const makeTodoDeleteAction = (categoryUid, todoItem) => {
     const data = {
         categoryUid,
-        todoIndex,
+        todoItem,
     }
     return Action(actionTypes.todoDelete, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoEditAction = (categoryUid, todoIndex) => {
+export const makeTodoEditAction = (
+    categoryUid,
+    prevTodoItem,
+    currentTodoItem
+) => {
     const data = {
         categoryUid,
-        todoIndex,
+        prevTodoItem,
+        currentTodoItem,
     }
     return Action(actionTypes.todoEdit, '@멋진삼', new Date(), data)
 }
@@ -72,14 +77,14 @@ export const makeTodoEditAction = (categoryUid, todoIndex) => {
 export const makeTodoMoveAction = (
     prevCategoryUid,
     currentCategoryUid,
-    prevTodoIndex,
-    currentTodoIndex
+    prevTodoItem,
+    currentTodoItem
 ) => {
     const data = {
         prevCategoryUid,
         currentCategoryUid,
-        prevTodoIndex,
-        currentTodoIndex,
+        prevTodoItem,
+        currentTodoItem,
     }
     return Action(actionTypes.todoMove, '@멋진삼', new Date(), data)
 }

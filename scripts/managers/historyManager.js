@@ -2,7 +2,7 @@ import { Action } from '../domain/Action.js'
 import { classNames, keys, templateNames } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
 import { createDomElementAsChild } from '../utils/domUtil.js'
-import { loadData } from '../utils/storageUtil.js'
+import { loadData, storeData } from '../utils/storageUtil.js'
 
 let historyList = loadData(keys.HISTORY_STORAGE_KEY) ?? []
 let isHistoryViewOpen = false
@@ -27,10 +27,14 @@ export const initHistoryView = () => {
     historyCloseBtn.addEventListener('click', () => {
         closeHistoryView()
     })
+    renderHistoryView()
+}
 
+const renderHistoryView = () => {
     const historyBody = historyViewElement.querySelector(
         `.${classNames.historyBody}`
     )
+    historyBody.replaceChildren()
     historyList.forEach((action) => {
         createDomElementAsChild(
             templateNames.historyItem,
@@ -91,9 +95,11 @@ const closeHistoryView = () => {
 export const addHistory = (action) => {
     historyList.push(action)
     storeData(keys.HISTORY_STORAGE_KEY, historyList)
+    renderHistoryView()
 }
 
 export const removeAllHistory = () => {
     historyList = []
     storeData(keys.HISTORY_STORAGE_KEY, historyList)
+    renderHistoryView()
 }

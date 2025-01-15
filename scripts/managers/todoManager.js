@@ -10,6 +10,13 @@ import { getState, setState } from '../utils/stateUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 import { manageDragEvents, manageDropEvents } from './dragManager.js'
 import { Category } from '../domain/category.js'
+import { addHistory } from './historyManager.js'
+import {
+    addAction,
+    makeTodoAddAction,
+    makeTodoDeleteAction,
+    makeTodoEditAction,
+} from './actionManager.js'
 
 const RESET_DATA = false
 
@@ -188,11 +195,12 @@ const addTodoItem = (title, content, author, category) => {
     const parentDomElement = findDomElement(category.identifier).querySelector(
         `.${classNames.todoBody}`
     )
+    let todoItem = null
     createDomElementAsChild(
         templateNames.todoItem,
         parentDomElement,
         (identifier, component) => {
-            const todoItem = TodoItem(identifier, title, content, author)
+            todoItem = TodoItem(identifier, title, content, author)
             category.values.todoList.unshift(todoItem)
             initTodoItemElement(component, todoItem)
         },
@@ -202,6 +210,9 @@ const addTodoItem = (title, content, author, category) => {
     // category 객체를 참조하므로 setState를 안 해도 변경이 되긴 함 .. 맘에 안들지만 일단은 이렇게
     storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
     renewTodoCount(category)
+    const todoAddAction = makeTodoAddAction(category.values.uid, todoItem)
+    addAction(todoAddAction)
+    addHistory(todoAddAction)
 }
 
 const getTodoItemInfo = (identifier) => {
@@ -222,13 +233,17 @@ const removeTodoItem = (identifier) => {
     removeDomElement(identifier)
     renewTodoCount(category)
     storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
+
+    const todoDeleteAction = makeTodoDeleteAction(category.values.uid, todoItem)
+    addAction(todoDeleteAction)
+    addHistory(todoDeleteAction)
 }
 
 const editTodoItem = (identifier) => {
     const { category, index: targetIdx, todoItem } = getTodoItemInfo(identifier)
     const todoList = category.values.todoList
 
-    const originTodoItem = todoList[targetIdx]
+    const originTodoItem = todoItem
     const {
         title: originTitle,
         content: originContent,
@@ -259,11 +274,12 @@ const editTodoItem = (identifier) => {
                     // TODO: author 정보 동적으로 가져오기
                     const author = 'web'
 
+                    let editedTodoItem = null
                     replaceDomElement(
                         templateNames.todoItem,
                         editFormElement,
                         (identifier, component) => {
-                            const editedTodoItem = TodoItem(
+                            editedTodoItem = TodoItem(
                                 identifier,
                                 title,
                                 content,
@@ -277,6 +293,13 @@ const editTodoItem = (identifier) => {
                         keys.TODO_CATEGORY_KEY,
                         getState(keys.TODO_CATEGORY_KEY)
                     )
+                    const todoEditAction = makeTodoEditAction(
+                        category.values.uid,
+                        originTodoItem,
+                        editedTodoItem
+                    )
+                    addAction(todoEditAction)
+                    addHistory(todoEditAction)
                 })
             component
                 .querySelector(`.${classNames.todoEditFormCancelBtn}`)

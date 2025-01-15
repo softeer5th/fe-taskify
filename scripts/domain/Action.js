@@ -1,18 +1,25 @@
 /**
  *  action type에 따른 data 구조 정의
  *
- *  todoCreate, todoDelete, todoEdit =
+ *  todoCreate, todoDelete =
  *  {
  *      categoryUid,
- *      todoIndex,
+ *      todoItem,
+ *  }
+ *
+ *  todoEdit =
+ *  {
+ *      categoryUid,
+ *      prevTodoItem,
+ *      currentTodoItem,
  *  }
  *
  *  todoMove =
  *  {
  *      prevCategoryUid,
  *      currentCategoryUid,
- *      prevTodoIndex,
- *      currentTodoIndex,
+ *      prevTodoItem,
+ *      currentTodoItem,
  *  }
  *
  *  todoSort =
