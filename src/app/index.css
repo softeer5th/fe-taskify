@@ -84,7 +84,7 @@
     font-family: var(--pretendard);
     font-size: var(--md);
     font-weight: var(--medium);
-    line-height: 22;
+    line-height: 22px;
 }
 
 .display-medium14 {

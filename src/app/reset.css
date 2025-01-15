@@ -155,18 +155,20 @@ outline: none;
 }
 
 input {
--webkit-appearance: none; /* Safari and Chrome */
--moz-appearance: none; /* Firefox */
-appearance: none;
-
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    -webkit-appearance: none; /* Safari and Chrome */
+    -moz-appearance: none; /* Firefox */
     appearance: none;
-}
 
-&:focus {
-    outline: none;
-}
+    [type="number"]::-webkit-inner-spin-button,
+    [type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    border: 0;
+
+    &:focus {
+        outline: none;
+    }
 }

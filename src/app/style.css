@@ -1,3 +1,39 @@
+.container-df90505 {
+    width: 400px;
+    padding: var(--gap-400) var(--gap-300) var(--gap-300) var(--gap-300);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-400);
+
+    text-align: center;
+
+    border-width: 0;
+    border-radius: var(--gap-100);
+}
+
+.background-df90505 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #14212B4D;
+}
+
+.text-df90505 {
+  color: var(--text-default);
+}
+
+.buttons-df90505 {
+  display: flex;
+  gap: var(--gap-100);
+}
 .container-8805cde {
     min-width: 24px;
     height: 24px;
@@ -32,6 +68,7 @@
 
 .contained-c3e2d78:disabled, .ghost-c3e2d78:hover {
     opacity: 30%;
+    cursor: not-allowed;
 }
 
 .ghost-c3e2d78 {
@@ -39,8 +76,82 @@
     color: var(--text-default);
 }
 
+.sub-c3e2d78 {
+    background-color: var(--surface-alt);
+    color: var(--text-default);
+}
+
+.danger-c3e2d78 {
+    background-color: var(--surface-danger);
+}
+
 .full-c3e2d78 {
     width: 100%;
+}
+.container-8367cd6 {
+    width: 320px;
+    padding: var(--gap-200);
+
+    display: flex;
+
+    background-color: var(--surface-default);
+
+    border: 1px solid var(--border-default);
+    border-radius: var(--gap-100);
+}
+
+.text-container-8367cd6 {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--gap-100)
+}
+
+.icon-container-8367cd6 {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-8367cd6, .body-8367cd6 .caption-8367cd6{
+    width: 100%;
+}
+
+.title-8367cd6 {
+    color: var(--text-strong);
+}
+
+.body-8367cd6 {
+    color: var(--text-default);
+}
+
+.caption-8367cd6 {
+    padding-top: var(--gap-100);
+    color: var(--text-weak);
+}
+
+.buttons-8367cd6 {
+    width: 100%;
+
+    padding-top: var(--gap-200);
+
+    display: flex;
+    gap: var(--gap-100);
+}
+
+/* 타입에 따른 스타일링 */
+
+.add-edit-8367cd6 {
+    flex-direction: column;
+}
+
+.place-8367cd6 {
+    opacity: 0.3-8367cd6;
+}
+
+.drag-8367cd6 {
+    
 }
 .container-d7cea73 {
     display: inline-flex;

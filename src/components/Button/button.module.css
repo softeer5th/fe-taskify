@@ -16,11 +16,21 @@
 
 .contained:disabled, .ghost:hover {
     opacity: 30%;
+    cursor: not-allowed;
 }
 
 .ghost {
     background-color: transparent;
     color: var(--text-default);
+}
+
+.sub {
+    background-color: var(--surface-alt);
+    color: var(--text-default);
+}
+
+.danger {
+    background-color: var(--surface-danger);
 }
 
 .full {

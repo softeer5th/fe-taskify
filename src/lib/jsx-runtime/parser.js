@@ -11,9 +11,6 @@ const DIRTY_SEPERATOR_REGEX_G = /(dirtyindex:\d+:)/g;
  * @returns {VDOM} - 생성된 가상 DOM
  */
 export const parser = (strings, ...args) => {
-  /**
-   *
-   */
   const getRootElement = () => {
     /**
      * @returns {string} - 템플릿 문자열
@@ -86,18 +83,21 @@ export const parser = (strings, ...args) => {
 
     Array.from(attributes).forEach((attr) => {
       const { name, value } = attr;
-      if (name === "class") {
+
+      if (name.includes(DIRTY_PREFIX)) {
+        const arg = formatAttributes(name);
+        if (arg) props[arg] = true;
+      } else if (name === "class") {
         const classes = value.split(" ").map((className) => formatAttributes(className)).join(" ");
         props[name] = classes;
-        return;
-      }
-      props[name] = formatAttributes(value);
+      } else props[name] = formatAttributes(value);
     });
     return props;
   };
 
   /**
    * 자식 노드들을 파싱하여 자식 VDOM 배열로 변환합니다.
+   * @param {any} parentId - 부모 VDOM의 id
    * @param {any} childNodes - 자식 노드들
    * @param {Function} callback - VDOM으로 변환할 콜백 함수
    * @returns {VDOM[]} - 변환된 자식 노드들
@@ -105,6 +105,7 @@ export const parser = (strings, ...args) => {
   const getChildren = (childNodes, callback) => {
     const children = [];
     if (!childNodes) return children;
+
     Array.from(childNodes).forEach((child) => {
       if (child.nodeType === Node.ELEMENT_NODE) {
         children.push(callback(child));
@@ -132,5 +133,6 @@ export const parser = (strings, ...args) => {
   };
 
   const rootElement = getRootElement();
+
   return parseElement(rootElement);
 };
