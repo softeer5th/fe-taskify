@@ -6,6 +6,7 @@ import { sort } from "./sort.js";
 import { deleteCard, closeDeleteModal } from "./card/deleteCard.js";
 import { dragendCard, dragoverCard, dragStartCard } from "./card/moveCard.js";
 import { showHistoryModal } from "./history/historyModal.js";
+import { addHistory, getHistory } from "../utils/storage/historyManager.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   setDefaultColumn();
@@ -39,6 +40,14 @@ document.addEventListener("click", ({ target }) => {
       timestamp: Date.now(),
     };
     makeCard(task, parentColumn);
+
+    addHistory(
+      task.timestamp,
+      "ADD",
+      task.title,
+      parentColumn.getAttribute("data-column-key"),
+      "empty"
+    );
   } else if (target.classList.contains("task-add-can-btn")) {
     // 취소 버튼 클릭시
     closeCardModal(parentColumn);

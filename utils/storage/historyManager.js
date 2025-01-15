@@ -1,18 +1,16 @@
 export const addHistory = (
   timestamp,
-  functionIndex,
-  task,
-  newTask,
-  columnNum,
-  newColumnNum
+  functionType, //ADD, DELETE, EDIT , MOVE
+  title,
+  column,
+  ColumnTogo
 ) => {
   const history = {
-    timestamp: timestamp,
-    functionIndex: functionIndex,
-    task: task,
-    newTask: newTask,
-    columnNum: columnNum,
-    newColumnNum: newColumnNum,
+    timestamp: timestamp, //num
+    functionType: functionType, // string
+    title: title, //str
+    column: column, //str
+    columnTogo: ColumnTogo, //str 없으면 "empty"
   };
 
   const storedHistory = getHistory() || [];
