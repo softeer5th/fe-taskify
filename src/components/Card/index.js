@@ -19,6 +19,7 @@ import styles from "./card.module.js";
 export const Card = ({
   title, body, type = "default", onClickDelBtn,
 }) => {
+  // TODO: useInput 커스텀 훅을 사용하여 리팩토링하기
   const [cardType, setCardType] = useState(type);
   const [cardTitle, setCardTitle] = useState(title);
   const [cardBody, setCardBody] = useState(body);
