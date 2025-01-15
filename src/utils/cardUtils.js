@@ -1,6 +1,8 @@
+
 import { ColumnCard } from '../components/Card/ColumnCard.js';
 import { Modal } from '../components/Modal/Modal.js';
 import { Background } from '../layout/Background/Background.js';
+import { doneModel, progressModel, todoModel } from './mockup.js';
 
 export function showCardList(element,cardList){
     const fragment = document.createDocumentFragment();
@@ -40,14 +42,14 @@ export function addCardToggle({addForm,headerColumn}){
     return;
 }
 
-export function addCard({titleInput,contentInput,addForm,headerColumn}){
+export function addCard({titleInput,contentInput,addForm,columnName,tasksData}){
     const title = titleInput.value;
     const content = contentInput.value;
     
 
     if (title && content) {
         addForm.remove()
-        const newCard =ColumnCard({
+        const newTodo ={
             title,
             content ,
             author:"author by web" ,                
@@ -55,9 +57,14 @@ export function addCard({titleInput,contentInput,addForm,headerColumn}){
             deleteId: 'card-delete-toggle',
             closeText:"취소",
             checkId:"삭제"
-        })
-        headerColumn.insertAdjacentElement('afterend', newCard); 
+        }
+        const [model, columnSort] = handleColumn(columnName);
+        model.addTask(newTodo)
+        
+        const newData = {...tasksData,[columnSort]:model.tasks}
+        localStorage.setItem('tasks',JSON.stringify(newData)) ;  
     }
+    return;
 
 }
 
@@ -136,5 +143,15 @@ export function editCard({editForm}){
         });
         editForm.insertAdjacentElement('afterend',newForm);
         editForm.remove()  
+    }
+}
+
+export function handleColumn(columnName) {
+    if (columnName === 'todo-column') {
+        return [todoModel, 'todos'];
+    } else if (columnName === 'in-progress-column') {
+        return [progressModel, 'progress'];
+    } else if (columnName === 'done-column') {
+        return [doneModel, 'done'];
     }
 }
