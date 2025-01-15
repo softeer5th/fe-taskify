@@ -72,16 +72,26 @@ export default function State() {
         }
     }
 
-    function addTask(index, task) {
-        const newId = taskId++;
-        const newTask = {
-            ...task,
-            taskId: newId,
-        };
+    function addTask(index, task, id) {
+        let newTask = null;
+        let newId = null;
         
+        if(id === undefined) {
+            newId = taskId++;
+            newTask = {
+                ...task,
+                taskId: newId,
+            };
+        }
+        else {
+            newTask = {
+                ...task,
+                taskId: id,
+            };
+        }
         columnTasks[index].push(newTask);
 
-        return newId;
+        return id === undefined ? newId : id;
     }
 
     function moveTask(destinationIndex, task) {

@@ -205,3 +205,18 @@ header > span {
         text-align: center;
     }
 }
+
+#fab_container {
+    position: absolute;
+    right: 48px;
+    bottom: 48px;    
+}
+
+.fab_button {
+    padding: 12px;
+    margin-bottom: 16px;
+    
+    &:last-of-type {
+        margin: 0px;
+    }
+}
