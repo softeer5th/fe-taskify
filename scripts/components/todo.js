@@ -33,7 +33,6 @@ export const initTodo = () => {
             res.push(Category(`id-${id}`, `id-${id}`))
             id += eleCnt + 1
         }
-        console.log(res)
         categoryList = res
 
         id = 1

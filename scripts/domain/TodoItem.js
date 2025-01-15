@@ -1,12 +1,15 @@
+import { generateUid } from '../utils/dataManager.js'
+
 // TODO: indexing
 
 const createTodoItem = (identifier, title, content, author) => {
     return {
-        identifier: identifier,
+        identifier,
         values: {
-            title: title,
-            content: content,
-            author: author,
+            uid: generateUid(),
+            title,
+            content,
+            author,
         },
     }
 }

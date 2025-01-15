@@ -1,15 +1,12 @@
-const createCategory = (
-    identifier,
-    categoryName,
-    todoList = [],
-    todoFormDomId = null
-) => {
+import { generateUid } from '../utils/dataManager.js'
+
+const createCategory = (identifier, categoryName, todoList = []) => {
     return {
-        identifier: identifier,
-        todoFormDomId: todoFormDomId,
+        identifier,
         values: {
-            categoryName: categoryName,
-            todoList: todoList,
+            uid: generateUid(),
+            categoryName,
+            todoList,
         },
     }
 }

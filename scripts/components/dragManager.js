@@ -4,7 +4,7 @@ import { getState } from '../utils/stateUtil.js'
 import { storeData } from '../utils/storageUtil.js'
 import { renewTodoCount } from './todo.js'
 
-const DEBUG = true
+const DEBUG = false
 
 let originElementId = null
 let originCategory = null
@@ -77,7 +77,7 @@ export const manageDropEvents = (dragReceiverElement, category) => {
             prevCategory = currentCategory
             currentCategory = category
             if (prevCategory.identifier !== currentCategory.identifier) {
-                // 카테고리가 바뀌면 skeleton update
+                // 카테고리가 바뀌면 dom update
                 updateFlag = true
 
                 DEBUG &&
@@ -99,7 +99,7 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                     prevIndex = currentIndex
                     currentIndex = idx
                     if (prevIndex !== currentIndex) {
-                        // index가 바뀌면 skeleton update
+                        // index가 바뀌면 dom update
                         updateFlag = true
 
                         DEBUG &&
@@ -118,7 +118,6 @@ export const manageDropEvents = (dragReceiverElement, category) => {
             if (e.target.classList.contains(classNames.todoDragZone)) {
                 updateFlag = true
                 isInDragZone = true
-                // currentIndex = currentCategory.values.todoList.length
                 if (DEBUG) {
                     console.log('[ dragzone ]')
                     console.log(
