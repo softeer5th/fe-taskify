@@ -8,34 +8,20 @@ export default function ColumnView({ column, count, state, onColumnTitleEvent, o
   columnElement.classList.add("column");
   columnElement.id = column.id;
 
+  const columnTitle = document.createElement("div");
+  columnTitle.classList.add("column__title");
+
   if (state === "editing") {
-    const columnTitle = document.createElement("div");
     columnTitle.classList.add("column__title-edit");
 
     const columnTextInput = document.createElement("input");
     columnTextInput.value = column.title;
     columnTextInput.classList.add("column__textarea-title");
-    columnTextInput.autofocus = true;
     columnTextInput.maxLength = 50;
     columnTextInput.addEventListener("focusout", onColumnTitleEvent);
 
-    const columnAddButton = document.createElement("button");
-    columnAddButton.innerHTML = plus;
-    columnAddButton.addEventListener("click", onAddButtonClicked);
-
-    const columnCloseButton = document.createElement("button");
-    columnCloseButton.innerHTML = closed;
-    columnCloseButton.addEventListener("click", onColumnDeleteButtonClicked);
-
     columnTitle.appendChild(columnTextInput);
-    columnTitle.appendChild(columnAddButton);
-    columnTitle.appendChild(columnCloseButton);
-
-    columnElement.appendChild(columnTitle);
   } else {
-    const columnTitle = document.createElement("div");
-    columnTitle.classList.add("column__title");
-
     const columnTextarea = document.createElement("div");
     columnTextarea.classList.add("column__textarea");
 
@@ -54,22 +40,23 @@ export default function ColumnView({ column, count, state, onColumnTitleEvent, o
     columnTextarea.appendChild(columnTitleText);
     columnTextarea.appendChild(columnTaskCount);
 
-    const columnAddButton = document.createElement("button");
-    columnAddButton.innerHTML = plus;
-    columnAddButton.addEventListener("click", onAddButtonClicked);
-    columnAddButton.classList.add("column__add-button");
-
-    const columnCloseButton = document.createElement("button");
-    columnCloseButton.innerHTML = closed;
-    columnCloseButton.addEventListener("click", onColumnDeleteButtonClicked);
-    columnCloseButton.classList.add("column__close-button");
-
     columnTitle.appendChild(columnTextarea);
-    columnTitle.appendChild(columnAddButton);
-    columnTitle.appendChild(columnCloseButton);
-
-    columnElement.appendChild(columnTitle);
   }
+
+  const columnAddButton = document.createElement("button");
+  columnAddButton.classList.add("column__add-button");
+  columnAddButton.innerHTML = plus;
+  columnAddButton.addEventListener("click", onAddButtonClicked);
+
+  const columnCloseButton = document.createElement("button");
+  columnCloseButton.classList.add("column__close-button");
+  columnCloseButton.innerHTML = closed;
+  columnCloseButton.addEventListener("click", onColumnDeleteButtonClicked);
+
+  columnTitle.appendChild(columnAddButton);
+  columnTitle.appendChild(columnCloseButton);
+
+  columnElement.appendChild(columnTitle);
 
   const columnTaskList = document.createElement("div");
   columnTaskList.classList.add("column__task-list");
