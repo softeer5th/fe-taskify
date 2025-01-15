@@ -8,7 +8,9 @@ export default function ColumnController(model = new Model(), rootElement = docu
   const columnListView = ColumnListView();
   rootElement.appendChild(columnListView);
 
-  const fab = Fab({ onButtonClick: handleAddColumnButtonClick });
+  const fab = Fab({ icon: "plus", color: "brand", onButtonClick: handleAddColumnButtonClick });
+  fab.style.right = "48px";
+  fab.style.bottom = "48px";
   rootElement.appendChild(fab);
 
   model.addListener(onModelChanged);
