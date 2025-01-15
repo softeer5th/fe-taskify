@@ -16,6 +16,7 @@
 
 .contained:disabled, .ghost:hover {
     opacity: 30%;
+    cursor: not-allowed;
 }
 
 .ghost {

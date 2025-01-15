@@ -23,10 +23,6 @@ export const Card = ({
   const [cardTitle, setCardTitle] = useState(title);
   const [cardBody, setCardBody] = useState(body);
 
-  // TODO: diffing algorithm 구현 이후 제어 컴포넌트로 수정, 버튼 비활성화 구현하기.
-  const titleRef = useRef(null);
-  const bodyRef = useRef(null);
-
   /**
    *
    * @param {Function} onClickLeft - 왼쪽 버튼 클릭 이벤트 시 호출할 함수.
@@ -38,8 +34,6 @@ export const Card = ({
     const handleClickCancelButton = () => setCardType("default");
 
     const handleClickEnrollButton = () => {
-      // setCardTitle(titleRef.current.value);
-      // setCardBody(bodyRef.current.value);
       setCardType("default");
     };
 
@@ -74,10 +68,20 @@ export const Card = ({
   const FormContent = () => {
     const MAX_LENGTH = 500;
 
+    const handleInputTitle = (e) => {
+      const { value } = e.target;
+      setCardTitle(value);
+    };
+
+    const handleInputBody = (e) => {
+      const { value } = e.target;
+      setCardBody(value);
+    };
+
     return parser`
       <form class="${styles["text-container"]}">
-        <input ref=${titleRef} class="${typos.display.bold[14]} ${styles.title}" placeholder="제목을 입력하세요" value=${cardTitle} maxLength=${MAX_LENGTH} required />
-        <input ref=${bodyRef} class="${typos.display.medium[14]} ${styles.body}" placeholder="내용을 입력하세요" value=${cardBody} maxLength=${MAX_LENGTH} required />
+        <input onInput=${handleInputTitle} class="${typos.display.bold[14]} ${styles.title}" placeholder="제목을 입력하세요" value=${cardTitle} maxLength=${MAX_LENGTH} required />
+        <input onInput=${handleInputBody} class="${typos.display.medium[14]} ${styles.body}" placeholder="내용을 입력하세요" value=${cardBody} maxLength=${MAX_LENGTH} required />
       </form>
     `;
   };

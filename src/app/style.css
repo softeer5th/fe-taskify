@@ -68,6 +68,7 @@
 
 .contained-c3e2d78:disabled, .ghost-c3e2d78:hover {
     opacity: 30%;
+    cursor: not-allowed;
 }
 
 .ghost-c3e2d78 {
