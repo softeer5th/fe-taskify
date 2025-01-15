@@ -31,7 +31,11 @@ export const Card = ({
    * @returns {VDOM} - 버튼 컴포넌트 가상돔
    */
   const Buttons = () => {
-    const handleClickCancelButton = () => setCardType("default");
+    const handleClickCancelButton = () => {
+      setCardTitle(title);
+      setCardBody(body);
+      setCardType("default");
+    };
 
     const handleClickEnrollButton = () => {
       setCardType("default");
