@@ -10,12 +10,19 @@ export class DefaultCard extends Component {
         this.addRootclass("card");
         this.addRootclass("card-default");
 
+        this.addEvent("drag", () => {
+            this.current.classList.add("dragging");
+        });
+        this.addEvent("dragend", () => {
+            this.current.classList.remove("dragging");
+        });
+
         this.cardData = cardData;
         this.onCloseClick = onCloseClick;
         this.onEditClick = onEditClick;
 
     }
-
+    
     template() {
         return `
             <div class = "card-text_area">
@@ -40,6 +47,7 @@ export class DefaultCard extends Component {
 
         super.render(parent);
         this.current.id = `card${this.cardData.cardId}`;
+        this.current.draggable = true;
 
         const close = this.current.querySelector("#close-icon");
 

@@ -10,8 +10,9 @@ export class Header extends Component {
 
     currentSortType = sortType.create;
 
-    constructor(onSortClick = (sortType) => { }, onHistoryClick = () => { }) {
+    constructor(currentSortType, onSortClick = (sortType) => { }, onHistoryClick = () => { }) {
         super();
+        this.currentSortType = currentSortType;
         this.setChildren();
         this.onSortClick = onSortClick;
         this.onHistoryClick = onHistoryClick;
@@ -32,7 +33,6 @@ export class Header extends Component {
         } else {
             this.currentSortType = sortType.create;
         }
-        this.setChildren();
     }
 
     template() {
@@ -61,9 +61,9 @@ export class Header extends Component {
         }
 
     }
-    
-    rerender(){
-        
+
+    rerender() {
+
         this.setChildren();
 
         this.children.sort.object.addEvent("click", () => {

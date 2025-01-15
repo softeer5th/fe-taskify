@@ -1,4 +1,5 @@
 import Component from "../../../components/component.js";
+import { getCardData } from "../route/store/todoStore.js";
 import { DefaultCard } from "./Card/card.js";
 import { EditCard } from "./Card/editCard.js";
 import { ColumnHeader } from "./columnHeader.js";
@@ -22,11 +23,21 @@ export class Column extends Component {
         this.rerender();
     }
 
-    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }) {
+    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }, onCardMoving = () => { }, onCardMoved = () => { }) {
         super();
         this.columnData = columnData;
         this.addRootclass("column");
         this.setCallback(onCardAdded, onCardDelete);
+
+        this.addEvent("dragenter", () => {
+            this.showDragGhost();
+        });
+        this.addEvent("dragleave", () => {
+            this.removeDragGhost();
+        });
+        this.addEvent("drop", () => {
+            this.onCardMoved();
+        });
 
         this.setChildren();
     }
@@ -50,7 +61,7 @@ export class Column extends Component {
             },
             input: {
                 object: new EditCard(null, this.onNewCardAdded, this.onNewCardDismiss)
-            }
+            },
         };
 
         this.columnData.data.forEach((cardData, index) => {
@@ -92,7 +103,6 @@ export class Column extends Component {
     }
 
     createEditCard(index, preCardData) {
-        console.log("precatd", preCardData);
         this.children[`card${index}`] = {
             object: new EditCard(
                 preCardData,
@@ -124,6 +134,30 @@ export class Column extends Component {
         }
     }
 
+    showDragGhost() {
+
+        console.log("cardId111",document.querySelector(".dragging").id);
+        const cardId = document.querySelector(".dragging").id.slice(4);
+        console.log("cardId",cardId);
+        // const cardData = getCardData(cardId);
+
+        // const ghostCard = this.createDefaultCard(0, cardData);
+
+        // console.log("dragging1111", ghostCard);
+        // ghostCard.classList.add(".ghostCard");
+
+        // this.current.insertBefore(ghostCard, this.current.firstChild);
+        // console.log("dragging", dragging);
+    }
+
+    removeDragGhost() {
+        const ghostCard = this.current.querySelector(".ghostCard");
+        if (ghostCard) {
+            this.current.removeChild(ghostCard);
+        }
+    }
+
+
     template() {
         return '';
     }
@@ -134,7 +168,7 @@ export class Column extends Component {
         this.applyAnimation();
     }
 
-    rerender(){
+    rerender() {
         super.rerender(parent);
         this.hideAddCard();
     }
@@ -145,13 +179,12 @@ export class Column extends Component {
             return
         }
 
-        console.log("animation", this.columnData);
         const prev = previousPositions[this.columnData.name];
 
         const newPositions = this.columnData.data.map((card) => {
             const cardElement = this.parent.querySelector(`#card${card.cardId}`);
             if (cardElement) {
-                const rect = cardElement.getBoundingClientRect(); 
+                const rect = cardElement.getBoundingClientRect();
                 return {
                     id: card.cardId,
                     top: rect.top,
@@ -181,10 +214,10 @@ export class Column extends Component {
                 }
 
                 newPos.element.addEventListener("transitionend", () => {
-                    this.remeberPreOrder(); 
+                    this.remeberPreOrder();
                 }, { once: true });
             });
-        
+
         });
     }
 
@@ -192,7 +225,7 @@ export class Column extends Component {
         previousPositions[this.columnData.name] = this.columnData.data.map((card) => {
             const cardElement = this.parent.querySelector(`#card${card.cardId}`);
             if (cardElement) {
-                const rect = cardElement.getBoundingClientRect(); // 현재 위치 저장
+                const rect = cardElement.getBoundingClientRect();
                 return {
                     id: card.cardId,
                     top: rect.top,

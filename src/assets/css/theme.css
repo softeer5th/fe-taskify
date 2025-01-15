@@ -1,5 +1,5 @@
 :root {
-    margin: 0 auto;
+    margin: 0;
     width: 100vw;
     height: 100vh;
 
@@ -44,7 +44,24 @@
 }
 
 body{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
     background-color: var(--color_surface_alt);
+    margin: 0;
+}
+
+#app{
+    width: 100%;
+    height: 100%;
+}
+
+#appContainer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .display-bold24 {
