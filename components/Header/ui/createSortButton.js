@@ -15,13 +15,9 @@ const getSortedTodoList = ({ todoList, sortType }) => {
   return [...todoList].map((section) => {
     section.items.sort((a, b) => {
       if (sortType === "최신 순") {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+        return new Date(b.createdAt) - new Date(a.createdAt);
       } else if (sortType === "생성 순") {
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
+        return new Date(a.createdAt) - new Date(b.createdAt);
       }
       return 0;
     });
