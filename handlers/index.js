@@ -8,6 +8,7 @@ import { handleCancelAdd, handleClickAdd } from "./columnHeader.js";
 import {
   handleCancelEdit,
   handleInputContent,
+  handleInputTitle,
   handleSubmit,
 } from "./columnInputItem.js";
 import { handleClickDelete, handleClickEdit } from "./columnItem.js";
