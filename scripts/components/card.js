@@ -1,4 +1,4 @@
-import { draggedCardIdState } from '../main.js';
+import { draggedCardState } from '../main.js';
 import {
   initCardTextArea,
   initCardIconButtons,
@@ -6,7 +6,8 @@ import {
   setCardShadow,
   toggleDisplay,
 } from '../utils/helpers/cardHelper.js';
-import createState from '../utils/helpers/stateHelper.js';
+import createState from '../store/models/stateHelper.js';
+import { initModal } from '../utils/helpers/etcHelper.js';
 
 /**
  * @typedef {Object} Card
@@ -18,14 +19,23 @@ import createState from '../utils/helpers/stateHelper.js';
 
 /**
  * 카드 컴포넌트
- * @param {'default' | 'add' | 'drag' | 'place' | 'edit'} mode - 카드 모드
- * @param {Card} cardData - 카드 데이터
- * @param {function} addCard - 카드 추가 함수
- * @param {function} deleteCard - 카드 삭제 함수
- * @param {function} editCard - 카드 수정 함수
+ * @param {object} props
+ * @param {'default' | 'add' | 'drag' | 'place' | 'edit'} props.mode - 카드 모드. edit 모드는 기획서엔 없으나 자체적으로 추가함
+ * @param {Card} props.cardData - 카드 데이터
+ * @param {function} props.addCard - 카드 추가 함수
+ * @param {function} props.deleteCard - 카드 삭제 함수
+ * @param {function} props.editCard - 카드 수정 함수
+ * @param {function} props.initCardsInColumn - 컬럼에 있는 카드들 초기화하는 함수
  * @returns {HTMLElement} - 카드 요소를 포함하는 HTMLElement
  */
-const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
+const Card = ({
+  mode = 'default',
+  cardData,
+  addCard,
+  deleteCard,
+  editCard,
+  initCardsInColumn,
+}) => {
   /**
    * @type {HTMLElement}
    */
@@ -38,8 +48,10 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
   const cardMode = createState(mode);
 
   cardState.subscribe(() => {
-    if (cardMode.getState() === 'add') addCard(cardState.getState());
-    else editCard(cardState.getState());
+    if (cardMode.getState() === 'add') {
+      addCard(cardState.getState());
+      cardElement.id = cardState.getState().id;
+    } else editCard(cardState.getState());
     cardMode.setState('default');
   });
 
@@ -52,8 +64,23 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
   initCardIconButtons(
     cardElement,
     () => {
-      cardElement.remove();
-      deleteCard(cardState.getState().id);
+      const overlay = initModal('선택한 카드를 삭제할까요?');
+      initCardButtons(overlay.querySelector('.modal'), [
+        {
+          name: 'cancel',
+          handler: () => {
+            overlay.style.display = 'none';
+          },
+        },
+        {
+          name: 'delete',
+          handler: () => {
+            overlay.style.display = 'none';
+            cardElement.remove();
+            deleteCard(cardState.getState().id);
+          },
+        },
+      ]);
     },
     () => {
       cardMode.setState('edit');
@@ -94,13 +121,15 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
   updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
 
   cardElement.addEventListener('dragstart', (event) => {
-    draggedCardIdState.setState(cardElement.id);
-    event.dataTransfer.effectAllowed = 'move';
     cardMode.setState('place');
-  });
-
-  cardElement.addEventListener('dragend', () => {
-    cardMode.setState('default');
+    draggedCardState.setState({
+      cardState: cardState.getState(),
+      fromColumnInit: () => {
+        deleteCard(cardState.getState().id);
+        initCardsInColumn();
+      },
+    }),
+      (event.dataTransfer.effectAllowed = 'move');
   });
 
   return cardElement;

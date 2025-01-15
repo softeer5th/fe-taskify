@@ -1,7 +1,10 @@
-import { draggedCardIdState } from '../main.js';
-import { createCard } from '../utils/helpers/cardHelper.js';
+import { draggedCardState } from '../main.js';
+import {
+  createCard,
+  initCardsInColumn,
+} from '../utils/helpers/columnHelper.js';
 import { updateColumn } from '../utils/helpers/localStorageHelper.js';
-import createState from '../utils/helpers/stateHelper.js';
+import createState from '../store/models/stateHelper.js';
 import Card from './card.js';
 /**
  * @typedef {Object} Card
@@ -33,8 +36,6 @@ const Column = (columnData) => {
 
   const columnState = createState(columnData);
   columnState.subscribe(() => {
-    // TODO: 바뀐 데이터를 로컬스토리지나 서버에 저장해야함
-    console.log('컬럼초기화');
     updateColumn(columnState.getState());
     columnElement.querySelector('.textlabel').textContent =
       columnState.getState().cards.length;
@@ -43,10 +44,6 @@ const Column = (columnData) => {
   columnElement.querySelector('h2').textContent = columnData.columnName;
   columnElement.querySelector('.textlabel').textContent =
     columnState.getState().cards.length;
-
-  columnData.cards.forEach((cardData) => {
-    columnElement.appendChild(createCard('default', cardData, columnState));
-  });
 
   columnElement.querySelector('#add-card').addEventListener('click', (e) => {
     const newCard = createCard(
@@ -57,6 +54,7 @@ const Column = (columnData) => {
         body: null,
         createdDate: null,
       },
+      columnElement,
       columnState
     );
 
@@ -77,11 +75,14 @@ const Column = (columnData) => {
       // TODO: 상위 요소에게 컬럼 삭제 이벤트 전달
     });
 
-  columnElement.addEventListener('dragover', (event) => {
-    event.preventDefault(); // 드롭을 허용
+  // 카드 초기화
+  initCardsInColumn(columnElement, columnState);
 
-    const draggedCard = document.getElementById(draggedCardIdState.getState()); // 드래그 중인 요소 선택
-    
+  columnElement.addEventListener('dragover', (event) => {
+    event.preventDefault(); // 이벤트 전파 방지
+
+    const draggedCard = document.getElementById(draggedCardState.getState().cardState.id); // 드래그 중인 요소 선택
+
     const dropzone_li = event.target.closest('li'); // 드롭된 위치 선택
     const dropzone_ul = event.target.closest('ul'); // 드롭된 위치 선택
 
@@ -109,12 +110,27 @@ const Column = (columnData) => {
   });
 
   columnElement.addEventListener('drop', (event) => {
-    event.preventDefault(); // 기본 동작 방지
-    const draggableElement = document.getElementById(draggedCardId.getState()); // 드래그 중인 요소 선택
-    const dropzone = event.target.closest('ul'); // 드롭된 위치 선택
-    console.log('eef', draggableElement, '\neea', dropzone);
-    dropzone.appendChild(draggableElement); // 드래그 중인 요소를 드롭된 위치에 추가
-    event.dataTransfer.clearData(); // 드래그 데이터 초기화
+    event.preventDefault(); // 이벤트 전파 방지
+    const draggedCardInfo = draggedCardState.getState().cardState;
+    const draggedCardElement = document.getElementById(draggedCardInfo.id); // 드래그 중인 요소 선택
+
+    // drop 이벤트가 발생하고 있다는 것은, draggedCard가 현재 컬럼에서 이동하고 있다는 것으로 간주
+    const cards = columnElement.querySelectorAll('li');
+    const draggedCardIdx = Array.from(cards).indexOf(draggedCardElement);
+
+    // drop 이벤트가 발생하면, 카드의 고향 컬럼을 초기화
+    draggedCardState.getState().fromColumnInit();
+
+    // 컬럼에 추가된 draggedCard를 현재 columnState에 반영
+    columnState.setState((prev) => {
+      const cards = [...prev.cards];
+      cards.splice(draggedCardIdx, 0, { ...draggedCardInfo });
+      return { ...prev, cards };
+    });
+    initCardsInColumn(columnElement, columnState);
+
+    // draggedCardState 초기화
+    draggedCardState.setState(null);
   });
 
   return columnElement;
