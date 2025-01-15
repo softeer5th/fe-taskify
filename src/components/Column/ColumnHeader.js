@@ -2,7 +2,7 @@ import { loadCss } from '../../utils/loadcss.js';
 import { Badge } from '../Badge/Badge.js';
 import { Button } from '../Button/Button.js';
 
-export function ColumnHeader({title,badgeContent,addId,closeId}){
+export function ColumnHeader({title,badgeContent,addId,closeId,model}){
     const columnHeader = document.createElement('div');
     columnHeader.className = "column-header";
     columnHeader.innerHTML = `
@@ -19,7 +19,7 @@ export function ColumnHeader({title,badgeContent,addId,closeId}){
 
     const columnTitle = columnHeader.querySelector('.column-header-title');
     const titleContainer = columnHeader.querySelector('.column-title-container');
-    const badge = Badge(badgeContent);
+    const badge = Badge({model,content:badgeContent});
     
     columnTitle.insertAdjacentElement('afterend', badge);
     titleContainer.insertAdjacentElement('afterend',closedButton);
