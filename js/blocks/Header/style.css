@@ -28,12 +28,13 @@ header {
     .activity__list{
         display: none;
         background-color: var(--grayscale-50);
+        border-radius: 16px;
         
         .activity__list__header{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 16px;
+            padding: 20px 16px;
 
             .title {
                 font-size: 16px;
@@ -52,6 +53,10 @@ header {
                 }
             }
         }        
+        
+        ul {
+            padding: 0px 8px;
+        }
     }
 
     .clock__btn {
@@ -69,9 +74,18 @@ header {
     .record__container {
         display: flex;
 
-        .textBox {   
-            display: flex;
-            flex-direction: column;
+        img {
+            width: 40px;
+            height: 40px;
+            margin: 16px;
         }
     }
+}
+
+.text__box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px;
+    width: 256px;
 }

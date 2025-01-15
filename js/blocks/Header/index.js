@@ -34,7 +34,12 @@ export const renderRecords = () => {
         userImg.src = '/assets/user.png';
         const username = document.createElement('p');
         username.textContent = '@이름이용';
+        username.className = 'medium14';
+        username.style.color = '#6E7191';
         const content = document.createElement('p');
+        content.className = 'medium14';
+        content.style.color = '#6E7191';
+
         let type;
         switch (record.type) {
             case 'add':
@@ -56,9 +61,12 @@ export const renderRecords = () => {
                 type = '알 수 없음';
                 break;
         }
-        content.innerHTML = `<strong>${record.title}</strong>을(를) <strong>${CATEGORY[record.beforeCategory]}</strong>에서 <strong>${CATEGORY[record.afterCategory]}</strong>으로 <strong>${type}</strong> 하였습니다.`;
+        content.innerHTML = `<strong style="color: black;">${record.title}</strong>을(를) <strong style="color: black;">${CATEGORY[record.beforeCategory]}</strong>에서 <strong style="color: black;">${CATEGORY[record.afterCategory]}</strong>으로 <strong style="color: black;">${type}</strong> 하였습니다.`;
         const time = document.createElement('p');
         time.textContent = `3분전`;
+        time.className = 'medium12';
+        time.style.color = '#A0A3BD';
+        
 
         textBox.appendChild(username);
         textBox.appendChild(content);
