@@ -11,12 +11,12 @@ import { loadData, storeData } from '../utils/storageUtil.js'
 import { manageDragEvents, manageDropEvents } from './dragManager.js'
 import { Category } from '../domain/category.js'
 import { addHistory } from './historyManager.js'
+import { addAction } from './actionManager.js'
 import {
-    addAction,
     makeTodoAddAction,
     makeTodoDeleteAction,
     makeTodoEditAction,
-} from './actionManager.js'
+} from '../utils/actionFactory.js'
 
 const RESET_DATA = false
 
