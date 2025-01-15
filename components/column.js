@@ -48,7 +48,7 @@ export default function ColumnComponent() {
         addButton.addEventListener("click", () =>
             handleAdd(formContainer, columnIdx)
         );
-        const listElement = columnElement.querySelector('.card_list')
+        const listElement = columnElement.querySelector(".card_list");
         listElement.addEventListener("dragover", (e) => e.preventDefault());
         listElement.addEventListener("drop", handleDrop);
         listElement.addEventListener("dragenter", handleDragEnter);
@@ -60,12 +60,6 @@ export default function ColumnComponent() {
             ".column_task_counter"
         )[idx];
         if (n > MAX_TASKS) counterElement.textContent`${MAX_TASKS}+`;
-        else counterElement.textContent = n;
-    }
-
-    function rerenderHeader(idx, n) {
-        const counterElement = document.body.querySelectorAll('.column_task_counter')[idx];
-        if(n > MAX_TASKS) counterElement.textContent `${MAX_TASKS}+`;
         else counterElement.textContent = n;
     }
 

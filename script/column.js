@@ -8,25 +8,24 @@ export default function ColumnController(state, bodyElement) {
     const formComponent = FormComponent();
     const taskController = TaskController(state, (idx)=>{
         renderColumn(idx, columnTasks[idx]);
-        columnComponent.rerenderHeader(idx, columnTasks[idx].length);
     });
     
     function handleDrop(e) {
+        e.stopPropagation();
         const {task, element, dummyElement} = state.getDragged();
         const columnListElement = e.currentTarget;
         const startIdx = task.column;
         const columnIdx = Number(columnListElement.parentNode.getAttribute('index'));
 
         if(task.column !== columnIdx) columnListElement.removeChild(dummyElement);
-        element.style.opacity = 1;
+        resetDrop();
         columnListElement.appendChild(element);
 
         state.moveTask(columnIdx, task)
         state.resetDragged();
 
-
-        columnComponent.rerenderHeader(startIdx, columnTasks[startIdx].length);
-        columnComponent.rerenderHeader(columnIdx, columnTasks[columnIdx].length);
+        renderColumn(startIdx, state.sortTask(columnTasks[startIdx]))
+        renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
     }
 
     function handleDragEnter(e) {
@@ -42,7 +41,12 @@ export default function ColumnController(state, bodyElement) {
             return;
         }
 
-        columnListElement.appendChild(dummyElement);
+        const tempTask = state.sortTask([...columnTasks[columnIdx], task])
+        const dragIdx = tempTask.findIndex(el => el.taskId == task.taskId);
+        
+        const targetElement = columnListElement.children[dragIdx];
+        
+        columnListElement.insertBefore(dummyElement, targetElement);
     }
 
     function handleDragLeave(e) {
@@ -66,10 +70,18 @@ export default function ColumnController(state, bodyElement) {
     // 입력받은 tasks와 현재 존재하는 task Element를 비교하여 존재하는 Element는 재사용, 존재하지 않는 Element는 생성, 필요 없어진 Element는 삭제 진행
     // 애니메이션 적용
     function renderColumn(idx, tasks) {
-        const columnElement = bodyElement.querySelectorAll(".card_list")[idx];
+        const columnElement = bodyElement.querySelectorAll('.column')[idx];        
+        const columnListElement = columnElement.querySelector(".card_list");
+
+        const currentCounter = Number(columnElement.querySelector('.column_task_counter').textContent);
+
+        // Task의 개수가 변동 시, 숫자 변경
+        if(currentCounter != tasks.length) {
+            columnComponent.rerenderHeader(idx, tasks.length);
+        }
 
         // 변경 전 Element들의 위치 저장
-        const originalPosition = [...columnElement.children].map(el => {
+        const originalPosition = [...columnListElement.children].map(el => {
             const {top} = el.getBoundingClientRect();
             const taskId = Number( el.getAttribute('taskId'));
 
@@ -81,7 +93,7 @@ export default function ColumnController(state, bodyElement) {
         });
 
         // 잔여 Task 목록
-        const currentTasksWithId = Array.from(columnElement.children).map((el) => {
+        const currentTasksWithId = Array.from(columnListElement.children).map((el) => {
             return {
                 taskId: Number(el.getAttribute("taskid")),
                 element: el,
@@ -108,13 +120,13 @@ export default function ColumnController(state, bodyElement) {
         // 일치하지 않는 잔여 Task 삭제
         currentTasksWithId.forEach((el)=>{
             if(el === undefined) return;
-            columnElement.removeChild(el.element)
+            columnListElement.removeChild(el.element)
         })
 
-        columnElement.appendChild(taskFragmentElement);
+        columnListElement.appendChild(taskFragmentElement);
 
         // 새로 렌더링 될 Element들의 위치 계산
-        const newPosition = [...columnElement.children].map(el => {
+        const newPosition = [...columnListElement.children].map(el => {
             const {top} = el.getBoundingClientRect();
             const taskId = Number( el.getAttribute('taskId'));
 
@@ -164,6 +176,11 @@ export default function ColumnController(state, bodyElement) {
 
     }
 
+    function resetDrop() {
+        const {task, element, dummyElement} = state.getDragged();
+        element.style.opacity = 1;
+    }
+
     // Task 생성 Form Submit handler
     function handleSubmit(title, content, columnIdx) {
         const newTask = {
@@ -173,9 +190,8 @@ export default function ColumnController(state, bodyElement) {
             created: new Date(),
         };
 
-        const newId = state.addTask(columnIdx, newTask);
+        state.addTask(columnIdx, newTask);
         renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]));
-        columnComponent.rerenderHeader(columnIdx, columnTasks[columnIdx].length);
     }
 
     // Column의 + 버튼을 눌러 Task를 생성하기 위한 Form 생성
@@ -200,6 +216,8 @@ export default function ColumnController(state, bodyElement) {
         const mainElement = document.createElement("main");
         const columnContainerElement = document.createElement("ul");
         columnContainerElement.setAttribute("id", "column_container");
+        columnContainerElement.addEventListener('dragover', (e)=>e.preventDefault());
+        columnContainerElement.addEventListener('drop', resetDrop)
         const columnListFragment = document.createDocumentFragment();
 
         for (let column of columnList) {
