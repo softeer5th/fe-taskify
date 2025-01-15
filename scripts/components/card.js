@@ -7,6 +7,7 @@ import {
   toggleDisplay,
 } from '../utils/helpers/cardHelper.js';
 import createState from '../store/models/stateHelper.js';
+import { initModal } from '../utils/helpers/etcHelper.js';
 
 /**
  * @typedef {Object} Card
@@ -63,8 +64,23 @@ const Card = ({
   initCardIconButtons(
     cardElement,
     () => {
-      cardElement.remove();
-      deleteCard(cardState.getState().id);
+      const overlay = initModal('선택한 카드를 삭제할까요?');
+      initCardButtons(overlay.querySelector('.modal'), [
+        {
+          name: 'cancel',
+          handler: () => {
+            overlay.style.display = 'none';
+          },
+        },
+        {
+          name: 'delete',
+          handler: () => {
+            overlay.style.display = 'none';
+            cardElement.remove();
+            deleteCard(cardState.getState().id);
+          },
+        },
+      ]);
     },
     () => {
       cardMode.setState('edit');

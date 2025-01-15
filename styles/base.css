@@ -213,3 +213,12 @@ button:disabled {
 ul, ol {
   list-style: none; /* 기본 글머리 기호나 번호 제거 */
 }
+
+button svg path {
+  transition: fill 0.3s ease; /* transition 효과 추가 */
+}
+
+button:hover svg path {
+  fill: #ff0000; /* 원하는 색상으로 변경 */
+}
+

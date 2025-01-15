@@ -83,6 +83,7 @@ const initCardIconButtons = (cardElement, eventHandler1, eventHandler2) => {
  * @param {{name: string, handler: function}} buttonInfos
  */
 const initCardButtons = (cardElement, buttonInfos) => {
+  cardElement.querySelector('#button-area').innerHTML = '';
   const buttonsArea = cardElement.querySelector('#button-area');
 
   buttonsArea.append(
