@@ -39,10 +39,10 @@ export function delCard(cardId) {
     delCardAlert.style.display = "block";
     let card = document.querySelector("#card-id"+cardId);
     delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
-    addListener(delCardAlert.querySelector('#cancel-delete-card-button'),(event)=>{
+    addListener(delCardAlert.querySelector('#cancel-del-card-button'),(event)=>{
         hideAlert();
     });
-    addListener(delCardAlert.querySelector('#confirm-delete-card-button'),(event)=>{
+    addListener(delCardAlert.querySelector('#confirm-del-card-button'),(event)=>{
         hideAlert();
         if (card) {
             card.remove();
@@ -95,6 +95,7 @@ export function editCard(cardId) {
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
+
     newInfoDiv.querySelector('#content-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
@@ -173,8 +174,6 @@ export function moveCard(event, clone) {
 export function moveCardIllusion(newParent, clone) {
     const columnArea = document.getElementById("column-area");
     [...columnArea.children].forEach((column)=> {
-        console.log(column);
-        console.log(clone.id);
         let tempCard = column.querySelector(`#temp-${clone.id}`);
         if (tempCard) {
             tempCard.className = "temp-card"
@@ -198,7 +197,6 @@ export function finishDragCard(clone) {
         realCard.style.opacity = 1;
         setEventForCard({"cardId": draggingCardId});
 
-        console.log(realCard);
         isDragging = false;
         clone.remove();
         document.body.classList.remove('no-select');

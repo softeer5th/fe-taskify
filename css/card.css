@@ -4,7 +4,7 @@
     list-style: none;
     padding-left: 0;
     width: 100%;
-    height: calc(100vh - 210px);
+    height: calc(100vh - 205px);
 }
 
 .card-list li {

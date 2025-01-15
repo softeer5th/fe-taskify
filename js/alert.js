@@ -1,18 +1,30 @@
 export let overlay = document.getElementById('overlay');
+
 const alertArea = document.getElementById('alert-area');
 
+function deleteHTML(action) {
+    return `
+    <p class="delObj"></p>
+    <button id="cancel-${action}-button" class="modal-cancel-button">취소</button>
+    <button id="confirm-${action}-button" class="modal-confirm-button">확인</button>`
+};
 
 // 특정 카드 삭제
 export function createDeleteCardAlert(cardId) {
     const delCardAlertDiv = document.createElement('div');
     delCardAlertDiv.className = 'modal';
     delCardAlertDiv.id = `deleteCardAlert-${cardId}`;
-    delCardAlertDiv.innerHTML = `
-        <p class="delObj"></p>
-        <button id="cancel-delete-card-button" class="modal-cancel-button">취소</button>
-        <button id="confirm-delete-card-button" class="modal-confirm-button">확인</button>
-    `;
+    delCardAlertDiv.innerHTML = deleteHTML('del-card');
     alertArea.appendChild(delCardAlertDiv);
+}
+
+// 칼럼 삭제
+export function createDeleteColumnAlert(columnId) {
+    const delColumnAlertDiv = document.createElement('div');
+    delColumnAlertDiv.className = 'modal';
+    delColumnAlertDiv.id = `deleteColumnAlert-${columnId}`;
+    delColumnAlertDiv.innerHTML = deleteHTML('del-column');
+    alertArea.appendChild(delColumnAlertDiv);
 }
 
 
@@ -21,11 +33,7 @@ export function createDeleteAllCardAlert(columnId) {
     const delAllCardAlertDiv = document.createElement('div');
     delAllCardAlertDiv.className = 'modal';
     delAllCardAlertDiv.id = `deleteAllCardAlert-${columnId}`;
-    delAllCardAlertDiv.innerHTML = `
-        <p class="delObj"></p>
-        <button id="cancel-delete-all-button" class="modal-cancel-button">취소</button>
-        <button id="confirm-delete-all-button" class="modal-confirm-button">확인</button>
-    `;
+    delAllCardAlertDiv.innerHTML = deleteHTML('del-all-card');
     alertArea.appendChild(delAllCardAlertDiv);
 }
 
