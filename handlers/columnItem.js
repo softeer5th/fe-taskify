@@ -1,8 +1,7 @@
 import ColumnInputItem from "../components/ColumnInputItem/ColumnInputItem.js";
 import createModal from "../components/Modal/createModal.js";
-import { STORAGE_KEY } from "../constants/storageKey.js";
 import historyStore from "../store/historyStore.js";
-import { loadLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
+import todoStore from "../store/TodoStore.js";
 
 export const handleClickDelete = (e) => {
   const $columnItem = e.target.closest(".column__item");
@@ -34,34 +33,15 @@ export const handleClickEdit = (e) => {
   $columnItem.replaceWith($columnInputItem);
 };
 
-export const deleteColumnItem = ({ sectionId, itemId, $columnItem }) => {
-  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
-
-  const filteredList = todoList.map((section) =>
-    section.id === sectionId
-      ? {
-          ...section,
-          items: section.items.filter((item) => item.id !== itemId),
-        }
-      : section
-  );
-
-  const itemLength = filteredList.find((section) => section.id === sectionId)
-    .items.length;
-
-  const $columnCount = $columnItem
-    .closest(".column__container")
-    .querySelector(".column__count");
-
-  $columnCount.textContent = itemLength;
-  saveLocalStorage(STORAGE_KEY.todoList, filteredList);
-
-  $columnItem.remove();
-
-  const deletedCard = todoList
+export const deleteColumnItem = ({ sectionId, itemId }) => {
+  const deletedCard = todoStore.todoList
     .find((section) => section.id === sectionId)
     .items.find((item) => item.id === itemId);
 
+  todoStore.remove({
+    sectionId,
+    deletedId: deletedCard.id,
+  });
   historyStore.action({
     action: "remove",
     title: deletedCard.title,

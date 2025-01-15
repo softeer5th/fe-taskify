@@ -22,7 +22,21 @@ class TodoStore extends Observable {
         ? { ...section, items: [...section.items, newTodo] }
         : section
     );
-    this.notify({ sectionId, newTodo, todoList: this.#todoList });
+    this.notify("add", { sectionId, newTodo, todoList: this.#todoList });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  remove({ sectionId, deletedId }) {
+    this.#todoList = [...this.#todoList].map((section) =>
+      section.id === sectionId
+        ? {
+            ...section,
+            items: section.items.filter((item) => item.id !== deletedId),
+          }
+        : section
+    );
+
+    this.notify("remove", { sectionId, deletedId, todoList: this.#todoList });
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 

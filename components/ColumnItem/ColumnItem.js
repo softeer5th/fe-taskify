@@ -15,10 +15,21 @@ const ColumnItem = ({ id, title = "", content = "", author = "web" }) => {
   return $columnItem;
 };
 
-todoStore.subscribe(({ sectionId, newTodo, todoList }) => {
+todoStore.subscribe((action, { sectionId, newTodo, deletedId, todoList }) => {
   const $columnBody = document.querySelector(`#${sectionId} .column__body`);
 
-  $columnBody.replaceChild(ColumnItem({ ...newTodo }), $columnBody.firstChild);
+  if (action === "add") {
+    $columnBody.replaceChild(
+      ColumnItem({ ...newTodo }),
+      $columnBody.firstChild
+    );
+  } else if (action === "remove") {
+    const $columnItem = document.querySelector(
+      `.column__item[data-id="${deletedId}"]`
+    );
+
+    $columnItem.remove();
+  }
 
   updateCount({
     $columnBody,

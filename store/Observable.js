@@ -11,8 +11,8 @@ class Observable {
     this._observers.delete(observer);
   }
 
-  notify(data) {
-    this._observers.forEach((observer) => observer(data));
+  notify(action, data) {
+    this._observers.forEach((observer) => observer(action, data));
   }
 }
 

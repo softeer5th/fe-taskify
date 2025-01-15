@@ -15,7 +15,7 @@ export const handleDeleteCard = (e) => {
     `.column__item[data-id="${itemId}"]`
   );
   const sectionId = $columnItem.closest(".column__container").id;
-  deleteColumnItem({ sectionId, itemId, $columnItem });
+  deleteColumnItem({ sectionId, itemId });
   handleClose(e);
 };
 
