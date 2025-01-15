@@ -33,8 +33,8 @@ const createCard = (mode, cardData, columnState) => {
         ),
       }))
   );
-  
-  return cardElement
+
+  return cardElement;
 };
 
 /**

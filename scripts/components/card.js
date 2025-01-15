@@ -38,8 +38,10 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
   const cardMode = createState(mode);
 
   cardState.subscribe(() => {
-    if (cardMode.getState() === 'add') addCard(cardState.getState());
-    else editCard(cardState.getState());
+    if (cardMode.getState() === 'add') {
+      addCard(cardState.getState());
+      cardElement.id = cardState.getState().id;
+    } else editCard(cardState.getState());
     cardMode.setState('default');
   });
 
@@ -94,13 +96,15 @@ const Card = (mode = 'default', cardData, addCard, deleteCard, editCard) => {
   updateCardDisplay(cardElement, cardState.getState(), cardMode.getState());
 
   cardElement.addEventListener('dragstart', (event) => {
+    cardMode.setState('place');
     draggedCardIdState.setState(cardElement.id);
     event.dataTransfer.effectAllowed = 'move';
-    cardMode.setState('place');
   });
 
-  cardElement.addEventListener('dragend', () => {
+  cardElement.addEventListener('dragend', (event) => {
     cardMode.setState('default');
+    // 카드의 드래그가 끝나면, 해당 카드 원래 위치해있던 컬럼에서 deleteCard를 호출하여 삭제
+    deleteCard(cardState.getState().id);
   });
 
   return cardElement;

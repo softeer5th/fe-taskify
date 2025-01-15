@@ -108,14 +108,14 @@ const Column = (columnData) => {
     }
   });
 
-  columnElement.addEventListener('drop', (event) => {
-    event.preventDefault(); // 기본 동작 방지
-    const draggableElement = document.getElementById(draggedCardId.getState()); // 드래그 중인 요소 선택
-    const dropzone = event.target.closest('ul'); // 드롭된 위치 선택
-    console.log('eef', draggableElement, '\neea', dropzone);
-    dropzone.appendChild(draggableElement); // 드래그 중인 요소를 드롭된 위치에 추가
-    event.dataTransfer.clearData(); // 드래그 데이터 초기화
-  });
+  // columnElement.addEventListener('drop', (event) => {
+  //   event.preventDefault(); // 기본 동작 방지
+  //   const draggableElement = document.getElementById(draggedCardIdState.getState()); // 드래그 중인 요소 선택
+  //   const dropzone = event.target.closest('ul'); // 드롭된 위치 선택
+  //   console.log('eef', draggableElement, '\neea', dropzone);
+  //   dropzone.appendChild(draggableElement); // 드래그 중인 요소를 드롭된 위치에 추가
+  //   event.dataTransfer.clearData(); // 드래그 데이터 초기화
+  // });
 
   return columnElement;
 };
