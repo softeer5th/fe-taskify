@@ -1,6 +1,9 @@
-import { overlay, createDeleteAllCardAlert, hideAlert } from "./alert.js";
+import { overlay, createDeleteAllCardAlert, createDeleteColumnAlert, hideAlert } from "./alert.js";
 import { checkCardInput, confirmAddCard } from "./card_action.js";  
-import { addListener } from "./main.js";
+import { addListener } from "./event_listeners.js";
+import { getIsOrderChanging, toggleIsColumnNameChanging, toggleIsOrderChanging } from "./store.js";
+
+let sortingOrder = 1;
 
 export function addCard(id) {
     const parentElement = document.querySelector('#column-id'+id);
@@ -50,6 +53,24 @@ export function addCard(id) {
     }
 }
 
+export function delColumn(columnId) {
+    overlay.style.display = "block";
+    createDeleteColumnAlert(columnId);
+    let delColumnAlert = document.getElementById(`deleteColumnAlert-${columnId}`);
+    delColumnAlert.style.display = "block";
+    delColumnAlert.querySelector('.delObj').textContent = "칼럼을 삭제하시겠습니까?";
+    let cardList = document.getElementById("card-list"+columnId);
+
+    delColumnAlert.querySelector('#cancel-del-column-button').addEventListener('click',(event)=>{
+        hideAlert();
+    });
+    delColumnAlert.querySelector('#confirm-del-column-button').addEventListener('click',(event)=>{
+        overlay.style.display = "none";
+        hideAlert();
+        document.getElementById(`column-id${columnId}`).remove();
+    });
+}
+
 
 export function delAllCard(columnId) {
     overlay.style.display = "block";
@@ -59,10 +80,10 @@ export function delAllCard(columnId) {
     delAllCardAlert.querySelector('.delObj').textContent = "칼럼의 모든 카드를 삭제하시겠습니까?";
     let cardList = document.getElementById("card-list"+columnId);
 
-    delAllCardAlert.querySelector('#cancel-delete-all-button').addEventListener('click',(event)=>{
+    delAllCardAlert.querySelector('#cancel-del-all-card-button').addEventListener('click',(event)=>{
         hideAlert();
     });
-    delAllCardAlert.querySelector('#confirm-delete-all-button').addEventListener('click',(event)=>{
+    delAllCardAlert.querySelector('#confirm-del-all-card-button').addEventListener('click',(event)=>{
         overlay.style.display = "none";
         hideAlert();
         cardList.innerHTML = ``;
@@ -81,11 +102,8 @@ export function updateChildCount(parentElement) {
     }
 }
 
-let sortingOrder = 1;
-export let isMoving = false;
-
 export function toggleSortOrder() {
-    if (!isMoving) {
+    if (!getIsOrderChanging()) {
         sortingOrder *= -1;
         let chip = document.querySelector('.chip');
         if (sortingOrder==1) {
@@ -93,9 +111,9 @@ export function toggleSortOrder() {
         } else {
             chip.querySelector('div').textContent = "최신 순";
         }
-        isMoving = true;
+        toggleIsOrderChanging();
         sortColumns();
-        setTimeout(()=>{isMoving = false}, 500)
+        setTimeout(()=>{toggleIsOrderChanging();}, 500)
     }
 }
 
@@ -143,4 +161,30 @@ function sortColumns() {
             }, 500);
         } 
     });
+}
+
+
+export function changeColumnName(event) {
+    toggleIsColumnNameChanging();
+    event.target.contentEditable = "true";
+    event.target.focus();
+}
+
+export function completeColumnName() {
+    toggleIsColumnNameChanging();
+    [...document.querySelectorAll('.column-name')].map((element)=>{
+        element.contentEditable = "false";
+    });
+}
+
+export function toggleColumnShadow() {
+    let main = document.querySelector('main');
+    let scrollElement = document.querySelector('#column-area');
+    const scrollWidth = scrollElement.scrollWidth;
+    const clientWidth = scrollElement.clientWidth;
+    if (scrollWidth > clientWidth) {
+        main.classList.remove('hidden');
+    } else {
+        main.classList.add('hidden');
+    }
 }

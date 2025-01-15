@@ -1,6 +1,12 @@
-import { addListener, renderTemplate, setEventForCard } from "./main.js";
+import { renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
+import { addListener } from "./event_listeners.js";
+import { getIsDragging, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+
+let gapX = 0;
+let gapY = 0;
+let draggingCardId = 0;
 
 // 입력창 확인 후 버튼 활성화 결정
 export function checkCardInput() {
@@ -39,18 +45,16 @@ export function delCard(cardId) {
     delCardAlert.style.display = "block";
     let card = document.querySelector("#card-id"+cardId);
     delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
-    addListener(delCardAlert.querySelector('#cancel-delete-card-button'),(event)=>{
+    addListener(delCardAlert.querySelector('#cancel-del-card-button'),(event)=>{
         hideAlert();
     });
-    addListener(delCardAlert.querySelector('#confirm-delete-card-button'),(event)=>{
+    addListener(delCardAlert.querySelector('#confirm-del-card-button'),(event)=>{
         hideAlert();
         if (card) {
             card.remove();
         }
     });
 }
-
-export let isEditing = false;
 
 // 카드 수정
 export function editCard(cardId) {
@@ -59,7 +63,7 @@ export function editCard(cardId) {
     const tempMemory = [...card.children];
     
     card.style.display = "block";
-    isEditing = true;
+    toggleIsCardEditing();
 
     let curTitle = card.querySelector(".card-title").textContent;
     let curContent = card.querySelector(".card-content").textContent;
@@ -83,18 +87,19 @@ export function editCard(cardId) {
     `;
 
     addListener(newActionDiv.querySelector('.confirm-button'),(event)=>{
-        isEditing = false;
+        toggleIsCardEditing();
         confirmEdit(card,cardId)
     });
 
     addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
-        isEditing = false;
+        toggleIsCardEditing();
         cancelEdit(card,tempMemory);
     });
     
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
+
     newInfoDiv.querySelector('#content-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
@@ -128,13 +133,8 @@ function cancelEdit(card, tempMemory){
     });
 }
 
-export let isDragging = false;
-let gapX = 0;
-let gapY = 0;
-let draggingCardId = 0;
-
 export function startDragCard(event, original, clone, cardId) {
-    isDragging = true;
+    toggleIsDragging();
     const childElement = document.querySelector("#card-id"+cardId);
     clone.style.width = window.getComputedStyle(childElement).width;
     draggingCardId = cardId;
@@ -164,17 +164,16 @@ export function startDragCard(event, original, clone, cardId) {
 }
 
 export function moveCard(event, clone) {
-    if (!isDragging || !clone) return;
+    if (!getIsDragging() || !clone) return;
 
     clone.style.left = `${event.clientX-gapX}px`;
     clone.style.top = `${event.clientY-gapY}px`;
 }
 
-export function moveCardIllusion(newParent, clone) {
+export function moveCardIllusion(event, newParent, clone) {
+    if (!getIsDragging() || !clone) return;
     const columnArea = document.getElementById("column-area");
     [...columnArea.children].forEach((column)=> {
-        console.log(column);
-        console.log(clone.id);
         let tempCard = column.querySelector(`#temp-${clone.id}`);
         if (tempCard) {
             tempCard.className = "temp-card"
@@ -182,6 +181,18 @@ export function moveCardIllusion(newParent, clone) {
         }
     });
     let tempRealCard = newParent.querySelector(`#temp-${clone.id}`);
+    let cardList = event.target.closest('.card-list');
+    let closestCard = event.target.closest('.card-id');
+    let closestTempCard = event.target.closest('.temp-card');
+    if (cardList) {
+        if (closestCard) {
+            console.log(closestCard);
+            cardList.insertBefore(tempRealCard, closestCard);
+        } else if (!closestTempCard){
+            console.log("no!");
+            cardList.appendChild(tempRealCard);
+        }
+    }
     if (tempRealCard) {
         tempRealCard.className = "temp-card-true"
         tempRealCard.style.display = 'flex';
@@ -189,18 +200,17 @@ export function moveCardIllusion(newParent, clone) {
 }
 
 export function finishDragCard(clone) {
-    if (isDragging && clone) {
-        const tempCards = document.querySelectorAll('.temp-card');
-        [...tempCards].forEach((tempCard)=>tempCard.remove());
-        const realCard = document.querySelector('.temp-card-true');
-        realCard.id = "card-id"+draggingCardId;
-        realCard.className = "card-id"
-        realCard.style.opacity = 1;
-        setEventForCard({"cardId": draggingCardId});
+    if (!getIsDragging() || !clone) return ;
 
-        console.log(realCard);
-        isDragging = false;
-        clone.remove();
-        document.body.classList.remove('no-select');
-    }
+    const tempCards = document.querySelectorAll('.temp-card');
+    [...tempCards].forEach((tempCard)=>tempCard.remove());
+    const realCard = document.querySelector('.temp-card-true');
+    realCard.id = "card-id"+draggingCardId;
+    realCard.className = "card-id"
+    realCard.style.opacity = 1;
+    setEventForCard({"cardId": draggingCardId});
+
+    toggleIsDragging();
+    clone.remove();
+    document.body.classList.remove('no-select');
 }

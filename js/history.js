@@ -23,3 +23,7 @@ function showHistory() {
     dialog.style.left = `${dialogX}px`;
     dialog.style.top = `${dialogY}px`;
 }
+
+function addHistory() {
+    
+}
