@@ -1,6 +1,9 @@
 import { overlay, createDeleteAllCardAlert, createDeleteColumnAlert, hideAlert } from "./alert.js";
 import { checkCardInput, confirmAddCard } from "./card_action.js";  
-import { addListener } from "./main.js";
+import { addListener } from "./event_listeners.js";
+import { getIsOrderChanging, toggleIsColumnNameChanging, toggleIsOrderChanging } from "./store.js";
+
+let sortingOrder = 1;
 
 export function addCard(id) {
     const parentElement = document.querySelector('#column-id'+id);
@@ -99,11 +102,8 @@ export function updateChildCount(parentElement) {
     }
 }
 
-let sortingOrder = 1;
-export let isOrderChanging = false;
-
 export function toggleSortOrder() {
-    if (!isOrderChanging) {
+    if (!getIsOrderChanging()) {
         sortingOrder *= -1;
         let chip = document.querySelector('.chip');
         if (sortingOrder==1) {
@@ -111,9 +111,9 @@ export function toggleSortOrder() {
         } else {
             chip.querySelector('div').textContent = "최신 순";
         }
-        isOrderChanging = true;
+        toggleIsOrderChanging();
         sortColumns();
-        setTimeout(()=>{isOrderChanging = false}, 500)
+        setTimeout(()=>{toggleIsOrderChanging();}, 500)
     }
 }
 
@@ -163,16 +163,15 @@ function sortColumns() {
     });
 }
 
-export let isColumnNameChanging = false;
 
 export function changeColumnName(event) {
-    isColumnNameChanging = true;
+    toggleIsColumnNameChanging();
     event.target.contentEditable = "true";
     event.target.focus();
 }
 
 export function completeColumnName() {
-    isColumnNameChanging = false;
+    toggleIsColumnNameChanging();
     [...document.querySelectorAll('.column-name')].map((element)=>{
         element.contentEditable = "false";
     });

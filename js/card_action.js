@@ -1,6 +1,12 @@
-import { addListener, renderTemplate, setEventForCard } from "./main.js";
+import { renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
+import { addListener } from "./event_listeners.js";
+import { getIsDragging, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+
+let gapX = 0;
+let gapY = 0;
+let draggingCardId = 0;
 
 // 입력창 확인 후 버튼 활성화 결정
 export function checkCardInput() {
@@ -50,8 +56,6 @@ export function delCard(cardId) {
     });
 }
 
-export let isCardEditing = false;
-
 // 카드 수정
 export function editCard(cardId) {
     let card = document.querySelector("#card-id"+cardId);
@@ -59,7 +63,7 @@ export function editCard(cardId) {
     const tempMemory = [...card.children];
     
     card.style.display = "block";
-    isCardEditing = true;
+    toggleIsCardEditing();
 
     let curTitle = card.querySelector(".card-title").textContent;
     let curContent = card.querySelector(".card-content").textContent;
@@ -83,12 +87,12 @@ export function editCard(cardId) {
     `;
 
     addListener(newActionDiv.querySelector('.confirm-button'),(event)=>{
-        isCardEditing = false;
+        toggleIsCardEditing();
         confirmEdit(card,cardId)
     });
 
     addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
-        isCardEditing = false;
+        toggleIsCardEditing();
         cancelEdit(card,tempMemory);
     });
     
@@ -129,13 +133,8 @@ function cancelEdit(card, tempMemory){
     });
 }
 
-export let isDragging = false;
-let gapX = 0;
-let gapY = 0;
-let draggingCardId = 0;
-
 export function startDragCard(event, original, clone, cardId) {
-    isDragging = true;
+    toggleIsDragging();
     const childElement = document.querySelector("#card-id"+cardId);
     clone.style.width = window.getComputedStyle(childElement).width;
     draggingCardId = cardId;
@@ -165,7 +164,7 @@ export function startDragCard(event, original, clone, cardId) {
 }
 
 export function moveCard(event, clone) {
-    if (!isDragging || !clone) return;
+    if (!getIsDragging() || !clone) return;
 
     clone.style.left = `${event.clientX-gapX}px`;
     clone.style.top = `${event.clientY-gapY}px`;
@@ -188,7 +187,7 @@ export function moveCardIllusion(newParent, clone) {
 }
 
 export function finishDragCard(clone) {
-    if (isDragging && clone) {
+    if (getIsDragging() && clone) {
         const tempCards = document.querySelectorAll('.temp-card');
         [...tempCards].forEach((tempCard)=>tempCard.remove());
         const realCard = document.querySelector('.temp-card-true');
@@ -197,7 +196,7 @@ export function finishDragCard(clone) {
         realCard.style.opacity = 1;
         setEventForCard({"cardId": draggingCardId});
 
-        isDragging = false;
+        toggleIsDragging();
         clone.remove();
         document.body.classList.remove('no-select');
     }

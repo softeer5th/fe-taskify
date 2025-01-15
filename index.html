@@ -12,18 +12,6 @@
 </head>
 <body>
 
-    <!-- 다이얼로그 -->
-    <div id="history-dialog" class="history-dialog">
-        <div class="history-dialog-header">
-            <div class="history-dialog-title">사용자 활동 기록</div>
-            <button class="icon-button close-history">
-                <span class="material-icons">
-                close
-                </span>
-                <div>닫기</div>
-            </button>
-        </div>
-    </div>
         
     <header>
         <div class="header-left">
@@ -42,6 +30,19 @@
         <ul id="column-area">
         </ul>
     </main>
+    
+    <!-- 모달 -->
+    <div id="history-dialog" class="history-dialog">
+        <div class="history-dialog-header">
+            <div class="history-dialog-title">사용자 활동 기록</div>
+            <button class="icon-button close-history">
+                <span class="material-icons">
+                close
+                </span>
+                <div>닫기</div>
+            </button>
+        </div>
+    </div>
 
     <div class="fab">
         <i class="material-icons">add</i>
@@ -52,6 +53,7 @@
     
 
     <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/event_listeners.js"></script>
     <script src="./js/history.js"></script>
     <script type="module" src="./js/alert.js"></script>
 

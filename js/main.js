@@ -1,6 +1,8 @@
-import { addCard, delAllCard, updateChildCount, toggleSortOrder, changeColumnName, isOrderChanging, completeColumnName, isColumnNameChanging, delColumn, toggleColumnShadow  } from "./column_action.js";
-import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion, isCardEditing } from "./card_action.js";
+import { addCard, delAllCard, updateChildCount, changeColumnName, completeColumnName, delColumn, toggleColumnShadow  } from "./column_action.js";
+import { editCard, delCard, startDragCard, moveCard, moveCardIllusion } from "./card_action.js";
 import { deleteColumnButton } from "./delete_column_button.js";
+import { addListener } from "./event_listeners.js";
+import { getClone, setClone } from "./store.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -69,21 +71,21 @@ function setEventForColumn(props) {
         if (event.type === "click") {
             addCard(props.columnId);
         } else if (event.type === "mousemove") {
-            moveCard(event, clone);
+            moveCard(event, getClone());
         }
     })
     addListener(parentElement.querySelector('#delete-cards-button'), (event)=>{
         if (event.type === "click") {
             delAllCard(props.columnId);
         } else if (event.type === "mousemove") {
-            moveCard(event, clone);
+            moveCard(event, getClone());
         }
     });
 
     addListener(parentElement,(event)=>{
         if (event.type === "mousemove") {
-            moveCard(event, clone);
-            moveCardIllusion(parentElement, clone);
+            moveCard(event, getClone());
+            moveCardIllusion(parentElement, getClone());
         }
     })
 
@@ -117,7 +119,7 @@ export function setEventForCard(props) {
         if (event.type === "click") {
             editCard(props.cardId);
         } else if (event.type === "mousemove") {
-            moveCard(event, clone);
+            moveCard(event, getClone());
         }
     })
     // 카드 삭제 버튼에 이벤트 추가
@@ -125,20 +127,20 @@ export function setEventForCard(props) {
         if (event.type === "click") {
             delCard(props.cardId);
         } else if (event.type === "mousemove") {
-            moveCard(event, clone);
+            moveCard(event, getClone());
         }
     })
     // 카드 드래그
     addListener(childElement, (event)=>{
         if (event.type === "mousedown") {
-            if (!clone) {
-                clone = childElement.cloneNode(true);
-                clone.classList.add('dragging');
-                startDragCard(event, childElement, clone, props.cardId);
+            if (!getClone()) {
+                setClone(childElement.cloneNode(true));
+                getClone().classList.add('dragging');
+                startDragCard(event, childElement, getClone(), props.cardId);
             }
         } else if (event.type === "mousemove") {
-            moveCard(event, clone);
-            moveCardIllusion(parentElement, clone);
+            moveCard(event, getClone());
+            moveCardIllusion(parentElement, getClone());
         }
     });
 }
@@ -152,89 +154,6 @@ export async function renderTemplate(templateFile, templateId, targetId, props) 
         adaptEventListener(targetId, props);
     }
 }
-
-export function addListener(element, listener) {
-    if (!eventListeners.has(element)) {
-      eventListeners.set(element, []); // 요소에 대한 리스너 배열 초기화
-    }
-    eventListeners.get(element).push(listener); // 배열에 리스너 추가
-}
-
-function triggerListeners(event, startElement) {
-    let currentElement = startElement;
-
-    while (currentElement) {
-        if (eventListeners.has(currentElement)) {
-            const listeners = eventListeners.get(currentElement);
-            if (listeners) {
-                listeners.forEach((listener) => listener(event, currentElement)); // 등록된 모든 리스너 실행
-                break;
-            }
-        }
-        currentElement = currentElement.parentElement; // 부모로 이동
-    }
-}
-
-const eventListeners = new WeakMap();
-let clone = null;
-
-addListener(document.body, (event)=>{
-    moveCard(event, clone);
-})
-
-addListener(document.querySelector('.chip'), (event) =>{
-    if (event.type === "click") {
-        toggleSortOrder();
-    }
-});
-
-addListener(document.querySelector('.fab'), (event)=>{
-    if (event.type === "click") {
-        let newColumnId = document.querySelector("#column-area").childElementCount;
-        renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:newColumnId, title:"제목없음"});
-    }
-})
-
-document.addEventListener('click', (event) => {
-    if (!isOrderChanging) {
-        triggerListeners(event, event.target);
-    }
-    if (isColumnNameChanging && !event.target.closest('.column-name')) {
-        completeColumnName();
-    }
-});
-
-document.addEventListener('dblclick', (event) => {
-    if (!isOrderChanging) {
-        triggerListeners(event, event.target);
-    }
-});
-
-document.addEventListener('mousedown', (event) => {
-    if (!isCardEditing && !isOrderChanging) {
-        triggerListeners(event, event.target);
-    }
-});
-
-document.addEventListener('mousemove', (event) => {
-    if (isDragging) {
-        triggerListeners(event, event.target)
-    }
-});
-
-document.addEventListener('mouseup', (event) => {
-    if (isDragging) {
-        finishDragCard(clone);
-        clone = null;
-    }
-});
-
-
-document.addEventListener('keydown', (event) => {
-    if (isColumnNameChanging) {
-        triggerListeners(event, event.target);
-    }
-});
 
 // MutationObserver 설정
 const observer = new MutationObserver(() => {
