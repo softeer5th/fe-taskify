@@ -216,8 +216,8 @@ export const manageDropEvents = (dragReceiverElement, category) => {
 
         if (originCategory !== currentCategory) {
             const todoMoveAction = makeTodoMoveAction(
-                originCategory,
-                currentCategory,
+                originCategory.values.uid,
+                currentCategory.values.uid,
                 originTodoItem,
                 currentCategory.values.todoList[currentIndex]
             )

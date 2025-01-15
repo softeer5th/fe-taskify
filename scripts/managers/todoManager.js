@@ -210,7 +210,7 @@ const addTodoItem = (title, content, author, category) => {
     // category 객체를 참조하므로 setState를 안 해도 변경이 되긴 함 .. 맘에 안들지만 일단은 이렇게
     storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
     renewTodoCount(category)
-    const todoAddAction = makeTodoAddAction(category, todoItem)
+    const todoAddAction = makeTodoAddAction(category.values.uid, todoItem)
     addAction(todoAddAction)
     addHistory(todoAddAction)
 }
@@ -234,7 +234,7 @@ const removeTodoItem = (identifier) => {
     renewTodoCount(category)
     storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
 
-    const todoDeleteAction = makeTodoDeleteAction(category, todoItem)
+    const todoDeleteAction = makeTodoDeleteAction(category.values.uid, todoItem)
     addAction(todoDeleteAction)
     addHistory(todoDeleteAction)
 }
@@ -294,7 +294,7 @@ const editTodoItem = (identifier) => {
                         getState(keys.TODO_CATEGORY_KEY)
                     )
                     const todoEditAction = makeTodoEditAction(
-                        category,
+                        category.values.uid,
                         originTodoItem,
                         editedTodoItem
                     )

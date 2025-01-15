@@ -41,6 +41,10 @@ export const classNames = {
     addButton: 'add-btn',
     deleteButton: 'delete-btn',
     editButton: 'edit-btn',
+
+    undoButton: 'advanced-features__undo-btn',
+    redoButton: 'advanced-features__redo-btn',
+    addCategoryButton: 'advanced-features__add-category-btn',
 }
 
 export const templateNames = {

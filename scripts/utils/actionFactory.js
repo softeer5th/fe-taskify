@@ -1,25 +1,33 @@
 import { Action } from '../domain/Action.js'
 import { actionTypes } from '../types/actionTypes.js'
 
-export const makeTodoAddAction = (category, todoItem) => {
+export const makeTodoAddAction = (categoryUid, todoItem) => {
+    todoItem = JSON.parse(JSON.stringify(todoItem))
     const data = {
-        category,
+        categoryUid,
         todoItem,
     }
     return Action(actionTypes.todoCreate, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoDeleteAction = (category, todoItem) => {
+export const makeTodoDeleteAction = (categoryUid, todoItem) => {
+    todoItem = JSON.parse(JSON.stringify(todoItem))
     const data = {
-        category,
+        categoryUid,
         todoItem,
     }
     return Action(actionTypes.todoDelete, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoEditAction = (category, prevTodoItem, currentTodoItem) => {
+export const makeTodoEditAction = (
+    categoryUid,
+    prevTodoItem,
+    currentTodoItem
+) => {
+    prevTodoItem = JSON.parse(JSON.stringify(prevTodoItem))
+    currentTodoItem = JSON.parse(JSON.stringify(currentTodoItem))
     const data = {
-        category,
+        categoryUid,
         prevTodoItem,
         currentTodoItem,
     }
@@ -27,23 +35,25 @@ export const makeTodoEditAction = (category, prevTodoItem, currentTodoItem) => {
 }
 
 export const makeTodoMoveAction = (
-    prevCategory,
-    currentCategory,
+    prevCategoryUid,
+    currentCategoryUid,
     prevTodoItem,
     currentTodoItem
 ) => {
+    prevTodoItem = JSON.parse(JSON.stringify(prevTodoItem))
+    currentTodoItem = JSON.parse(JSON.stringify(currentTodoItem))
     const data = {
-        prevCategory,
-        currentCategory,
+        prevCategoryUid,
+        currentCategoryUid,
         prevTodoItem,
         currentTodoItem,
     }
     return Action(actionTypes.todoMove, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoSortAction = (category) => {
+export const makeTodoSortAction = (categoryUid) => {
     const data = {
-        category,
+        categoryUid,
     }
     return Action(actionTypes.todoSort, '@멋진삼', new Date(), data)
 }

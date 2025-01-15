@@ -1,6 +1,7 @@
 import { Action } from '../domain/Action.js'
 import { classNames, keys, templateNames } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
+import { getCategoryByUid } from '../utils/dataUtil.js'
 import { formatDateToTimeAgo } from '../utils/dateUtil.js'
 import { createDomElementAsChild } from '../utils/domUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
@@ -66,24 +67,24 @@ const renderHistoryView = () => {
 const makeContentLabel = (action) => {
     let content = ''
     console.log(action.data)
-    const category = action.data.category?.values.categoryName
+    const category = getCategoryByUid(action.data.categoryUid)
+    const prevCategory = getCategoryByUid(action.data.prevCategoryUid)
+    const currentCategory = getCategoryByUid(action.data.currentCategoryUid)
     const todoItem = action.data.todoItem
-    const prevCategory = action.data.prevCategory?.values.categoryName
-    const currentCategory = action.data.currentCategory?.values.categoryName
     const prevTodoItem = action.data.prevTodoItem
 
     switch (action.type) {
         case actionTypes.todoCreate:
-            content = `${todoItem.values.title}을(를) ${category}에 등록하였습니다.`
+            content = `${todoItem.values.title}을(를) ${category.values.categoryName}에 등록하였습니다.`
             break
         case actionTypes.todoDelete:
-            content = `${todoItem.values.title}을(를) ${category}에서 삭제하였습니다.`
+            content = `${todoItem.values.title}을(를) ${category.values.categoryName}에서 삭제하였습니다.`
             break
         case actionTypes.todoEdit:
             content = `${prevTodoItem.values.title}을(를) 변경하였습니다.`
             break
         case actionTypes.todoMove:
-            content = `${prevTodoItem.values.title}을(를) ${prevCategory}에서 ${currentCategory}으로 이동하였습니다.`
+            content = `${prevTodoItem.values.title}을(를) ${prevCategory.values.categoryName}에서 ${currentCategory.values.categoryName}으로 이동하였습니다.`
             break
         case actionTypes.todoSort:
             // content = ``
