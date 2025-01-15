@@ -1,7 +1,7 @@
 import { createButton, createElement } from "../../../dom.js";
 import createModal from "../../Modal/createModal.js";
 
-const createHistoryFooter = ({ handleDeleteHistory, histories }) => {
+const createHistoryFooter = ({ histories }) => {
   if (histories.length === 0) return "";
 
   const $historyFooter = createElement("div", {
@@ -9,14 +9,8 @@ const createHistoryFooter = ({ handleDeleteHistory, histories }) => {
   });
 
   const $deleteButton = createButton({
-    className: "display-bold14",
+    className: "delete__button display-bold14",
     text: "기록 전체 삭제",
-    handleClick: () => {
-      createModal({
-        content: "모든 사용자 활동 기록을 삭제할까요?",
-        onClick: handleDeleteHistory,
-      });
-    },
   });
 
   $historyFooter.appendChild($deleteButton);

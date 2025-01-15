@@ -13,6 +13,7 @@ const createItemButtonContainer = () => {
 
   const $deleteButton = createButton({
     className: "delete__button",
+    type: "card",
   });
 
   const $deleteImg = createDeleteSvg({

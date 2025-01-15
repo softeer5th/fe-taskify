@@ -12,7 +12,8 @@ import {
   handleSubmit,
 } from "./columnInputItem.js";
 import { handleClickDelete, handleClickEdit } from "./columnItem.js";
-import { handleClose, handleDeleteModal } from "./modal.js";
+import { deleteHistory, handleClose, handleDeleteCard } from "./modal.js";
+import { handleClickDeleteHistory } from "./userHistory.js";
 
 const store = { isTodoAdding: false };
 
@@ -27,9 +28,14 @@ export const addRootEventListener = () => {
 
     const $closeButton = target.closest(".close__button");
     const $submitButton = target.closest(".submit__button");
+    const $deleteHistoryButton = target.closest(
+      ".history__footer .delete__button"
+    );
 
     if ($addButton) {
       handleClickAdd(e, store);
+    } else if ($deleteHistoryButton) {
+      handleClickDeleteHistory();
     } else if ($deleteButton) {
       handleClickDelete(e);
     } else if ($editButton) {
@@ -105,7 +111,8 @@ export const addModalEventListener = () => {
     if ($dimmed || $cancelButton) {
       handleClose(e);
     } else if ($deleteButton) {
-      handleDeleteModal(e);
+      const type = $deleteButton.dataset.type;
+      type === "card" ? handleDeleteCard(e) : deleteHistory(e);
     }
   });
 };

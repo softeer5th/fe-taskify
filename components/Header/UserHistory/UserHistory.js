@@ -4,14 +4,13 @@ import createHistoryFooter from "../ui/createHistoryFooter.js";
 import HistoryHeader from "./HistoryHeader/HistoryHeader.js";
 import HistoryMain from "./HistoryMain/HistoryMain.js";
 
-const updateHistoryFooter = ({ handleDeleteHistory, histories }) => {
+const updateHistoryFooter = ({ histories }) => {
   const $userHistoryDOM = document.querySelector(".user-history");
   const $historyFooterDOM = $userHistoryDOM.querySelector(".history__footer");
 
   // 활동 기록 최초 생성
   if (histories.length > 0 && !$historyFooterDOM) {
     const $historyFooter = createHistoryFooter({
-      handleDeleteHistory,
       histories,
     });
 
@@ -23,17 +22,12 @@ const updateHistoryFooter = ({ handleDeleteHistory, histories }) => {
 };
 
 const UserHistory = () => {
-  const handleDeleteHistory = () => {
-    historyStore.clear();
-  };
-
   const $userHistory = createElement("div", {
     className: "user-history shadow-floating",
   });
   const $historyHeader = HistoryHeader();
   const $historyMain = HistoryMain({ histories: historyStore.histories });
   const $historyFooter = createHistoryFooter({
-    handleDeleteHistory,
     histories: historyStore.histories,
   });
 
@@ -46,7 +40,6 @@ const UserHistory = () => {
     $historyMainDOM.replaceWith($updatedHistoryMain);
 
     updateHistoryFooter({
-      handleDeleteHistory,
       histories: updatedHistories,
     });
   });
