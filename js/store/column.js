@@ -30,6 +30,10 @@ export const columnStore = () => {
             columnStoreIndex--;
         },
         getColumns: () => columnStorage,
+        getColumnInfo: () => columnStorage.map(column => {
+            const { id, title, contentCount } = column;
+            return { id, title, contentCount };
+        }),
         getColumnWithId: (id) => columnStorage.find(column => column.id === id),
         getNumberOfCards: (columnId) => columnStorage.find(column => column.id === columnId).cards.length,
         getCardWithId: (columnId, cardId) => {
