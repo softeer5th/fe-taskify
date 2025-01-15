@@ -1,6 +1,6 @@
-import { createDOM } from "../lib/jsx-runtime/index.js";
+import render from "../lib/HamReact/render.js";
 
 import App from "./app.js";
 
 const root = document.getElementById("root");
-root.appendChild(createDOM(App()));
+render(App, root);
