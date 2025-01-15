@@ -8,12 +8,6 @@ let historyList = loadData(keys.HISTORY_STORAGE_KEY) ?? []
 let isHistoryViewOpen = false
 let historyViewElement = null
 
-historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
-historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
-historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
-historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
-historyList.push(Action(actionTypes.todoCreate, '홍길동', '2021-09-01', {}))
-
 export const initHistoryView = () => {
     historyViewElement = document.querySelector(`.${classNames.historyView}`)
     const historyToggleBtn = document.querySelector(

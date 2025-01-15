@@ -22,7 +22,7 @@ export const initTodo = () => {
         categoryList = []
     }
 
-    // 임시 데이터 초기화
+    // 더미 데이터 초기화
     if (RESET_DATA) {
         let id = 1
         let categoryCnt = 3
