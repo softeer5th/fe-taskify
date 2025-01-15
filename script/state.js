@@ -17,27 +17,12 @@ export default function State() {
             index: 2,
         },
     ];
-    let logs = [];
 
     let dragged = {
         task: null,
         element: null,
         dummyElement: null,
     };
-
-    function setLog(log) {
-        if (logs.length >= 5) {
-            logs = [...logs.slice(1), log];
-        } else logs.push(log);
-    }
-
-    function getLog() {
-        return logs;
-    }
-
-    function clearLog() {
-        logs = [];
-    }
 
     function getOrder() {
         return orderingState;
@@ -87,54 +72,42 @@ export default function State() {
         }
     }
 
-    function addTask(index, task) {
-        const newId = taskId++;
-        const newTask = {
-            ...task,
-            taskId: newId,
-        };
-        setLog({
-            task: newTask,
-            type: "ADD",
-            updated: new Date(),
-        });
+    function addTask(index, task, id) {
+        let newTask = null;
+        let newId = null;
+        
+        if(id === undefined) {
+            newId = taskId++;
+            newTask = {
+                ...task,
+                taskId: newId,
+            };
+        }
+        else {
+            newTask = {
+                ...task,
+                taskId: id,
+            };
+        }
         columnTasks[index].push(newTask);
 
-        return newId;
+        return id === undefined ? newId : id;
     }
 
     function moveTask(destinationIndex, task) {
         const newTask = {...task, column : destinationIndex};
         const currentIndex = task.column;
 
-        setLog({
-            task: task,
-            type: "MOVE",
-            updated: new Date(),
-            destination: destinationIndex
-        })
-
         columnTasks[currentIndex] = columnTasks[currentIndex].filter(el => el.taskId !== task.taskId);
         columnTasks[destinationIndex].push(newTask);
     }
 
     function updateTask(index, currentTask, newTask) {
-        setLog({
-            task: currentTask,
-            type: "UPDATE",
-            updated: new Date(),
-        });
-
         const taskIndex = columnTasks[index].indexOf(currentTask);
         columnTasks[index][taskIndex] = {...newTask, taskId: currentTask.taskId};
     }
 
     function removeTask(task) {
-        setLog({
-            task: task,
-            type: "REMOVE",
-            updated: new Date(),
-        });
         const index = task.column;
         columnTasks[index] = columnTasks[index].filter((el) => el.taskId != task.taskId);
     }
@@ -157,8 +130,6 @@ export default function State() {
         moveTask,
         updateTask,
         removeTask,
-        getLog,
-        clearLog,
         sortTask, 
     };
 }

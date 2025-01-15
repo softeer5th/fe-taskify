@@ -4,6 +4,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    ::-webkit-scrollbar {
+        display: none;
+      }
 }
 
 button {
@@ -156,4 +160,10 @@ body {
 
 .rounded-500 {
     border-radius: 50%;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

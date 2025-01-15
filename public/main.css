@@ -153,6 +153,8 @@ header > span {
 }
 
 #log_layer_list {
+    overflow: auto;
+    max-height: 600px;
     margin: 8px 0;
 }
 
@@ -201,5 +203,20 @@ header > span {
     p {
         width: 100%;
         text-align: center;
+    }
+}
+
+#fab_container {
+    position: absolute;
+    right: 48px;
+    bottom: 48px;    
+}
+
+.fab_button {
+    padding: 12px;
+    margin-bottom: 16px;
+    
+    &:last-of-type {
+        margin: 0px;
     }
 }

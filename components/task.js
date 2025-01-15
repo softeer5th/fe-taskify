@@ -52,8 +52,6 @@ export default function TaskComponent() {
         deleteButton.addEventListener("click", handleRemove );
         editButton.addEventListener("click", handleUpdate );   
     
-        taskElement.addEventListener('dragenter',(e)=>e.stopPropagation());
-        // taskElement.addEventListener('dragleave',(e)=>e.stopPropagation());
         taskElement.addEventListener("dragstart", handleDrag);
     }
 

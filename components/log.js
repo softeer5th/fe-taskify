@@ -1,6 +1,12 @@
+import LogStore from "../script/store/log.js";
 import { timeCalculator } from "../script/utils.js";
+import ModalComponent from "./modal.js";
 
-export function LogComponent(columns) {
+export function LogComponent(columns, store, handleClear) {
+    store.subscribe(rerender);
+    const emptyElement = renderEmpty();
+    const footerElement = renderFooter();
+
     function template() {
         return `
             <div id="log_layer_header">
@@ -24,30 +30,30 @@ export function LogComponent(columns) {
     }
 
     function templateLog(log) {
-        const { task, type: actionType, updated, destination } = log;
+        const { task, type: actionType, updated, destination, logId } = log;
         const { title, content, column, created } = task;
         const { time, type: timeType } = timeCalculator(updated, new Date());
 
         const originTitle = findColumnName(column);
-    
+
         function templateAdd({ title, originTitle }) {
             return `<span>${title}</span>을(를) <span>${originTitle}</span>에서 <span>등록</span>하였습니다.`;
         }
-    
+
         function templateRemove({ title, originTitle }) {
             return `<span>${title}</span>을(를) <span>${originTitle}</span>에서 <span>삭제</span>하였습니다.`;
         }
-    
+
         function templateUpdate({ title }) {
             return `<span>${title}</span>을(를) <span>변경</span>하였습니다.`;
         }
-    
+
         function templateMove({ title, originTitle, destinationTitle }) {
             return `<span>${title}</span>을(를) <span>${originTitle}</span>에서 <span>${destinationTitle}</span>으로 <span>이동</span>하였습니다.`;
         }
-    
+
         let template = ``;
-    
+
         switch (actionType) {
             case "ADD":
                 template = templateAdd({ title, originTitle });
@@ -60,10 +66,14 @@ export function LogComponent(columns) {
                 break;
             case "MOVE":
                 const destinationTitle = findColumnName(destination);
-                template = templateMove({ title, originTitle, destinationTitle });
+                template = templateMove({
+                    title,
+                    originTitle,
+                    destinationTitle,
+                });
                 break;
         }
-    
+
         return `
                 <div>
                     <div class="log_profile border-default surface-alt">
@@ -72,7 +82,7 @@ export function LogComponent(columns) {
                 <div>
                     <p class="text-default display-medium14">나</p>
                     <p class="text-default display-medium14">${template}</p>
-                    <p class="text-weak display-medium12">${time}${timeType} 전</p>
+                    <p class="text-weak display-medium12 log_timestamp">${time}${timeType} 전</p>
                 </div>
         `;
     }
@@ -83,74 +93,122 @@ export function LogComponent(columns) {
             `;
     }
 
+    function renderFooter() {
+        const logFooterElement = document.createElement("div");
+        logFooterElement.innerHTML = templateFooter();
+        logFooterElement.setAttribute("id", "log_layer_footer");
+        const clearButton = logFooterElement.querySelector("button");
+        clearButton.addEventListener("click", handleClear);
+
+        return logFooterElement;
+    }
+
     function render(logs) {
-        const logElement = document.createElement('div');
-        logElement.setAttribute('id', 'log_layer');
-        logElement.setAttribute('class', 'surface-default rounded-200 shadow-floating');
+        const logElement = document.createElement("div");
+        logElement.setAttribute("id", "log_layer");
+        logElement.setAttribute(
+            "class",
+            "surface-default rounded-200 shadow-floating"
+        );
         logElement.innerHTML = template();
 
-        const logListElement = logElement.querySelector('#log_layer_list');
+        const logListElement = logElement.querySelector("#log_layer_list");
 
-        if(!logs || logs.length === 0)   {
-            const emptyLogElement = renderEmpty();
-            logListElement.appendChild(emptyLogElement);
-        }
-        else {
+        if (!logs || logs.length === 0) {
+            logElement.appendChild(emptyElement);
+        } else {
             const logFragElement = document.createDocumentFragment();
-            logs.forEach(el => {
+            logs.forEach((el) => {
                 const logLiElement = renderLog(el);
                 logFragElement.appendChild(logLiElement);
-            })
+            });
             logListElement.append(logFragElement);
-
-            const logFooterElement = document.createElement('div');
-            logFooterElement.innerHTML = templateFooter();
-            logFooterElement.setAttribute('id', 'log_layer_footer')
-            logElement.appendChild(logFooterElement);
-        }  
+            logElement.appendChild(footerElement);
+        }
 
         return logElement;
     }
 
     function remove() {
-        const logElement = document.body.querySelector('#log_layer');
-        if(logElement) {
+        const logElement = document.body.querySelector("#log_layer");
+        if (logElement) {
             document.body.removeChild(logElement);
         }
     }
 
     function renderEmpty() {
-        const logElement = document.createElement('li');
-        logElement.setAttribute('id', 'log_layer_empty');
+        const logElement = document.createElement("div");
+        logElement.setAttribute("id", "log_layer_empty");
         logElement.innerHTML = templateEmpty();
 
-        return logElement
+        return logElement;
     }
 
     function renderLog(log) {
-        const logLiElement = document.createElement('li');
+        const logLiElement = document.createElement("li");
+        logLiElement.setAttribute("logid", log.logId);
         logLiElement.innerHTML = templateLog(log);
 
         return logLiElement;
     }
 
-    function addEventListener(logElement, handleClose, handleClear) {
-        const [closeButton, clearButton] = logElement.getElementsByTagName('button');
+    function rerenderLog(log, logElement) {
+        const updated = log.updated;
+        const timestamp = logElement.querySelector('.log_timestamp');
 
-        closeButton.addEventListener('click', handleClose);
+        const { time, type: timeType } = timeCalculator(updated, new Date());
+        timestamp.textContent = `${time}${timeType} 전`;
+    }
 
-        if(clearButton) {
-            clearButton.addEventListener('click', handleClear)
+    function rerender(logs) {
+        const logLayerElement = document.body.querySelector("#log_layer");
+
+        if (!logLayerElement) return;
+
+        const logListElement = logLayerElement.querySelector("#log_layer_list");
+
+        const currentLogWithId = [...logListElement.children].map((el) => {
+            return {
+                logId: Number(el.getAttribute("logid")),
+                element: el,
+            };
+        });
+
+        if (logs.length == 0) {
+            logListElement.innerHTML = "";
+            logLayerElement.removeChild(footerElement);
+            logLayerElement.appendChild(emptyElement);
+        } else {
+            if (logListElement.children.length === 0) {
+                logLayerElement.removeChild(emptyElement);
+                logLayerElement.appendChild(footerElement);
+            }
+            const logFragElement = document.createDocumentFragment();
+            logs.forEach((log) => {
+                const logId = log.logId;
+
+                const matchedLog = currentLogWithId.find(
+                    (log) => log.logId === logId
+                );
+
+                if (matchedLog) {
+                    logFragElement.appendChild(matchedLog.element);
+                    rerenderLog(log, matchedLog.element)
+                } else {
+                    const logLiElement = renderLog(log);
+                    logFragElement.appendChild(logLiElement);
+                }
+            });
+            logListElement.append(logFragElement);
         }
     }
 
     function findColumnName(columnIdx) {
-        return columns.find(el => el.index === columnIdx).title;
+        return columns.find((el) => el.index === columnIdx).title;
     }
 
     return {
         render,
         remove,
-        addEventListener,
-    }
+    };
 }
