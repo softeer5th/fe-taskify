@@ -1,5 +1,5 @@
-import { ColumnCard } from '../components/Card/ColumnCard.js';
 import { addCard, addCardToggle, deleteCard, deleteCardToggle, editCard, editCardToggle } from './cardUtils.js';
+import { loadLocalStorage } from './mockup.js';
 
 
 
@@ -9,6 +9,9 @@ export function handleEventListener(e) {
     const target = e.target;
     // 각각의 Column
     const parentColumn = target.closest('.column-box');
+    // 각 컬럼의 이름
+    const columnName = parentColumn.id
+
     // 컬럼의 header
     const headerColumn =parentColumn.querySelector('.column-header')
     
@@ -24,6 +27,8 @@ export function handleEventListener(e) {
     const editForm =parentColumn.querySelector("#edit-card")
 
 
+
+    const tasksData = loadLocalStorage()
 
     if (target.closest('#history-toggle')) {
         return;
@@ -47,7 +52,7 @@ export function handleEventListener(e) {
     }
 
     else if (target.closest('#card-add')) {
-        addCard({titleInput,contentInput,addForm,headerColumn});
+        addCard({titleInput,contentInput,addForm,headerColumn,columnName,tasksData});
         return;
     }
     else if (target.closest('#card-delete-toggle')) {
