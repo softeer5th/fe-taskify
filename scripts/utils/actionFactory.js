@@ -1,29 +1,25 @@
 import { Action } from '../domain/Action.js'
 import { actionTypes } from '../types/actionTypes.js'
 
-export const makeTodoAddAction = (categoryUid, todoItem) => {
+export const makeTodoAddAction = (category, todoItem) => {
     const data = {
-        categoryUid,
+        category,
         todoItem,
     }
     return Action(actionTypes.todoCreate, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoDeleteAction = (categoryUid, todoItem) => {
+export const makeTodoDeleteAction = (category, todoItem) => {
     const data = {
-        categoryUid,
+        category,
         todoItem,
     }
     return Action(actionTypes.todoDelete, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoEditAction = (
-    categoryUid,
-    prevTodoItem,
-    currentTodoItem
-) => {
+export const makeTodoEditAction = (category, prevTodoItem, currentTodoItem) => {
     const data = {
-        categoryUid,
+        category,
         prevTodoItem,
         currentTodoItem,
     }
@@ -31,23 +27,23 @@ export const makeTodoEditAction = (
 }
 
 export const makeTodoMoveAction = (
-    prevCategoryUid,
-    currentCategoryUid,
+    prevCategory,
+    currentCategory,
     prevTodoItem,
     currentTodoItem
 ) => {
     const data = {
-        prevCategoryUid,
-        currentCategoryUid,
+        prevCategory,
+        currentCategory,
         prevTodoItem,
         currentTodoItem,
     }
     return Action(actionTypes.todoMove, '@멋진삼', new Date(), data)
 }
 
-export const makeTodoSortAction = (categoryUid) => {
+export const makeTodoSortAction = (category) => {
     const data = {
-        categoryUid,
+        category,
     }
     return Action(actionTypes.todoSort, '@멋진삼', new Date(), data)
 }

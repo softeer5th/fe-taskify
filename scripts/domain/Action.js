@@ -3,28 +3,28 @@
  *
  *  todoCreate, todoDelete =
  *  {
- *      categoryUid,
+ *      category,
  *      todoItem,
  *  }
  *
  *  todoEdit =
  *  {
- *      categoryUid,
+ *      category,
  *      prevTodoItem,
  *      currentTodoItem,
  *  }
  *
  *  todoMove =
  *  {
- *      prevCategoryUid,
- *      currentCategoryUid,
+ *      prevCategory,
+ *      currentCategory,
  *      prevTodoItem,
  *      currentTodoItem,
  *  }
  *
  *  todoSort =
  *  {
- *      categoryUid,
+ *      category,
  *  }
  */
 

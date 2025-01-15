@@ -48,8 +48,7 @@ const renderHistoryView = () => {
             templateNames.historyItem,
             historyBody,
             (identifier, component) => {
-                let content = makeContentLabel(action.type)
-                console.log(content)
+                let content = makeContentLabel(action)
                 component.querySelector(
                     `.${classNames.historyItemContent}`
                 ).textContent = content
@@ -62,24 +61,27 @@ const renderHistoryView = () => {
     })
 }
 
-const makeContentLabel = (actionType) => {
+const makeContentLabel = (action) => {
     let content = ''
-    const todoTitle = 'ㅈㅁ'
-    const category = 'ㅋㅌㄱㄹ'
-    const prevCat = 'ㅇㅈㅋㅌㄱㄹ'
-    const curCat = 'ㅈㄱㅋㅌㄱㄹ'
-    switch (actionType) {
+    console.log(action.data)
+    const category = action.data.category?.values.categoryName
+    const todoItem = action.data.todoItem
+    const prevCategory = action.data.prevCategory?.values.categoryName
+    const currentCategory = action.data.currentCategory?.values.categoryName
+    const prevTodoItem = action.data.prevTodoItem
+
+    switch (action.type) {
         case actionTypes.todoCreate:
-            content = `${todoTitle}을(를) ${category}에 등록하였습니다.`
+            content = `${todoItem.values.title}을(를) ${category}에 등록하였습니다.`
             break
         case actionTypes.todoDelete:
-            content = `${todoTitle}을(를) ${category}에서 삭제하였습니다.`
+            content = `${todoItem.values.title}을(를) ${category}에서 삭제하였습니다.`
             break
         case actionTypes.todoEdit:
-            content = `${todoTitle}을(를) 변경하였습니다.`
+            content = `${prevTodoItem.values.title}을(를) 변경하였습니다.`
             break
         case actionTypes.todoMove:
-            content = `${todoTitle}을(를) ${prevCat}에서 ${curCat}으로 이동하였습니다.`
+            content = `${prevTodoItem.values.title}을(를) ${prevCategory}에서 ${currentCategory}으로 이동하였습니다.`
             break
         case actionTypes.todoSort:
             // content = ``
