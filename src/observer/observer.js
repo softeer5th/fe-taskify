@@ -21,12 +21,12 @@ export class TaskModel extends Observable{
     }
 
     addTask(task) {
-        this.tasks = [...this.tasks, task];
+        this.tasks = [task,...this.tasks];
         this.notify(this.tasks); 
     }
 
-    deleteTask(task){
-        this.tasks = this.tasks.filter(item => item.id !== task.id);
+    deleteTask(taskId){
+        this.tasks =this.tasks.filter(item => item.id != taskId);
         this.notify(this.tasks);
     }
     editTask(task){
@@ -34,6 +34,20 @@ export class TaskModel extends Observable{
             item.id === task.id ? { ...item, ...task } : item
         ); 
         this.notify(this.tasks); 
+    }
+
+}
+
+
+export class PrimaryModal extends Observable {
+    constructor() {
+        super();
+        this.isOpen = false; 
+    }
+
+    toggle() {
+        this.isOpen = !this.isOpen;
+        this.notify(this.isOpen);
     }
 
 }
