@@ -1,46 +1,46 @@
 import Component from "../components/component.js";
 import { Header } from "./task/header/header.js";
 import { ColumnList } from "./task/column/columnList.js";
-import { columnData } from "../route/mock/fakeColumnListData.js";
 import { sortType } from "../route/data/sortType.js";
+import { getAllData } from "../route/store/todoStore.js";
 
 export class App extends Component {
 
-    columnData = columnData;
+    columnData = getAllData();
+
+    rootId = "appContainer";
+
+    currentSortType = sortType.create;
 
     onSortClick = (newSortType) => {
+        this.currentSortType = newSortType;
 
-        if (newSortType === sortType.create) {
-            this.sortByCreated();
-        } else {
-            this.sortByRecent();
-        }
-
+        this.sort();
+       
         this.rerender();
     }
 
     onHistoryClick = () => { }
 
     onCardAdded = (columnIndex, cardData) => {
-        console.log("columnData",this.columnData);
-        this.columnData[columnIndex].addData(cardData);
+        this.columnData[columnIndex].addCard(cardData);
 
         this.rerender();
     }
 
     onCardDeleted = (columnIndex, cardIndex) => {
         this.columnData[columnIndex].removeData(cardIndex);
-        console.log("columnData",this.columnData);
 
         this.rerender();
     }
 
-    children = {
-        header: {
-            object: new Header(this.onSortClick, this.onHistoryClick),
-            parentSelector: "#header",
-        }
-    };
+    onCardMoved = (cardId, preColumnIndex, newColumnIndex) => {
+        const temp = this.columnData[preColumnIndex].getCard(cardId);
+        this.columnData[preColumnIndex].removeDataById(cardId);
+        this.columnData[newColumnIndex].addCard(temp);
+        this.sort();
+        this.rerender();
+    }
 
     constructor() {
         super();
@@ -48,13 +48,28 @@ export class App extends Component {
     }
 
     setChildren() {
-
-        this.children["column"] = {
-            object: new ColumnList(this.columnData, this.onCardAdded, this.onCardDeleted),
-            parentSelector: "#taskContent",
+        this.children = {
+            header: {
+                object: new Header(this.currentSortType,this.onSortClick, this.onHistoryClick),
+                parentSelector: "#header",
+            },
+            column:{
+                object: new ColumnList(this.columnData, this.onCardAdded, this.onCardDeleted, (preColumnIndex, newColumnIndex) => {
+    
+                }),
+                parentSelector: "#taskContent",
+            }
         }
     }
 
+    sort(){
+        if (this.currentSortType === sortType.create) {
+            this.sortByCreated();
+        } else {
+            this.sortByRecent();
+        }
+    }
+    
     sortByCreated() {
         this.columnData = this.columnData.map((columnData) => {
             columnData.data = columnData.data.sort((cardData1, cardData2) => cardData1.cardId - cardData2.cardId);

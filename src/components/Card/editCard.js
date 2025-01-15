@@ -26,7 +26,6 @@ export class EditCard extends Component {
         super.addRootclass("card");
         super.addRootclass("card-edit");
 
-        console.log("cardData", cardData);
         if (cardData) {
             this.cardData = cardData;
             this.title = cardData.title;

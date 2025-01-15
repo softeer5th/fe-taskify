@@ -6,12 +6,19 @@ export class ColumnData {
         this.data = data;
     }
 
-    addData(newCard){
-       this.data.push(newCard);
+    getCard(cardId) {
+        return this.data.find((d) => d.cardId == cardId);
     }
 
-    removeData(cardIndex){
-        this.data = this.data.filter( (d,index) =>  index !== cardIndex);
+    addCard(newCard) {
+        this.data.push(newCard);
     }
 
+    removeData(cardIndex) {
+        this.data = this.data.filter((d, index) => index !== cardIndex);
+    }
+
+    removeDataById(cardId) {
+        this.data = this.data.filter((d) => d.cardId !== cardId);
+    }
 }

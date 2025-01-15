@@ -5,7 +5,7 @@ export class ColumnList extends Component {
 
     rootId = "columnList";
 
-    constructor(columnList, onCardAdd = (columnIndex, cardData) => { }, onCardDelete = (columnIndex, cardIndex) => { }) {
+    constructor(columnList, onCardAdd = (columnIndex, cardData) => { }, onCardDelete = (columnIndex, cardIndex) => { }, onCardMoved = (cardId, preColumnIndex, newColumnIndex) => { }) {
         super();
 
         columnList.forEach((columnData, index) => {
@@ -16,11 +16,19 @@ export class ColumnList extends Component {
                     },
                     (cardIndex) => {
                         onCardDelete(index, cardIndex);
+                    }, () => {
+                        const draggingCardId = document.querySelector(".dragging").id.slice(4);
+                        const preColumnIndex = columnList.findIndex(column =>
+                            column.data.some(card => card.cardId === draggingCardId)
+                        );
+                        onCardMoved(draggingCardId, preColumnIndex, index)
                     }),
                 parentSelector: "#columnList"
             };
         });
     }
+
+
 
     template() {
         return '';

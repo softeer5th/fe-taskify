@@ -88,3 +88,11 @@
 .hide {
     display: none;
 }
+
+.dragging{
+    opacity: 30%;
+}
+
+.ghostCard{
+    opacity: 30%;
+}

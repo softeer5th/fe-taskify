@@ -1,5 +1,6 @@
-#columnList{
-    flex:1;
+#columnList {
+    flex: 1;
+    height: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -7,8 +8,9 @@
 
 }
 
-.column{
+.column {
     width: 320px;
+    height: 100%;
     padding: 0px var(--number_200) 0px var(--number_200);
     display: flex;
     flex-direction: column;
