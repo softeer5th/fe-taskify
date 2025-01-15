@@ -82,10 +82,10 @@ export function updateChildCount(parentElement) {
 }
 
 let sortingOrder = 1;
-export let isMoving = false;
+export let isOrderChanging = false;
 
 export function toggleSortOrder() {
-    if (!isMoving) {
+    if (!isOrderChanging) {
         sortingOrder *= -1;
         let chip = document.querySelector('.chip');
         if (sortingOrder==1) {
@@ -93,9 +93,9 @@ export function toggleSortOrder() {
         } else {
             chip.querySelector('div').textContent = "최신 순";
         }
-        isMoving = true;
+        isOrderChanging = true;
         sortColumns();
-        setTimeout(()=>{isMoving = false}, 500)
+        setTimeout(()=>{isOrderChanging = false}, 500)
     }
 }
 
@@ -142,5 +142,20 @@ function sortColumns() {
                 });
             }, 500);
         } 
+    });
+}
+
+export let isColumnNameChanging = false;
+
+export function changeColumnName(event) {
+    isColumnNameChanging = true;
+    event.target.contentEditable = "true";
+    event.target.focus();
+}
+
+export function completeColumnName() {
+    isColumnNameChanging = false;
+    [...document.querySelectorAll('.column-name')].map((element)=>{
+        element.contentEditable = "false";
     });
 }

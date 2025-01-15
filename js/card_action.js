@@ -50,7 +50,7 @@ export function delCard(cardId) {
     });
 }
 
-export let isEditing = false;
+export let isCardEditing = false;
 
 // 카드 수정
 export function editCard(cardId) {
@@ -59,7 +59,7 @@ export function editCard(cardId) {
     const tempMemory = [...card.children];
     
     card.style.display = "block";
-    isEditing = true;
+    isCardEditing = true;
 
     let curTitle = card.querySelector(".card-title").textContent;
     let curContent = card.querySelector(".card-content").textContent;
@@ -83,12 +83,12 @@ export function editCard(cardId) {
     `;
 
     addListener(newActionDiv.querySelector('.confirm-button'),(event)=>{
-        isEditing = false;
+        isCardEditing = false;
         confirmEdit(card,cardId)
     });
 
     addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
-        isEditing = false;
+        isCardEditing = false;
         cancelEdit(card,tempMemory);
     });
     

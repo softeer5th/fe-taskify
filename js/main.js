@@ -1,5 +1,5 @@
-import { addCard, delAllCard, updateChildCount, toggleSortOrder, isMoving  } from "./column_action.js";
-import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion, isEditing } from "./card_action.js";
+import { addCard, delAllCard, updateChildCount, toggleSortOrder, changeColumnName, isOrderChanging, completeColumnName, isColumnNameChanging  } from "./column_action.js";
+import { editCard, delCard, startDragCard, moveCard, finishDragCard, isDragging, moveCardIllusion, isCardEditing } from "./card_action.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -76,6 +76,17 @@ function setEventForColumn(props) {
         if (event.type === "mousemove") {
             moveCard(event, clone);
             moveCardIllusion(parentElement, clone);
+        }
+    })
+
+
+    addListener(parentElement.querySelector('.column-name'), (event)=>{
+        if (event.type === "dblclick") {
+            changeColumnName(event);
+        } else if (event.type === 'keydown') {
+            if (event.key === 'Enter') {
+                completeColumnName();
+            }
         }
     })
 
@@ -171,13 +182,22 @@ addListener(document.querySelector('.chip'), (event) =>{
 });
 
 document.addEventListener('click', (event) => {
-    if (!isMoving) {
+    if (!isOrderChanging) {
+        triggerListeners(event, event.target);
+    }
+    if (isColumnNameChanging && !event.target.closest('.column-name')) {
+        completeColumnName();
+    }
+});
+
+document.addEventListener('dblclick', (event) => {
+    if (!isOrderChanging) {
         triggerListeners(event, event.target);
     }
 });
 
 document.addEventListener('mousedown', (event) => {
-    if (!isEditing && !isMoving) {
+    if (!isCardEditing && !isOrderChanging) {
         triggerListeners(event, event.target);
     }
 });
@@ -192,6 +212,13 @@ document.addEventListener('mouseup', (event) => {
     if (isDragging) {
         finishDragCard(clone);
         clone = null;
+    }
+});
+
+
+document.addEventListener('keydown', (event) => {
+    if (isColumnNameChanging) {
+        triggerListeners(event, event.target);
     }
 });
 
