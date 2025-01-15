@@ -25,7 +25,7 @@ header {
         }
     }
 
-    .activity__list{
+    .activity__list {
         display: none;
         background-color: var(--grayscale-50);
         border-radius: 16px;
@@ -57,6 +57,10 @@ header {
         ul {
             padding: 0px 8px;
         }
+
+        > ul li:not(:last-child) {
+            border-bottom: 1px solid var(--grayscale-200);
+          }
     }
 
     .clock__btn {
@@ -78,6 +82,7 @@ header {
             width: 40px;
             height: 40px;
             margin: 16px;
+            border-radius: 100%;
         }
     }
 }

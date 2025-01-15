@@ -31,7 +31,8 @@ export const renderRecords = () => {
         textBox.className = 'text__box';
 
         const userImg = document.createElement('img');
-        userImg.src = '/assets/user.png';
+        // userImg.src = '/assets/user.png';
+        userImg.src = 'https://s3-alpha-sig.figma.com/img/238e/defe/eede02d1a80e6ccab7a760738eef7e21?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oft77sJUvrzVXcj~vC8LlQnduFFgr-UQ~-VpzAOiAeeVMl7Np5J-~E4nlgwLH36pgPx0NsfLiGZnQXpBk21sgXkUMtMeqYCrTmHqzQtwIx~w83u-qSDh8GxxjFB37u0o5GONz6UnD~0w-lEYf8M8v3W9a2UzdzoqfPyOf2RC2aJQUzhd0jA-moETtmyQH02c~z3DIE1r5XmirKviUD-XG5VjbtOXqIQ1FH6Kwj9mIpjiHF3hmIqy7xIGCAgnCU9Xox9mmmY50WYB7-J5KtFGw8u1UX46lFdPPlOS4DNraA5Wgn7S7NmT82-yK1ZCkeAhL8VyRvh7AAvvajt-0g-SsA__';
         const username = document.createElement('p');
         username.textContent = '@이름이용';
         username.className = 'medium14';
