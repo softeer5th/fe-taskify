@@ -54,7 +54,6 @@ export default class Model {
 
   #notify() {
     this.#listeners.forEach((listener) => listener());
-    console.log("Rendered");
   }
 
   #pushHistory(newData, action) {
