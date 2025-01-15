@@ -2,7 +2,7 @@ import { classNames, keys } from '../strings.js'
 import { findDomElement } from '../utils/domUtil.js'
 import { getState } from '../utils/stateUtil.js'
 import { storeData } from '../utils/storageUtil.js'
-import { renewTodoCount } from './todo.js'
+import { renewTodoCount } from './todoManager.js'
 
 const DEBUG = false
 

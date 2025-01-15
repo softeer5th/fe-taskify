@@ -1,4 +1,4 @@
-import { generateUid } from '../utils/dataManager.js'
+import { generateUid } from '../utils/dataUtil.js'
 
 const createCategory = (identifier, categoryName, todoList = []) => {
     return {

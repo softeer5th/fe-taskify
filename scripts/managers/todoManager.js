@@ -11,7 +11,7 @@ import { loadData, storeData } from '../utils/storageUtil.js'
 import { manageDragEvents, manageDropEvents } from './dragManager.js'
 import { Category } from '../domain/category.js'
 
-const RESET_DATA = true
+const RESET_DATA = false
 
 export const initTodo = () => {
     RESET_DATA && storeData(keys.TODO_CATEGORY_KEY, [])
