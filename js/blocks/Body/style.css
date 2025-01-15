@@ -108,6 +108,7 @@ section {
         button {
             width: 140px;
             height: 32px;
+            border-radius: 8px;
         }
     
         button:first-child {
