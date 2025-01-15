@@ -1,5 +1,5 @@
-import { plus } from "../../public/plus.js";
-import { closed } from "../../public/closed.js";
+import plus from "../../public/plus.js";
+import closed from "../../public/closed.js";
 
 const COUNT_MAX = 99;
 
