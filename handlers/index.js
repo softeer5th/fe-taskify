@@ -1,4 +1,9 @@
-import { handleDragEnd, handleDragStart } from "./columnBody.js";
+import {
+  handleDragEnd,
+  handleDragOver,
+  handleDragStart,
+  handleDrop,
+} from "./columnBody.js";
 import { handleCancelAdd, handleClickAdd } from "./columnHeader.js";
 import {
   handleCancelEdit,
@@ -66,6 +71,22 @@ export const addRootEventListener = () => {
 
     if ($column__body) {
       handleDragEnd(e);
+    }
+  });
+
+  $root.addEventListener("dragover", (e) => {
+    const $columnItem = e.target.closest(".column__item");
+
+    if ($columnItem) {
+      handleDragOver(e);
+    }
+  });
+
+  $root.addEventListener("drop", (e) => {
+    const $columnItem = e.target.closest(".column__item");
+
+    if ($columnItem) {
+      handleDrop(e);
     }
   });
 };
