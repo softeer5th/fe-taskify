@@ -42,7 +42,7 @@
 3. Card Sorting ✅
 4. Card editing ( + delete) ✅
 5. Card moving ✅
-6. History manager
+6. History manager ✅
 7. Column manager
 8. FAB button
 9. Design
@@ -68,16 +68,16 @@
 
 ---
 
-- [ ] Header
-  - [ ] Logo
-  - [ ] History Modal
-    - [ ] Pop up
-    - [ ] List of Tasks
-    - [ ] Clear History
+- [x] Header
+  - [x] Logo
+  - [x] History Modal
+    - [x] Pop up
+    - [x] List of Tasks
+    - [x] Clear History
       - [ ] Warning Modal
-    - [ ] Close Modal
-    - [ ] Animation
-    - [ ] Bold for important words
+    - [x] Close Modal
+    - [x] Animation
+    - [x] Bold for important words
 
 ---
 

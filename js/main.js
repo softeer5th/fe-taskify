@@ -1,12 +1,20 @@
 import { closeCardModal, makeCard, popupCardModal } from "./card/addCard.js";
-import { getColumnTasks, getTaskByTimestamp } from "../utils/storage/taskManager.js";
+import {
+  getColumnTasks,
+  getTaskByTimestamp,
+} from "../utils/storage/taskManager.js";
 import { setDefaultColumn } from "./setColumn.js";
 import { editCard, closeEditModal } from "./card/editCard.js";
 import { sort } from "./sort.js";
 import { deleteCard, closeDeleteModal } from "./card/deleteCard.js";
 import { dragendCard, dragoverCard, dragStartCard } from "./card/moveCard.js";
 import { showHistoryModal } from "./history/historyModal.js";
-import { addHistory, clearHistory, getHistory } from "../utils/storage/historyManager.js";
+import {
+  addHistory,
+  clearHistory,
+  getHistory,
+} from "../utils/storage/historyManager.js";
+import { showWarningModal } from "../utils/storage/warningModal.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   setDefaultColumn();
@@ -95,13 +103,19 @@ document.addEventListener("click", ({ target }) => {
   } else if (target.closest(".history-modal-close-btn")) {
     showHistoryModal();
   } else if (target.closest(".history-modal-footer")) {
+    if (showWarningModal("모든 사용자 기록을 삭제할까요?")) clearHistory();
+  } else if (target.closest(".warning-modal-confirm-btn")) {
+    document.querySelector(".warning-modal").remove();
+  } else if (target.closest(".warning-modal-cancel-btn")) {
+    document.querySelector(".warning-modal").remove();
     clearHistory();
   }
 });
 
 //드래그
 document.addEventListener("dragstart", ({ target }) => {
-  if (target.closest(".card-edit-btn") || target.closest(".card-close-btn")) return;
+  if (target.closest(".card-edit-btn") || target.closest(".card-close-btn"))
+    return;
 
   dragStartCard(target);
 });
