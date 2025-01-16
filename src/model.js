@@ -278,7 +278,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "moveTask",
-      movedTaskTitle: task.Title,
+      movedTaskTitle: task.title,
       fromColumnTitle: currentData.column.find((column) => column.id === fromColumnId).title,
       toColumnTitle: currentData.column.find((column) => column.id === toColumnId).title,
     });
