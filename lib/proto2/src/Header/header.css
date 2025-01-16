@@ -5,12 +5,28 @@
     height: 64px;
     margin-bottom: 32px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 16px;
 }
 
 .header > h1 {
     font-size: 24px;
     font-weight: 700;
     line-height: 1.2em;
+}
+
+.header > button {
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(190, 193, 213, 1);
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(78, 75, 102, 1);
+
+    display: flex;
+    gap: 7px;
+    justify-content: center;
+    align-items: center;
 }
