@@ -4,6 +4,8 @@ import Component from "../component.js";
 
 export class EditCard extends Component {
 
+    maxTextLength = 500;
+
     children = {
         dismiss: {
             object: new Button("취소", null, "dismiss-button"),
@@ -30,6 +32,7 @@ export class EditCard extends Component {
             this.cardData = cardData;
             this.title = cardData.title;
             this.body = cardData.body;
+
         }
 
         this.onConfirm = () => {
@@ -37,6 +40,18 @@ export class EditCard extends Component {
             onConfirm(newCardData);
         };
         this.onDismiss = onDismiss;
+    }
+
+    disableConfirmButton() {
+        const confirmButton = this.current.querySelector(".card-buttons .confirm-button");
+
+        confirmButton.classList.add("disabled");
+    }
+
+    ableConfirmButton() {
+        const confirmButton = this.current.querySelector(".card-buttons .confirm-button");
+
+        confirmButton.classList.remove("disabled");
     }
 
     clearInput() {
@@ -47,8 +62,8 @@ export class EditCard extends Component {
     template() {
         return `
             <div class = "card-text_area">
-                <input class = "card-title display-bold24" placeholder = "제목을 입력해주세요" value = "${this.title}"/>
-                <input class = "card-body display-medium14" placeholder = "내용을 입력해주세요" value = "${this.body}"/>
+                <textarea class = "card-title display-bold24" placeholder = "제목을 입력해주세요">${this.title}</textarea>
+                <textarea class = "card-body display-medium14" placeholder = "내용을 입력해주세요">${this.body}</textarea>
             </div>
             <div class  = "card-buttons">
                 
@@ -61,11 +76,23 @@ export class EditCard extends Component {
         const titleInput = component.querySelector(".card-title");
         const bodyInput = component.querySelector(".card-body");
 
-        return new CardData(
-            titleInput.value,
-            bodyInput.value,
-            "web"
-        );
+        let t = '';
+        if (titleInput.value.length >= this.maxTextLength) {
+            t = titleInput.value.slice(0, 500);
+        }
+        else {
+            t = titleInput.value
+        }
+
+        let b = '';
+        if (bodyInput.value.length >= this.maxTextLength) {
+            b = bodyInput.value.slice(0, 500);
+        }
+        else {
+            b = bodyInput.value
+        }
+
+        return new CardData(t, b, "web");
 
     }
 
@@ -79,6 +106,44 @@ export class EditCard extends Component {
         if (this.cardData) {
             this.current.id = `card${this.cardData.cardId}`;
         }
+
+        const titleInput = this.current.querySelector(".card-title");
+        const bodyInput = this.current.querySelector(".card-body");
+
+
+        titleInput.style.height = "auto"; 
+        titleInput.style.height = titleInput.scrollHeight + "px"; 
+
+        bodyInput.style.height = "auto"; 
+        bodyInput.style.height = bodyInput.scrollHeight + "px"; 
+
+        if (bodyInput.value.length == 0 || titleInput.value.length == 0) {
+            this.disableConfirmButton();
+        }
+
+        titleInput.addEventListener('input', () => {
+            if (bodyInput.value.length == 0 || titleInput.value.length == 0) {
+                this.disableConfirmButton();
+            }
+            else {
+                this.ableConfirmButton();
+            }
+
+            titleInput.style.height = "auto"; 
+            titleInput.style.height = titleInput.scrollHeight + "px"; 
+        });
+
+        bodyInput.addEventListener('input', () => {
+            if (bodyInput.value.length == 0 || titleInput.value.length == 0) {
+                this.disableConfirmButton();
+            }
+            else {
+                this.ableConfirmButton();
+            }
+
+            bodyInput.style.height = "auto"; 
+            bodyInput.style.height = bodyInput.scrollHeight + "px"; 
+        });
     }
 
 }

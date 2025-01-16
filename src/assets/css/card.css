@@ -61,6 +61,7 @@
     border: none;
     color: var(--color_text_strong);
     appearance: none;
+    resize: none;
 }
 
 .card-title:focus {
@@ -74,6 +75,7 @@
     border: none;
     color: var(--color_text_default);
     margin-top: var(--number_100);
+    resize: none;
 }
 
 .card-body:focus {

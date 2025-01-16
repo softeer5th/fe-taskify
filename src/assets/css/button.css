@@ -36,11 +36,6 @@
     cursor: pointer;
 }
 
-.button-background[disabled] {
-    opacity: 30%;
-    cursor: not-allowed;
-}
-
 .button-icon {
     width: 16px;
     height: 16px;
@@ -49,4 +44,10 @@
 
 .button-text {
     padding: 0px var(--number_50) 0px var(--number_50);
+}
+
+.disabled{
+    opacity: 30%;
+    cursor: not-allowed;    
+    pointer-events: none;
 }
