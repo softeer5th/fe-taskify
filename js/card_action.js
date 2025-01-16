@@ -3,7 +3,7 @@ import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
 import { addListener } from "./event_listeners.js";
 import { addHistory, getIsDragging, saveData, toggleIsCardEditing, toggleIsDragging } from "./store.js";
-import { makeHistoryObj } from "./history.js";
+import { makeHistoryObj, renderHistory } from "./history.js";
 import { getColumnTitle, getColumnTitleByCardId } from "./column_action.js";
 
 let gapX = 0;
@@ -40,8 +40,10 @@ export async function confirmAddCard(columnId){
     const contentInput = document.getElementById('content-input');
     const contentValue = contentInput.value.trim();
     const newCardId = createNewId();
-    await renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,});
-    addHistory(makeHistoryObj("등록", titleValue, getColumnTitle(columnId)));
+    await renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,}, true);
+    let historyObj = makeHistoryObj("등록", titleValue, getColumnTitle(columnId));
+    addHistory(historyObj);
+    renderHistory(historyObj);
     saveData();
 }
 
@@ -63,7 +65,9 @@ export function delCard(cardId) {
         if (event.type === 'click') {
             hideAlert();
             if (card) {
-                addHistory(makeHistoryObj("삭제", getCardTitle(cardId), getColumnTitleByCardId(cardId)));
+                let historyObj = makeHistoryObj("삭제", getCardTitle(cardId), getColumnTitleByCardId(cardId));
+                addHistory(historyObj);
+                renderHistory(historyObj);
                 card.remove();
                 saveData();
             }

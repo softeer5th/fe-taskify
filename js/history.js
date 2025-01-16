@@ -27,6 +27,18 @@ function showHistory() {
     console.log(getHistory());
 }
 
+export function relocateHistory() {// 버튼의 위치 정보 가져오기
+    const buttonRect = openHistoryButton.getBoundingClientRect();
+
+    // 다이얼로그 위치 계산 (버튼 아래에 표시)
+    const dialogWidth = dialog.offsetWidth;
+    const dialogX = buttonRect.right - dialogWidth; // 버튼의 오른쪽 위치
+    const dialogY = buttonRect.bottom + window.scrollY; // 버튼의 하단 위치 + 스크롤 값
+
+    dialog.style.left = `${dialogX}px`;
+    dialog.style.top = `${dialogY}px`;
+}
+
 /**
  * 
  * @param {'등록', '변경', '이동', '삭제'} actionType 
@@ -37,7 +49,7 @@ function showHistory() {
  */
 export function makeHistoryObj(actionType, subject, from, to) {
     return {
-        "action-type": actionType,
+        "actionType": actionType,
         "subject": subject,
         "from": from,
         "to": to,
@@ -46,9 +58,28 @@ export function makeHistoryObj(actionType, subject, from, to) {
 }
 
 
-async function renderHistory(historyObj) {
+export async function renderHistory(historyObj) {
     //templateFile, templateId, targetId, props
-    if (actionType==="등록") {
-        await renderTemplate('./html/history_template.html', 'history-template', 'history-dialog', historyObj);
+    console.log(historyObj);
+    await renderTemplate('./html/history_template.html', 'history-template', 'history-area', historyObj, true);
+    console.log(historyObj.actionType)
+    if (historyObj.actionType==="등록" || historyObj.actionType==="삭제") {
+        document.querySelector('.detail').innerHTML = `
+        <span class="accent">${historyObj.subject}</span>을(를)&nbsp;
+        <span class="accent">${historyObj.from}</span>에서&nbsp;
+        <span class="accent">${historyObj.actionType}</span>하였습니다.
+        `;
+    } else if (historyObj.actionType==="변경") {
+        document.querySelector('.detail').innerHTML = `
+        <span class="accent">${historyObj.subject}</span>을(를)&nbsp;
+        <span class="accent">${historyObj.actionType}</span>하였습니다.
+        `;
+    } else if (historyObj.actionType==="이동") {
+        document.querySelector('.detail').innerHTML = `
+        <span class="accent">${historyObj.subject}</span>을(를)&nbsp;
+        <span class="accent">${historyObj.from}</span>에서&nbsp;
+        <span class="accent">${historyObj.to}</span>으로&nbsp;
+        <span class="accent">${historyObj.actionType}</span>하였습니다.
+        `;
     }
 }

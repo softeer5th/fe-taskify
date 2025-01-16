@@ -12,12 +12,16 @@ export function createNewId () {
 }
 
 export function calTimePassed(date1, date2) {
+    console.log(date1);
+    console.log(date2);
     const diffMs = Math.abs(date1 - date2);
-    const diffMinutes = Math.floor(diffMs / 60000);
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffMs / 60);
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
-
-    if (diffMinutes < 60) {
+    if (diffSeconds < 60) {
+        return `빙금 전`
+    } else if (diffMinutes < 60) {
         return `${diffMinutes}분 전`; // 1시간 이내
     } else if (diffHours < 24) {
         return `${diffHours}시간 전`; // 1일 이내

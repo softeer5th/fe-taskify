@@ -156,7 +156,7 @@ export function loadData(isInit) {
             todoList = temp.todo;
         }
     }
-    if (todoList) {
+    if (todoList!==null && todoList.length>0) {
         refreshScreen(todoList);
     } else {
         resetTodo();
