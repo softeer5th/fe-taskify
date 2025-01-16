@@ -26,7 +26,7 @@ export default function TaskController(state, logStore, rerender) {
     }
 
     // Task 렌더링 함수
-    function renderTask(parentElement, taskId, order) {
+    function renderTask(taskId) {
         const task = state.getTask(taskId);
         const newTaskElement = taskComponent.render(task);
 
@@ -41,9 +41,7 @@ export default function TaskController(state, logStore, rerender) {
             (e) => dragTask(e, taskId)
         );
 
-        newTaskElement.style.order = order;
-
-        parentElement.appendChild(newTaskElement);
+        return newTaskElement;
     }
 
     // Task 삭제
@@ -77,6 +75,7 @@ export default function TaskController(state, logStore, rerender) {
             task: task,
             type: "UPDATE",
             updated: new Date(),
+            updatedTask: newTask
         });
 
         const newTaskElement = taskComponent.render(newTask);
@@ -111,8 +110,26 @@ export default function TaskController(state, logStore, rerender) {
         });
     }
 
+    function rerenderTask(taskId) {
+        const taskElements = document.body.querySelectorAll('.card');
+
+        let taskElement = null;
+        for(let el of taskElements) {
+            const _taskId = Number(el.getAttribute('taskid'));
+            if(_taskId === taskId) {
+                taskElement = el;
+                break;
+            }
+        }
+        
+        const newTaskElement = renderTask(taskId)
+
+        taskElement.parentNode.replaceChild(newTaskElement, taskElement);
+    }
+
     return {
         renderTask,
+        rerenderTask,
         removeTask,
         editTask,
     };

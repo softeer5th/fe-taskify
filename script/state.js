@@ -7,14 +7,17 @@ export default function State() {
         {
             title: "해야할 일",
             index: 0,
+            nonRemovable: true,
         },
         {
             title: "하고 있는 일",
             index: 1,
+            nonRemovable: true,
         },
         {
             title: "완료한 일",
             index: 2,
+            nonRemovable: true,
         },
     ];
 
@@ -63,6 +66,29 @@ export default function State() {
         return { columns, columnTasks };
     }
 
+    function editColumn(index, newTitle) {
+        const columnIdx = columns.findIndex(col => col.index === index);
+        columns[columnIdx] = {title: newTitle, index};
+    }
+
+    function addColumn(title) {
+        const index = columns.length;
+        const newColumn = {
+            title,
+            index,
+        };
+
+        columns.push(newColumn);
+        columnTasks.push([]);
+
+        return newColumn;
+    }
+
+    function removeColumn(index) {
+        columns = columns.filter(el => el.index !== index);
+        columnTasks = columnTasks.filter((el, idx) => idx !== index);
+    }
+
     function getTask(taskId) {
         for(let i =0; i<columns.length; i++) {
             const matchedTask = columnTasks[i].find(el => el.taskId === taskId)
@@ -103,7 +129,7 @@ export default function State() {
     }
 
     function updateTask(index, currentTask, newTask) {
-        const taskIndex = columnTasks[index].indexOf(currentTask);
+        const taskIndex = columnTasks[index].findIndex((task)=>task.taskId === currentTask.taskId);
         columnTasks[index][taskIndex] = {...newTask, taskId: currentTask.taskId};
     }
 
@@ -125,6 +151,9 @@ export default function State() {
         setDragged,
         resetDragged,
         getColumns,
+        editColumn,
+        addColumn,
+        removeColumn,
         getTask,
         addTask,
         moveTask,

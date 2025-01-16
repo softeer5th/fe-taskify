@@ -1,10 +1,13 @@
 export default function ColumnComponent() {
+
     // Column 컴포넌트 템플릿
     function template({ title }) {
         return `
-            <h3 class="column_title text-bold display-bold16">
-                ${title}
-                <span class="column_task_counter text-weak display-medium12 border-default rounded-100">0</span>
+            <h3 class="column_header text-bold display-bold16">
+                <span class="column_title_container">
+                    <span class="column_title">${title}</span>
+                    <span class="column_task_counter text-weak display-medium12 border-default rounded-100">0</span>
+                </span>
                 <span class="column_button_container">
                     <button>
                         <img draggable="false" width="24" height="24" src="/public/icon/plus.svg" />
@@ -38,21 +41,35 @@ export default function ColumnComponent() {
         handleAdd,
         handleDrop,
         handleDragEnter,
-        handleDragLeave
+        handleDragLeave,
+        handleBlur,
+        handleContextMenu
     ) {
         const [addButton, removeButton] =
             columnElement.getElementsByTagName("button");
-        const columnIdx = columnElement.getAttribute("index");
+        const columnIdx = Number(columnElement.getAttribute("index"));
         const formContainer =
             columnElement.getElementsByClassName("card_add")[0];
+        
         addButton.addEventListener("click", () =>
             handleAdd(formContainer, columnIdx)
         );
+
         const listElement = columnElement.querySelector(".card_list");
+        
         listElement.addEventListener("dragover", (e) => e.preventDefault());
         listElement.addEventListener("drop", handleDrop);
         listElement.addEventListener("dragenter", handleDragEnter);
         listElement.addEventListener("dragleave", handleDragLeave);
+
+        const titleElement = columnElement.querySelector('.column_title_container');
+        const editElement = renderEditForm(titleElement, (title)=>handleBlur(columnIdx, title))
+        
+        titleElement.addEventListener('contextmenu', handleContextMenu)
+        titleElement.addEventListener('dblclick', ()=>{
+            titleElement.parentNode.replaceChild(editElement, titleElement);
+            editElement.focus();
+        })
     }
 
     function rerenderHeader(idx, n) {
@@ -63,10 +80,31 @@ export default function ColumnComponent() {
         else counterElement.textContent = n;
     }
 
+    function renderEditForm(containerElement, handleBlur) {
+        const titleElement = containerElement.querySelector('.column_title');
+        const title = titleElement.textContent;
+        const inputElement = document.createElement('input');
+        inputElement.classList = 'border-default surface-default display-medium14 text-strong'
+        inputElement.value = title;
+
+        inputElement.addEventListener('blur', (e)=>{
+            titleElement.textContent = e.target.value;
+            inputElement.parentNode.replaceChild(containerElement, inputElement);
+            handleBlur(e.target.value);
+        });
+
+        return inputElement;
+    }
+
+    function remove(columnElement) {
+        columnElement.remove()
+    }
+
     return {
         render,
         addEventListener,
         rerenderHeader,
+        remove,
     };
 }
 

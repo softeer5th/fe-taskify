@@ -1,5 +1,6 @@
 import FormComponent from "../components/Form.js";
 import ColumnComponent from "../components/column.js";
+import ModalComponent from "../components/modal.js";
 import TaskController from "./task.js";
 
 export default function ColumnController(state, bodyElement, logStore) {
@@ -9,7 +10,7 @@ export default function ColumnController(state, bodyElement, logStore) {
     const taskController = TaskController(state, logStore, (idx)=>{
         renderColumn(idx, columnTasks[idx]);
     });
-    
+
     function handleDrop(e) {
         e.stopPropagation();
         const {task, element, dummyElement} = state.getDragged();
@@ -49,9 +50,9 @@ export default function ColumnController(state, bodyElement, logStore) {
 
         const tempTask = state.sortTask([...columnTasks[columnIdx], task])
         const dragIdx = tempTask.findIndex(el => el.taskId == task.taskId);
-        
+
         const targetElement = columnListElement.children[dragIdx];
-        
+
         columnListElement.insertBefore(dummyElement, targetElement);
     }
 
@@ -100,10 +101,10 @@ export default function ColumnController(state, bodyElement, logStore) {
 
         // 잔여 Task 목록
         const currentTasksWithId = Array.from(columnListElement.children).map((el) => {
-            return {
-                taskId: Number(el.getAttribute("taskid")),
-                element: el,
-            };
+                return {
+                    taskId: Number(el.getAttribute("taskid")),
+                    element: el,
+                };
         });
 
         const taskFragmentElement = document.createDocumentFragment();
@@ -112,15 +113,17 @@ export default function ColumnController(state, bodyElement, logStore) {
         for (let i=0; i<tasks.length; i++) {
             const task = tasks[i];
             const matchedIdx = _currentTasksWithId.findIndex(el => el.taskId === task.taskId);
-            
+
             // 일치하는 Element가 존재할 경우, 잔여 Task 목록에서 제거
             if(matchedIdx != -1) {
                 const matchedTask = currentTasksWithId[matchedIdx];
                 currentTasksWithId[matchedIdx] = undefined;
-                taskFragmentElement.appendChild(matchedTask.element);
+                const matchedTaskElement = matchedTask.element;
+                taskFragmentElement.appendChild(matchedTaskElement);
                 continue;
             }
-            taskController.renderTask(taskFragmentElement, task.taskId);
+            const newTaskElement = taskController.renderTask(task.taskId);
+            taskFragmentElement.appendChild(newTaskElement);
         }
 
         // 일치하지 않는 잔여 Task 삭제
@@ -144,7 +147,7 @@ export default function ColumnController(state, bodyElement, logStore) {
 
         originalPosition.forEach((el)=>{
             const {top, taskId, element} = el;
-            
+
             const pos = newPosition.find(el => el.taskId === taskId);
             if(!pos) return;
 
@@ -166,7 +169,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         /* GPT 도움 받은 영역 */
         // originalPosition.forEach((el)=>{
         //     const {top, taskId, element} = el;
-            
+
         //     const {top: _top, taskId: _taskId} = newPosition.find(el => el.taskId === taskId);
         //     const deltaY = top - _top;
 
@@ -192,7 +195,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         const newTask = {
             title: title,
             content: content,
-            column: Number(columnIdx),
+            column: columnIdx,
             created: new Date(),
         };
 
@@ -224,11 +227,14 @@ export default function ColumnController(state, bodyElement, logStore) {
 
     // Column 동적 생성 및 이벤트 등록
     function renderInit() {
+        bodyElement.oncontextmenu = (e) => e.preventDefault();
         const mainElement = document.createElement("main");
         const columnContainerElement = document.createElement("ul");
         columnContainerElement.setAttribute("id", "column_container");
-        columnContainerElement.addEventListener('dragover', (e)=>e.preventDefault());
-        columnContainerElement.addEventListener('drop', resetDrop)
+        columnContainerElement.addEventListener("dragover", (e) =>
+            e.preventDefault()
+        );
+        columnContainerElement.addEventListener("drop", resetDrop);
         const columnListFragment = document.createDocumentFragment();
 
         for (let column of columnList) {
@@ -239,7 +245,9 @@ export default function ColumnController(state, bodyElement, logStore) {
                     renderAddForm(formContainer, columnIdx),
                 handleDrop,
                 handleDragEnter,
-                handleDragLeave
+                handleDragLeave,
+                (index, title) => state.editColumn(index, title),
+                () => removeColumn(column, columnElement)
             );
             columnListFragment.appendChild(columnElement);
         }
@@ -249,8 +257,46 @@ export default function ColumnController(state, bodyElement, logStore) {
         bodyElement.appendChild(mainElement);
     }
 
+    function addColumn(title) {
+        const column = state.addColumn(title);
+
+        const columnElement = columnComponent.render(column);
+        columnComponent.addEventListener(
+            columnElement,
+            (formContainer, columnIdx) =>
+                renderAddForm(formContainer, columnIdx),
+            handleDrop,
+            handleDragEnter,
+            handleDragLeave,
+            (index, title) => state.editColumn(index, title),
+            () => removeColumn(column, columnElement)
+        );
+
+        const columnContainerElement = document.querySelector("ul");
+        columnContainerElement.appendChild(columnElement);
+    }
+
+    function removeColumn(column, columnElement) {
+        if (column.nonRemovable) return;
+        
+        const { title, index: columnIdx } = column;
+
+        const modalComponent = ModalComponent();
+        modalComponent.render(`"${title}" 컬럼을 삭제하시겠습니까?`, () => {
+            state.removeColumn(columnIdx);
+            columnComponent.remove(columnElement);
+            logStore.clearLog();
+        });
+    }
+
+    function rerenderTask(taskId) {
+        taskController.rerenderTask(taskId);
+    }
+
     return {
         renderInit,
         renderColumn,
+        rerenderTask,
+        addColumn,
     };
 }
