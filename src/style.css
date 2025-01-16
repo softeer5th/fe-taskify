@@ -39,7 +39,7 @@ body {
     min-width: 400px;
     background-color: var(--grayscale-100);
     user-select: none;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 body {
@@ -99,7 +99,7 @@ textarea {
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* Header Style */
@@ -183,8 +183,10 @@ textarea {
     gap: 24px;
     display: flex;
     flex-direction: row;
-    overflow: auto;
+    overflow-x: scroll;
+    flex: 1;
     flex-wrap: nowrap;
+    position: relative;
 }
 
 /* Column Style */
@@ -195,7 +197,7 @@ textarea {
     gap: 10px;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-x: auto;
     flex-shrink: 0;
 }
 
@@ -550,7 +552,7 @@ textarea {
     display: flex;
     flex-direction: row;
     background-color: var(--grayscale-50);
-    border-bottom: 1px solid var(--grayscale-600);
+    border-bottom: 1px solid var(--grayscale-200);
     text-align: center;
 }
 
