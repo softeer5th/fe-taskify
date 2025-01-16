@@ -3,7 +3,11 @@ import { classNames, keys } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
 import { getCategoryByUid } from '../utils/dataUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
-import { undoTodoItemDelete } from './todoManager.js'
+import {
+    undoTodoItemCreate,
+    undoTodoItemDelete,
+    undoTodoItemEdit,
+} from './todoManager.js'
 
 keys.RESET_DATA_KEY && storeData(keys.ACTION_STORAGE_KEY, [])
 keys.RESET_DATA_KEY && storeData(keys.ACTION_POINTER_STORAGE_KEY, -1)
@@ -90,14 +94,6 @@ const undoAction = (action) => {
 
     storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
 }
-
-const undoTodoItemCreate = (category, todoItem) => {
-    const currentTodoItem = {}
-}
-
-// const undoTodoItemDelete = (category, todoItem, index) => {}
-
-const undoTodoItemEdit = (category, prevTodoItem, currentTodoItem, index) => {}
 
 const undoTodoItemMove = (
     prevCategory,

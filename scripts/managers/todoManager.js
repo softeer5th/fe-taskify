@@ -330,7 +330,9 @@ export const renewTodoCount = (category) => {
 }
 
 export const undoTodoItemCreate = (category, todoItem) => {
+    // TODO: refactor
     const { _, index, __ } = getTodoItemInfo(todoItem.uid)
+    removeDomElement(findDomElementByUid(todoItem.uid).id)
     category.todoList.splice(index, 1)
 }
 
@@ -368,4 +370,21 @@ export const undoTodoItemDelete = (category, todoItem, index) => {
     }
 
     addTodoItemToList(copiedTodoItem, category, index)
+}
+
+export const undoTodoItemEdit = (
+    category,
+    prevTodoItem,
+    currentTodoItem,
+    index
+) => {
+    const originTodoElement = findDomElementByUid(currentTodoItem.uid)
+    replaceDomElement(
+        templateNames.todoItem,
+        originTodoElement,
+        (identifier, component) => {
+            initTodoItemElement(component, prevTodoItem)
+            return prevTodoItem.uid
+        }
+    )
 }
