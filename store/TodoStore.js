@@ -1,3 +1,4 @@
+import { ACTION_TYPE } from "../constants/action.js";
 import { STORAGE_KEY } from "../constants/storageKey.js";
 import {
   clearLocalStorage,
@@ -22,7 +23,11 @@ class TodoStore extends Observable {
         ? { ...section, items: [...section.items, newTodo] }
         : section
     );
-    this.notify("add", { sectionId, newTodo, todoList: this.#todoList });
+    this.notify(ACTION_TYPE.add, {
+      sectionId,
+      newTodo,
+      todoList: this.#todoList,
+    });
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 
@@ -36,7 +41,35 @@ class TodoStore extends Observable {
         : section
     );
 
-    this.notify("remove", { sectionId, deletedId, todoList: this.#todoList });
+    this.notify(ACTION_TYPE.remove, {
+      sectionId,
+      deletedId,
+      todoList: this.#todoList,
+    });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  update({ sectionId, updatedId, title, content }) {
+    this.#todoList = [...this.#todoList].map((section) =>
+      section.id === sectionId
+        ? {
+            ...section,
+            items: section.items.map((item) =>
+              item.id === updatedId ? { ...item, title, content } : item
+            ),
+          }
+        : section
+    );
+
+    const updatedTodo = this.#todoList
+      .find((section) => section.id === sectionId)
+      .items.find((item) => item.id === updatedId);
+
+    this.notify(ACTION_TYPE.update, {
+      sectionId,
+      updatedTodo,
+      todoList: this.#todoList,
+    });
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 

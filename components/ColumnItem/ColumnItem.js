@@ -1,3 +1,4 @@
+import { ACTION_TYPE } from "../../constants/action.js";
 import todoStore from "../../store/TodoStore.js";
 import loadStyleSheet from "../../utils/loadStyleSheet.js";
 import createColumnItem from "./ui/createColumnItem.js";
@@ -15,28 +16,36 @@ const ColumnItem = ({ id, title = "", content = "", author = "web" }) => {
   return $columnItem;
 };
 
-todoStore.subscribe((action, { sectionId, newTodo, deletedId, todoList }) => {
-  const $columnBody = document.querySelector(`#${sectionId} .column__body`);
+todoStore.subscribe(
+  (action, { sectionId, newTodo, deletedId, updatedTodo, todoList }) => {
+    const $columnBody = document.querySelector(`#${sectionId} .column__body`);
 
-  if (action === "add") {
-    $columnBody.replaceChild(
-      ColumnItem({ ...newTodo }),
-      $columnBody.firstChild
-    );
-  } else if (action === "remove") {
-    const $columnItem = document.querySelector(
-      `.column__item[data-id="${deletedId}"]`
-    );
+    if (action === ACTION_TYPE.add) {
+      $columnBody.replaceChild(
+        ColumnItem({ ...newTodo }),
+        $columnBody.firstChild
+      );
+    } else if (action === ACTION_TYPE.remove) {
+      const $columnItem = document.querySelector(
+        `.column__item[data-id="${deletedId}"]`
+      );
 
-    $columnItem.remove();
+      $columnItem.remove();
+    } else if (action === ACTION_TYPE.update) {
+      const $columnItem = document.querySelector(
+        `.column__item[data-id="${updatedTodo.id}"]`
+      );
+
+      $columnItem.replaceWith(ColumnItem({ ...updatedTodo }));
+    }
+
+    updateCount({
+      $columnBody,
+      newTodoList: todoList,
+      sectionId,
+    });
   }
-
-  updateCount({
-    $columnBody,
-    newTodoList: todoList,
-    sectionId,
-  });
-});
+);
 
 const updateCount = ({ $columnBody, newTodoList, sectionId }) => {
   const itemLength = newTodoList.find((section) => section.id === sectionId)
