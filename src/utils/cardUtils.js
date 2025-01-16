@@ -234,3 +234,41 @@ export function sortDataById(data,type) {
 
     return sortedData;
 }
+
+export function handleMoveCard({e,column}){
+    e.preventDefault();
+    const afterElement = getDragAfterElement(column, e.clientX, e.clientY);
+    const draggable = document.querySelector(".card-drag-container");
+
+    if (afterElement === undefined) {
+        column.appendChild(draggable);
+
+    } else {
+        column.insertBefore(draggable, afterElement);
+    }
+}
+
+
+
+export function getDragAfterElement(column,x,y) {
+    const draggableElements = [
+      ...column.querySelectorAll(".column-card-container:not(.card-drag-container)"),
+    ];
+
+    return draggableElements.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offsetX = x - box.left - box.width / 2;
+        const offsetY =y - box.top - box.height/2
+      
+        const distance = Math.abs(offsetX) + Math.abs(offsetY); // X축과 Y축의 차이를 합산하여 최단 거리 계산
+
+      if (distance < closest.distance) { // 가장 가까운 요소를 찾음
+        return { distance, element: child };
+      } else {
+        return closest;
+      }
+    },
+    { distance: Number.POSITIVE_INFINITY } // 초기값을 매우 큰 값으로 설정
+    ).element;
+}

@@ -36,6 +36,7 @@ export function ColumnCard({id,type,title,content,author,addText,closeText,check
         createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId})
     }
     else{
+        columnCard.draggable="true";
         contentBox.innerHTML = `
             <div class='column-card-title'>${title}</div>
             <div class='column-card-content'>${content}</div>
@@ -61,11 +62,6 @@ export function ColumnCard({id,type,title,content,author,addText,closeText,check
 
         iconBox.insertAdjacentElement('beforeend',editButton);
         iconBox.insertAdjacentElement('beforeend',deleteButton);
-        if(type === 'drag'){
-            columnCard.classList.add('card-drag-container');
-        }else if (type === 'place'){
-            columnCard.classList.add('card-place-container');
-        }
             
     }
     if (!modalInstances[id]) {
@@ -99,6 +95,18 @@ export function ColumnCard({id,type,title,content,author,addText,closeText,check
 
 
     loadCss('../src/components/Card/ColumnCard.css')
+
+
+    columnCard.addEventListener('dragstart',()=>{
+        columnCard.classList.add('card-drag-container');
+    })
+
+    columnCard.addEventListener('dragend',()=>{
+        columnCard.classList.remove('card-drag-container');
+    })
+
+    
+
     return columnCard;
 }
 
@@ -129,4 +137,5 @@ export function createCardButtons({columnCard,contentBox,type,closeText,addText,
 
     contentBox.insertAdjacentElement('afterend', buttonBox);
 }
+
 

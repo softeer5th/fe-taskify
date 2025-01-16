@@ -56,6 +56,7 @@
 
 .card-drag-container{
     box-shadow: var(--shadow-floating);
+    opacity: 0.3;
 }
 
 .card-place-container{

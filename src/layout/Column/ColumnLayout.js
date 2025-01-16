@@ -1,5 +1,5 @@
 import { ColumnHeader } from '../../components/Column/ColumnHeader.js';
-import { showCardList } from '../../utils/cardUtils.js';
+import { handleMoveCard, showCardList } from '../../utils/cardUtils.js';
 import { loadCss } from '../../utils/loadcss.js'
 
 export function ColumnLayout({todoModel,progressModel,doneModel}) {
@@ -66,7 +66,12 @@ const doneColumn = ColumnHeader({
 
 
     loadCss('../src/layout/Column/Column.css')
-    return columnLayout
+
+    columnCardBoxes.forEach((column)=>column.addEventListener("dragover", (e) => {
+        handleMoveCard({column,e});
+    }));
+
+    return columnLayout 
 }
 
 
