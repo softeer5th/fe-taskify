@@ -18,24 +18,30 @@ export default Main;
 todoStore.subscribe(
   (action, { newColumn, todoList, sectionId, columnTitle }) => {
     const $main = document.querySelector(".column__main");
-    if (action === ACTION_TYPE.columnAdd) {
-      $main.appendChild(ColumnSection(newColumn));
-      $main.scrollTo({ left: $main.scrollWidth, behavior: "smooth" });
-    } else if (action === ACTION_TYPE.columnDelete) {
-      const $columnSectionList = todoList?.map((todo) => ColumnSection(todo));
 
-      $main.replaceChildren(...$columnSectionList);
-    } else if (action === ACTION_TYPE.columnUpdate) {
-      const $titleContainer = $main.querySelector(
-        `#${sectionId} .column__header__titleContainer`
-      );
-      const count = $titleContainer.lastElementChild.textContent;
+    switch (action) {
+      case ACTION_TYPE.columnAdd:
+        $main.appendChild(ColumnSection(newColumn));
+        $main.scrollTo({ left: $main.scrollWidth, behavior: "smooth" });
+        break;
 
-      const $newTitleContainer = createTitleContainer({
-        title: columnTitle,
-        count,
-      });
-      $titleContainer.replaceWith($newTitleContainer);
+      case ACTION_TYPE.columnDelete:
+        const $columnSectionList = todoList?.map((todo) => ColumnSection(todo));
+        $main.replaceChildren(...$columnSectionList);
+        break;
+
+      case ACTION_TYPE.columnUpdate:
+        const $titleContainer = $main.querySelector(
+          `#${sectionId} .column__header__titleContainer`
+        );
+        const count = $titleContainer.lastElementChild.textContent;
+
+        const $newTitleContainer = createTitleContainer({
+          title: columnTitle,
+          count,
+        });
+        $titleContainer.replaceWith($newTitleContainer);
+        break;
     }
   }
 );

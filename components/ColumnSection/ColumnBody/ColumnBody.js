@@ -21,47 +21,51 @@ todoStore.subscribe(
   (action, { sectionId, newTodo, deletedId, updatedTodo, todoList }) => {
     const $columnBody = document.querySelector(`#${sectionId} .column__body`);
 
-    if (action === ACTION_TYPE.move) {
-      updateColumnCountAll(todoList);
+    switch (action) {
+      case ACTION_TYPE.move:
+        updateColumnCountAll(todoList);
+        return;
 
-      return;
-    }
+      case ACTION_TYPE.add:
+        $columnBody.replaceChild(
+          ColumnItem({ ...newTodo }),
+          $columnBody.firstChild
+        );
 
-    if (action === ACTION_TYPE.add) {
-      $columnBody.replaceChild(
-        ColumnItem({ ...newTodo }),
-        $columnBody.firstChild
-      );
+        updateCount({
+          $columnBody,
+          newTodoList: todoList,
+          sectionId,
+        });
+        break;
 
-      updateCount({
-        $columnBody,
-        newTodoList: todoList,
-        sectionId,
-      });
-    } else if (action === ACTION_TYPE.remove) {
-      const $columnItem = document.querySelector(
-        `.column__item[data-id="${deletedId}"]`
-      );
+      case ACTION_TYPE.remove:
+        const $columnItem = document.querySelector(
+          `.column__item[data-id="${deletedId}"]`
+        );
 
-      $columnItem.remove();
+        $columnItem.remove();
 
-      updateCount({
-        $columnBody,
-        newTodoList: todoList,
-        sectionId,
-      });
-    } else if (action === ACTION_TYPE.update) {
-      const $columnItem = document.querySelector(
-        `.column__item[data-id="${updatedTodo.id}"]`
-      );
+        updateCount({
+          $columnBody,
+          newTodoList: todoList,
+          sectionId,
+        });
+        break;
 
-      $columnItem.replaceWith(ColumnItem({ ...updatedTodo }));
+      case ACTION_TYPE.update:
+        const $updatedColumnItem = document.querySelector(
+          `.column__item[data-id="${updatedTodo.id}"]`
+        );
 
-      updateCount({
-        $columnBody,
-        newTodoList: todoList,
-        sectionId,
-      });
+        $updatedColumnItem.replaceWith(ColumnItem({ ...updatedTodo }));
+
+        updateCount({
+          $columnBody,
+          newTodoList: todoList,
+          sectionId,
+        });
+        break;
     }
   }
 );
