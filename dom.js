@@ -113,3 +113,25 @@ export const createPlusSvg = ({ className, ...props }) => {
 
   return $svg;
 };
+
+export const createInput = ({
+  id = null,
+  className = null,
+  handleChange,
+  handleInput,
+  handleBlur,
+  placeholder = "",
+  maxLength = 50,
+  value = "",
+}) => {
+  const $input = createElement("input", { id, className });
+  $input.maxLength = maxLength;
+  $input.placeholder = placeholder ?? undefined;
+  $input.value = value;
+
+  $input.addEventListener("change", handleChange);
+  $input.addEventListener("input", handleInput);
+  $input.addEventListener("blur", handleBlur);
+
+  return $input;
+};
