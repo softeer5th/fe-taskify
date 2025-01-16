@@ -3,4 +3,5 @@ export const ACTION_TYPE = {
   remove: "remove",
   update: "update",
   move: "move",
+  columnAdd: "columnAdd",
 };

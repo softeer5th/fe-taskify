@@ -32,25 +32,37 @@ todoStore.subscribe(
         ColumnItem({ ...newTodo }),
         $columnBody.firstChild
       );
+
+      updateCount({
+        $columnBody,
+        newTodoList: todoList,
+        sectionId,
+      });
     } else if (action === ACTION_TYPE.remove) {
       const $columnItem = document.querySelector(
         `.column__item[data-id="${deletedId}"]`
       );
 
       $columnItem.remove();
+
+      updateCount({
+        $columnBody,
+        newTodoList: todoList,
+        sectionId,
+      });
     } else if (action === ACTION_TYPE.update) {
       const $columnItem = document.querySelector(
         `.column__item[data-id="${updatedTodo.id}"]`
       );
 
       $columnItem.replaceWith(ColumnItem({ ...updatedTodo }));
-    }
 
-    updateCount({
-      $columnBody,
-      newTodoList: todoList,
-      sectionId,
-    });
+      updateCount({
+        $columnBody,
+        newTodoList: todoList,
+        sectionId,
+      });
+    }
   }
 );
 
@@ -66,10 +78,10 @@ const updateCount = ({ $columnBody, newTodoList, sectionId }) => {
 };
 
 const updateColumnCountAll = (newTodoList) => {
-  const $columnSection = document.querySelector(".column__section");
+  const $columnMain = document.querySelector(".column__main");
 
   newTodoList.forEach(({ id, items }) => {
-    const $count = $columnSection
+    const $count = $columnMain
       .querySelector(`#${id}`)
       .querySelector(".column__count");
 

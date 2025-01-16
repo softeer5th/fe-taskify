@@ -1,4 +1,6 @@
+import createInputModal from "../components/Modal/createInputModal.js";
 import historyStore from "../store/historyStore.js";
+import todoStore from "../store/TodoStore.js";
 import { deleteColumnItem } from "./columnItem.js";
 
 export const handleClose = (e) => {
@@ -21,5 +23,22 @@ export const handleDeleteCard = (e) => {
 
 export const deleteHistory = (e) => {
   historyStore.clear();
+  handleClose(e);
+};
+
+export const handleAddColumn = () => {
+  createInputModal();
+};
+
+export const addColumn = (e) => {
+  const title = e.target
+    .closest("#modal")
+    .querySelector(".modal__titleInput")
+    .value.trim();
+
+  todoStore.columnAdd({
+    title: title ?? "새로운 칼럼",
+  });
+
   handleClose(e);
 };

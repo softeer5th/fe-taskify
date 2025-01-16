@@ -2,14 +2,14 @@ import { ACTION_TYPE } from "../constants/action.js";
 import { STORAGE_KEY } from "../constants/storageKey.js";
 import {
   clearLocalStorage,
-  loadLocalStorage,
+  initStorage,
   saveLocalStorage,
 } from "../utils/localStorage.js";
-import { getRandomId } from "../utils/random.js";
+import { getRandomId, getRandomString } from "../utils/random.js";
 import Observable from "./Observable.js";
 
 class TodoStore extends Observable {
-  #todoList = loadLocalStorage(STORAGE_KEY.todoList) || [];
+  #todoList = initStorage(STORAGE_KEY.todoList) || [];
 
   add({ sectionId, todo }) {
     const newTodo = {
@@ -104,6 +104,18 @@ class TodoStore extends Observable {
     this.notify(ACTION_TYPE.move, {
       todoList: this.#todoList,
     });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  columnAdd({ title }) {
+    const newColumn = {
+      id: getRandomString(),
+      title,
+      items: [],
+    };
+
+    this.#todoList = [...this.#todoList, newColumn];
+    this.notify(ACTION_TYPE.columnAdd, { newColumn });
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 
