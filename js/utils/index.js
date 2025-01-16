@@ -16,6 +16,8 @@ export const getActivityMessage = (record) => {
             return `${title}을(를) ${beforeCategory}에서 ${afterCategory}으로 <strong style="color: black;">이동</strong>하였습니다.`;
         case 'edit':
             return `${title}을(를) <strong style="color: black;">변경</strong>하였습니다.`;
+        case 'delete':
+            return `${title}을(를) <strong style="color: black;">${CATEGORY[record.category]}</strong>에서 <strong style="color: black;">삭제</strong>하였습니다.`;
         default:
             return `${title}을(를) ${beforeCategory}에서 ${afterCategory}으로 ${type} 하였습니다.`;
     }
