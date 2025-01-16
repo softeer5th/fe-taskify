@@ -12,7 +12,7 @@ export default function HistoryController(model = new Model(), rootElement = doc
     history,
     user,
     onHistoryCloseButtonClicked: handleHistoryCloseButtonClicked,
-    onHistoryRemoveButtonClicked: handleHistoryRemoveButtonClicked,
+    onHistoryDeleteButtonClicked: handleHistoryDeleteButtonClicked,
   });
 
   rootElement.appendChild(historyView);
@@ -20,10 +20,12 @@ export default function HistoryController(model = new Model(), rootElement = doc
   const redoButton = Fab({ icon: "redo", color: "default", onButtonClick: handleRedoButtonClicked });
   redoButton.style.right = "48px";
   redoButton.style.bottom = "120px";
+  redoButton.addEventListener("click", handleRedoButtonClicked);
 
   const undoButton = Fab({ icon: "undo", color: "default", onButtonClick: handleUndoButtonClicked });
   undoButton.style.right = "48px";
   undoButton.style.bottom = "192px";
+  undoButton.addEventListener("click", handleUndoButtonClicked);
 
   rootElement.appendChild(redoButton);
   rootElement.appendChild(undoButton);
@@ -34,20 +36,40 @@ export default function HistoryController(model = new Model(), rootElement = doc
 
   // Event Handlers
 
-  function handleRedoButtonClicked() {
-    console.log("Redo Button Clicked");
+  function handleRedoButtonClicked(event) {
+    event.stopPropagation();
+
+    const redone = model.redo();
+    if (!redone) {
+      redoButton.animate([{ transform: "translateX(0px)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0px)" }], {
+        duration: 150,
+        iterations: 2,
+      });
+    }
   }
 
-  function handleUndoButtonClicked() {
-    console.log("Undo Button Clicked");
+  function handleUndoButtonClicked(event) {
+    event.stopPropagation();
+
+    const undone = model.undo();
+    if (!undone) {
+      undoButton.animate([{ transform: "translateX(0px)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0px)" }], {
+        duration: 150,
+        iterations: 2,
+      });
+    }
   }
 
-  function handleHistoryCloseButtonClicked() {
-    console.log("History Close Button Clicked");
+  function handleHistoryCloseButtonClicked(event) {
+    event.stopPropagation();
+
+    model.toggleHistory();
   }
 
-  function handleHistoryRemoveButtonClicked() {
-    console.log("History Remove Button Clicked");
+  function handleHistoryDeleteButtonClicked(event) {
+    event.stopPropagation();
+
+    model.removeAllHistoryLogs();
   }
 
   // Model Event Handlers
@@ -58,5 +80,27 @@ export default function HistoryController(model = new Model(), rootElement = doc
 
   // Render
 
-  function render() {}
+  function render() {
+    const history = model.getAllHistoryLogs();
+    const historyView = document.querySelector(".history");
+    const user = model.getCurrentData().user;
+    const state = model.getCurrentState();
+
+    if (state.isHistoryOpen) {
+      const newHistoryView = HistoryView({
+        history,
+        user,
+        onHistoryCloseButtonClicked: handleHistoryCloseButtonClicked,
+        onHistoryDeleteButtonClicked: handleHistoryDeleteButtonClicked,
+      });
+      historyView.querySelector(".history__list").replaceWith(newHistoryView.querySelector(".history__list"));
+      if (!historyView.classList.contains("history--show")) {
+        historyView.classList.add("history--show");
+      }
+    } else {
+      if (historyView.classList.contains("history--show")) {
+        historyView.classList.remove("history--show");
+      }
+    }
+  }
 }

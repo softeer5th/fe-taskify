@@ -22,7 +22,6 @@ export default function HeaderController(model, rootElement) {
   function handleHistoryButtonClick(event) {
     event.stopPropagation();
     model.toggleHistory();
-    console.log("History Button Clicked");
   }
 
   function render() {}
