@@ -1,5 +1,6 @@
 .container {
     width: calc(100% - 160px);
+    height: calc(100vh - 64px);
     overflow-x: scroll;
     
     display: flex;
