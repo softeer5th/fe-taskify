@@ -114,5 +114,6 @@ header {
 
     button {
         color: var(--accent-red);
+        padding: 0;
     }
 }
