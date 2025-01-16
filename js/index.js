@@ -1,8 +1,8 @@
 import { DOMLoaded } from './blocks/Body/index.js';
-import { renderRecords, toggleClockBtn } from './blocks/Header/index.js';
+import { renderRecords, toggleActivityList } from './blocks/Header/index.js';
 
 document.addEventListener("DOMContentLoaded", () =>{
     DOMLoaded();
-    toggleClockBtn();
+    toggleActivityList();
     renderRecords();
 });
