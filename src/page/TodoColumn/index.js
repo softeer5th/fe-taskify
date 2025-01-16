@@ -47,7 +47,7 @@ export const TodoColumn = ({ title, onClickDel }) => {
       setCardType("add-edit");
     },
     onClickDelBtn() {
-      handleClickDeleteTodo(todo.id);
+      setOpenAlert(true);
     },
     onClickEnrollBtn() {
       setCardType("default");
@@ -57,6 +57,16 @@ export const TodoColumn = ({ title, onClickDel }) => {
       handleClickDeleteTodo(todo.id);
     },
   })}
+  ${openAlert && Alert({
+    text: "선택한 카드를 삭제할까요?",
+    isOpen: openAlert,
+    onClose() {
+      setOpenAlert(false);
+    },
+    rightOnClick() {
+      handleClickDeleteTodo(todo.id);
+    },
+  })} 
 </li>`;
 
   return parser`
