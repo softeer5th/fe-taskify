@@ -1,8 +1,6 @@
 export default function clock() {
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("width", "100%");
-  svg.setAttribute("height", "100%");
   svg.setAttribute("viewBox", "0 0 24 24");
   svg.setAttribute("fill", "none");
 

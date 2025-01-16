@@ -1,7 +1,5 @@
 export default function plus() {
   const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svgElement.setAttribute("width", "100%");
-  svgElement.setAttribute("height", "100%");
   svgElement.setAttribute("viewBox", "0 0 16 16");
   svgElement.setAttribute("fill", "none");
   svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");

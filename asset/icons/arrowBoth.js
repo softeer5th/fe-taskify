@@ -1,8 +1,6 @@
 export default function arrowBoth() {
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("width", "100%");
-  svg.setAttribute("height", "100%");
   svg.setAttribute("viewBox", "0 0 16 16");
   svg.setAttribute("fill", "none");
   svg.setAttribute("xmlns", svgNS);
