@@ -2,7 +2,9 @@ import { addCard, delAllCard, updateChildCount, changeColumnName, completeColumn
 import { editCard, delCard, startDragCard, moveCard, moveCardIllusion } from "./card_action.js";
 import { deleteColumnButton } from "./delete_column_button.js";
 import { addListener } from "./event_listeners.js";
-import { getClone, setClone } from "./store.js";
+import { getClone, loadData, setClone } from "./store.js";
+import { calTimePassed } from "./utility.js";
+import { relocateHistory } from "./history.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -20,6 +22,8 @@ function adaptProps(component, templateId, props) {
             component.querySelector('#card-id').id += props.cardId;
             component.querySelector('.card-title').textContent = props.title;
             component.querySelector('.card-content').textContent = props.content;
+        } else if (templateId==='history-template') {
+            component.querySelector('.record-time').textContent = calTimePassed(new Date(), props.time);
         }
     }
     return component;
@@ -64,7 +68,9 @@ function setEventForColumn(props) {
     const parentElement = document.querySelector('#column-id'+props.columnId);
     if (!props.isDefault) {
         addListener(parentElement.querySelector('#delete-column-button'), (event) => {
-            delColumn(props.columnId);
+            if (event.type === 'click') {
+                delColumn(props.columnId);
+            }
         });
     }
     addListener(parentElement.querySelector('#add-card-button'), (event)=>{
@@ -146,11 +152,15 @@ export function setEventForCard(props) {
 }
 
 // 타겟 엘리먼트에 템플릿 렌더링하기
-export async function renderTemplate(templateFile, templateId, targetId, props) {
+export async function renderTemplate(templateFile, templateId, targetId, props, reverse = false) {
     const templateContent = await loadTemplate(templateFile, templateId, props);
     if (templateContent) {
         const target = document.getElementById(targetId);
-        target.appendChild(templateContent);
+        if (reverse) {
+            target.prepend(templateContent);
+        } else {
+            target.appendChild(templateContent);
+        }
         adaptEventListener(targetId, props);
     }
 }
@@ -162,9 +172,18 @@ const observer = new MutationObserver(() => {
 
 // MutationObserver를 관찰할 대상과 옵션 설정
 observer.observe(document.querySelector('#column-area'), {
+    attributes: true,
     childList: true,
 });
 
-renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:0, title:"해야할 일", isDefault: true});
-renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:1, title:"하고 있는 일", isDefault: true});
-renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:2, title:"완료한 일", isDefault: true});
+const element = document.querySelector('#column-area');
+
+const resizeObserver = new ResizeObserver((entries) => {
+    toggleColumnShadow();
+    relocateHistory();
+});
+
+// 요소 크기 변경 감지 시작
+resizeObserver.observe(element);
+
+loadData(true);

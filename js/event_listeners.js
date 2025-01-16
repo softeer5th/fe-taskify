@@ -1,7 +1,8 @@
 import { toggleSortOrder,completeColumnName,  } from "./column_action.js";
 import { moveCard, finishDragCard } from "./card_action.js";
-import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, setClone } from "./store.js";
-import { renderTemplate } from "./main.js";
+import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, resetTodo, saveData, setClone } from "./store.js";
+import { addColumn, closeFab, openFab, redo, undo } from "./fab_action.js";
+
 
 const eventListeners = new WeakMap();
 
@@ -54,6 +55,15 @@ document.addEventListener('mousemove', (event) => {
     }
 });
 
+document.addEventListener('mouseover', (event) => {
+    triggerListeners(event, event.target)
+});
+
+
+document.addEventListener('mouseout', (event) => {
+    triggerListeners(event, event.target)
+});
+
 document.addEventListener('mouseup', (event) => {
     if (getIsDragging()) {
         finishDragCard(getClone());
@@ -81,9 +91,48 @@ addListener(document.querySelector('.chip'), (event) =>{
     }
 });
 
-addListener(document.querySelector('.fab'), (event)=>{
-    if (event.type === "click") {
-        let newColumnId = document.querySelector("#column-area").childElementCount;
-        renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:newColumnId, title:"제목없음"});
+
+addListener(document.querySelector('.fab-area'), async (event)=>{
+    if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
     }
 })
+
+addListener(document.querySelector('.add-column'), async (event)=>{
+    if (event.type === "click") {
+        addColumn();
+    } else if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
+    }
+})
+
+addListener(document.querySelector('.undo'), (event)=> {
+    if (event.type === 'click') {
+        undo();
+    } else if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
+    }
+})
+
+addListener(document.querySelector('.redo'), (event)=> {
+    if (event.type === 'click') {
+        redo();
+    } else if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
+    }
+})
+
+
+addListener(document.querySelector('.reset'), (event) =>{
+    if (event.type === "click") {
+        resetTodo();
+    }
+});

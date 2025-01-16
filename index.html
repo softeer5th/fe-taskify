@@ -42,19 +42,30 @@
                 <div>닫기</div>
             </button>
         </div>
+        <div id="history-area"></div>
     </div>
 
-    <div class="fab">
-        <i class="material-icons">add</i>
+    <div class="fab-area"> 
+        <div class="fab add-column">
+            <i class="material-icons">add</i>
+        </div>
+        <div class="fab undo-redo undo">
+            <i class="material-icons">undo</i>
+        </div>
+        <div class="fab undo-redo redo">
+            <i class="material-icons">redo</i>
+        </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
     <div id="alert-area"></div>
+
+    <button class="reset"></button>
     
 
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/event_listeners.js"></script>
-    <script src="./js/history.js"></script>
+    <script type="module" src="./js/history.js"></script>
     <script type="module" src="./js/alert.js"></script>
 
 </body>

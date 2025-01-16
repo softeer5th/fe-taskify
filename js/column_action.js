@@ -1,9 +1,19 @@
 import { overlay, createDeleteAllCardAlert, createDeleteColumnAlert, hideAlert } from "./alert.js";
 import { checkCardInput, confirmAddCard } from "./card_action.js";  
 import { addListener } from "./event_listeners.js";
-import { getIsOrderChanging, toggleIsColumnNameChanging, toggleIsOrderChanging } from "./store.js";
+import { getIsOrderChanging, saveData, toggleIsColumnNameChanging, toggleIsOrderChanging } from "./store.js";
 
 let sortingOrder = 1;
+
+export function getColumnTitle (columnId) {
+    let column = document.getElementById(`column-id${columnId}`);
+    return column.querySelector('.column-name').textContent;
+}
+
+export function getColumnTitleByCardId (cardId) {
+    let column = document.getElementById(`card-id${cardId}`).closest('.column-id');
+    return column.querySelector('.column-name').textContent;
+}
 
 export function addCard(id) {
     const parentElement = document.querySelector('#column-id'+id);
@@ -28,14 +38,18 @@ export function addCard(id) {
     `;
 
     addListener(newDiv.querySelector('.confirm-button'), (event)=>{
-        confirmAddCard(id);
-        let curCard = childElement.querySelector('.new-card');
-        curCard.remove();
+        if (event.type === 'click') {
+            confirmAddCard(id);
+            let curCard = childElement.querySelector('.new-card');
+            curCard.remove();
+        }
     });
 
     addListener(newDiv.querySelector('.cancel-button'),(event)=>{
-        let curCard = childElement.querySelector('.new-card');
-        curCard.remove();
+        if (event.type === 'click') {
+            let curCard = childElement.querySelector('.new-card');
+            curCard.remove();
+        }
     });
 
     newDiv.querySelector('#title-input').addEventListener('input', (event)=>{
@@ -68,6 +82,7 @@ export function delColumn(columnId) {
         overlay.style.display = "none";
         hideAlert();
         document.getElementById(`column-id${columnId}`).remove();
+        saveData();
     });
 }
 
@@ -87,6 +102,7 @@ export function delAllCard(columnId) {
         overlay.style.display = "none";
         hideAlert();
         cardList.innerHTML = ``;
+        saveData();
     });
 }
 
@@ -113,10 +129,14 @@ export function toggleSortOrder() {
         }
         toggleIsOrderChanging();
         sortColumns();
-        setTimeout(()=>{toggleIsOrderChanging();}, 500)
+        setTimeout(()=>{
+            toggleIsOrderChanging();
+        }, 500);
     }
 }
 
+
+// 카드 정렬
 function sortColumns() {
     let columns = document.getElementById("column-area").children;
     [...columns].forEach((column)=>{
@@ -156,7 +176,7 @@ function sortColumns() {
             setTimeout(() => {
                 cardList.forEach(card => {
                     column.querySelector(".card-list").appendChild(card);
-                    card.style.transform = ''; // transform 초기화
+                    card.style.transform = '';
                 });
             }, 500);
         } 
@@ -175,6 +195,7 @@ export function completeColumnName() {
     [...document.querySelectorAll('.column-name')].map((element)=>{
         element.contentEditable = "false";
     });
+    saveData();
 }
 
 export function toggleColumnShadow() {

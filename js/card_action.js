@@ -2,13 +2,20 @@ import { renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
 import { addListener } from "./event_listeners.js";
-import { getIsDragging, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+import { addHistory, getIsDragging, saveData, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+import { makeHistoryObj, renderHistory } from "./history.js";
+import { getColumnTitle, getColumnTitleByCardId } from "./column_action.js";
 
 let gapX = 0;
 let gapY = 0;
 let draggingCardId = 0;
 
-// 입력창 확인 후 버튼 활성화 결정
+export function getCardTitle(cardId) {
+    let card = document.getElementById(`card-id${cardId}`);
+    return card.querySelector('.card-title').textContent;
+}
+
+// 입력창 내용있어야 버튼 들어오도록 감시
 export function checkCardInput() {
     const titleInput = document.getElementById('title-input');
     const titleValue = titleInput.value.trim();
@@ -27,13 +34,17 @@ export function checkCardInput() {
 }
 
 // 카드 추가 확정
-export function confirmAddCard(columnId){
+export async function confirmAddCard(columnId){
     const titleInput = document.getElementById('title-input');
     const titleValue = titleInput.value.trim();
     const contentInput = document.getElementById('content-input');
     const contentValue = contentInput.value.trim();
     const newCardId = createNewId();
-    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,});
+    await renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,}, true);
+    let historyObj = makeHistoryObj("등록", titleValue, getColumnTitle(columnId));
+    addHistory(historyObj);
+    renderHistory(historyObj);
+    saveData();
 }
 
 
@@ -46,12 +57,20 @@ export function delCard(cardId) {
     let card = document.querySelector("#card-id"+cardId);
     delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
     addListener(delCardAlert.querySelector('#cancel-del-card-button'),(event)=>{
-        hideAlert();
+        if (event.type === 'click') {
+            hideAlert();
+        }
     });
     addListener(delCardAlert.querySelector('#confirm-del-card-button'),(event)=>{
-        hideAlert();
-        if (card) {
-            card.remove();
+        if (event.type === 'click') {
+            hideAlert();
+            if (card) {
+                let historyObj = makeHistoryObj("삭제", getCardTitle(cardId), getColumnTitleByCardId(cardId));
+                addHistory(historyObj);
+                renderHistory(historyObj);
+                card.remove();
+                saveData();
+            }
         }
     });
 }
@@ -59,7 +78,6 @@ export function delCard(cardId) {
 // 카드 수정
 export function editCard(cardId) {
     let card = document.querySelector("#card-id"+cardId);
-    let columnId = card.parentElement.id;
     const tempMemory = [...card.children];
     
     card.style.display = "block";
@@ -86,14 +104,26 @@ export function editCard(cardId) {
         </button>
     `;
 
-    addListener(newActionDiv.querySelector('.confirm-button'),(event)=>{
-        toggleIsCardEditing();
-        confirmEdit(card,cardId)
+    [...tempMemory].forEach(element => {
+        card.removeChild(element);
+    });
+
+    card.appendChild(newInfoDiv);
+    card.appendChild(newActionDiv);
+
+
+    addListener(newActionDiv.querySelector('.confirm-button'), async (event)=>{
+        if (event.type === 'click') {
+            toggleIsCardEditing();
+            await confirmEdit(card,cardId)
+        }
     });
 
     addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
-        toggleIsCardEditing();
-        cancelEdit(card,tempMemory);
+        if (event.type === 'click') {
+            toggleIsCardEditing();
+            cancelEdit(card,tempMemory);
+        }
     });
     
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
@@ -103,23 +133,19 @@ export function editCard(cardId) {
     newInfoDiv.querySelector('#content-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
-
-    [...tempMemory].forEach(element => {
-        card.removeChild(element);
-    });
-
-    card.appendChild(newInfoDiv);
-    card.appendChild(newActionDiv);
 }
 
 // 수정사항 반영
-function confirmEdit(card, cardId){
+async function confirmEdit(card, cardId){
     const titleInput = card.querySelector('#title-input');
     const titleValue = titleInput.value.trim();
     const contentInput = card.querySelector('#content-input');
     const contentValue = contentInput.value.trim();
-    renderTemplate('./html/card_template.html', 'card-template', card.parentElement.id, {cardId:cardId, title:titleValue, content:contentValue,});
-    card.parentNode.removeChild(card);
+    let columnId = card.parentElement.id;
+    addHistory(makeHistoryObj("변경", getCardTitle(cardId)));
+    card.remove();
+    await renderTemplate('./html/card_template.html', 'card-template', columnId, {cardId:cardId, title:titleValue, content:contentValue,});
+    saveData();
 }
 
 // 수정사항 취소
@@ -133,6 +159,7 @@ function cancelEdit(card, tempMemory){
     });
 }
 
+// 카드 이동 시작
 export function startDragCard(event, original, clone, cardId) {
     toggleIsDragging();
     const childElement = document.querySelector("#card-id"+cardId);
@@ -163,6 +190,7 @@ export function startDragCard(event, original, clone, cardId) {
     childElement.remove();
 }
 
+// 카드 이동
 export function moveCard(event, clone) {
     if (!getIsDragging() || !clone) return;
 
@@ -170,6 +198,7 @@ export function moveCard(event, clone) {
     clone.style.top = `${event.clientY-gapY}px`;
 }
 
+// 카드 예정 자리 이동
 export function moveCardIllusion(event, newParent, clone) {
     if (!getIsDragging() || !clone) return;
     const columnArea = document.getElementById("column-area");
@@ -186,10 +215,8 @@ export function moveCardIllusion(event, newParent, clone) {
     let closestTempCard = event.target.closest('.temp-card');
     if (cardList) {
         if (closestCard) {
-            console.log(closestCard);
             cardList.insertBefore(tempRealCard, closestCard);
         } else if (!closestTempCard){
-            console.log("no!");
             cardList.appendChild(tempRealCard);
         }
     }
@@ -199,6 +226,7 @@ export function moveCardIllusion(event, newParent, clone) {
     }
 }
 
+// 카드 이동 종료
 export function finishDragCard(clone) {
     if (!getIsDragging() || !clone) return ;
 
@@ -213,4 +241,5 @@ export function finishDragCard(clone) {
     toggleIsDragging();
     clone.remove();
     document.body.classList.remove('no-select');
+    saveData();
 }

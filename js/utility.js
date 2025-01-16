@@ -10,3 +10,68 @@ export function createNewId () {
     const formatted = `${year}${month}${date}${hours}${minutes}${seconds}`;
     return formatted;
 }
+
+export function calTimePassed(date1, date2) {
+    console.log(date1);
+    console.log(date2);
+    const diffMs = Math.abs(date1 - date2);
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffMs / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffSeconds < 60) {
+        return `빙금 전`
+    } else if (diffMinutes < 60) {
+        return `${diffMinutes}분 전`; // 1시간 이내
+    } else if (diffHours < 24) {
+        return `${diffHours}시간 전`; // 1일 이내
+    } else {
+        return `${diffDays}일 전`; // 1일 이후
+    }
+}
+
+function cardToObj(card) {
+    let id = card.id.slice(7);
+    let title = card.querySelector('.card-title').textContent;
+    let content = card.querySelector('.card-content').textContent;
+    const cardData = {
+        "id": id,
+        "title": title,
+        "content": content
+    }
+    return cardData;
+}
+
+function columnToObj(column) {
+    let title = column.querySelector('.column-name').textContent;
+    let cards = column.querySelectorAll('.card-id');
+    let cardList = Array();
+    [...cards].forEach((card) => {
+        cardList.push(cardToObj(card));
+    })
+    const columnData = {
+        "title": title,
+        "cardList": cardList
+    }
+    return columnData;
+}
+
+export function todoToObj() {
+    let columns = document.querySelectorAll(".column-id");
+    let columnList = Array();
+    [...columns].forEach((column)=>{
+        columnList.push(columnToObj(column));
+    })
+    return columnList;
+}
+
+export function todoToJson(columnListData) {
+    let todoJsonData = {
+        "todo" : columnListData
+    };
+    return JSON.stringify(todoJsonData);
+}
+
+export function todoFromJson(columnJson) {
+    return JSON.parse(columnJson);
+}
