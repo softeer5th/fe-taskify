@@ -5,7 +5,11 @@ import {
   handleDragStart,
   handleDrop,
 } from "./columnBody.js";
-import { handleCancelAdd, handleClickAdd } from "./columnHeader.js";
+import {
+  handleCancelAdd,
+  handleClickAdd,
+  handleDeleteColumn,
+} from "./columnHeader.js";
 import {
   handleCancelEdit,
   handleInputContent,
@@ -15,6 +19,7 @@ import {
 import { handleClickDelete, handleClickEdit } from "./columnItem.js";
 import {
   addColumn,
+  deleteColumn,
   deleteHistory,
   handleAddColumn,
   handleClose,
@@ -40,13 +45,15 @@ export const addRootEventListener = () => {
     );
 
     const $addColumnButton = e.target.closest(".floating__button");
+    const $deleteColumnButton = e.target.closest(".column__deleteButton");
 
     if ($addButton) {
       handleClickAdd(e, store);
     } else if ($deleteHistoryButton) {
       handleClickDeleteHistory();
     } else if ($deleteButton) {
-      handleClickDelete(e);
+      const type = $deleteButton.dataset.type;
+      handleClickDelete(e, type);
     } else if ($editButton) {
       handleClickEdit(e);
     } else if ($closeButton) {
@@ -59,6 +66,8 @@ export const addRootEventListener = () => {
       handleSubmit(e, store, type);
     } else if ($addColumnButton) {
       handleAddColumn();
+    } else if ($deleteColumnButton) {
+      handleDeleteColumn(e);
     }
   });
 
@@ -124,7 +133,19 @@ export const addModalEventListener = () => {
       handleClose(e);
     } else if ($deleteButton) {
       const type = $deleteButton.dataset.type;
-      type === "card" ? handleDeleteCard(e) : deleteHistory(e);
+
+      switch (type) {
+        case "card":
+          handleDeleteCard(e);
+          break;
+        case "history":
+          deleteHistory(e);
+          break;
+
+        case "column":
+          deleteColumn(e);
+          break;
+      }
     } else if ($columnAddButton) {
       addColumn(e);
     }

@@ -1,4 +1,5 @@
 import ColumnInputItem from "../components/ColumnInputItem/ColumnInputItem.js";
+import createModal from "../components/Modal/createModal.js";
 
 export const handleClickAdd = (e, store) => {
   if (store.isTodoAdding) {
@@ -27,4 +28,12 @@ const addColumnItemInput = ({ e, store }) => {
   const $columnItemInput = ColumnInputItem({ store });
   $columnBody.prepend($columnItemInput);
   store.isTodoAdding = true;
+};
+
+export const handleDeleteColumn = (e) => {
+  const sectionId = e.target.closest(".column__container").id;
+  const $modalContainer = document.getElementById("modal-container");
+  $modalContainer.dataset.sectionId = sectionId;
+
+  createModal({ content: "해당 칼럼을 삭제하시겠습니까?", type: "column" });
 };

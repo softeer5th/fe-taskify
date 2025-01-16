@@ -42,3 +42,10 @@ export const addColumn = (e) => {
 
   handleClose(e);
 };
+
+export const deleteColumn = (e) => {
+  const sectionId = e.target.closest("#modal-container").dataset.sectionId;
+
+  todoStore.columnDelete({ sectionId });
+  handleClose(e);
+};

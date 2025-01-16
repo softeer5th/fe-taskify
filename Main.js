@@ -14,11 +14,16 @@ const Main = (todoList) => {
 
 export default Main;
 
-todoStore.subscribe((action, { newColumn }) => {
+todoStore.subscribe((action, { newColumn, todoList }) => {
   if (action === ACTION_TYPE.columnAdd) {
     const $main = document.querySelector(".column__main");
 
     $main.appendChild(ColumnSection(newColumn));
     $main.scrollTo({ left: $main.scrollWidth, behavior: "smooth" });
+  } else if (action === ACTION_TYPE.columnDelete) {
+    const $main = document.querySelector(".column__main");
+
+    const $columnSectionList = todoList?.map((todo) => ColumnSection(todo));
+    $main.replaceChildren(...$columnSectionList);
   }
 });

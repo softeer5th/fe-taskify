@@ -18,10 +18,11 @@ const createButtonContainer = () => {
     alt: "추가",
   });
 
-  const $closeButton = createButton({
-    handleClick: () => alert("Close button"),
+  const $deleteButton = createButton({
+    className: "column__deleteButton",
+    type: "column",
   });
-  const $closeImg = createDeleteSvg({
+  const $deleteImg = createDeleteSvg({
     className: "delete__img",
     width: "24",
     height: "24",
@@ -30,8 +31,8 @@ const createButtonContainer = () => {
   });
 
   $addButton.appendChild($addImg);
-  $closeButton.appendChild($closeImg);
-  $buttonContainer.append($addButton, $closeButton);
+  $deleteButton.appendChild($deleteImg);
+  $buttonContainer.append($addButton, $deleteButton);
 
   return $buttonContainer;
 };
