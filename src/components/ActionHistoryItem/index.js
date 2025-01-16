@@ -25,6 +25,21 @@ export const ActionHistoryItem = ({
    */
   const formatTextToBoldTag = (text) => parser`<span class="${typos.display.bold[14]} ${styles.bold}">${text}</span>`;
 
+  const formatActionToText = (type) => {
+    switch (type) {
+      case "등록":
+        return `${formatTextToBoldTag(columnBefore)}에 `;
+      case "삭제":
+        return `${formatTextToBoldTag(columnBefore)}에서 `;
+      case "변경":
+        return "";
+      case "이동":
+        return `${formatTextToBoldTag(columnBefore)}에서 ${formatTextToBoldTag(columnAfter)}으로 `;
+      default:
+        return "";
+    }
+  };
+
   return parser`
     <div class="${styles.container}">
         <div class="${styles["img-container"]}"></div>
@@ -32,8 +47,7 @@ export const ActionHistoryItem = ({
             <div class="${typos.display.medium[14]} ${styles.body}">${username}</div>
             <div class="${typos.display.medium[14]} ${styles.body}">
                 ${formatTextToBoldTag(title)}를 
-                ${formatTextToBoldTag(columnBefore)}에서 
-                ${formatTextToBoldTag(columnAfter)}으로 
+                ${formatActionToText(action)}
                 ${formatTextToBoldTag(action)}하였습니다.
             </div>
             <div class="${typos.display.medium[12]} ${styles.timestamp}">${calcBeforeTime(timestamp)}</div>
