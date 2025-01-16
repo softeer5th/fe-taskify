@@ -28,7 +28,6 @@ export default function ColumnController(model, rootElement) {
     event.stopPropagation();
 
     model.addColumn();
-    console.log("Add Column Button Clicked");
   }
 
   function handleClickColumnTitle(event) {
