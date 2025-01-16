@@ -36,12 +36,15 @@ export default class Component {
     render(parent) {
         this.parent = parent;
 
-        this.createRoot();
+        this.current = this.createDOM();
+
+        this.parent.appendChild(this.current);
+
         this.renderTree();
-        this.setEvents();
+        this.setEvents(this.current);
     }
 
-    createRoot() {
+    createDOM() {
         const wrapper = document.createElement("div");
 
         if (this.rootId) {
@@ -54,8 +57,7 @@ export default class Component {
 
         wrapper.innerHTML = this.template();
 
-        this.parent.appendChild(wrapper);
-        this.current = wrapper;
+        return wrapper;
     }
 
     renderTree() {
@@ -65,11 +67,10 @@ export default class Component {
         }
     }
 
-    setEvents() {
-        const root = this.parent.querySelector(`.${this.rootSelectorClassName}`);
+    setEvents(root) {
         if (root) {
             this.events.forEach(({ listenerName, callback }) => {
-                root.addEventListener(listenerName, () => callback());
+                root.addEventListener(listenerName, (event) => callback(event));
             });
         }
     }
@@ -77,7 +78,7 @@ export default class Component {
     rerender() {
         this.clear();
         this.renderTree();
-        this.setEvents();
+        this.setEvents(this.current);
     }
 
     clear() {

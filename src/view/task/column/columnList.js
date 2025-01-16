@@ -5,23 +5,24 @@ export class ColumnList extends Component {
 
     rootId = "columnList";
 
-    constructor(columnList, onCardAdd = (columnIndex, cardData) => { }, onCardDelete = (columnIndex, cardIndex) => { }, onCardMoved = (cardId, preColumnIndex, newColumnIndex) => { }) {
+    constructor(columnList, onCardAdded = (columnIndex, cardData) => { }, onCardDeleted = (columnIndex, cardIndex) => { }, onCardMoved = (cardId, preColumnIndex, newColumnIndex) => { }) {
         super();
 
         columnList.forEach((columnData, index) => {
             this.children[`column${index}`] = {
                 object: new Column(columnData,
                     (cardData) => {
-                        onCardAdd(index, cardData);
+                        onCardAdded(index, cardData);
                     },
                     (cardIndex) => {
-                        onCardDelete(index, cardIndex);
+                        onCardDeleted(index, cardIndex);
                     }, () => {
                         const draggingCardId = document.querySelector(".dragging").id.slice(4);
                         const preColumnIndex = columnList.findIndex(column =>
-                            column.data.some(card => card.cardId === draggingCardId)
+                            column.data.find(card => card.cardId === Number(draggingCardId))
                         );
-                        onCardMoved(draggingCardId, preColumnIndex, index)
+                        console.log("!!!!");
+                        onCardMoved(draggingCardId, preColumnIndex, index);
                     }),
                 parentSelector: "#columnList"
             };
