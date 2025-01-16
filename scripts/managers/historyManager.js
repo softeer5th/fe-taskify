@@ -6,7 +6,7 @@ import { formatDateToTimeAgo } from '../utils/dateUtil.js'
 import { createDomElementAsChild } from '../utils/domUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 
-// storeData(keys.HISTORY_STORAGE_KEY, [])
+storeData(keys.HISTORY_STORAGE_KEY, [])
 let historyList = loadData(keys.HISTORY_STORAGE_KEY) ?? []
 let isHistoryViewOpen = false
 let historyViewElement = null

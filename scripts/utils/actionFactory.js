@@ -27,8 +27,8 @@ export const makeTodoEditAction = (
     currentTodoItem,
     index
 ) => {
-    prevTodoItem = JSON.parse(JSON.stringify(prevTodoItem))
-    currentTodoItem = JSON.parse(JSON.stringify(currentTodoItem))
+    prevTodoItem = deepCopy(prevTodoItem)
+    currentTodoItem = deepCopy(currentTodoItem)
     const data = {
         categoryUid,
         prevTodoItem,

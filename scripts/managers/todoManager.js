@@ -22,7 +22,7 @@ import {
 } from '../utils/actionFactory.js'
 import { deepCopy } from '../utils/dataUtil.js'
 
-const RESET_DATA = false
+const RESET_DATA = true
 
 export const initTodo = () => {
     RESET_DATA && storeData(keys.TODO_CATEGORY_KEY, [])
@@ -141,7 +141,8 @@ const enableAddTodoForm = (category) => {
                         `.${classNames.todoAddFormInputContent}`
                     ).value
                     const author = 'web'
-                    createTodoItem(title, content, author, category)
+                    const todoItem = TodoItem(title, content, author)
+                    handleTodoCreate(todoItem, category)
                     category.todoFormDomId = null
                     removeDomElement(identifier)
                 })
@@ -178,27 +179,25 @@ const initTodoItemElement = (todoElement, todoItem) => {
     todoElement
         .querySelector(`.${classNames.deleteButton}`)
         .addEventListener('click', () => {
-            deleteTodoItem(uid)
+            handleTodoDelete(uid)
         })
     todoElement
         .querySelector(`.${classNames.editButton}`)
         .addEventListener('click', () => {
-            editTodoItem(uid)
+            handleTodoEdit(uid)
         })
     manageDragEvents(todoElement.querySelector(`.${classNames.todoItemBody}`))
 }
 
-const createTodoItem = (title, content, author, category) => {
+const handleTodoCreate = (todoItem, category) => {
     const todoBodyElement = findDomElementByUid(category.uid).querySelector(
         `.${classNames.todoBody}`
     )
-    let todoItem
     createDomElementAsChild(
         templateNames.todoItem,
         todoBodyElement,
         (identifier, component) => {
-            todoItem = TodoItem(title, content, author)
-            addTodoItem(todoItem, category, 0)
+            addTodoItemToList(todoItem, category, 0)
             initTodoItemElement(component, todoItem)
             return todoItem.uid
         },
@@ -214,7 +213,7 @@ const createTodoItem = (title, content, author, category) => {
     return getIdentifierByUid(todoItem.uid)
 }
 
-const addTodoItem = (todoItem, category, index) => {
+const addTodoItemToList = (todoItem, category, index) => {
     const todoList = category.todoList
     category.todoList = [
         ...todoList.slice(0, index),
@@ -235,7 +234,7 @@ const getTodoItemInfo = (todoItemUid) => {
     return null
 }
 
-const deleteTodoItem = (uid) => {
+const handleTodoDelete = (uid) => {
     const { category, index, todoItem } = getTodoItemInfo(uid)
     category.todoList.splice(index, 1)
     const identifier = getIdentifierByUid(uid)
@@ -248,10 +247,13 @@ const deleteTodoItem = (uid) => {
     addHistory(todoDeleteAction)
 }
 
-const editTodoItem = (uid) => {
-    const { category, index: targetIdx, todoItem } = getTodoItemInfo(uid)
-    const todoList = category.todoList
-    const originTodoItem = todoItem
+const handleTodoEdit = (todoItemUid) => {
+    const {
+        category,
+        index: targetIdx,
+        todoItem,
+    } = getTodoItemInfo(todoItemUid)
+    const originTodoItem = deepCopy(todoItem)
     const {
         uid: originUid,
         title: originTitle,
@@ -282,14 +284,15 @@ const editTodoItem = (uid) => {
                     ).value
                     // TODO: author 정보 동적으로 가져오기
                     const author = 'web'
-                    let editedTodoItem = null
                     replaceDomElement(
                         templateNames.todoItem,
                         editFormElement,
                         (identifier, component) => {
-                            editedTodoItem = TodoItem(title, content, author)
-                            initTodoItemElement(component, editedTodoItem)
-                            todoList[targetIdx] = editedTodoItem
+                            todoItem.title = title
+                            todoItem.content = content
+                            todoItem.author = author
+                            initTodoItemElement(component, todoItem)
+                            return todoItem.uid
                         }
                     )
                     storeData(
@@ -299,8 +302,8 @@ const editTodoItem = (uid) => {
                     const todoEditAction = makeTodoEditAction(
                         category.uid,
                         originTodoItem,
-                        editedTodoItem,
-                        category.todoList.indexOf(editedTodoItem)
+                        todoItem,
+                        category.todoList.indexOf(todoItem)
                     )
                     addAction(todoEditAction)
                     addHistory(todoEditAction)
@@ -312,13 +315,8 @@ const editTodoItem = (uid) => {
                         templateNames.todoItem,
                         findDomElement(identifier),
                         (identifier, component) => {
-                            const abortedTodoItem = TodoItem(
-                                originTitle,
-                                originContent,
-                                originAuthor
-                            )
-                            initTodoItemElement(component, abortedTodoItem)
-                            todoList[targetIdx] = abortedTodoItem
+                            initTodoItemElement(component, originTodoItem)
+                            // todoList[targetIdx] = abortedTodoItem
                         }
                     )
                 })
@@ -340,9 +338,9 @@ export const undoTodoItemCreate = (category, todoItem) => {
 
 export const undoTodoItemDelete = (category, todoItem, index) => {
     const copiedTodoItem = deepCopy(todoItem)
-    addTodoItem(copiedTodoItem, category, index)
+    addTodoItemToList(copiedTodoItem, category, index)
     if (index === 0) {
-        createTodoItem
+        handleTodoCreate
     }
     const todoBodyElement = findDomElementByUid(category.uid).querySelector(
         `.${classNames.todoBody}`
