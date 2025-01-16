@@ -67,6 +67,7 @@ export function saveData() {
     if (todoJson!==localStorage.getItem('content5')) {
         moveBfData();
         localStorage.setItem('content5', todoJson);
+        console.log("SAVED!!!!");
     }
 }
 
@@ -80,8 +81,12 @@ function moveBfData() {
 }
 
 export function loadData() {
-    todoList = todoFromJson(localStorage.getItem('content5')).todo;
-    refreshScreen(todoList)
+    todoList = todoFromJson(localStorage.getItem('content5'));
+    if (todoList) {
+        refreshScreen(todoList.todo);
+    } else {
+        resetTodo();
+    }
 }
 
 
@@ -101,4 +106,18 @@ async function renderColumn(columnData, index) {
 
 async function renderCard(cardData, columnIndex) {
     await renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnIndex, {cardId:cardData.id, title:cardData.title, content:cardData.content,});
+}
+
+export async function resetTodo() {
+    localStorage.clear();
+    document.querySelector('#column-area').innerHTML = ``;
+    let initData = [
+        {"title":"해야할 일"},
+        {"title":"하고 있는 일"},
+        {"title":"완료한 일"},
+    ];
+    for (let i=0; i<3; i++) {
+        await renderColumn(initData[i],i);
+    }
+    saveData();
 }

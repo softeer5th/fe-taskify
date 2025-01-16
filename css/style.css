@@ -252,3 +252,12 @@ ul {
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
+.reset {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+}

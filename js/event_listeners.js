@@ -1,6 +1,6 @@
 import { toggleSortOrder,completeColumnName,  } from "./column_action.js";
 import { moveCard, finishDragCard } from "./card_action.js";
-import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, saveData, setClone } from "./store.js";
+import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, resetTodo, saveData, setClone } from "./store.js";
 import { addColumn, closeFab, openFab } from "./fab_action.js";
 
 
@@ -109,3 +109,9 @@ addListener(document.querySelector('.add-column'), async (event)=>{
         closeFab();
     }
 })
+
+addListener(document.querySelector('.reset'), (event) =>{
+    if (event.type === "click") {
+        resetTodo();
+    }
+});
