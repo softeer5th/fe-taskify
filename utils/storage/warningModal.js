@@ -1,5 +1,5 @@
 import { clearHistory } from "./historyManager.js";
-export const showWarningModal = (message) => {
+export const showWarningModal = (message, type) => {
   const modal = document.createElement("div");
   modal.className = "warning-modal";
   modal.innerHTML = `
@@ -11,7 +11,7 @@ export const showWarningModal = (message) => {
         <div class="warning-modal-footer">
 
           <button class="warn-btn warning-modal-confirm-btn">취소</button>
-          <button class="warn-btn warning-modal-cancel-btn">확인</button>
+          <button class="warn-btn warning-modal-cancel-btn ${type}">확인</button>
         </div>
       </div>
     `;
