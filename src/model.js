@@ -8,7 +8,7 @@
 /**
  * @typedef {Object} Task
  * @property {number} id
- * @property {string} name
+ * @property {string} title
  * @property {string} description
  * @property {number} createdAt
  * @property {string} device
@@ -70,13 +70,13 @@ export default class Model {
       case "removeColumn":
         return `<strong>${actionData.removedColumnTitle}</strong> 열을 <strong>삭제</strong>하였습니다.`;
       case "addTask":
-        return `<strong>${actionData.addedTaskName}</strong>을(를) <strong>${actionData.addedColumnTitle}</strong>에 <strong>등록</strong>했습니다.`;
+        return `<strong>${actionData.addedTaskTitle}</strong>을(를) <strong>${actionData.addedColumnTitle}</strong>에 <strong>등록</strong>했습니다.`;
       case "moveTask":
-        return `<strong>${actionData.movedTaskName}</strong>을(를) <strong>${actionData.fromColumnTitle}</strong>에서 <strong>${actionData.toColumnTitle}</strong>로 <strong>이동</strong>하였습니다.`;
+        return `<strong>${actionData.movedTaskTitle}</strong>을(를) <strong>${actionData.fromColumnTitle}</strong>에서 <strong>${actionData.toColumnTitle}</strong>로 <strong>이동</strong>하였습니다.`;
       case "editTask":
-        return `<strong>${actionData.updatedTaskName}</strong>을(를) <strong>수정</strong>하였습니다.`;
+        return `<strong>${actionData.updatedTaskTitle}</strong>을(를) <strong>수정</strong>하였습니다.`;
       case "removeTask":
-        return `<strong>${actionData.removedTaskName}</strong>을(를) <strong>삭제</strong>하였습니다.`;
+        return `<strong>${actionData.removedTaskTitle}</strong>을(를) <strong>삭제</strong>하였습니다.`;
       default:
         return "";
     }
@@ -244,11 +244,11 @@ export default class Model {
     });
   }
 
-  addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
+  addTask(columnId, addedTaskTitle, addedTaskDescription, addedTaskDevice) {
     const currentData = this.getCurrentData();
     const newTask = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
-      name: addedTaskName,
+      title: addedTaskTitle,
       description: addedTaskDescription,
       createdAt: Date.now(),
       device: addedTaskDevice,
@@ -263,7 +263,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "addTask",
-      addedTaskName: addedTaskName,
+      addedTaskTitle: addedTaskTitle,
       addedColumnTitle: addedColumnTitle,
     });
   }
@@ -278,7 +278,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "moveTask",
-      movedTaskName: task.name,
+      movedTaskTitle: task.Title,
       fromColumnTitle: currentData.column.find((column) => column.id === fromColumnId).title,
       toColumnTitle: currentData.column.find((column) => column.id === toColumnId).title,
     });
@@ -293,7 +293,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "editTask",
-      updatedTaskName: updatedTask.name,
+      updatedTaskTitle: updatedTask.title,
     });
   }
 
@@ -303,7 +303,7 @@ export default class Model {
     currentData.task = currentData.task.filter((task) => task.id !== taskId);
     this.#pushHistory(currentData, {
       type: "removeTask",
-      removedTaskName: removedTask.name,
+      removedTaskTitle: removedTask.title,
     });
   }
 

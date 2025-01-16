@@ -19,7 +19,7 @@ const mockData = {
   task: [
     {
       id: 1,
-      name: "자바스크립트 공부",
+      title: "자바스크립트 공부",
       description: "자바스크립트 공부를 하면서 코드스피츠에 참석하기",
       createdAt: new Date(2021, 8, 1),
       device: "web",
@@ -27,7 +27,7 @@ const mockData = {
     },
     {
       id: 2,
-      name: "코드스피츠 참석",
+      title: "코드스피츠 참석",
       description: "* 8/1 코드스피츠 참석\n* 8/2 코드스피츠 참석",
       createdAt: new Date(2021, 8, 2),
       device: "web",
@@ -35,7 +35,7 @@ const mockData = {
     },
     {
       id: 3,
-      name: "TIL 작성",
+      title: "TIL 작성",
       description: "Today I Learned 작성하기",
       createdAt: new Date(2021, 8, 3),
       device: "web",
@@ -43,7 +43,7 @@ const mockData = {
     },
     {
       id: 4,
-      name: "알고리즘 공부",
+      title: "알고리즘 공부",
       description: "알고리즘 문제 풀기",
       createdAt: new Date(2021, 8, 4),
       device: "web",

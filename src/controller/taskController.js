@@ -57,14 +57,14 @@ export default function TaskController(model, rootElement) {
 
     const task = event.target.closest(".task");
     const taskId = +task.id;
-    const name = task.querySelector(".task__content-title").value;
+    const title = task.querySelector(".task__content-title").value;
     const description = task.querySelector(".task__content-description").value;
 
     if (taskId === 0) {
-      model.addTask(model.getCurrentState().editingColumnId, name, description, getCurrentDevice());
+      model.addTask(model.getCurrentState().editingColumnId, title, description, getCurrentDevice());
     } else {
       const originTask = model.getCurrentTaskData().find((t) => t.id === taskId);
-      model.editTask(taskId, { ...originTask, name, description });
+      model.editTask(taskId, { ...originTask, title: title, description });
     }
   }
 
@@ -211,7 +211,7 @@ export default function TaskController(model, rootElement) {
     if (isAddingTask) {
       addingTaskView?.remove();
       addingTaskView = TaskView({
-        task: { id: 0, columnId: state.editingColumnId, name: "", description: "", createdAt: 0 },
+        task: { id: 0, columnId: state.editingColumnId, title: "", description: "", createdAt: 0 },
         state: "editing",
         onClickFirstButton: handleClickTaskEditCancelButton,
         onClickSecondButton: handleClickTaskEditSaveButton,
