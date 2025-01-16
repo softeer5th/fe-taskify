@@ -1,6 +1,6 @@
 import icons from "../../asset/icon.js";
 
-export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) {
+export default function HeaderView({ onClickSortButton, onClickHistoryButton }) {
   const headerElement = document.createElement("header");
   headerElement.classList.add("header");
 
@@ -10,7 +10,7 @@ export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) 
 
   const sortButton = document.createElement("button");
   sortButton.classList.add("header__button--sort");
-  sortButton.addEventListener("click", onSortButtonClick);
+  sortButton.addEventListener("click", onClickSortButton);
 
   const sortButtonIcon = document.createElement("div");
   sortButtonIcon.appendChild(icons.arrowBoth());
@@ -23,7 +23,7 @@ export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) 
 
   const historyButton = document.createElement("button");
   historyButton.classList.add("header__button--history");
-  historyButton.addEventListener("click", onHistoryButtonClick);
+  historyButton.addEventListener("click", onClickHistoryButton);
   historyButton.appendChild(icons.clock());
 
   headerElement.appendChild(headerTitle);

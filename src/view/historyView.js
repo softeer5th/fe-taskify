@@ -2,7 +2,7 @@ import icons from "../../asset/icon.js";
 
 import historyItem from "../component/historyItem.js";
 
-export default function HistoryView({ history, user, onHistoryCloseButtonClicked, onHistoryDeleteButtonClicked }) {
+export default function HistoryView({ history, user, onClickHistoryCloseButton, onClickHistoryDeleteButton }) {
   const historyElement = document.createElement("div");
   historyElement.classList.add("history");
 
@@ -15,7 +15,7 @@ export default function HistoryView({ history, user, onHistoryCloseButtonClicked
 
   const historyOffButton = document.createElement("button");
   historyOffButton.classList.add("history__title-button");
-  historyOffButton.addEventListener("click", onHistoryCloseButtonClicked);
+  historyOffButton.addEventListener("click", onClickHistoryCloseButton);
 
   const historyOffButtonIcon = document.createElement("div");
   historyOffButtonIcon.appendChild(icons.closed());
@@ -52,7 +52,7 @@ export default function HistoryView({ history, user, onHistoryCloseButtonClicked
   historyDelete.classList.add("history__delete");
 
   const historyDeleteButton = document.createElement("button");
-  historyDeleteButton.addEventListener("click", onHistoryDeleteButtonClicked);
+  historyDeleteButton.addEventListener("click", onClickHistoryDeleteButton);
   historyDeleteButton.textContent = "기록 전체 삭제";
 
   historyDelete.appendChild(historyDeleteButton);

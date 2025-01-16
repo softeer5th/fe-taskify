@@ -12,40 +12,40 @@ export default function HistoryController(model, rootElement) {
   const historyView = HistoryView({
     history,
     user,
-    onHistoryCloseButtonClicked: handleHistoryCloseButtonClicked,
-    onHistoryDeleteButtonClicked: handleHistoryDeleteButtonClicked,
+    onHistoryCloseButtonClicked: handleClickHistoryCloseButton,
+    onHistoryDeleteButtonClicked: handleClickHistoryDeleteButton,
   });
 
   rootElement.appendChild(historyView);
 
   const redoButton = Button({
     className: ["fab", "button-alt"],
-    onClick: handleRedoButtonClicked,
+    onClick: handleClickRedoButton,
     children: [icons.redo()],
   });
   redoButton.style.right = "48px";
   redoButton.style.bottom = "120px";
-  redoButton.addEventListener("click", handleRedoButtonClicked);
+  redoButton.addEventListener("click", handleClickRedoButton);
 
   const undoButton = Button({
     className: ["fab", "button-alt"],
-    onClick: handleUndoButtonClicked,
+    onClick: handleClickUndoButton,
     children: [icons.undo()],
   });
   undoButton.style.right = "48px";
   undoButton.style.bottom = "192px";
-  undoButton.addEventListener("click", handleUndoButtonClicked);
+  undoButton.addEventListener("click", handleClickUndoButton);
 
   rootElement.appendChild(redoButton);
   rootElement.appendChild(undoButton);
 
-  model.addListener(onModelChanged);
+  model.addListener(render);
 
   render();
 
   // Event Handlers
 
-  function handleRedoButtonClicked(event) {
+  function handleClickRedoButton(event) {
     event.stopPropagation();
 
     if (!model.isRedoAble()) {
@@ -59,7 +59,7 @@ export default function HistoryController(model, rootElement) {
     model.redo();
   }
 
-  function handleUndoButtonClicked(event) {
+  function handleClickUndoButton(event) {
     event.stopPropagation();
 
     if (!model.isUndoAble()) {
@@ -73,22 +73,16 @@ export default function HistoryController(model, rootElement) {
     model.undo();
   }
 
-  function handleHistoryCloseButtonClicked(event) {
+  function handleClickHistoryCloseButton(event) {
     event.stopPropagation();
 
     model.toggleHistory();
   }
 
-  function handleHistoryDeleteButtonClicked(event) {
+  function handleClickHistoryDeleteButton(event) {
     event.stopPropagation();
 
     model.setModalState("history", {});
-  }
-
-  // Model Event Handlers
-
-  function onModelChanged() {
-    render();
   }
 
   // Render
@@ -103,8 +97,8 @@ export default function HistoryController(model, rootElement) {
       const newHistoryView = HistoryView({
         history,
         user,
-        onHistoryCloseButtonClicked: handleHistoryCloseButtonClicked,
-        onHistoryDeleteButtonClicked: handleHistoryDeleteButtonClicked,
+        onClickHistoryCloseButton: handleClickHistoryCloseButton,
+        onClickHistoryDeleteButton: handleClickHistoryDeleteButton,
       });
       historyView.querySelector(".history__list").replaceWith(newHistoryView.querySelector(".history__list"));
       if (!historyView.classList.contains("history--show")) {

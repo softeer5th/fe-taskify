@@ -2,7 +2,7 @@ import icons from "../../asset/icon.js";
 
 import Button from "../component/button.js";
 
-export default function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
+export default function TaskView({ task, state, onClickFirstButton, onClickSecondButton }) {
   const taskElement = document.createElement("div");
   taskElement.classList.add("task");
   taskElement.id = task.id;
@@ -52,13 +52,13 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
 
     const cancelButton = Button({
       className: ["button", "button--alt"],
-      onClick: onFirstButtonClicked,
+      onClick: onClickFirstButton,
       children: ["취소"],
     });
 
     const saveButton = Button({
       className: ["button"],
-      onClick: onSecondButtonClicked,
+      onClick: onClickSecondButton,
       children: ["등록"],
     });
     saveButton.disabled = task.name.length === 0 || task.description.length === 0;
@@ -104,13 +104,13 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("task__iconButton-icon");
     deleteButton.appendChild(icons.closed());
-    deleteButton.addEventListener("click", onFirstButtonClicked);
+    deleteButton.addEventListener("click", onClickFirstButton);
     deleteButton.addEventListener("mousedown", (event) => event.stopPropagation());
 
     const editButton = document.createElement("button");
     editButton.classList.add("task__iconButton-icon");
     editButton.appendChild(icons.edit());
-    editButton.addEventListener("click", onSecondButtonClicked);
+    editButton.addEventListener("click", onClickSecondButton);
     editButton.addEventListener("mousedown", (event) => event.stopPropagation());
 
     buttonGroup.appendChild(deleteButton);

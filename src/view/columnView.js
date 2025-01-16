@@ -2,7 +2,7 @@ import icons from "../../asset/icon.js";
 
 const COUNT_MAX = 99;
 
-export default function ColumnView({ column, count, state, onColumnTitleEvent, onAddButtonClicked, onColumnDeleteButtonClicked }) {
+export default function ColumnView({ column, count, state, onColumnTitleEvent, onClickAddButton, onClickColumnDeleteButton }) {
   const columnElement = document.createElement("div");
   columnElement.classList.add("column");
   columnElement.id = column.id;
@@ -45,12 +45,12 @@ export default function ColumnView({ column, count, state, onColumnTitleEvent, o
   const columnAddButton = document.createElement("button");
   columnAddButton.classList.add("column__add-button");
   columnAddButton.appendChild(icons.plus());
-  columnAddButton.addEventListener("click", onAddButtonClicked);
+  columnAddButton.addEventListener("click", onClickAddButton);
 
   const columnCloseButton = document.createElement("button");
   columnCloseButton.classList.add("column__close-button");
   columnCloseButton.appendChild(icons.closed());
-  columnCloseButton.addEventListener("click", onColumnDeleteButtonClicked);
+  columnCloseButton.addEventListener("click", onClickColumnDeleteButton);
 
   columnTitle.appendChild(columnAddButton);
   columnTitle.appendChild(columnCloseButton);
