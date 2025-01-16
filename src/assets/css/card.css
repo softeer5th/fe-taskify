@@ -54,6 +54,10 @@
     cursor: pointer;
 }
 
+.card-icon:hover path{
+    fill: var(--color_text_danger);
+}
+
 .card-title {
     width: 100%;
     padding: 0;

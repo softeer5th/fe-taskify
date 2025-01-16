@@ -1,3 +1,4 @@
+import { closedIcon } from "../../assets/images/closed.js";
 import { alertManager } from "../../index.js";
 import Component from "../component.js";
 
@@ -47,12 +48,14 @@ export class DefaultCard extends Component {
                 </div>
             </div>
             <div class = "card-icons">
-                <img src=${this.closeIconRef} alt="close-icon" class="card-icon" id = "close-icon" />
+                ${closedIcon}
+               
                 <img src=${this.editIconRef} alt="edit-icon" class="card-icon" id = "edit-icon" />
             </div>
     `;
     }
 
+    // <img src=${this.closeIconRef} alt="close-icon" class="card-icon" id = "close-icon" />
     render(parent) {
 
         super.render(parent);
@@ -60,7 +63,8 @@ export class DefaultCard extends Component {
         this.current.draggable = true;
 
         const close = this.current.querySelector("#close-icon");
-
+        close.classList.add("card-icon");
+        
         if (close) {
             close.addEventListener("click", (event) => {
                 this.onCloseClick();
