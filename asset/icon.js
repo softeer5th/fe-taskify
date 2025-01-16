@@ -1,10 +1,10 @@
-import arrowBoth from "./arrowBoth.js";
-import clock from "./clock.js";
-import closed from "./closed.js";
-import edit from "./edit.js";
-import plus from "./plus.js";
-import redo from "./redo.js";
-import undo from "./undo.js";
+import arrowBoth from "./icons/arrowBoth.js";
+import clock from "./icons/clock.js";
+import closed from "./icons/closed.js";
+import edit from "./icons/edit.js";
+import plus from "./icons/plus.js";
+import redo from "./icons/redo.js";
+import undo from "./icons/undo.js";
 
 const icons = {
   arrowBoth,
