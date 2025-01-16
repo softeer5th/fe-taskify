@@ -6,9 +6,17 @@ export default function FabController(bodyElement, state, logStore) {
     const columnController = ColumnController(state, bodyElement, logStore);
     const {columns, columnTasks} = state.getColumns();
 
-    function handleRedo() {
+    function handleRedo(e) {
         const log = logStore.redo();
-        if(!log || log === undefined) return;
+
+        if(!log || log === undefined) {
+            const button = e.currentTarget;
+            button.classList.add('vibration');
+            setTimeout(()=>{
+                button.classList.remove('vibration');
+            }, 300)
+            return;
+        }
 
         const {type, task, updated, destination, updatedTask} = log;
 
@@ -40,9 +48,17 @@ export default function FabController(bodyElement, state, logStore) {
 
     }
 
-    function handleUndo() {
+    function handleUndo(e) {
         const log = logStore.undo();
-        if(!log || log === undefined) return;
+
+        if(!log || log === undefined) {
+            const button = e.currentTarget;
+            button.classList.add('vibration');
+            setTimeout(()=>{
+                button.classList.remove('vibration');
+            }, 300)
+            return;
+        }
 
         const {type, task, updated, destination, updatedTask} = log;
 
