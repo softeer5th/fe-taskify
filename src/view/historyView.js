@@ -1,4 +1,4 @@
-import closed from "../../public/closed.js";
+import icons from "../../asset/icon.js";
 
 import historyItem from "../component/historyItem.js";
 
@@ -18,7 +18,7 @@ export default function HistoryView({ history, user, onHistoryCloseButtonClicked
   historyOffButton.addEventListener("click", onHistoryCloseButtonClicked);
 
   const historyOffButtonIcon = document.createElement("div");
-  historyOffButtonIcon.innerHTML = closed;
+  historyOffButtonIcon.appendChild(icons.closed());
   historyOffButtonIcon.classList.add("history__title-button-icon");
 
   const historyOffButtonText = document.createElement("span");

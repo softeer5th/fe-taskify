@@ -1,4 +1,4 @@
-import icons from "../../public/icon.js";
+import icons from "../../asset/icon";
 
 const COUNT_MAX = 99;
 

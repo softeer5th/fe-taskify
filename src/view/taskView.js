@@ -1,4 +1,5 @@
-import icons from "../../public/icon.js";
+import icons from "../../asset/icon.js";
+
 import Button from "../component/button.js";
 
 export default function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {

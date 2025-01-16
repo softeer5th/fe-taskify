@@ -1,4 +1,4 @@
-import icons from "../../public/icon.js";
+import icons from "../../asset/icon";
 
 export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) {
   const headerElement = document.createElement("header");
