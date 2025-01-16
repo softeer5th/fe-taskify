@@ -33,29 +33,36 @@ const doneColumn = ColumnHeader({
 
     columnLayout.innerHTML=`
         <div class="column-container">
-            <div class="column-box" id="todo-column"></div>
-            <div class="column-box" id="in-progress-column"></div>
-            <div class="column-box" id="done-column"></div>
+            <div class="column-box" id="todo-column">
+                <ol class="column-card-box"></ol>
+            </div>
+            <div class="column-box" id="in-progress-column">
+                <ol class="column-card-box"></ol>
+            </div>
+            <div class="column-box" id="done-column">
+                <ol class="column-card-box"></ol>
+            </div>            
         </div>
     `;
     
      // 각 column-box에 컴포넌트를 추가
     const columnBoxes = columnLayout.querySelectorAll('.column-box');
-    columnBoxes[0].insertAdjacentElement("beforeend",todoColumn);
-    columnBoxes[1].insertAdjacentElement("beforeend",inProgressColumn);
-    columnBoxes[2].insertAdjacentElement("beforeend",doneColumn);
+    columnBoxes[0].insertAdjacentElement("afterbegin",todoColumn);
+    columnBoxes[1].insertAdjacentElement("afterbegin",inProgressColumn);
+    columnBoxes[2].insertAdjacentElement("afterbegin",doneColumn);
 
 
 
 
+    const columnCardBoxes=columnLayout.querySelectorAll('.column-card-box');
 
-    handleShowCardModel({columnBox:columnBoxes[0],model:todoModel});
-    handleShowCardModel({columnBox:columnBoxes[1],model:progressModel});
-    handleShowCardModel({columnBox:columnBoxes[2],model:doneModel});
+    handleShowCardModel({columnBox:columnCardBoxes[0],model:todoModel});
+    handleShowCardModel({columnBox:columnCardBoxes[1],model:progressModel});
+    handleShowCardModel({columnBox:columnCardBoxes[2],model:doneModel});
     
-    showCardList(columnBoxes[0],todoModel.tasks);
-    showCardList(columnBoxes[1],progressModel.tasks);
-    showCardList(columnBoxes[2],doneModel.tasks);
+    showCardList(columnCardBoxes[0],todoModel.tasks);
+    showCardList(columnCardBoxes[1],progressModel.tasks);
+    showCardList(columnCardBoxes[2],doneModel.tasks);
 
 
     loadCss('../src/layout/Column/Column.css')
