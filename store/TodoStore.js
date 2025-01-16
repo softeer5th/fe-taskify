@@ -128,6 +128,15 @@ class TodoStore extends Observable {
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 
+  columnUpdate({ sectionId, title }) {
+    this.#todoList = this.#todoList.map((section) =>
+      section.id === sectionId ? { ...section, title } : section
+    );
+
+    this.notify(ACTION_TYPE.columnUpdate, { sectionId, columnTitle: title });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
   clear() {
     this.#todoList = [];
     this.notify(this.#todoList);

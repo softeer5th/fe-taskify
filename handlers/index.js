@@ -8,6 +8,8 @@ import {
 import {
   handleCancelAdd,
   handleClickAdd,
+  handleClickInputOutside,
+  handleDbClickColumnHeader,
   handleDeleteColumn,
 } from "./columnHeader.js";
 import {
@@ -47,6 +49,8 @@ export const addRootEventListener = () => {
     const $addColumnButton = e.target.closest(".floating__button");
     const $deleteColumnButton = e.target.closest(".column__deleteButton");
 
+    const $headerInput = e.target.closest(".header__input");
+
     if ($addButton) {
       handleClickAdd(e, store);
     } else if ($deleteHistoryButton) {
@@ -68,6 +72,18 @@ export const addRootEventListener = () => {
       handleAddColumn();
     } else if ($deleteColumnButton) {
       handleDeleteColumn(e);
+    } else if (!$headerInput) {
+      handleClickInputOutside();
+    }
+  });
+
+  $root.addEventListener("dblclick", (e) => {
+    const $columnTitleHeader = e.target.closest(
+      ".column__header__titleContainer"
+    );
+
+    if ($columnTitleHeader) {
+      handleDbClickColumnHeader(e);
     }
   });
 
