@@ -2,8 +2,8 @@
     font-family: var(--todo-font-family);
 }
 
-html {
-    height: 100vh;
+html, body {
+    height: 100%;
 }
 
 button {
@@ -16,6 +16,8 @@ button {
     border-color: var(--todo-gray-color-700);
     flex-direction: column;
     background-color: var(--todo-surface-alt);
+    padding:0;
+    min-height: 100%;
 }
 
 .main-container {
@@ -23,6 +25,7 @@ button {
     flex-direction: row;
     flex: 1;
     padding: 32px 80px;
+    min-height: 100%;
     gap:var(--todo-number-300);
 }
 
@@ -42,7 +45,7 @@ button {
 
 .column-template {
     width: 320px;
-    height: 100%;
+    min-height: 100%;
 }
 
 .column-header {
@@ -80,6 +83,7 @@ button {
 .column-card-list{
     list-style:none;
     padding-left: 0px;
+    min-height: 100%;
 }
 
 .card-template {

@@ -9,22 +9,21 @@ export const App = () => {
     const store = columnStore();
 
     initializeGlobalInputEvents();
-
     return createComponent({
         initialState: {
             columns: store.getColumns(),
         },
+
         render: ({ state, setState }) => {
-            const fragment = document.createDocumentFragment();
-            const app = document.createElement("div");
+            const app = document.createDocumentFragment();
             app.appendChild(Navbar());
             const columnList = ColumnList({
                 columnList: state,
                 setState
             });
             app.appendChild(columnList);
-            fragment.appendChild(app);
             return app;
-        }
+        },
+        className: "root-container"
     })
 }

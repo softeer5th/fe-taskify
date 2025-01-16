@@ -5,6 +5,8 @@ export function ColumnList({ columnList, setState }) {
   const container = document.createElement("div");
   container.className = "main-container";
 
+  console.log(columnList);
+
   const { columns } = columnList;
 
   columns.forEach((column) => {
