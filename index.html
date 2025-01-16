@@ -38,10 +38,13 @@
               <p class="textlabel">30</p>
             </div>
           </div>
-          <button id="add-card">
-            <img src="./assets/icons/plus-small.svg" alt="add" />
+          <button id="add-card" class="plus-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99799H13V10.998H19V12.998Z" fill="#A0A3BD"/>
+              </svg>
+              
           </button>
-          <button id="close-column">
+          <button id="close-column" class="delete-button">
             <svg
               width="24"
               height="24"
@@ -109,7 +112,7 @@
             id="icon-area"
             style="display: flex; flex-direction: column; padding-left: 4px"
           >
-            <button id="delete-card">
+            <button id="delete-card" class="delete-button">
               <svg
                 width="24"
                 height="24"
