@@ -8,7 +8,7 @@ import { Modal } from '../Modal/Modal.js';
 export const modalInstances = {};
 
 export function ColumnCard({id,type,title,content,author,addText,closeText,checkId,editId,closeId,deleteId}){
-    const columnCard = document.createElement('div');
+    const columnCard = document.createElement('li');
     columnCard.className = 'column-card-container';
     columnCard.id= id;
     columnCard.innerHTML =`

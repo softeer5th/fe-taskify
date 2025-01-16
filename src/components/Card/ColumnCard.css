@@ -26,12 +26,13 @@
 .column-card-title{
     font: var(--display-bold14);
     color:var(--text-strong);
+    white-space: normal;
 }
 
 .column-card-content{
     font: var(--display-medium14);
     color:var(--text-default);
-
+    white-space: normal;
 }
 
 .column-card-author{
