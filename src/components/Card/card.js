@@ -1,6 +1,9 @@
+import { alertManager } from "../../index.js";
 import Component from "../component.js";
 
 export class DefaultCard extends Component {
+
+    deleteCardDialogText = "선택한 카드를 삭제할까요?";
 
     closeIconRef = "/assets/images/closed.svg";
     editIconRef = "/assets/images/edit.svg";
@@ -18,11 +21,18 @@ export class DefaultCard extends Component {
         });
 
         this.cardData = cardData;
-        this.onCloseClick = onCloseClick;
+        this.onCloseClick = () => {
+            alertManager.showDialog(this.deleteCardDialogText, () => {
+                alertManager.hideDialog();
+                onCloseClick(cardData.cardId);
+            }, () => {
+                alertManager.hideDialog();
+            })
+        };
         this.onEditClick = onEditClick;
 
     }
-    
+
     template() {
         return `
             <div class = "card-text_area">

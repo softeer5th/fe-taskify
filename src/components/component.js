@@ -40,7 +40,6 @@ export default class Component {
 
         this.parent.appendChild(this.current);
 
-        this.renderTree();
         this.setEvents(this.current);
     }
 
@@ -57,12 +56,15 @@ export default class Component {
 
         wrapper.innerHTML = this.template();
 
+        this.renderTree(wrapper);
+        this.current = wrapper;
+
         return wrapper;
     }
 
-    renderTree() {
+    renderTree(root) {
         for (const key in this.children) {
-            const childParent = this.current.querySelector(this.children[key].parentSelector) || this.current;
+            const childParent = root.querySelector(this.children[key].parentSelector) || root;
             this.children[key].object.render(childParent);
         }
     }
@@ -77,7 +79,7 @@ export default class Component {
 
     rerender() {
         this.clear();
-        this.renderTree();
+        this.renderTree(this.current);
         this.setEvents(this.current);
     }
 
