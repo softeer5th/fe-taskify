@@ -25,7 +25,7 @@ export default function EditTaskItem({ task, onClickCancelButton, onClickSaveBut
   contentTitle.placeholder = "제목을 입력하세요";
   contentTitle.maxLength = 500;
   contentTitle.required = true;
-  contentTitle.value = task.name || "";
+  contentTitle.value = task.title || "";
   contentTitle.addEventListener("click", (event) => {
     event.stopPropagation();
     event.target.focus();
@@ -52,11 +52,11 @@ export default function EditTaskItem({ task, onClickCancelButton, onClickSaveBut
   });
 
   const saveButton = Button({
-    className: ["button"],
+    className: ["button", "button-brand"],
     onClick: onClickSaveButton,
     children: ["저장"],
   });
-  saveButton.disabled = task.name.length === 0 || task.description.length === 0;
+  saveButton.disabled = task.title.length === 0 || task.description.length === 0;
 
   editorButton.appendChild(cancelButton);
   editorButton.appendChild(saveButton);
