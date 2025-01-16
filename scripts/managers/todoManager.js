@@ -330,10 +330,8 @@ export const renewTodoCount = (category) => {
 }
 
 export const undoTodoItemCreate = (category, todoItem) => {
-    // TODO: refactor
-    const { _, index, __ } = getTodoItemInfo(todoItem.uid)
     removeDomElement(findDomElementByUid(todoItem.uid).id)
-    category.todoList.splice(index, 1)
+    category.todoList.splice(0, 1)
     renewTodoCount(category)
 }
 
@@ -385,6 +383,46 @@ export const undoTodoItemEdit = (
         (identifier, component) => {
             initTodoItemElement(component, prevTodoItem)
             return prevTodoItem.uid
+        }
+    )
+}
+
+export const redoTodoItemCreate = (category, todoItem) => {
+    const copiedTodoItem = deepCopy(todoItem)
+    createDomElementAsChild(
+        templateNames.todoItem,
+        findDomElementByUid(category.uid).querySelector(
+            `.${classNames.todoBody}`
+        ),
+        (identifier, component) => {
+            initTodoItemElement(component, todoItem)
+            return todoItem.uid
+        },
+        false
+    )
+    category.todoList.unshift(copiedTodoItem)
+    renewTodoCount(category)
+}
+
+export const redoTodoItemDelete = (category, todoItem, index) => {
+    removeDomElement(findDomElementByUid(todoItem.uid).id)
+    category.todoList.splice(index, 1)
+    renewTodoCount(category)
+}
+
+export const redoTodoItemEdit = (
+    category,
+    prevTodoItem,
+    currentTodoItem,
+    index
+) => {
+    const originTodoElement = findDomElementByUid(prevTodoItem.uid)
+    replaceDomElement(
+        templateNames.todoItem,
+        originTodoElement,
+        (identifier, component) => {
+            initTodoItemElement(component, currentTodoItem)
+            return currentTodoItem.uid
         }
     )
 }

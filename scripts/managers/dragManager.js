@@ -263,3 +263,40 @@ export const undoTodoItemMove = (
     renewTodoCount(prevCategory)
     renewTodoCount(currentCategory)
 }
+
+export const redoTodoItemMove = (
+    prevCategory,
+    currentCategory,
+    prevTodoItem,
+    currentTodoItem,
+    prevIndex,
+    currentIndex
+) => {
+    // 현재 DOM에서 prevTodoItem을 찾아옴
+    const sourceElement = findDomElementByUid(prevTodoItem.uid)
+    let destElement
+
+    // currentIndex 가 currentCategory.todoList 길이와 같다면 제일 마지막에 붙임
+    if (currentIndex === currentCategory.todoList.length) {
+        const parentElement = findDomElementByUid(
+            currentCategory.uid
+        ).querySelector(`.${classNames.todoBody}`)
+        parentElement.append(sourceElement)
+    } else {
+        // 그렇지 않다면 currentIndex 위치의 요소 앞에 붙임
+        destElement = findDomElementByUid(
+            currentCategory.todoList[currentIndex].uid
+        )
+        destElement.before(sourceElement)
+    }
+
+    // prevCategory.todoList 에서 prevIndex 위치의 아이템을 제거
+    prevCategory.todoList.splice(prevIndex, 1)
+    // currentCategory.todoList 에 currentIndex 위치로 아이템 삽입
+    currentCategory.todoList.splice(currentIndex, 0, currentTodoItem)
+
+    // 스토어 및 카운트 업데이트
+    storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
+    renewTodoCount(prevCategory)
+    renewTodoCount(currentCategory)
+}

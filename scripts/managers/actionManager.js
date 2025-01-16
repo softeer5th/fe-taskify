@@ -3,8 +3,11 @@ import { classNames, keys } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
 import { getCategoryByUid } from '../utils/dataUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
-import { undoTodoItemMove } from './dragManager.js'
+import { redoTodoItemMove, undoTodoItemMove } from './dragManager.js'
 import {
+    redoTodoItemCreate,
+    redoTodoItemDelete,
+    redoTodoItemEdit,
     undoTodoItemCreate,
     undoTodoItemDelete,
     undoTodoItemEdit,
@@ -39,15 +42,31 @@ export const initUndoButton = () => {
     })
 }
 
-const initRedoButton = () => {}
+export const initRedoButton = () => {
+    const redoButtonElement = document.querySelector(
+        `.${classNames.redoButton}`
+    )
+    redoButtonElement.addEventListener('click', () => {
+        handleRedo()
+    })
+}
 
-export const handleUndo = () => {
+const handleUndo = () => {
     if (pointer < 0) {
         throw Error('No action to undo')
     }
     const action = actionList[pointer]
     pointer--
     undoAction(action)
+}
+
+const handleRedo = () => {
+    if (pointer == actionList.length - 1) {
+        throw Error('No action to redo')
+    }
+    pointer++
+    const action = actionList[pointer]
+    redoAction(action)
 }
 
 const undoAction = (action) => {
@@ -58,11 +77,9 @@ const undoAction = (action) => {
 
     switch (action.type) {
         case actionTypes.todoCreate:
-            console.log('undo create')
             undoTodoItemCreate(category, action.data.todoItem)
             break
         case actionTypes.todoDelete:
-            console.log('undo delete')
             undoTodoItemDelete(
                 category,
                 action.data.todoItem,
@@ -70,7 +87,6 @@ const undoAction = (action) => {
             )
             break
         case actionTypes.todoEdit:
-            console.log('undo edit')
             undoTodoItemEdit(
                 category,
                 action.data.prevTodoItem,
@@ -79,8 +95,49 @@ const undoAction = (action) => {
             )
             break
         case actionTypes.todoMove:
-            console.log('undo move')
             undoTodoItemMove(
+                prevCategory,
+                currentCategory,
+                action.data.prevTodoItem,
+                action.data.currentTodoItem,
+                action.data.prevIndex,
+                action.data.currentIndex
+            )
+            break
+        case actionTypes.todoSort:
+            break
+    }
+
+    storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
+}
+
+const redoAction = (action) => {
+    const category = getCategoryByUid(action.data.categoryUid)
+    const prevCategory = getCategoryByUid(action.data.prevCategoryUid) ?? null
+    const currentCategory =
+        getCategoryByUid(action.data.currentCategoryUid) ?? null
+
+    switch (action.type) {
+        case actionTypes.todoCreate:
+            redoTodoItemCreate(category, action.data.todoItem)
+            break
+        case actionTypes.todoDelete:
+            redoTodoItemDelete(
+                category,
+                action.data.todoItem,
+                action.data.index
+            )
+            break
+        case actionTypes.todoEdit:
+            redoTodoItemEdit(
+                category,
+                action.data.prevTodoItem,
+                action.data.currentTodoItem,
+                action.data.index
+            )
+            break
+        case actionTypes.todoMove:
+            redoTodoItemMove(
                 prevCategory,
                 currentCategory,
                 action.data.prevTodoItem,
