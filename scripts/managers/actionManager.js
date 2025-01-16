@@ -3,6 +3,10 @@ import { classNames, keys } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
 import { getCategoryByUid } from '../utils/dataUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
+import { undoTodoItemDelete } from './todoManager.js'
+
+keys.RESET_DATA_KEY && storeData(keys.ACTION_STORAGE_KEY, [])
+keys.RESET_DATA_KEY && storeData(keys.ACTION_POINTER_STORAGE_KEY, -1)
 
 let actionList = loadData(keys.ACTION_STORAGE_KEY) ?? []
 let pointer = loadData(keys.ACTION_POINTER_STORAGE_KEY) ?? -1
@@ -49,20 +53,28 @@ const undoAction = (action) => {
 
     switch (action.type) {
         case actionTypes.todoCreate:
+            console.log('undo create')
             undoTodoItemCreate(category, action.data.todoItem)
             break
         case actionTypes.todoDelete:
-            undoTodoItemDelete(category, action.data.todoItem, index)
+            console.log('undo delete')
+            undoTodoItemDelete(
+                category,
+                action.data.todoItem,
+                action.data.index
+            )
             break
         case actionTypes.todoEdit:
+            console.log('undo edit')
             undoTodoItemEdit(
                 category,
                 action.data.prevTodoItem,
                 action.data.currentTodoItem,
-                index
+                action.data.index
             )
             break
         case actionTypes.todoMove:
+            console.log('undo move')
             undoTodoItemMove(
                 prevCategory,
                 currentCategory,
@@ -83,7 +95,7 @@ const undoTodoItemCreate = (category, todoItem) => {
     const currentTodoItem = {}
 }
 
-const undoTodoItemDelete = (category, todoItem, index) => {}
+// const undoTodoItemDelete = (category, todoItem, index) => {}
 
 const undoTodoItemEdit = (category, prevTodoItem, currentTodoItem, index) => {}
 

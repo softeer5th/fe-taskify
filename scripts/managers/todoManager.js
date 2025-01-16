@@ -22,10 +22,8 @@ import {
 } from '../utils/actionFactory.js'
 import { deepCopy } from '../utils/dataUtil.js'
 
-const RESET_DATA = true
-
 export const initTodo = () => {
-    RESET_DATA && storeData(keys.TODO_CATEGORY_KEY, [])
+    keys.RESET_DATA_KEY && storeData(keys.TODO_CATEGORY_KEY, [])
 
     let categoryList = loadData(keys.TODO_CATEGORY_KEY)
     if (!categoryList) {
@@ -34,7 +32,7 @@ export const initTodo = () => {
     }
 
     // 더미 데이터 초기화
-    if (RESET_DATA) {
+    if (keys.RESET_DATA_KEY) {
         let id = 1
         let categoryCnt = 3
         let eleCnt = 3
@@ -338,12 +336,36 @@ export const undoTodoItemCreate = (category, todoItem) => {
 
 export const undoTodoItemDelete = (category, todoItem, index) => {
     const copiedTodoItem = deepCopy(todoItem)
-    addTodoItemToList(copiedTodoItem, category, index)
-    if (index === 0) {
-        handleTodoCreate
-    }
     const todoBodyElement = findDomElementByUid(category.uid).querySelector(
         `.${classNames.todoBody}`
     )
-    // createDomElementAsSibling()
+
+    if (index === 0 || index === category.todoList.length) {
+        createDomElementAsChild(
+            templateNames.todoItem,
+            findDomElementByUid(category.uid).querySelector(
+                `.${classNames.todoBody}`
+            ),
+            (identifier, component) => {
+                initTodoItemElement(component, copiedTodoItem)
+                return copiedTodoItem.uid
+            },
+            index === 0 ? false : true
+        )
+    } else {
+        const originChildElement = findDomElementByUid(
+            category.todoList[index].uid
+        )
+        createDomElementAsSibling(
+            templateNames.todoItem,
+            originChildElement,
+            (identifier, component) => {
+                initTodoItemElement(component, copiedTodoItem)
+                return copiedTodoItem.uid
+            },
+            false
+        )
+    }
+
+    addTodoItemToList(copiedTodoItem, category, index)
 }
