@@ -2,13 +2,17 @@
 
 
 .column {
-    width: 320px;
+    min-width: 320px;
 }
 
 .cardList {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: relative;
+
+    height: 600px;
+    overflow-y: scroll;
 }
 
 .columnHeader {
