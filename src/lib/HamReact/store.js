@@ -1,4 +1,4 @@
-let store = {};
+export let store = {};
 export let stateId = 0;
 
 export const resetStore = () => {
@@ -13,12 +13,10 @@ export const increaseStateId = () => {
   stateId += 1;
 };
 
-export const getValidState = (state) => {
-  if (store[stateId] === undefined) {
-    store[stateId] = state;
+export const setInitState = (id, state) => {
+  if (!store[id]) {
+    store[id] = state;
   }
-
-  return store[stateId];
 };
 
 export const getStoreState = (id) => store[id];
