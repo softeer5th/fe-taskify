@@ -1,4 +1,6 @@
+import { DELETE_ICON } from "../assets/icons/delete.js";
 import { parseToDoc } from "../utils/parseToDoc.js";
+
 export const card = (id, title = "", content = "") => {
   const cardHTML = /*html*/ `
       <div class="card" id="${id}" draggable="true">
@@ -10,19 +12,7 @@ export const card = (id, title = "", content = "") => {
           <div class="card-icons">
               <!-- x 아이콘 -->
               <div class="card-delete-icon">
-              <svg
-              draggable="false"
-                class="card-delete-icon"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                class="card-delete-icon"
-                d="M7.2 18L6 16.8L10.8 12L6 7.2L7.2 6L12 10.8L16.8 6L18 7.2L13.2 12L18 16.8L16.8 18L12 13.2L7.2 18Z"
-                fill="#A0A3BD" />
-                </svg>
+              ${DELETE_ICON}
               </div>
               <!-- 편집 아이콘 -->
               <div class="card-edit-icon">
