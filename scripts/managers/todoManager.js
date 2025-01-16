@@ -167,7 +167,7 @@ const disableAddTodoForm = (category) => {
 const initTodoItemElement = (todoElement, todoItem) => {
     const {
         identifier,
-        values: { title, content, author },
+        values: { uid, title, content, author },
     } = todoItem
 
     todoElement.querySelector(`.${classNames.todoItemTitle}`).textContent =
@@ -181,12 +181,12 @@ const initTodoItemElement = (todoElement, todoItem) => {
     todoElement
         .querySelector(`.${classNames.deleteButton}`)
         .addEventListener('click', () => {
-            removeTodoItem(identifier)
+            deleteTodoItem(uid)
         })
     todoElement
         .querySelector(`.${classNames.editButton}`)
         .addEventListener('click', () => {
-            editTodoItem(identifier)
+            editTodoItem(uid)
         })
     manageDragEvents(todoElement.querySelector(`.${classNames.todoItemBody}`))
 }
@@ -215,11 +215,11 @@ const addTodoItem = (title, content, author, category) => {
     addHistory(todoAddAction)
 }
 
-const getTodoItemInfo = (identifier) => {
+const getTodoItemInfo = (uid) => {
     const categoryList = getState(keys.TODO_CATEGORY_KEY)
     for (let category of categoryList) {
         for (let [idx, todo] of category.values.todoList.entries()) {
-            if (todo.identifier === identifier) {
+            if (todo.values.uid === uid) {
                 return { category: category, index: idx, todoItem: todo }
             }
         }
@@ -227,20 +227,24 @@ const getTodoItemInfo = (identifier) => {
     return null
 }
 
-const removeTodoItem = (identifier) => {
-    const { category, index, todoItem } = getTodoItemInfo(identifier)
+const deleteTodoItem = (uid) => {
+    const { category, index, todoItem } = getTodoItemInfo(uid)
     category.values.todoList.splice(index, 1)
     removeDomElement(identifier)
     renewTodoCount(category)
     storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
 
-    const todoDeleteAction = makeTodoDeleteAction(category.values.uid, todoItem)
+    const todoDeleteAction = makeTodoDeleteAction(
+        category.values.uid,
+        todoItem,
+        index
+    )
     addAction(todoDeleteAction)
     addHistory(todoDeleteAction)
 }
 
-const editTodoItem = (identifier) => {
-    const { category, index: targetIdx, todoItem } = getTodoItemInfo(identifier)
+const editTodoItem = (uid) => {
+    const { category, index: targetIdx, todoItem } = getTodoItemInfo(uid)
     const todoList = category.values.todoList
 
     const originTodoItem = todoItem
@@ -273,7 +277,6 @@ const editTodoItem = (identifier) => {
                     ).value
                     // TODO: author 정보 동적으로 가져오기
                     const author = 'web'
-
                     let editedTodoItem = null
                     replaceDomElement(
                         templateNames.todoItem,
@@ -296,7 +299,8 @@ const editTodoItem = (identifier) => {
                     const todoEditAction = makeTodoEditAction(
                         category.values.uid,
                         originTodoItem,
-                        editedTodoItem
+                        editedTodoItem,
+                        index
                     )
                     addAction(todoEditAction)
                     addHistory(todoEditAction)

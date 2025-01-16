@@ -219,7 +219,9 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                 originCategory.values.uid,
                 currentCategory.values.uid,
                 originTodoItem,
-                currentCategory.values.todoList[currentIndex]
+                currentCategory.values.todoList[currentIndex],
+                originIndex,
+                currentIndex
             )
 
             addAction(todoMoveAction)

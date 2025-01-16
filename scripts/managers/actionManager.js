@@ -1,6 +1,7 @@
 import { Action } from '../domain/Action.js'
 import { classNames, keys } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
+import { getCategoryByUid } from '../utils/dataUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 
 let actionList = loadData(keys.ACTION_STORAGE_KEY) ?? []
@@ -41,21 +42,36 @@ export const handleUndo = () => {
 }
 
 const undoAction = (action) => {
+    const category = getCategoryByUid(action.data.categoryUid)
+    const prevCategory = getCategoryByUid(action.data.prevCategoryUid)
+    const currentCategory = getCategoryByUid(action.data.currentCategoryUid)
+
     switch (action.type) {
         case actionTypes.todoCreate:
-            // todoCreate
+            undoTodoItemCreate(category, action.data.todoItem)
             break
         case actionTypes.todoDelete:
-            // todoDelete
+            undoTodoItemDelete(category, action.data.todoItem, index)
             break
         case actionTypes.todoEdit:
-            // todoEdit
+            undoTodoItemEdit(
+                category,
+                action.data.prevTodoItem,
+                action.data.currentTodoItem,
+                index
+            )
             break
         case actionTypes.todoMove:
-            // todoMove
+            undoTodoItemMove(
+                prevCategory,
+                currentCategory,
+                action.data.prevTodoItem,
+                action.data.currentTodoItem,
+                action.data.prevIndex,
+                action.data.currentIndex
+            )
             break
         case actionTypes.todoSort:
-            // todoSort
             break
     }
 
@@ -64,15 +80,17 @@ const undoAction = (action) => {
 
 const undoTodoItemCreate = (category, todoItem) => {}
 
-const undoTodoItemDelete = (category, todoItem) => {}
+const undoTodoItemDelete = (category, todoItem, index) => {}
 
-const undoTodoItemEdit = (category, prevTodoItem, currentTodoItem) => {}
+const undoTodoItemEdit = (category, prevTodoItem, currentTodoItem, index) => {}
 
 const undoTodoItemMove = (
     prevCategory,
     currentCategory,
     prevTodoItem,
-    currentTodoItem
+    currentTodoItem,
+    prevIndex,
+    currentIndex
 ) => {}
 
 const undoTodoItemSort = (category) => {}
