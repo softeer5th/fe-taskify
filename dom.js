@@ -89,3 +89,27 @@ export const createDeleteSvg = ({ className, ...props }) => {
 
   return $svg;
 };
+
+export const createPlusSvg = ({ className, ...props }) => {
+  const SVG_NS = "http://www.w3.org/2000/svg";
+
+  const $svg = document.createElementNS(SVG_NS, "svg");
+  $svg.setAttribute("xmlns", SVG_NS);
+  $svg.setAttribute("class", className);
+
+  props &&
+    Object.entries(props).forEach(([key, value]) => {
+      $svg.setAttribute(key, value);
+    });
+
+  const path = document.createElementNS(SVG_NS, "path");
+  path.setAttribute(
+    "d",
+    "M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99799H13V10.998H19V12.998Z"
+  );
+  path.setAttribute("fill", "#FEFEFE");
+
+  $svg.appendChild(path);
+
+  return $svg;
+};
