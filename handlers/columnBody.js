@@ -51,25 +51,22 @@ export const handleDrop = (e) => {
 };
 
 const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
+  // 데이터 처리
   const todoList = loadLocalStorage(STORAGE_KEY.todoList);
 
-  let draggedItem = null;
+  const prevColumn = todoList.find((section) => section.id === prevSectionId);
+  const nextColumn = todoList.find((section) => section.id === sectionId);
 
-  const prevColumn = todoList.find(
-    (section) => section.id === prevSectionId
-  ).title;
-  const nextColumn = todoList.find((section) => section.id === sectionId).title;
+  const draggedItem = prevColumn.items.find((item) => item.id === itemId);
 
-  const filteredList = todoList.map((section) => {
-    if (section.items.some((item) => item.id === itemId)) {
-      draggedItem = section.items.find((item) => item.id === itemId);
-      return {
-        ...section,
-        items: section.items.filter((item) => item.id !== itemId),
-      };
-    }
-    return section;
-  });
+  const filteredList = todoList.map((section) =>
+    section.id === prevSectionId
+      ? {
+          ...section,
+          items: section.items.filter((item) => item.id !== itemId),
+        }
+      : section
+  );
 
   const finalList = filteredList.map((section) => {
     if (section.id === sectionId && draggedItem) {
@@ -81,15 +78,18 @@ const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
     return section;
   });
 
+  // UI 업데이트
   updateCount(finalList);
+
+  // 데이터 처리
   saveLocalStorage(STORAGE_KEY.todoList, finalList);
 
   if (prevColumn !== nextColumn) {
     historyStore.action({
       action: ACTION_TYPE.move,
       title,
-      prevColumn: prevColumn,
-      nextColumn: nextColumn,
+      prevColumn: prevColumn.title,
+      nextColumn: nextColumn.title,
     });
   }
 };
