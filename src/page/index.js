@@ -1,28 +1,25 @@
 import { FAB } from "../components/FAB/index.js";
 import { useState } from "../lib/HamReact/hooks/useState.js";
 import { parser } from "../lib/jsx-runtime/parser.js";
+import ColumnStore from "../store/column/index.js";
+import TodoStore from "../store/todo/index.js";
 
 import { Header } from "./Header/index.js";
 import styles from "./page.module.js";
 import { TodoColumn } from "./TodoColumn/index.js";
 
-let globalId = 0;
-
 const MainPage = () => {
-  const [columns, setColumns] = useState([{ id: 0, title: "해야할 일" },
-    { id: 1, title: "하고 있는 일" },
-    { id: 2, title: "완료한 일" }]);
-
-  globalId = columns.length;
+  const columnStore = new ColumnStore();
+  const todoStore = new TodoStore();
+  const [columns, setColumns] = useState(columnStore.getColumns());
 
   const handleClickAddColumn = () => {
-    const item = { id: globalId, title: "새로운 컬럼" };
-    setColumns([...columns, item]);
-    globalId += 1;
+    const newColumn = columnStore.addColumn();
+    setColumns([...columns, newColumn]);
   };
 
   const handleClickDelColumn = (id) => {
-    const deletedColumns = columns.filter((column) => column.id !== id);
+    const deletedColumns = columnStore.removeColumn(id);
     setColumns(deletedColumns);
   };
 
@@ -31,8 +28,13 @@ const MainPage = () => {
         ${Header()}
         <main>
           <ul class="${styles.container}">
-            ${columns.map(({ id, title }) => parser`<li key=${id}>
-                ${TodoColumn({ id, title, onClickDel: () => handleClickDelColumn(id) })}
+            ${columns.map(({ id, name }) => parser`<li class=${styles.list} key=${id}>
+                ${TodoColumn({
+    id,
+    name,
+    todoStore,
+    onClickDel: () => handleClickDelColumn(id),
+  })}
               </li>`)}
           </ul>
         </main>
