@@ -1,12 +1,10 @@
-import Model from "../model.js";
-
 import TaskView from "../view/taskView.js";
 
 function getCurrentDevice() {
   return navigator.userAgentData.mobile ? "mobile" : "web";
 }
 
-export default function TaskController(model = new Model(), rootElement = document.getElementById("root")) {
+export default function TaskController(model, rootElement) {
   let tasks = [];
 
   let ghostTaskView = TaskView({

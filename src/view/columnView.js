@@ -1,5 +1,4 @@
-import plus from "../../public/plus.js";
-import closed from "../../public/closed.js";
+import icons from "../../public/icon.js";
 
 const COUNT_MAX = 99;
 
@@ -45,12 +44,12 @@ export default function ColumnView({ column, count, state, onColumnTitleEvent, o
 
   const columnAddButton = document.createElement("button");
   columnAddButton.classList.add("column__add-button");
-  columnAddButton.innerHTML = plus;
+  columnAddButton.appendChild(icons.plus());
   columnAddButton.addEventListener("click", onAddButtonClicked);
 
   const columnCloseButton = document.createElement("button");
   columnCloseButton.classList.add("column__close-button");
-  columnCloseButton.innerHTML = closed;
+  columnCloseButton.appendChild(icons.closed());
   columnCloseButton.addEventListener("click", onColumnDeleteButtonClicked);
 
   columnTitle.appendChild(columnAddButton);

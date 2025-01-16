@@ -1,5 +1,4 @@
-import arrowBoth from "../../public/arrowBoth.js";
-import clock from "../../public/clock.js";
+import icons from "../../public/icon.js";
 
 export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) {
   const headerElement = document.createElement("header");
@@ -14,7 +13,7 @@ export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) 
   sortButton.addEventListener("click", onSortButtonClick);
 
   const sortButtonIcon = document.createElement("div");
-  sortButtonIcon.innerHTML = arrowBoth;
+  sortButtonIcon.appendChild(icons.arrowBoth());
 
   const sortButtonText = document.createElement("span");
   sortButtonText.textContent = "생성 순";
@@ -25,7 +24,7 @@ export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) 
   const historyButton = document.createElement("button");
   historyButton.classList.add("header__button--history");
   historyButton.addEventListener("click", onHistoryButtonClick);
-  historyButton.innerHTML = clock;
+  historyButton.appendChild(icons.clock());
 
   headerElement.appendChild(headerTitle);
   headerElement.appendChild(sortButton);

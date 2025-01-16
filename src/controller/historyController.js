@@ -1,9 +1,9 @@
-import Model from "../model.js";
+import icons from "../../public/icon.js";
+import Button from "../component/button.js";
 
 import HistoryView from "../view/historyView.js";
-import Fab from "../component/fab.js";
 
-export default function HistoryController(model = new Model(), rootElement = document.getElementById("root")) {
+export default function HistoryController(model, rootElement) {
   let history = [];
 
   const user = model.getCurrentData().user;
@@ -17,12 +17,20 @@ export default function HistoryController(model = new Model(), rootElement = doc
 
   rootElement.appendChild(historyView);
 
-  const redoButton = Fab({ icon: "redo", color: "default", onButtonClick: handleRedoButtonClicked });
+  const redoButton = Button({
+    className: ["fab", "button-alt"],
+    onClick: handleRedoButtonClicked,
+    children: [icons.redo()],
+  });
   redoButton.style.right = "48px";
   redoButton.style.bottom = "120px";
   redoButton.addEventListener("click", handleRedoButtonClicked);
 
-  const undoButton = Fab({ icon: "undo", color: "default", onButtonClick: handleUndoButtonClicked });
+  const undoButton = Button({
+    className: ["fab", "button-alt"],
+    onClick: handleUndoButtonClicked,
+    children: [icons.undo()],
+  });
   undoButton.style.right = "48px";
   undoButton.style.bottom = "192px";
   undoButton.addEventListener("click", handleUndoButtonClicked);

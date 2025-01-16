@@ -1,5 +1,4 @@
-import closed from "../../public/closed.js";
-import edit from "../../public/edit.js";
+import icons from "../../public/icon.js";
 
 export default function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
   const taskElement = document.createElement("div");
@@ -98,13 +97,13 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
 
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("task__iconButton-icon");
-    deleteButton.innerHTML = closed;
+    deleteButton.appendChild(icons.closed());
     deleteButton.addEventListener("click", onFirstButtonClicked);
     deleteButton.addEventListener("mousedown", (event) => event.stopPropagation());
 
     const editButton = document.createElement("button");
     editButton.classList.add("task__iconButton-icon");
-    editButton.innerHTML = edit;
+    editButton.appendChild(icons.edit());
     editButton.addEventListener("click", onSecondButtonClicked);
     editButton.addEventListener("mousedown", (event) => event.stopPropagation());
 

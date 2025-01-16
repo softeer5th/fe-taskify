@@ -1,8 +1,6 @@
-import Model from "../model.js";
-
 import ModalView from "../view/modalView.js";
 
-export default function ModalController(model = new Model(), rootElement = document.querySelector("#root")) {
+export default function ModalController(model, rootElement) {
   model.addListener(render);
 
   function destroy() {

@@ -1,14 +1,19 @@
-import Model from "../model.js";
+import icons from "../../public/icon.js";
+
+import Button from "../component/button.js";
 
 import ColumnListView from "../view/columnListView.js";
 import ColumnView from "../view/columnView.js";
-import Fab from "../component/fab.js";
 
-export default function ColumnController(model = new Model(), rootElement = document.getElementById("root")) {
+export default function ColumnController(model, rootElement) {
   const columnListView = ColumnListView();
   rootElement.appendChild(columnListView);
 
-  const fab = Fab({ icon: "plus", color: "brand", onButtonClick: handleAddColumnButtonClick });
+  const fab = Button({
+    className: ["fab", "button-brand"],
+    onClick: handleAddColumnButtonClick,
+    children: [icons.plus()],
+  });
   fab.style.right = "48px";
   fab.style.bottom = "48px";
   rootElement.appendChild(fab);
