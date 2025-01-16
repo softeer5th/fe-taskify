@@ -6,12 +6,12 @@ import {
   addModalEventListener,
   addRootEventListener,
 } from "./handlers/index.js";
+import ColumnAddButton from "./components/ColumnAddButton/ColumnAddButton.js";
 
 const todoList = initStorage(STORAGE_KEY.todoList);
 
 const $root = document.getElementById("root");
-$root.appendChild(Header());
-$root.appendChild(Main(todoList));
+$root.append(Header(), Main(todoList), ColumnAddButton());
 
 addRootEventListener();
 addModalEventListener();

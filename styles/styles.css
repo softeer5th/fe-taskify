@@ -11,10 +11,11 @@
   overflow-y: scroll;
 }
 
-.column__section {
+.column__main {
   height: 90vh;
   display: flex;
   gap: 3.2rem;
+  overflow-x: scroll;
 }
 
 .floating__button {
