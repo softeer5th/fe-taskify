@@ -1,13 +1,13 @@
+import { generateUid } from '../utils/dataUtil.js'
+
 // TODO: indexing
 
-const createTodoItem = (identifier, title, content, author) => {
+const createTodoItem = (title, content, author) => {
     return {
-        identifier: identifier,
-        values: {
-            title: title,
-            content: content,
-            author: author,
-        },
+        uid: generateUid(),
+        title,
+        content,
+        author,
     }
 }
 

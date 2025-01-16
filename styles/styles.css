@@ -28,6 +28,7 @@ body {
     display: flex;
     flex-direction: column;
     position: absolute;
+    z-index: 2;
     top: -16px;
     right: 20px;
     width: 320px;
@@ -48,15 +49,11 @@ body {
     font: var(--font-bold-m);
     color: var(--color-text-bold);
 }
-.activity-history__close-container {
+.activity-history__close-btn {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-}
-.activity-history__close-btn {
-    width: 24px;
-    height: 24px;
 }
 .activity-history__close-label {
     font: var(--font-bold-s);
@@ -64,6 +61,9 @@ body {
 }
 .activity-history__body {
     display: flex;
+    flex-direction: column;
+    max-height: 480px;
+    overflow-y: auto;
     width: 100%;
 }
 .activity-history__item {
@@ -90,6 +90,11 @@ body {
 .activity-history__item__time {
     font: var(--font-medium-s);
     color: var(--color-text-weak);
+}
+.activity-history__clear-btn {
+    font: var(--font-bold-r);
+    color: var(--color-text-danger);
+    align-self: last baseline;
 }
 
 .main {
@@ -258,4 +263,50 @@ body {
 }
 .delete-btn:hover {
     background-color: var(--color-accent-red);
+}
+
+.advanced-features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    bottom: 56px;
+    right: 56px;
+}
+
+.advanced-features__undo-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    margin: 4px 0px;
+    border-radius: 50%;
+    background-color: var(--color-surface-default);
+    box-shadow: var(--shadow-normal);
+}
+
+.advanced-features__redo-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    margin: 4px 0px;
+    border-radius: 50%;
+    background-color: var(--color-surface-default);
+    box-shadow: var(--shadow-normal);
+}
+
+.advanced-features__add-category-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    margin: 4px 0px;
+    border-radius: 50%;
+    background-color: var(--color-surface-brand);
+    box-shadow: var(--shadow-normal);
 }

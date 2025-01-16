@@ -15,7 +15,45 @@
                 <img class="icon" src="./assets/icon/history.png" />
             </button>
         </header>
-        <main class="main"></main>
+        <main class="main">
+            <section class="activity-history">
+                <div class="activity-history__header">
+                    <h2 class="activity-history__title">사용자 활동 기록</h2>
+                    <button class="activity-history__close-btn">
+                        <img src="./assets/icon/closed.png" />
+                        <h3 class="activity-history__close-label">닫기</h3>
+                    </button>
+                </div>
+                <ul class="activity-history__body"></ul>
+                <button class="activity-history__clear-btn">
+                    기록 전체 삭제
+                </button>
+            </section>
+        </main>
+        <section class="advanced-features">
+            <button class="advanced-features__undo-btn">
+                <img
+                    style="width: 32px; height: 32px"
+                    src="./assets/icon/undo.png"
+                />
+            </button>
+            <button class="advanced-features__redo-btn">
+                <img
+                    style="width: 32px; height: 32px"
+                    src="./assets/icon/redo.png"
+                />
+            </button>
+            <button class="advanced-features__add-category-btn">
+                <img
+                    style="
+                        width: 32px;
+                        height: 32px;
+                        filter: brightness(0) invert(1);
+                    "
+                    src="./assets/icon/plus.png"
+                />
+            </button>
+        </section>
     </body>
 
     <template id="todo-header-template">
@@ -113,32 +151,17 @@
         </li>
     </template>
 
-    <template id="acativity-history-template">
-        <section class="activity-history">
-            <div class="activity-history__header">
-                <h2 class="activity-history__title">사용자 활동 기록</h2>
-                <button class="activity-history__close-container">
-                    <img src="./assets/icon/closed.png" />
-                    <h3 class="activity-history__close-label">닫기</h3>
-                </button>
+    <template id="activity-history-item-template">
+        <li class="activity-history__item">
+            <img
+                class="activity-history__item__profile"
+                src="./assets/icon/plus.png"
+            />
+            <div>
+                <p class="activity-history__item__nickname">@멋진삼</p>
+                <p class="activity-history__item__content"></p>
+                <p class="activity-history__item__time"></p>
             </div>
-            <ul class="activity-history__body">
-                <li class="activity-history__item">
-                    <img
-                        class="activity-history__item__profile"
-                        src="./assets/icon/plus.png"
-                    />
-                    <div>
-                        <h3 class="activity-history__item__nickname">
-                            @멋진삼
-                        </h3>
-                        <h3 class="activity-history__item__content">
-                            내용내용내용내용내용내용내용내용내용내용
-                        </h3>
-                        <h3 class="activity-history__item__time">3분 전</h3>
-                    </div>
-                </li>
-            </ul>
-        </section>
+        </li>
     </template>
 </html>

@@ -2,7 +2,10 @@ import { TodoItem } from '../domain/todoItem.js'
 import { classNames, keys, templateNames } from '../strings.js'
 import {
     createDomElementAsChild,
+    createDomElementAsSibling,
     findDomElement,
+    findDomElementByUid,
+    getIdentifierByUid,
     removeDomElement,
     replaceDomElement,
 } from '../utils/domUtil.js'
@@ -10,11 +13,17 @@ import { getState, setState } from '../utils/stateUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 import { manageDragEvents, manageDropEvents } from './dragManager.js'
 import { Category } from '../domain/category.js'
-
-const RESET_DATA = true
+import { addHistory } from './historyManager.js'
+import { addAction } from './actionManager.js'
+import {
+    makeTodoAddAction,
+    makeTodoDeleteAction,
+    makeTodoEditAction,
+} from '../utils/actionFactory.js'
+import { deepCopy } from '../utils/dataUtil.js'
 
 export const initTodo = () => {
-    RESET_DATA && storeData(keys.TODO_CATEGORY_KEY, [])
+    keys.RESET_DATA_KEY && storeData(keys.TODO_CATEGORY_KEY, [])
 
     let categoryList = loadData(keys.TODO_CATEGORY_KEY)
     if (!categoryList) {
@@ -22,18 +31,17 @@ export const initTodo = () => {
         categoryList = []
     }
 
-    // 임시 데이터 초기화
-    if (RESET_DATA) {
+    // 더미 데이터 초기화
+    if (keys.RESET_DATA_KEY) {
         let id = 1
         let categoryCnt = 3
         let eleCnt = 3
 
         const res = []
         for (let i = 0; i < categoryCnt; i++) {
-            res.push(Category(`id-${id}`, `id-${id}`))
+            res.push(Category(`id-${id}`))
             id += eleCnt + 1
         }
-        console.log(res)
         categoryList = res
 
         id = 1
@@ -41,17 +49,10 @@ export const initTodo = () => {
             const res = []
             for (let i = 0; i < eleCnt; i++) {
                 id++
-                res.push(
-                    TodoItem(
-                        `id-${id}`,
-                        `id-${id}`,
-                        `내용 - ${index}-${i}`,
-                        'web'
-                    )
-                )
+                res.push(TodoItem(`id-${id}`, `내용 - ${index}-${i}`, 'web'))
             }
             id += 1
-            category.values.todoList = res
+            category.todoList = res
         })
         storeData(keys.TODO_CATEGORY_KEY, categoryList)
     }
@@ -68,7 +69,7 @@ export const initTodo = () => {
                 )
                 component.querySelector(
                     `.${classNames.todoHeaderTitle}`
-                ).textContent = category.values.categoryName
+                ).textContent = category.categoryName
                 component
                     .querySelector(`.${classNames.addButton}`)
                     .addEventListener('click', () => {
@@ -77,23 +78,25 @@ export const initTodo = () => {
                 component
                     .querySelector(`.${classNames.deleteButton}`)
                     .addEventListener('click', () => {
-                        console.log(category.values.todoList)
+                        console.log(category.todoList)
                     })
 
                 manageDropEvents(component, category)
+                return category.uid
             }
         )
-        category.identifier = categoryId
+        // category.identifier = categoryId
         category.todoFormDomId = null
-        category.values.todoList.map((todoItem) => {
+        category.todoList.map((todoItem) => {
             createDomElementAsChild(
                 templateNames.todoItem,
                 findDomElement(categoryId).querySelector(
                     `.${classNames.todoBody}`
                 ),
                 (identifier, component) => {
-                    todoItem.identifier = identifier
+                    // todoItem.identifier = identifier
                     initTodoItemElement(component, todoItem)
+                    return todoItem.uid
                 }
             )
             // identifier 변경을 todoList에 반영
@@ -118,12 +121,12 @@ const onAddTodoButtonClick = (category) => {
 
 // TODO: form이 비어 있으면 submit 버튼 비활성화
 const enableAddTodoForm = (category) => {
-    const parentDomElement = findDomElement(category.identifier).querySelector(
+    const todoBodyElement = findDomElementByUid(category.uid).querySelector(
         `.${classNames.todoBody}`
     )
     const formId = createDomElementAsChild(
         templateNames.todoItemAddForm,
-        parentDomElement,
+        todoBodyElement,
         (identifier, component) => {
             component
                 .querySelector(`.${classNames.todoAddFormSubmitBtn}`)
@@ -136,7 +139,8 @@ const enableAddTodoForm = (category) => {
                         `.${classNames.todoAddFormInputContent}`
                     ).value
                     const author = 'web'
-                    addTodoItem(title, content, author, category)
+                    const todoItem = TodoItem(title, content, author)
+                    handleTodoCreate(todoItem, category)
                     category.todoFormDomId = null
                     removeDomElement(identifier)
                 })
@@ -146,6 +150,7 @@ const enableAddTodoForm = (category) => {
                     category.todoFormDomId = null
                     removeDomElement(identifier)
                 })
+            return null
         },
         false
     )
@@ -159,10 +164,7 @@ const disableAddTodoForm = (category) => {
 }
 
 const initTodoItemElement = (todoElement, todoItem) => {
-    const {
-        identifier,
-        values: { title, content, author },
-    } = todoItem
+    const { uid, title, content, author } = todoItem
 
     todoElement.querySelector(`.${classNames.todoItemTitle}`).textContent =
         title
@@ -175,27 +177,27 @@ const initTodoItemElement = (todoElement, todoItem) => {
     todoElement
         .querySelector(`.${classNames.deleteButton}`)
         .addEventListener('click', () => {
-            removeTodoItem(identifier)
+            handleTodoDelete(uid)
         })
     todoElement
         .querySelector(`.${classNames.editButton}`)
         .addEventListener('click', () => {
-            editTodoItem(identifier)
+            handleTodoEdit(uid)
         })
     manageDragEvents(todoElement.querySelector(`.${classNames.todoItemBody}`))
 }
 
-const addTodoItem = (title, content, author, category) => {
-    const parentDomElement = findDomElement(category.identifier).querySelector(
+const handleTodoCreate = (todoItem, category) => {
+    const todoBodyElement = findDomElementByUid(category.uid).querySelector(
         `.${classNames.todoBody}`
     )
     createDomElementAsChild(
         templateNames.todoItem,
-        parentDomElement,
+        todoBodyElement,
         (identifier, component) => {
-            const todoItem = TodoItem(identifier, title, content, author)
-            category.values.todoList.unshift(todoItem)
+            addTodoItemToList(todoItem, category, 0)
             initTodoItemElement(component, todoItem)
+            return todoItem.uid
         },
         false
     )
@@ -203,13 +205,26 @@ const addTodoItem = (title, content, author, category) => {
     // category 객체를 참조하므로 setState를 안 해도 변경이 되긴 함 .. 맘에 안들지만 일단은 이렇게
     storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
     renewTodoCount(category)
+    const todoAddAction = makeTodoAddAction(category.uid, todoItem)
+    addAction(todoAddAction)
+    addHistory(todoAddAction)
+    return getIdentifierByUid(todoItem.uid)
 }
 
-const getTodoItemInfo = (identifier) => {
+const addTodoItemToList = (todoItem, category, index) => {
+    const todoList = category.todoList
+    category.todoList = [
+        ...todoList.slice(0, index),
+        todoItem,
+        ...todoList.slice(index),
+    ]
+}
+
+const getTodoItemInfo = (todoItemUid) => {
     const categoryList = getState(keys.TODO_CATEGORY_KEY)
     for (let category of categoryList) {
-        for (let [idx, todo] of category.values.todoList.entries()) {
-            if (todo.identifier === identifier) {
+        for (let [idx, todo] of category.todoList.entries()) {
+            if (todo.uid === todoItemUid) {
                 return { category: category, index: idx, todoItem: todo }
             }
         }
@@ -217,26 +232,34 @@ const getTodoItemInfo = (identifier) => {
     return null
 }
 
-const removeTodoItem = (identifier) => {
-    const { category, index, todoItem } = getTodoItemInfo(identifier)
-    category.values.todoList.splice(index, 1)
+const handleTodoDelete = (uid) => {
+    const { category, index, todoItem } = getTodoItemInfo(uid)
+    category.todoList.splice(index, 1)
+    const identifier = getIdentifierByUid(uid)
     removeDomElement(identifier)
     renewTodoCount(category)
     storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
+
+    const todoDeleteAction = makeTodoDeleteAction(category.uid, todoItem, index)
+    addAction(todoDeleteAction)
+    addHistory(todoDeleteAction)
 }
 
-const editTodoItem = (identifier) => {
-    const { category, index: targetIdx, todoItem } = getTodoItemInfo(identifier)
-    const todoList = category.values.todoList
-
-    const originTodoItem = todoList[targetIdx]
+const handleTodoEdit = (todoItemUid) => {
     const {
+        category,
+        index: targetIdx,
+        todoItem,
+    } = getTodoItemInfo(todoItemUid)
+    const originTodoItem = deepCopy(todoItem)
+    const {
+        uid: originUid,
         title: originTitle,
         content: originContent,
         author: originAuthor,
-    } = originTodoItem.values
+    } = originTodoItem
 
-    const originTodoElement = findDomElement(identifier)
+    const originTodoElement = findDomElementByUid(originUid)
     replaceDomElement(
         templateNames.todoItemEditForm,
         originTodoElement,
@@ -259,25 +282,29 @@ const editTodoItem = (identifier) => {
                     ).value
                     // TODO: author 정보 동적으로 가져오기
                     const author = 'web'
-
                     replaceDomElement(
                         templateNames.todoItem,
                         editFormElement,
                         (identifier, component) => {
-                            const editedTodoItem = TodoItem(
-                                identifier,
-                                title,
-                                content,
-                                author
-                            )
-                            initTodoItemElement(component, editedTodoItem)
-                            todoList[targetIdx] = editedTodoItem
+                            todoItem.title = title
+                            todoItem.content = content
+                            todoItem.author = author
+                            initTodoItemElement(component, todoItem)
+                            return todoItem.uid
                         }
                     )
                     storeData(
                         keys.TODO_CATEGORY_KEY,
                         getState(keys.TODO_CATEGORY_KEY)
                     )
+                    const todoEditAction = makeTodoEditAction(
+                        category.uid,
+                        originTodoItem,
+                        todoItem,
+                        category.todoList.indexOf(todoItem)
+                    )
+                    addAction(todoEditAction)
+                    addHistory(todoEditAction)
                 })
             component
                 .querySelector(`.${classNames.todoEditFormCancelBtn}`)
@@ -286,14 +313,8 @@ const editTodoItem = (identifier) => {
                         templateNames.todoItem,
                         findDomElement(identifier),
                         (identifier, component) => {
-                            const abortedTodoItem = TodoItem(
-                                identifier,
-                                originTitle,
-                                originContent,
-                                originAuthor
-                            )
-                            initTodoItemElement(component, abortedTodoItem)
-                            todoList[targetIdx] = abortedTodoItem
+                            initTodoItemElement(component, originTodoItem)
+                            // todoList[targetIdx] = abortedTodoItem
                         }
                     )
                 })
@@ -302,8 +323,106 @@ const editTodoItem = (identifier) => {
 }
 
 export const renewTodoCount = (category) => {
-    const todoCount = findDomElement(category.identifier).querySelector(
+    const todoCount = findDomElementByUid(category.uid).querySelector(
         `.${classNames.todoHeaderTodoCount}`
     )
-    todoCount.textContent = category.values.todoList.length
+    todoCount.textContent = category.todoList.length
+}
+
+export const undoTodoItemCreate = (category, todoItem) => {
+    removeDomElement(findDomElementByUid(todoItem.uid).id)
+    category.todoList.splice(0, 1)
+    renewTodoCount(category)
+}
+
+export const undoTodoItemDelete = (category, todoItem, index) => {
+    const copiedTodoItem = deepCopy(todoItem)
+    const todoBodyElement = findDomElementByUid(category.uid).querySelector(
+        `.${classNames.todoBody}`
+    )
+
+    if (index === category.todoList.length) {
+        createDomElementAsChild(
+            templateNames.todoItem,
+            todoBodyElement,
+            (identifier, component) => {
+                initTodoItemElement(component, copiedTodoItem)
+                return copiedTodoItem.uid
+            },
+            true
+        )
+    } else {
+        const originChildElement = findDomElementByUid(
+            category.todoList[index].uid
+        )
+        createDomElementAsSibling(
+            templateNames.todoItem,
+            originChildElement,
+            (identifier, component) => {
+                initTodoItemElement(component, copiedTodoItem)
+                return copiedTodoItem.uid
+            },
+            false
+        )
+    }
+
+    addTodoItemToList(copiedTodoItem, category, index)
+    renewTodoCount(category)
+}
+
+export const undoTodoItemEdit = (
+    category,
+    prevTodoItem,
+    currentTodoItem,
+    index
+) => {
+    const originTodoElement = findDomElementByUid(currentTodoItem.uid)
+    replaceDomElement(
+        templateNames.todoItem,
+        originTodoElement,
+        (identifier, component) => {
+            initTodoItemElement(component, prevTodoItem)
+            return prevTodoItem.uid
+        }
+    )
+}
+
+export const redoTodoItemCreate = (category, todoItem) => {
+    const copiedTodoItem = deepCopy(todoItem)
+    createDomElementAsChild(
+        templateNames.todoItem,
+        findDomElementByUid(category.uid).querySelector(
+            `.${classNames.todoBody}`
+        ),
+        (identifier, component) => {
+            initTodoItemElement(component, todoItem)
+            return todoItem.uid
+        },
+        false
+    )
+    category.todoList.unshift(copiedTodoItem)
+    renewTodoCount(category)
+}
+
+export const redoTodoItemDelete = (category, todoItem, index) => {
+    removeDomElement(findDomElementByUid(todoItem.uid).id)
+    category.todoList.splice(index, 1)
+    renewTodoCount(category)
+}
+
+export const redoTodoItemEdit = (
+    category,
+    prevTodoItem,
+    currentTodoItem,
+    index
+) => {
+    const originTodoElement = findDomElementByUid(prevTodoItem.uid)
+    replaceDomElement(
+        templateNames.todoItem,
+        originTodoElement,
+        (identifier, component) => {
+            initTodoItemElement(component, currentTodoItem)
+            return currentTodoItem.uid
+        }
+    )
 }

@@ -1,16 +1,10 @@
-const createCategory = (
-    identifier,
-    categoryName,
-    todoList = [],
-    todoFormDomId = null
-) => {
+import { generateUid } from '../utils/dataUtil.js'
+
+const createCategory = (categoryName, todoList = []) => {
     return {
-        identifier: identifier,
-        todoFormDomId: todoFormDomId,
-        values: {
-            categoryName: categoryName,
-            todoList: todoList,
-        },
+        uid: generateUid(),
+        categoryName,
+        todoList,
     }
 }
 
