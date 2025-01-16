@@ -1,5 +1,6 @@
 import { Icon } from "../../constants/icons/index.js";
 import { typos, colors } from "../../constants/tokens/index.js";
+import { useRef, useState } from "../../lib/HamReact/hooks/index.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 import { Badge } from "../Badge/index.js";
 
@@ -16,13 +17,39 @@ import styles from "./column.module.js";
  */
 export const ColumnTitle = ({
   title, count, onClickPlus, onClickDel,
-}) => parser`
+}) => {
+  const [clicked, setClicked] = useState(false);
+  const [columnTitle, setColumnTitle] = useState(title);
+  const inputRef = useRef(null);
+
+  const handleDoubleClick = () => {
+    setClicked(true);
+  };
+
+  const Title = () => {
+    const MAX_LENGTH = 50;
+
+    if (clicked) return parser`<input ref="${inputRef}" class="${styles["title-input"]} ${typos.display.medium[14]}" maxLength=${MAX_LENGTH} />`;
+    return parser`<span onDblclick=${handleDoubleClick} class="${typos.display.bold[16]} ${styles.title}">${columnTitle}</span>`;
+  };
+
+  const clickListener = (e) => {
+    if (clicked && !inputRef.current.contains(e.target)) {
+      setClicked(false);
+      setColumnTitle(inputRef.current.value);
+      document.removeEventListener("click", clickListener);
+    }
+  };
+  document.addEventListener("click", clickListener);
+
+  return parser`
         <div class="${styles.container}">
             <div class="${styles.content}">
-                <span class="${typos.display.bold[16]} ${styles.title}">${title}</span>
+                ${Title()}
                 ${Badge({ text: count })}
             </div>
             ${Icon({ name: "plus", fillColor: colors.text.weak, onClick: onClickPlus })}
             ${Icon({ name: "close", fillColor: colors.text.weak, onClick: onClickDel })}
         </div>
     `;
+};
