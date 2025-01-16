@@ -36,12 +36,14 @@ export default class Component {
     render(parent) {
         this.parent = parent;
 
-        this.createRoot();
-        this.renderTree();
-        this.setEvents();
+        this.current = this.createDOM();
+
+        this.parent.appendChild(this.current);
+
+        this.setEvents(this.current);
     }
 
-    createRoot() {
+    createDOM() {
         const wrapper = document.createElement("div");
 
         if (this.rootId) {
@@ -54,30 +56,31 @@ export default class Component {
 
         wrapper.innerHTML = this.template();
 
-        this.parent.appendChild(wrapper);
+        this.renderTree(wrapper);
         this.current = wrapper;
+
+        return wrapper;
     }
 
-    renderTree() {
+    renderTree(root) {
         for (const key in this.children) {
-            const childParent = this.current.querySelector(this.children[key].parentSelector) || this.current;
+            const childParent = root.querySelector(this.children[key].parentSelector) || root;
             this.children[key].object.render(childParent);
         }
     }
 
-    setEvents() {
-        const root = this.parent.querySelector(`.${this.rootSelectorClassName}`);
+    setEvents(root) {
         if (root) {
             this.events.forEach(({ listenerName, callback }) => {
-                root.addEventListener(listenerName, () => callback());
+                root.addEventListener(listenerName, (event) => callback(event));
             });
         }
     }
 
     rerender() {
         this.clear();
-        this.renderTree();
-        this.setEvents();
+        this.renderTree(this.current);
+        this.setEvents(this.current);
     }
 
     clear() {

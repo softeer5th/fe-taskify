@@ -15,10 +15,10 @@ export class ColumnData {
     }
 
     removeData(cardIndex) {
-        this.data = this.data.filter((d, index) => index !== cardIndex);
+        this.data = this.data.filter((d, index) => index !== Number(cardIndex));
     }
 
     removeDataById(cardId) {
-        this.data = this.data.filter((d) => d.cardId !== cardId);
+        this.data = this.data.filter((d) => d.cardId !== Number(cardId));
     }
 }

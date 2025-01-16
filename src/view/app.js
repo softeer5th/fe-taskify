@@ -54,9 +54,7 @@ export class App extends Component {
                 parentSelector: "#header",
             },
             column:{
-                object: new ColumnList(this.columnData, this.onCardAdded, this.onCardDeleted, (preColumnIndex, newColumnIndex) => {
-    
-                }),
+                object: new ColumnList(this.columnData, this.onCardAdded, this.onCardDeleted, this.onCardMoved),
                 parentSelector: "#taskContent",
             }
         }

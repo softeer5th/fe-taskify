@@ -1,4 +1,5 @@
 import Component from "../../../components/component.js";
+import { alertManager } from "../index.js";
 import { getCardData } from "../route/store/todoStore.js";
 import { DefaultCard } from "./Card/card.js";
 import { EditCard } from "./Card/editCard.js";
@@ -23,26 +24,31 @@ export class Column extends Component {
         this.rerender();
     }
 
-    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }, onCardMoving = () => { }, onCardMoved = () => { }) {
+    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }, onCardMoved = () => { }) {
         super();
         this.columnData = columnData;
         this.addRootclass("column");
-        this.setCallback(onCardAdded, onCardDelete);
+        this.setCallback(onCardAdded, onCardDelete, onCardMoved);
 
-        this.addEvent("dragenter", () => {
-            this.showDragGhost();
+        this.addEvent("dragover", (event) => {
+            if (!event.target.classList.contains(this.rootSelectorClassName)) return;
+            event.preventDefault();
+            this.hideAddCard();
+            this.showDragGhost()
         });
-        this.addEvent("dragleave", () => {
+        this.addEvent("dragleave", (event) => {
+            if (event.target !== event.currentTarget) return; //card -> column list로 나갈 때 막기
+            if (this.current.contains(event.relatedTarget)) return;
+            this.hideAddCard();
             this.removeDragGhost();
         });
-        this.addEvent("drop", () => {
-            this.onCardMoved();
-        });
+
+        this.addEvent("drop", () => onCardMoved());
 
         this.setChildren();
     }
 
-    setCallback(onCardAdded, onCardDelete) {
+    setCallback(onCardAdded, onCardDelete, onCardMoved) {
 
         this.onCardDelete = onCardDelete;
 
@@ -51,6 +57,7 @@ export class Column extends Component {
             this.hideAddCard();
         };
 
+        this.onCardMoved = onCardMoved;
     }
 
     setChildren() {
@@ -66,6 +73,14 @@ export class Column extends Component {
 
         this.columnData.data.forEach((cardData, index) => {
             this.createDefaultCard(index, cardData);
+        });
+
+        Object.values(this.children).forEach((child) => {
+            child.object.addEvent("dragover", (event) => {
+                event.preventDefault(); // drop을 허용
+            });
+
+            child.object.addEvent("drop", () => { });
         });
     }
 
@@ -123,12 +138,8 @@ export class Column extends Component {
         this.children[`card${index}`] = {
             object: new DefaultCard(
                 cardData,
-                () => {
-                    this.onCardDelete(index);
-                },
-                () => {
-                    this.onEditCard(index);
-                },
+                () => this.onCardDelete(index),
+                () => this.onEditCard(index),
             ),
             parentSelector: '.column'
         }
@@ -136,27 +147,46 @@ export class Column extends Component {
 
     showDragGhost() {
 
-        console.log("cardId111",document.querySelector(".dragging").id);
-        const cardId = document.querySelector(".dragging").id.slice(4);
-        console.log("cardId",cardId);
-        // const cardData = getCardData(cardId);
+        const existedDragging = this.current.querySelector(".dragging");
+        if (existedDragging && !existedDragging.classList.contains("hide")) return;
 
-        // const ghostCard = this.createDefaultCard(0, cardData);
+        const existedGhostCard = this.current.querySelector(".ghostCard");
+        if (existedGhostCard) return;
 
-        // console.log("dragging1111", ghostCard);
-        // ghostCard.classList.add(".ghostCard");
+        const dragging = document.querySelector(".dragging");
+        if (!dragging) return;
 
-        // this.current.insertBefore(ghostCard, this.current.firstChild);
-        // console.log("dragging", dragging);
+        const cardId = dragging.id.slice(4);
+        const cardData = getCardData(cardId);
+
+        const ghostCard = new DefaultCard(cardData).createDOM();
+
+        ghostCard.addEventListener("dragover", (event) => {
+            event.preventDefault(); // drop을 허용
+        });
+
+        ghostCard.addEventListener("drop", () => { });
+
+        ghostCard.classList.add("ghostCard");
+
+        this.current.insertBefore(ghostCard, this.current.firstChild.nextSibling);
     }
 
     removeDragGhost() {
         const ghostCard = this.current.querySelector(".ghostCard");
         if (ghostCard) {
             this.current.removeChild(ghostCard);
+        } else {
+            this.hideDraggingGhostCard();
         }
     }
 
+    hideDraggingGhostCard() {
+        const existedDragging = this.current.querySelector(".dragging");
+        if (!existedDragging) return;
+
+        existedDragging.classList.add("hide");
+    }
 
     template() {
         return '';
@@ -166,6 +196,7 @@ export class Column extends Component {
         super.render(parent);
         this.hideAddCard();
         this.applyAnimation();
+        this.remeberPreOrder();
     }
 
     rerender() {
@@ -175,7 +206,6 @@ export class Column extends Component {
 
     applyAnimation() {
         if (!previousPositions || !previousPositions[this.columnData.name]) {
-            this.remeberPreOrder();
             return
         }
 
@@ -183,35 +213,35 @@ export class Column extends Component {
 
         const newPositions = this.columnData.data.map((card) => {
             const cardElement = this.parent.querySelector(`#card${card.cardId}`);
-            if (cardElement) {
-                const rect = cardElement.getBoundingClientRect();
-                return {
-                    id: card.cardId,
-                    top: rect.top,
-                    left: rect.left,
-                    element: cardElement,
-                };
-            }
+            if (!cardElement) return;
+            const rect = cardElement.getBoundingClientRect();
+            return {
+                id: card.cardId,
+                top: rect.top,
+                left: rect.left,
+                element: cardElement,
+            };
         });
 
         newPositions.forEach((newPos) => {
             const prevPos = prev.find((prev) => prev.id === newPos.id);
 
-            if (prevPos) {
-                const deltaX = prevPos.left - newPos.left;
-                const deltaY = prevPos.top - newPos.top;
+            if (!prevPos) return;
 
-                newPos.element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-            }
+            const deltaX = prevPos.left - newPos.left;
+            const deltaY = prevPos.top - newPos.top;
+
+            newPos.element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+
         });
 
         requestAnimationFrame(() => {
             newPositions.forEach((newPos) => {
                 const prevPos = prev.find((prev) => prev.id === newPos.id);
-                if (prevPos) {
-                    newPos.element.style.transition = "transform 0.5s ease";
-                    newPos.element.style.transform = "translate(0, 0)";
-                }
+                if (!prevPos) return;
+
+                newPos.element.style.transition = "transform 0.5s ease";
+                newPos.element.style.transform = "translate(0, 0)";
 
                 newPos.element.addEventListener("transitionend", () => {
                     this.remeberPreOrder();
@@ -219,19 +249,21 @@ export class Column extends Component {
             });
 
         });
+
     }
 
     remeberPreOrder() {
-        previousPositions[this.columnData.name] = this.columnData.data.map((card) => {
+        previousPositions[this.columnData.name] = (this.columnData.data).map((card) => {
             const cardElement = this.parent.querySelector(`#card${card.cardId}`);
-            if (cardElement) {
-                const rect = cardElement.getBoundingClientRect();
-                return {
-                    id: card.cardId,
-                    top: rect.top,
-                    left: rect.left,
-                };
-            }
-        });
+            if (!cardElement) return;
+
+            const rect = cardElement.getBoundingClientRect();
+            return {
+                id: card.cardId,
+                top: rect.top,
+                left: rect.left,
+            };
+
+        })
     }
 }

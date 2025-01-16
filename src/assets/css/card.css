@@ -54,13 +54,20 @@
     cursor: pointer;
 }
 
+.card-icon:hover path{
+    fill: var(--color_text_danger);
+}
+
 .card-title {
     width: 100%;
+    min-height: 1.5em;
     padding: 0;
     margin: 0;
     border: none;
     color: var(--color_text_strong);
     appearance: none;
+    resize: none;
+    
 }
 
 .card-title:focus {
@@ -69,11 +76,13 @@
 
 .card-body {
     width: 100%;
+    min-height: 1.5em;
     padding: 0;
     margin: 0;
     border: none;
     color: var(--color_text_default);
     margin-top: var(--number_100);
+    resize: none;
 }
 
 .card-body:focus {
