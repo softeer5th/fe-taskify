@@ -8,9 +8,16 @@ class Todo {
     this.#columnId = columnId;
   }
 
-  isSameTodo = (id) => this.#id === id;
+  isSameTodo(id) {
+    return this.#id === id;
+  }
 
-  getTodoId = () => this.#id;
+  getTodo() {
+    return {
+      id: this.#id,
+      columnId: this.#columnId,
+    };
+  }
 }
 
 export default Todo;

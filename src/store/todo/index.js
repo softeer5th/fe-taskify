@@ -5,23 +5,28 @@ class TodoStore {
 
   #currentTodoId;
 
-  constructor() {
+  constructor({ columnIds }) {
     this.#todos = {};
+    columnIds.forEach((columnId) => {
+      this.#todos[columnId] = [];
+    });
     this.#currentTodoId = 0;
   }
 
   addTodo = ({ columnId }) => {
     const todo = new Todo({ columnId, id: this.#currentTodoId });
 
-    if (!this.#todos[columnId]) { this.#todos[columnId] = []; }
+    if (!this.#todos[columnId]) {
+      this.#todos[columnId] = [];
+    }
     this.#todos[columnId].push(todo);
 
-    return todo.getTodoId();
+    return todo.getTodo();
   };
 
   removeTodo = ({ columnId, todoId }) => {
     this.#todos[columnId] = this.#todos[columnId].filter((todo) => !todo.isSameTodo(todoId));
-    return this.#todos[columnId];
+    return this.#todos[columnId].map((todo) => todo.getTodo());
   };
 
   switchTodo = ({ beforeColumnId, afterColumnId, todoId }) => {
@@ -32,7 +37,7 @@ class TodoStore {
     this.#todos[afterColumnId].push(todoId);
   };
 
-  getTodos = (columnId) => this.#todos[columnId];
+  getTodos = (columnId) => this.#todos[columnId].map((todo) => todo.getTodo());
 }
 
 export default TodoStore;

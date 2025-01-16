@@ -29,6 +29,10 @@ class ColumnStore {
   getColumns() {
     return this.#columns.map((column) => column.getColumn());
   }
+
+  getColumnIds() {
+    return this.#columns.map((column) => column.getId());
+  }
 }
 
 export default ColumnStore;

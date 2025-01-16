@@ -2,6 +2,7 @@ import { Alert } from "../../components/Alert/index.js";
 import { Card } from "../../components/Card/index.js";
 import { ColumnTitle } from "../../components/ColumnTitle/index.js";
 import { useState } from "../../lib/HamReact/hooks/useState.js";
+import { store } from "../../lib/HamReact/store.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 
 import styles from "./todoColumn.module.js";
@@ -18,7 +19,7 @@ import styles from "./todoColumn.module.js";
 export const TodoColumn = ({
   id: columnId, todoStore, name, onClickDel,
 }) => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(todoStore.getTodos(columnId));
   const [cardType, setCardType] = useState("add-edit");
   const [todoFlag, setTodoFlag] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);

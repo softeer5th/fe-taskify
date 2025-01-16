@@ -10,7 +10,7 @@ import { TodoColumn } from "./TodoColumn/index.js";
 
 const MainPage = () => {
   const columnStore = new ColumnStore();
-  const todoStore = new TodoStore();
+  const todoStore = new TodoStore({ columnIds: columnStore.getColumnIds() });
   const [columns, setColumns] = useState(columnStore.getColumns());
 
   const handleClickAddColumn = () => {

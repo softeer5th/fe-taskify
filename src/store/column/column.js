@@ -14,6 +14,10 @@ class Column {
       name: this.#name,
     };
   }
+
+  getId() {
+    return this.#id;
+  }
 }
 
 export default Column;
