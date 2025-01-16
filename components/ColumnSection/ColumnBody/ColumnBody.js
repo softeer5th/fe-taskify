@@ -1,6 +1,7 @@
 import { ACTION_TYPE } from "../../../constants/action.js";
 import todoStore from "../../../store/TodoStore.js";
 import loadStyleSheet from "../../../utils/loadStyleSheet.js";
+import ColumnItem from "../../ColumnItem/ColumnItem.js";
 import createColumnBody from "./ui/createColumnBody.js";
 
 loadStyleSheet("/components/ColumnSection/ColumnBody/styles.css");
