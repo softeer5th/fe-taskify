@@ -1,7 +1,7 @@
 import { toggleSortOrder,completeColumnName,  } from "./column_action.js";
 import { moveCard, finishDragCard } from "./card_action.js";
 import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, resetTodo, saveData, setClone } from "./store.js";
-import { addColumn, closeFab, openFab } from "./fab_action.js";
+import { addColumn, closeFab, openFab, redo, undo } from "./fab_action.js";
 
 
 const eventListeners = new WeakMap();
@@ -102,6 +102,7 @@ addListener(document.querySelector('.fab-area'), async (event)=>{
 
 addListener(document.querySelector('.add-column'), async (event)=>{
     if (event.type === "click") {
+        console.log("ADD~~~~");
         addColumn();
     } else if (event.type === "mouseover") {
         openFab();
@@ -109,6 +110,29 @@ addListener(document.querySelector('.add-column'), async (event)=>{
         closeFab();
     }
 })
+
+addListener(document.querySelector('.undo'), (event)=> {
+    if (event.type === 'click') {
+        console.log("undo~~~~");
+        undo();
+    } else if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
+    }
+})
+
+addListener(document.querySelector('.redo'), (event)=> {
+    if (event.type === 'click') {
+        console.log("redo~~~~");
+        redo();
+    } else if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
+    }
+})
+
 
 addListener(document.querySelector('.reset'), (event) =>{
     if (event.type === "click") {

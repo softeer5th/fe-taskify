@@ -177,4 +177,4 @@ const resizeObserver = new ResizeObserver((entries) => {
 // 요소 크기 변경 감지 시작
 resizeObserver.observe(element);
 
-loadData();
+loadData(true);

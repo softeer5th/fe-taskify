@@ -1,6 +1,7 @@
 import { renderTemplate } from "./main.js";
 import { todoFromJson, todoToJson, todoToObj } from "./utility.js";
 
+const maxMemInd = 5;
 let clone = null;
 let isOrderChanging = false;
 let isColumnNameChanging = false;
@@ -8,6 +9,7 @@ let isCardEditing = false;
 let isDragging = false;
 let todoList = Array();
 let isFabOpen = false;
+let memoryIndex = maxMemInd;
 
 export function getClone () {
     return clone;
@@ -61,18 +63,36 @@ export function toggleIsFabOpen() {
     isFabOpen = !isFabOpen;
 }
 
+export function getMemInd() {
+    return memoryIndex;
+}
+
+export function decMemInd() {
+    if (memoryIndex>0) {
+        memoryIndex -= 1;
+    }
+    return memoryIndex;
+}
+
+export function incMemInd() {
+    if (memoryIndex<maxMemInd) {
+        memoryIndex += 1;
+    }
+    return memoryIndex;
+}
+
 export function saveData() {
     todoList = todoToObj();
     let todoJson = todoToJson(todoList);
-    if (todoJson!==localStorage.getItem('content5')) {
+    if (todoJson!==localStorage.getItem(`content${memoryIndex}`)) {
         moveBfData();
-        localStorage.setItem('content5', todoJson);
+        localStorage.setItem(`content${memoryIndex}`, todoJson);
         console.log("SAVED!!!!");
     }
 }
 
 function moveBfData() {
-    for (let i=1; i<6; i++) {
+    for (let i=0; i<memoryIndex+1; i++) {
         let bfData = localStorage.getItem(`content${i}`);
         if (bfData) {
             localStorage.setItem(`content${i-1}`, bfData);
@@ -80,10 +100,38 @@ function moveBfData() {
     }
 }
 
-export function loadData() {
-    todoList = todoFromJson(localStorage.getItem('content5'));
+export function loadData(isInit) {
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i); // 키 가져오기
+        const value = localStorage.getItem(key); // 값 가져오기
+        console.log(`${key}: ${value}`);
+    }
+    if (isInit) {
+        for (let i=0; i<maxMemInd+1; i++) {
+            let temp = todoFromJson(localStorage.getItem(`content${i}`));
+            if (temp) {
+                console.log(temp.todo);
+                todoList = temp.todo;
+            }
+            localStorage.setItem(`content${i-1}`,null);
+        }
+        localStorage.setItem(`content${maxMemInd}`, todoToJson(todoList));
+    } else {
+        let temp = todoFromJson(localStorage.getItem(`content${memoryIndex}`));
+        if (temp) {
+            todoList = temp.todo;
+        }
+    }
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i); // 키 가져오기
+        const value = localStorage.getItem(key); // 값 가져오기
+        console.log(`${key}: ${value}`);
+    }
+    console.log("아오");
+    console.log(todoList);
     if (todoList) {
-        refreshScreen(todoList.todo);
+        console.log("아잇");
+        refreshScreen(todoList);
     } else {
         resetTodo();
     }
@@ -91,6 +139,7 @@ export function loadData() {
 
 
 function refreshScreen (todoList) {
+    document.querySelector('#column-area').innerHTML = ``;
     todoList.forEach(async (todo, i)=>{
         await renderColumn(todo, i);
         todo.cardList.forEach(async (card)=>{
@@ -109,8 +158,8 @@ async function renderCard(cardData, columnIndex) {
 }
 
 export async function resetTodo() {
-    localStorage.clear();
     document.querySelector('#column-area').innerHTML = ``;
+    localStorage.clear();
     let initData = [
         {"title":"해야할 일"},
         {"title":"하고 있는 일"},

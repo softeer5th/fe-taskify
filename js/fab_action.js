@@ -1,20 +1,11 @@
 import { renderTemplate } from "./main.js";
-import { getIsFabOpen, saveData, toggleIsFabOpen } from "./store.js";
+import { decMemInd, getIsFabOpen, getMemInd, incMemInd, loadData, saveData, toggleIsFabOpen } from "./store.js";
 
 export async function addColumn() {
     let newColumnId = document.querySelector("#column-area").childElementCount;
     await renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:newColumnId, title:"제목없음"});
     saveData();
 }
-
-// export function moveFab() {
-//     if (!getIsFabOpen()) {
-//         openFab();
-//         setTimeout(()=>{
-//             closeFab();
-//         }, 3000);
-//     }
-// }
 
 export function openFab() {
     if (!getIsFabOpen()) {
@@ -42,4 +33,37 @@ export function closeFab() {
     if (getIsFabOpen()) {
         toggleIsFabOpen();
     }
+}
+
+
+export function undo() {
+    let curMemInd = getMemInd();
+    console.log(getMemInd());
+    let newMemInd = decMemInd();
+    console.log(getMemInd());
+    if (curMemInd!==newMemInd
+        && localStorage.getItem(`content${newMemInd}`)!=="null"
+        && localStorage.getItem(`content${newMemInd}`)!==null) {
+        console.log(localStorage.getItem(`content${newMemInd}`)); 
+        loadData(false);
+    } else if (curMemInd!==newMemInd) {
+        incMemInd();
+    }
+    console.log(getMemInd());
+}
+
+export function redo() {
+    let curMemInd = getMemInd();
+    console.log(getMemInd());
+    let newMemInd = incMemInd();
+    console.log(getMemInd());
+    if (curMemInd!==newMemInd
+        && localStorage.getItem(`content${newMemInd}`) !=="null" 
+        && localStorage.getItem(`content${newMemInd}`)!==null) {
+        document.querySelector('#column-area').innerHTML = ``;
+        loadData(false);
+    } else if (curMemInd!==newMemInd) {
+        decMemInd();
+    }
+    console.log(getMemInd());
 }
