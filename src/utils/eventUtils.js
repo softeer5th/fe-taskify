@@ -71,7 +71,7 @@ export function handleEventListener(e) {
     }
 
     else if (target.closest('#card-edit')) {
-        editCard({editForm});
+        editCard({editForm,columnName,tasksData});
         return;
     }
 }

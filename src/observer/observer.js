@@ -30,9 +30,7 @@ export class TaskModel extends Observable{
         this.notify(this.tasks);
     }
     editTask(task){
-        this.tasks = this.tasks.map(item =>
-            item.id === task.id ? { ...item, ...task } : item
-        ); 
+        this.tasks = this.tasks.map(item =>item.id == task.id ? { ...item, ...task } : item);
         this.notify(this.tasks); 
     }
 

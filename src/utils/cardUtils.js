@@ -77,7 +77,6 @@ export function addCard({titleInput,contentInput,addForm,columnName,tasksData}){
 export function deleteCardToggle({columnCard}){
     const cardId=columnCard.id
     modalInstances[cardId].toggle()
-
     return;
 
 }
@@ -90,19 +89,21 @@ export function deleteCard({columnCard,columnName,tasksData}){
     const newData = {...tasksData,[columnSort]:model.tasks}
     localStorage.setItem('tasks',JSON.stringify(newData)) ;  
 
-
     modalInstances[cardId].toggle()
 }
 
 
 let originalTitle = ''; 
 let originalContent = '';  
+let cardId = ''
 
 export function editCardToggle({editForm,columnCard}){
     if(!editForm){
+        cardId  =columnCard.id
         originalTitle = columnCard.querySelector('.column-card-title').textContent;
         originalContent = columnCard.querySelector('.column-card-content').textContent;
         const newForm = ColumnCard({
+            id:cardId,
             type: "edit-card",
             title:originalTitle,
             content:originalContent,
@@ -115,6 +116,7 @@ export function editCardToggle({editForm,columnCard}){
         columnCard.remove()  
     }else{
         const restoredCard = ColumnCard({
+            id : cardId,
             title:originalTitle,
             content:originalContent,
             author: "author by web",
@@ -127,19 +129,27 @@ export function editCardToggle({editForm,columnCard}){
     return;
 }
 
-export function editCard({editForm}){
+export function editCard({editForm,columnName,tasksData}){
     if(editForm){
         const newTitle = editForm.querySelector('#card-title').value;
         const newContent = editForm.querySelector('#card-content').value;
-        const newForm = ColumnCard({
+        const editCard = {
+            id : cardId,
             title:newTitle,
             content:newContent,
             author: "author by web",
             editId: "card-edit-toggle",
             deleteId: "card-delete-toggle",
-        });
-        editForm.insertAdjacentElement('afterend',newForm);
-        editForm.remove()  
+        
+        }
+    
+        const [model, columnSort] = handleColumn(columnName);
+        model.editTask(editCard);
+        
+        const newData = {...tasksData,[columnSort]:model.tasks}
+        localStorage.setItem('tasks',JSON.stringify(newData)) ; 
+
+        
     }
 }
 
