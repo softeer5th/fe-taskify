@@ -220,3 +220,17 @@ header > span {
         margin: 0px;
     }
 }
+
+
+.vibration {
+    animation: vibration .1s infinite;
+  }
+  
+  @keyframes vibration {
+    from {
+      transform: translateX(2px);
+    }
+    to {
+        transform: translateX(-2px);
+    }
+  }

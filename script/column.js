@@ -117,10 +117,12 @@ export default function ColumnController(state, bodyElement, logStore) {
             if(matchedIdx != -1) {
                 const matchedTask = currentTasksWithId[matchedIdx];
                 currentTasksWithId[matchedIdx] = undefined;
-                taskFragmentElement.appendChild(matchedTask.element);
+                const matchedTaskElement = matchedTask.element;
+                taskFragmentElement.appendChild(matchedTaskElement);
                 continue;
             }
-            taskController.renderTask(taskFragmentElement, task.taskId);
+            const newTaskElement = taskController.renderTask(task.taskId);
+            taskFragmentElement.appendChild(newTaskElement);
         }
 
         // 일치하지 않는 잔여 Task 삭제
@@ -249,8 +251,13 @@ export default function ColumnController(state, bodyElement, logStore) {
         bodyElement.appendChild(mainElement);
     }
 
+    function rerenderTask(taskId) {
+        taskController.rerenderTask(taskId)
+    }
+    
     return {
         renderInit,
         renderColumn,
+        rerenderTask
     };
 }
