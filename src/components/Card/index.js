@@ -26,8 +26,7 @@ export const Card = ({
   onClickEditBtn, onClickDelBtn, onClickCancelBtn, onClickEnrollBtn,
 }) => {
   // TODO: useInput 커스텀 훅을 사용하여 리팩토링하기
-  const [cardTitle, setCardTitle] = useState(title);
-  const [cardBody, setCardBody] = useState(body);
+  const [cardContents, setCardContents] = useState({ title, body, disabled: false });
 
   /**
    *
@@ -47,7 +46,7 @@ export const Card = ({
     ${Button({
     label: "등록",
     isFull: true,
-    disabled: !cardTitle || !cardBody,
+    disabled: cardContents.disabled,
     onClick: onClickEnrollBtn,
   })}
       </div>
@@ -65,26 +64,26 @@ export const Card = ({
 
     const handleInputTitle = (e) => {
       const { value } = e.target;
-      setCardTitle(value);
+      setCardContents({ ...cardContents, title: value, disabled: !value.length });
     };
 
     const handleInputBody = (e) => {
       const { value } = e.target;
-      setCardBody(value);
+      setCardContents({ ...cardContents, body: value, disabled: !value.length });
     };
 
     return parser`
       <form class="${styles["text-container"]}">
-        <input onInput=${handleInputTitle} class="${typos.display.bold[14]} ${styles.title}" placeholder="제목을 입력하세요" value=${cardTitle} maxLength=${MAX_LENGTH} required />
-        <input onInput=${handleInputBody} class="${typos.display.medium[14]} ${styles.body}" placeholder="내용을 입력하세요" value=${cardBody} maxLength=${MAX_LENGTH} required />
+        <input onInput=${handleInputTitle} class="${typos.display.bold[14]} ${styles.title}" placeholder="제목을 입력하세요" value=${cardContents.title} maxLength=${MAX_LENGTH} required />
+        <input onInput=${handleInputBody} class="${typos.display.medium[14]} ${styles.body}" placeholder="내용을 입력하세요" value=${cardContents.body} maxLength=${MAX_LENGTH} required />
       </form>
     `;
   };
 
   const Content = () => parser`
       <div class="${styles["text-container"]}">
-          <div class="${typos.display.bold[14]} ${styles.title}">${cardTitle}</div>
-          <div class="${typos.display.medium[14]} ${styles.body}">${cardBody}</div>
+          <div class="${typos.display.bold[14]} ${styles.title}">${cardContents.title}</div>
+          <div class="${typos.display.medium[14]} ${styles.body}">${cardContents.body}</div>
           <div class="${typos.display.medium[12]} ${styles.caption}">author by ${checkUserAgent()}</div>
       </div>`;
 
