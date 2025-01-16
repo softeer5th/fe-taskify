@@ -1,19 +1,17 @@
-import Model from "../model.js";
-
 import TaskView from "../view/taskView.js";
 
 function getCurrentDevice() {
   return navigator.userAgentData.mobile ? "mobile" : "web";
 }
 
-export default function TaskController(model = new Model(), rootElement = document.getElementById("root")) {
+export default function TaskController(model, rootElement) {
   let tasks = [];
 
   let ghostTaskView = TaskView({
     task: { id: 0, columnId: 0, title: "", description: "", createdAt: 0 },
     state: "default",
-    onFirstButtonClicked: () => {},
-    onSecondButtonClicked: () => {},
+    onClickFirstButton: () => {},
+    onClickSecondButton: () => {},
   });
   ghostTaskView.classList.add("task--ghost", "task--drag");
   rootElement.appendChild(ghostTaskView);
@@ -23,22 +21,22 @@ export default function TaskController(model = new Model(), rootElement = docume
 
   let addingTaskView;
 
-  model.addListener(onModelChanged);
+  model.addListener(render);
 
   render();
 
   // Event Handlers
 
-  function handleTaskDeleteButtonClicked(event) {
+  function handleClickTaskDeleteButton(event) {
     event.preventDefault();
     event.stopPropagation();
 
     const taskId = +event.target.closest(".task").id;
 
-    model.removeTask(taskId);
+    model.setModalState("task", { taskId });
   }
 
-  function handleTaskEditButtonClicked(event) {
+  function handleClickTaskEditButton(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -47,26 +45,26 @@ export default function TaskController(model = new Model(), rootElement = docume
     model.setEditingTaskId(taskId);
   }
 
-  function handleTaskEditCancelButtonClicked(event) {
+  function handleClickTaskEditCancelButton(event) {
     event.preventDefault();
     event.stopPropagation();
 
     model.unsetEditingColumnTask();
   }
 
-  function handleTaskEditSaveButtonClicked(event) {
+  function handleClickTaskEditSaveButton(event) {
     event.stopPropagation();
 
     const task = event.target.closest(".task");
     const taskId = +task.id;
-    const name = task.querySelector(".task__content-title").value;
+    const title = task.querySelector(".task__content-title").value;
     const description = task.querySelector(".task__content-description").value;
 
     if (taskId === 0) {
-      model.addTask(model.getCurrentState().editingColumnId, name, description, getCurrentDevice());
+      model.addTask(model.getCurrentState().editingColumnId, title, description, getCurrentDevice());
     } else {
       const originTask = model.getCurrentTaskData().find((t) => t.id === taskId);
-      model.editTask(taskId, { ...originTask, name, description });
+      model.editTask(taskId, { ...originTask, title: title, description });
     }
   }
 
@@ -113,16 +111,14 @@ export default function TaskController(model = new Model(), rootElement = docume
     }
   }
 
-  function onModelChanged() {
-    render();
-  }
-
   // Destroy observer
+
   function destroy() {
-    model.removeListener(onModelChanged);
+    model.removeListener(render);
   }
 
   // Render
+
   function render() {
     // Get current tasks and state
     const tasksOnModel = model.getCurrentTaskData();
@@ -155,8 +151,8 @@ export default function TaskController(model = new Model(), rootElement = docume
       const newTaskView = TaskView({
         task: task,
         state: "default",
-        onFirstButtonClicked: handleTaskDeleteButtonClicked,
-        onSecondButtonClicked: handleTaskEditButtonClicked,
+        onClickFirstButton: handleClickTaskDeleteButton,
+        onClickSecondButton: handleClickTaskEditButton,
       });
       newTaskView.style.order = -1;
       newTaskView.addEventListener("mousedown", handleSelectTask);
@@ -173,8 +169,8 @@ export default function TaskController(model = new Model(), rootElement = docume
         const newTaskView = TaskView({
           task: updatedTask,
           state: "default",
-          onFirstButtonClicked: handleTaskDeleteButtonClicked,
-          onSecondButtonClicked: handleTaskEditButtonClicked,
+          onClickFirstButton: handleClickTaskDeleteButton,
+          onClickSecondButton: handleClickTaskEditButton,
         });
         newTaskView.style.order = taskView.style.order;
         newTaskView.addEventListener("mousedown", handleSelectTask);
@@ -190,8 +186,8 @@ export default function TaskController(model = new Model(), rootElement = docume
       const newTaskView = TaskView({
         task: tasksOnModel.find((t) => t.id === +prevEditingTask.id),
         state: "default",
-        onFirstButtonClicked: handleTaskDeleteButtonClicked,
-        onSecondButtonClicked: handleTaskEditButtonClicked,
+        onClickFirstButton: handleClickTaskDeleteButton,
+        onClickSecondButton: handleClickTaskEditButton,
       });
       newTaskView.style.order = prevEditingTask.style.order;
       newTaskView.addEventListener("mousedown", handleSelectTask);
@@ -202,8 +198,8 @@ export default function TaskController(model = new Model(), rootElement = docume
       const newTaskView = TaskView({
         task: tasksOnModel.find((t) => t.id === state.editingTaskId),
         state: "editing",
-        onFirstButtonClicked: handleTaskEditCancelButtonClicked,
-        onSecondButtonClicked: handleTaskEditSaveButtonClicked,
+        onClickFirstButton: handleClickTaskEditCancelButton,
+        onClickSecondButton: handleClickTaskEditSaveButton,
       });
       newTaskView.style.order = currentEditingTask.style.order;
       currentEditingTask.replaceWith(newTaskView);
@@ -215,10 +211,10 @@ export default function TaskController(model = new Model(), rootElement = docume
     if (isAddingTask) {
       addingTaskView?.remove();
       addingTaskView = TaskView({
-        task: { id: 0, columnId: state.editingColumnId, name: "", description: "", createdAt: 0 },
+        task: { id: 0, columnId: state.editingColumnId, title: "", description: "", createdAt: 0 },
         state: "editing",
-        onFirstButtonClicked: handleTaskEditCancelButtonClicked,
-        onSecondButtonClicked: handleTaskEditSaveButtonClicked,
+        onClickFirstButton: handleClickTaskEditCancelButton,
+        onClickSecondButton: handleClickTaskEditSaveButton,
       });
       addingTaskView.style.order = -1;
       addingColumnTaskList.appendChild(addingTaskView);
@@ -272,6 +268,7 @@ export default function TaskController(model = new Model(), rootElement = docume
       );
     });
 
+    // Update tasks and taskViews
     tasks = tasksOnModel;
     taskViews = tasksOnDOM;
   }

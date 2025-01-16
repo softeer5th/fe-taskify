@@ -2,15 +2,18 @@ import HeaderController from "./headerController.js";
 import ColumnController from "./columnController.js";
 import TaskController from "./taskController.js";
 import HistoryController from "./historyController.js";
+import ModalController from "./modalController.js";
 
 export default function MainController(model, rootElement) {
-  const headerController = HeaderController(model, rootElement);
-  const columnController = ColumnController(model, rootElement);
-  const taskController = TaskController(model, rootElement);
-  const historyController = HistoryController(model, rootElement);
+  const controllers = [];
+  controllers.push(HeaderController(model, rootElement));
+  controllers.push(ColumnController(model, rootElement));
+  controllers.push(TaskController(model, rootElement));
+  controllers.push(HistoryController(model, rootElement));
+  controllers.push(ModalController(model, rootElement));
 
   function destroy() {
-    [headerController, columnController, taskController, historyController].forEach((controller) => {
+    controllers.forEach((controller) => {
       controller.destroy();
     });
   }

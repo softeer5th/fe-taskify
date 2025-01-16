@@ -22,7 +22,7 @@
     font-weight: 45 920;
     font-style: normal;
     font-display: swap;
-    src: url('../public/PretendardVariable.woff2') format('woff2-variations');
+    src: url('../asset/font/PretendardVariable.woff2') format('woff2-variations');
 }
 
 /* Reset CSS */
@@ -39,7 +39,7 @@ body {
     min-width: 400px;
     background-color: var(--grayscale-100);
     user-select: none;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 body {
@@ -99,18 +99,89 @@ textarea {
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    gap: 32px;
+    padding-left: 80px;
+    padding-right: 80px;
 }
+
+/* Button Style */
+
+.button {
+    width: 100%;
+    height: 32px;
+    border-radius: 8px;
+    padding: 0px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    justify-content: center;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.button:disabled {
+    opacity: 0.3;
+}
+
+.fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 72px;
+    position: fixed;
+    box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.16), 0px 2px 8px 0px rgba(110, 128, 145, 0.16);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+}
+
+.iconButton {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grayscale-500);
+}
+
+.iconButton-danger:hover {
+    color: var(--accent-red);
+}
+
+.button-brand {
+    background-color: var(--accent-blue);
+    color: var(--grayscale-50);
+}
+
+.button-danger {
+    background-color: var(--accent-red);
+    color: var(--grayscale-50);
+}
+
+.button-alt {
+    background-color: var(--grayscale-100);
+    color: var(--grayscale-600);
+}
+
+.button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.fab svg {
+    width: 24px;
+    height: 24px;
+}
+
 
 /* Header Style */
 
 .header {
-    position: fixed;
     width: 100%;
     height: 64px;
     display: flex;
     flex-direction: row;
-    padding: 0px 80px;
     align-items: center;
     justify-content: center;
     z-index: 100;
@@ -159,32 +230,15 @@ textarea {
     justify-content: center;
 }
 
-.header__button--history {
-    width: 24px;
-    height: 24px;
-    border-radius: 8px;
-    position: absolute;
-    right: 80px;
-}
-
-.header__button--history svg {
-    width: 24px;
-    height: 24px;
-    color: var(--grayscale-600);
-}
-
-
 /* Column List Style */
 .column-list {
     width: 100%;
     height: 100%;
-    margin-top: 96px;
-    margin-left: 80px;
     gap: 24px;
     display: flex;
     flex-direction: row;
-    overflow: auto;
-    flex-wrap: nowrap;
+    overflow-x: scroll;
+    scrollbar-width: thin;
 }
 
 /* Column Style */
@@ -195,7 +249,6 @@ textarea {
     gap: 10px;
     display: flex;
     flex-direction: column;
-    overflow: auto;
     flex-shrink: 0;
 }
 
@@ -203,9 +256,9 @@ textarea {
     width: 320px;
     height: auto;
     padding: 0px 16px;
-    gap: 8px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 
@@ -244,7 +297,7 @@ textarea {
 }
 
 .column__textarea-task-count {
-    width: 24px;
+    width: auto;
     height: 24px;
     border-radius: 8px;
     border: 1px solid var(--grayscale-200);
@@ -255,7 +308,8 @@ textarea {
 }
 
 .column__textarea-task-count span {
-    width: 16px;
+    width: auto;
+    min-width: 16px;
     height: 17px;
     font-size: 12px;
     font-weight: 500;
@@ -263,18 +317,10 @@ textarea {
     text-align: center;
 }
 
-.column__title button,
-.column__title-edit button {
-    width: 24px;
-    height: 24px;
-    display: block;
-    color: var(--grayscale-500);
-}
-
-.column__title button svg,
-.column__title-edit button svg {
-    width: 24px;
-    height: 24px;
+.column__icon-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
 }
 
 .column__task-list {
@@ -283,8 +329,9 @@ textarea {
     gap: 10px;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     padding-bottom: 5px;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 /* task Style */
@@ -300,6 +347,7 @@ textarea {
     display: flex;
     flex-direction: row;
     box-shadow: 0px 1px 4px 0px rgba(110, 128, 145, 0.24);
+    flex-shrink: 0;
 }
 
 .task--edit {
@@ -341,16 +389,22 @@ textarea {
 }
 
 .task__content-title {
+    width: 100%;
     font-size: 14px;
     font-weight: 700;
     color: var(--grayscale-900);
+    text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .task__content-description {
+    width: 100%;
     font-size: 14px;
     font-weight: 500;
     color: var(--grayscale-600);
     white-space: pre-line;
+    text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .task__content-device {
@@ -367,18 +421,6 @@ textarea {
     flex-direction: column;
 }
 
-.task__iconButton-icon {
-    width: 24px;
-    height: 24px;
-    color: var(--grayscale-500);
-}
-
-.task__iconButton-icon:first-child {
-    &:hover {
-        color: var(--accent-red);
-    }
-}
-
 .task__editorButton {
     display: flex;
     flex-direction: row;
@@ -388,8 +430,230 @@ textarea {
     justify-content: center;
 }
 
-.task__editorButton button {
-    flex: 1;
+
+/* History Style */
+
+.history {
+    width: 360px;
+    height: auto;
+    max-height: 680px;
+    position: absolute;
+    z-index: 1000;
+    padding: 8px;
+    border-radius: 16px;
+    transition: right 0.3s ease-in-out;
+    background-color: var(--grayscale-50);
+    gap: 8px;
+    box-shadow: 0px 16px 16px 0px rgba(110, 128, 145, 0.24), 0px 0px 4px 0px rgba(110, 128, 145, 0.08);
+    top: 64px;
+    right: -1000px;
+}
+
+.history--show {
+    right: 56px;
+}
+
+.history__title {
+    width: 100%;
+    height: 48px;
+    padding: 8px 8px 8px 16px;
+    gap: 4px;
+    opacity: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.history__title-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--grayscale-900);
+    text-align: left;
+}
+
+.history__title-button {
+    height: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.history__title-button-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.history__title-button-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.history__title-button-text {
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--grayscale-600);
+    text-align: center;
+}
+
+.history__list {
+    width: 100%;
+    height: auto;
+    min-height: 49px;
+    max-height: 560px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.history__list--empty {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.history__list--empty span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--grayscale-500);
+    text-align: center;
+}
+
+.history__item {
+    width: 100%;
+    height: auto;
+    padding: 16px;
+    gap: 16px;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--grayscale-50);
+    border-bottom: 1px solid var(--grayscale-200);
+    text-align: center;
+}
+
+.history__item:last-child {
+    border-bottom: none;
+}
+
+.history__item--thumbnail {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--grayscale-200);
+    border-radius: 50%;
+}
+
+.history__item--content {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.history__item--content-username {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--grayscale-600);
+    text-wrap: wrap;
+    text-align: left;
+}
+
+.history__item--content-description {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--grayscale-600);
+    text-wrap: wrap;
+    text-align: left;
+}
+
+.history__item--content-description strong {
+    font-weight: 700;
+    color: var(--grayscale-700);
+}
+
+.history__item--content-timestamp {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--grayscale-500);
+    text-wrap: wrap;
+    text-align: left;
+}
+
+.history__delete {
+    width: 100%;
+    height: 40px;
+    padding: 4px 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.history__delete:disabled {
+    display: none;
+}
+
+.history__delete button {
+    width: auto;
+    height: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-red);
+    text-align: center;
+}
+
+/* Modal Style */
+
+.modal {
+    width: 400px;
+    height: auto;
+    position: absolute;
+    z-index: 10000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-top: 32px;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    border-radius: 8px;
+    background-color: var(--grayscale-50);
+    box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.16), 0px 2px 8px 0px rgba(110, 128, 145, 0.16);
+    backdrop-filter: blur(4px);
+}
+
+.modal__text {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--grayscale-600);
+    text-align: center;
+}
+
+.modal__button-container {
+    width: 100%;
+    height: auto;
+    gap: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.modal__button {
     width: 100%;
     height: 32px;
     border-radius: 8px;
@@ -400,36 +664,12 @@ textarea {
     justify-content: center;
 }
 
-.task__editorButton button:nth-child(1) {
-    background-color: var(--grayscale-100);
-    color: var(--grayscale-600);
-}
-
-.task__editorButton button:nth-child(2) {
-    background-color: var(--accent-blue);
-    color: var(--grayscale-50);
-
-    &:disabled {
-        opacity: 0.3;
-    }
-}
-
-/* FAB */
-
-.fab {
-    width: 56px;
-    height: 56px;
-    border-radius: 72px;
-    background-color: var(--accent-blue);
+.modal__background {
     position: fixed;
-    color: var(--grayscale-50);
-    box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.16), 0px 2px 8px 0px rgba(110, 128, 145, 0.16);
-    backdrop-filter: blur(4px);
-    right: 48px;
-    bottom: 48px;
-}
-
-.fab svg {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
 }

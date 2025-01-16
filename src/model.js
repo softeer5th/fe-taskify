@@ -8,7 +8,7 @@
 /**
  * @typedef {Object} Task
  * @property {number} id
- * @property {string} name
+ * @property {string} title
  * @property {string} description
  * @property {number} createdAt
  * @property {string} device
@@ -34,7 +34,8 @@ export default class Model {
               thumbnailUrl: "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
             },
           },
-          action: "init",
+          actionLog: "init",
+          actionTime: Date.now(),
         },
       ],
       currentPointer: history.length - 1,
@@ -45,6 +46,10 @@ export default class Model {
         order: "latest",
         isHistoryOpen: false,
         mouseOverColumnId: -1,
+        modalState: {
+          state: "",
+          data: {},
+        },
       },
     };
     this.#listeners = [];
@@ -56,10 +61,32 @@ export default class Model {
     this.#listeners.forEach((listener) => listener());
   }
 
+  #createHistoryActionLog(actionType, actionData) {
+    switch (actionType) {
+      case "addColumn":
+        return `<strong>${actionData.addedColumnTitle}</strong> 열을 <strong>추가</strong>하였습니다.`;
+      case "updateColumn":
+        return `<strong>${actionData.updatedColumnTitle}</strong> 열을 <strong>변경</strong>하였습니다.`;
+      case "removeColumn":
+        return `<strong>${actionData.removedColumnTitle}</strong> 열을 <strong>삭제</strong>하였습니다.`;
+      case "addTask":
+        return `<strong>${actionData.addedTaskTitle}</strong>을(를) <strong>${actionData.addedColumnTitle}</strong>에 <strong>등록</strong>했습니다.`;
+      case "moveTask":
+        return `<strong>${actionData.movedTaskTitle}</strong>을(를) <strong>${actionData.fromColumnTitle}</strong>에서 <strong>${actionData.toColumnTitle}</strong>로 <strong>이동</strong>하였습니다.`;
+      case "editTask":
+        return `<strong>${actionData.updatedTaskTitle}</strong>을(를) <strong>수정</strong>하였습니다.`;
+      case "removeTask":
+        return `<strong>${actionData.removedTaskTitle}</strong>을(를) <strong>삭제</strong>하였습니다.`;
+      default:
+        return "";
+    }
+  }
+
   #pushHistory(newData, action) {
+    const actionLog = this.#createHistoryActionLog(action.type, action);
     const newHistory = {
       data: newData,
-      action,
+      actionLog,
       actionTime: Date.now(),
     };
     this.#model.history.push(newHistory);
@@ -164,29 +191,29 @@ export default class Model {
   }
 
   undo() {
-    if (this.#model.currentPointer > 1) {
+    if (this.isUndoAble()) {
       this.#model.currentPointer -= 1;
       this.#notify();
     }
   }
 
   redo() {
-    if (this.#model.currentPointer < this.#model.history.length - 1) {
+    if (this.isRedoAble()) {
       this.#model.currentPointer += 1;
       this.#notify();
     }
   }
 
-  addColumn(addedColumnName = "New Column") {
+  addColumn(addedColumnTitle = "New Column") {
     const currentData = this.getCurrentData();
     const newColumn = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
-      name: addedColumnName,
+      title: addedColumnTitle,
     };
     currentData.column.push(newColumn);
     this.#pushHistory(currentData, {
       type: "addColumn",
-      addedColumnName: addedColumnName,
+      addedColumnTitle: addedColumnTitle,
     });
   }
 
@@ -199,7 +226,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "updateColumn",
-      updatedColumnName: updatedColumTitle,
+      updatedColumnTitle: updatedColumTitle,
     });
   }
 
@@ -213,15 +240,15 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "removeColumn",
-      removedColumnName: removedColumn.title,
+      removedColumnTitle: removedColumn.title,
     });
   }
 
-  addTask(columnId, addedTaskName, addedTaskDescription, addedTaskDevice) {
+  addTask(columnId, addedTaskTitle, addedTaskDescription, addedTaskDevice) {
     const currentData = this.getCurrentData();
     const newTask = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
-      name: addedTaskName,
+      title: addedTaskTitle,
       description: addedTaskDescription,
       createdAt: Date.now(),
       device: addedTaskDevice,
@@ -232,9 +259,12 @@ export default class Model {
     this.#model.state.editingTaskId = -1;
     this.#model.state.editingColumnId = -1;
 
+    const addedColumnTitle = currentData.column.find((column) => column.id === columnId).title;
+
     this.#pushHistory(currentData, {
       type: "addTask",
-      addedTaskName: addedTaskName,
+      addedTaskTitle: addedTaskTitle,
+      addedColumnTitle: addedColumnTitle,
     });
   }
 
@@ -246,11 +276,16 @@ export default class Model {
 
     this.#model.state.movingTaskId = -1;
 
+    if (fromColumnId === toColumnId) {
+      this.#notify();
+      return;
+    }
+
     this.#pushHistory(currentData, {
       type: "moveTask",
-      movedTaskName: task.name,
-      fromColumnId,
-      toColumnId,
+      movedTaskTitle: task.title,
+      fromColumnTitle: currentData.column.find((column) => column.id === fromColumnId).title,
+      toColumnTitle: currentData.column.find((column) => column.id === toColumnId).title,
     });
   }
 
@@ -263,7 +298,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "editTask",
-      updatedTaskName: updatedTask.name,
+      updatedTaskTitle: updatedTask.title,
     });
   }
 
@@ -273,7 +308,7 @@ export default class Model {
     currentData.task = currentData.task.filter((task) => task.id !== taskId);
     this.#pushHistory(currentData, {
       type: "removeTask",
-      removedTaskName: removedTask.name,
+      removedTaskTitle: removedTask.title,
     });
   }
 
@@ -283,5 +318,64 @@ export default class Model {
 
   getCurrentTaskData() {
     return this.getCurrentData().task;
+  }
+
+  getAllHistoryLogs() {
+    const history = deepCopy(this.#model.history.slice(0, this.#model.currentPointer + 1));
+    let historyLogs = [];
+    history.map((history) => {
+      if (history.actionLog !== "init" && history.actionLog !== "") {
+        historyLogs = [
+          ...historyLogs,
+          {
+            actionLog: history.actionLog,
+            actionTime: history.actionTime,
+          },
+        ];
+      }
+    });
+    return historyLogs.reverse();
+  }
+
+  removeAllHistoryLogs() {
+    this.#model.history = [{ ...this.#model.history[this.#model.currentPointer], actionLog: "", actionTime: Date.now() }];
+    this.#model.currentPointer = 0;
+    this.#notify();
+  }
+
+  isRedoAble() {
+    return this.#model.currentPointer < this.#model.history.length - 1;
+  }
+
+  isUndoAble() {
+    return this.#model.currentPointer > 0 && this.#model.history.length - this.#model.currentPointer <= 5;
+  }
+
+  setModalState(state, data) {
+    this.#model.state.modalState = {
+      state,
+      data,
+    };
+    this.#notify();
+  }
+
+  activateModal() {
+    const modalState = this.#model.state.modalState;
+    if (modalState.state === "") {
+      return;
+    }
+    if (modalState.state === "column") {
+      this.removeColumn(modalState.data.columnId);
+    } else if (modalState.state === "task") {
+      this.removeTask(modalState.data.taskId);
+    } else if (modalState.state === "history") {
+      this.removeAllHistoryLogs();
+    }
+
+    this.#model.state.modalState = {
+      state: "",
+      data: {},
+    };
+    this.#notify();
   }
 }
