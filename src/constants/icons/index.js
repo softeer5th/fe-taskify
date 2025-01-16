@@ -1,3 +1,5 @@
+import { useState } from "../../lib/HamReact/hooks/useState.js";
+
 import icons from "./icons.js";
 
 /**
@@ -10,23 +12,40 @@ import icons from "./icons.js";
  * @param {Function} [props.onClick] - 클릭 이벤트 시 호출할 함수
  * @param {number} [props.width] - 아이콘 너비
  * @param {number} [props.height] - 아이콘 높이
+ * @param {string} [props.hoverColor] - 마우스 호버 시 색상
  * @returns {VDOM} - 생성된 아이콘 엘리먼트
  */
 export const Icon = ({
   name, size = "lg", fillColor = "", strokeColor = "", onClick,
   width, height,
+  hoverColor,
 }) => {
   const SIZE_NUM = size === "lg" ? 24 : 16;
   const element = icons[name]();
+  const [color, setColor] = useState(fillColor || strokeColor);
 
-  if (fillColor) element.props.fill = fillColor;
-  if (strokeColor) element.props.stroke = strokeColor;
+  const colorIcon = () => {
+    if (fillColor) element.props.fill = color;
+    if (strokeColor) element.props.stroke = color;
+  };
+
   if (typeof onClick === "function") {
     element.props.cursor = "pointer";
     element.events.click = onClick;
   }
+
   element.props.width = width || SIZE_NUM;
   element.props.height = height || SIZE_NUM;
+  colorIcon(fillColor || strokeColor);
+
+  if (hoverColor) {
+    element.events.mouseenter = () => {
+      setColor(hoverColor);
+    };
+    element.events.mouseleave = () => {
+      setColor(fillColor || strokeColor);
+    };
+  }
 
   return element;
 };
