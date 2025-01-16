@@ -2,7 +2,7 @@ import { renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
 import { addListener } from "./event_listeners.js";
-import { getIsDragging, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+import { getIsDragging, saveData, toggleIsCardEditing, toggleIsDragging } from "./store.js";
 
 let gapX = 0;
 let gapY = 0;
@@ -27,13 +27,14 @@ export function checkCardInput() {
 }
 
 // 카드 추가 확정
-export function confirmAddCard(columnId){
+export async function confirmAddCard(columnId){
     const titleInput = document.getElementById('title-input');
     const titleValue = titleInput.value.trim();
     const contentInput = document.getElementById('content-input');
     const contentValue = contentInput.value.trim();
     const newCardId = createNewId();
-    renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,});
+    await renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,});
+    saveData();
 }
 
 
@@ -52,6 +53,7 @@ export function delCard(cardId) {
         hideAlert();
         if (card) {
             card.remove();
+            saveData();
         }
     });
 }
@@ -59,7 +61,6 @@ export function delCard(cardId) {
 // 카드 수정
 export function editCard(cardId) {
     let card = document.querySelector("#card-id"+cardId);
-    let columnId = card.parentElement.id;
     const tempMemory = [...card.children];
     
     card.style.display = "block";
@@ -86,9 +87,17 @@ export function editCard(cardId) {
         </button>
     `;
 
-    addListener(newActionDiv.querySelector('.confirm-button'),(event)=>{
+    [...tempMemory].forEach(element => {
+        card.removeChild(element);
+    });
+
+    card.appendChild(newInfoDiv);
+    card.appendChild(newActionDiv);
+
+
+    addListener(newActionDiv.querySelector('.confirm-button'), async (event)=>{
         toggleIsCardEditing();
-        confirmEdit(card,cardId)
+        await confirmEdit(card,cardId)
     });
 
     addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
@@ -103,23 +112,18 @@ export function editCard(cardId) {
     newInfoDiv.querySelector('#content-input').addEventListener('input', (event)=>{
         checkCardInput();
     });
-
-    [...tempMemory].forEach(element => {
-        card.removeChild(element);
-    });
-
-    card.appendChild(newInfoDiv);
-    card.appendChild(newActionDiv);
 }
 
 // 수정사항 반영
-function confirmEdit(card, cardId){
+async function confirmEdit(card, cardId){
     const titleInput = card.querySelector('#title-input');
     const titleValue = titleInput.value.trim();
     const contentInput = card.querySelector('#content-input');
     const contentValue = contentInput.value.trim();
-    renderTemplate('./html/card_template.html', 'card-template', card.parentElement.id, {cardId:cardId, title:titleValue, content:contentValue,});
-    card.parentNode.removeChild(card);
+    let columnId = card.parentElement.id;
+    card.remove();
+    await renderTemplate('./html/card_template.html', 'card-template', columnId, {cardId:cardId, title:titleValue, content:contentValue,});
+    saveData();
 }
 
 // 수정사항 취소
@@ -186,10 +190,8 @@ export function moveCardIllusion(event, newParent, clone) {
     let closestTempCard = event.target.closest('.temp-card');
     if (cardList) {
         if (closestCard) {
-            console.log(closestCard);
             cardList.insertBefore(tempRealCard, closestCard);
         } else if (!closestTempCard){
-            console.log("no!");
             cardList.appendChild(tempRealCard);
         }
     }
@@ -213,4 +215,5 @@ export function finishDragCard(clone) {
     toggleIsDragging();
     clone.remove();
     document.body.classList.remove('no-select');
+    saveData();
 }

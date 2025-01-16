@@ -1,6 +1,6 @@
 import { toggleSortOrder,completeColumnName,  } from "./column_action.js";
 import { moveCard, finishDragCard } from "./card_action.js";
-import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, setClone } from "./store.js";
+import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, saveData, setClone } from "./store.js";
 import { renderTemplate } from "./main.js";
 
 const eventListeners = new WeakMap();
@@ -81,9 +81,10 @@ addListener(document.querySelector('.chip'), (event) =>{
     }
 });
 
-addListener(document.querySelector('.fab'), (event)=>{
+addListener(document.querySelector('.fab'), async (event)=>{
     if (event.type === "click") {
         let newColumnId = document.querySelector("#column-area").childElementCount;
-        renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:newColumnId, title:"제목없음"});
+        await renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:newColumnId, title:"제목없음"});
+        saveData();
     }
 })

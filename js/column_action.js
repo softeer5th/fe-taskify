@@ -1,7 +1,7 @@
 import { overlay, createDeleteAllCardAlert, createDeleteColumnAlert, hideAlert } from "./alert.js";
 import { checkCardInput, confirmAddCard } from "./card_action.js";  
 import { addListener } from "./event_listeners.js";
-import { getIsOrderChanging, toggleIsColumnNameChanging, toggleIsOrderChanging } from "./store.js";
+import { getIsOrderChanging, saveData, toggleIsColumnNameChanging, toggleIsOrderChanging } from "./store.js";
 
 let sortingOrder = 1;
 
@@ -68,6 +68,7 @@ export function delColumn(columnId) {
         overlay.style.display = "none";
         hideAlert();
         document.getElementById(`column-id${columnId}`).remove();
+        saveData();
     });
 }
 
@@ -87,6 +88,7 @@ export function delAllCard(columnId) {
         overlay.style.display = "none";
         hideAlert();
         cardList.innerHTML = ``;
+        saveData();
     });
 }
 
@@ -113,7 +115,9 @@ export function toggleSortOrder() {
         }
         toggleIsOrderChanging();
         sortColumns();
-        setTimeout(()=>{toggleIsOrderChanging();}, 500)
+        setTimeout(()=>{
+            toggleIsOrderChanging();
+        }, 500);
     }
 }
 
@@ -156,7 +160,7 @@ function sortColumns() {
             setTimeout(() => {
                 cardList.forEach(card => {
                     column.querySelector(".card-list").appendChild(card);
-                    card.style.transform = ''; // transform 초기화
+                    card.style.transform = '';
                 });
             }, 500);
         } 
@@ -175,6 +179,7 @@ export function completeColumnName() {
     [...document.querySelectorAll('.column-name')].map((element)=>{
         element.contentEditable = "false";
     });
+    saveData();
 }
 
 export function toggleColumnShadow() {
