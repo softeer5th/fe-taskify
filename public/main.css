@@ -42,9 +42,10 @@ header > span {
     list-style-type: none;
 }
 
-.column_title {
+.column_header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 16px;
 
     span {
@@ -56,10 +57,24 @@ header > span {
             justify-content: center;
         }
     }
+
+    input {
+        width: 100%;
+        outline: none;
+        border-radius: 6px;
+        padding: 0 8px;
+        height: 24px;
+    }
+}
+
+.column_title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .column_button_container {
-    margin-left: auto;
+    margin-left: 8px;
 
     >button {
         &:first-of-type {

@@ -194,7 +194,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         const newTask = {
             title: title,
             content: content,
-            column: Number(columnIdx),
+            column: columnIdx,
             created: new Date(),
         };
 
@@ -241,7 +241,8 @@ export default function ColumnController(state, bodyElement, logStore) {
                     renderAddForm(formContainer, columnIdx),
                 handleDrop,
                 handleDragEnter,
-                handleDragLeave
+                handleDragLeave,
+                (index, title)=>state.editColumn(index, title)
             );
             columnListFragment.appendChild(columnElement);
         }
