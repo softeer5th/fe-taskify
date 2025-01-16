@@ -1,11 +1,12 @@
 import { moveTask } from "../../utils/storage/taskManager.js";
+import { addHistory } from '../../utils/storage/historyManager.js';
 
 export const dragStartCard = (target) => {
   target.classList.add("dragging");
 
   const startColumnKey = target
-    .closest(".column")
-    .getAttribute("data-column-key");
+  .closest(".column")
+  .getAttribute("data-column-key");
 
   target.setAttribute("data-start-column", startColumnKey);
 };
@@ -53,6 +54,13 @@ export const dragendCard = (target) => {
   startCol.querySelector(".column-count").textContent--;
   const endCol = target.closest(".column").querySelector(".column-count")
     .textContent++;
+  addHistory(
+    parseInt(target.getAttribute("data-timestamp")),
+    "MOVE",
+    target.querySelector(".task-title").textContent,
+    startColNum,
+    target.closest(".column").getAttribute("data-column-key")
+  );
 
   target.removeAttribute("data-start-column");
 };

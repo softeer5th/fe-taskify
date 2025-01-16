@@ -13,8 +13,8 @@ const popupEditModal = (task) => {
        <input placeholder="내용을 입력하세요">
       </div>
       <div class = "add-can-btn">
-       <button class = "task-edit-can-btn"> 취소 </button>
-       <button class = "task-edit-add-btn" style="opacity: 30%"> 등록 </button>
+       <button class = "edit-btn task-edit-can-btn"> 취소 </button>
+       <button class = "edit-btn task-edit-add-btn" style="opacity: 30%"> 저장 </button>
       </div>
     </div>
   `;

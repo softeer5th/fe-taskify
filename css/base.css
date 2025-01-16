@@ -114,7 +114,7 @@ main {
 }
 
 .task-list {
-  width: 320px;
+  width: 300px;
   height: 24px;
   margin: 0 10px 0 10px;
   display: flex;
@@ -133,18 +133,42 @@ main {
 
 .column-title {
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: rgba(78, 75, 102, 1);
-  margin-right: 9px;
+}
+.column-count {
+  display: flex;
+  min-width: 16px;
+  height: 24px;
+  top: 20px;
+  left: 20px;
+  padding: 0px 4px 0px 4px;
+  gap: 0px;
+  border-radius: 8px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  font-family: Pretendard Variable;
+  font-size: 12px;
+  line-height: 14.06px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(160, 163, 189, 1);
+  border: 1px solid var(--border-default, rgba(239, 240, 246, 1));
 }
 
 .add-btn {
   position: absolute;
-  right: 40px;
+  right: 37px;
 }
 
 .delete-btn {
   position: absolute;
-  right: 9px;
+  right: 6px;
 }
 
 .card-delete-edit {
@@ -155,6 +179,23 @@ main {
 .card-edit-btn {
   background: none;
   border: none;
+}
+.edit-btn {
+  width: 140px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(254, 254, 254, 1);
+}
+.task-edit-can-btn {
+  background-color: rgba(247, 247, 252, 1);
+}
+
+.task-edit-add-btn {
+  background-color: rgba(0, 122, 255, 1);
+  color: rgba(247, 247, 252, 1);
 }
 
 .card-close-btn {
@@ -265,6 +306,8 @@ footer {
 .fab-plusicon {
   background: none;
   border: none;
+  margin-left: 6px;
+  margin-top: 1px;
 }
 
 .dragging {
@@ -291,6 +334,7 @@ footer {
   transition: right 0.3s ease-in-out;
   right: 48px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
 }
+
 .history-modal.close {
   transition: right 0.3s ease-in-out;
   right: -400px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
@@ -319,6 +363,11 @@ footer {
 .history-modal-close-btn img {
   width: 16px;
   height: 16px;
+}
+
+.history-modal-main {
+  overflow: scroll;
+  max-height: 560px;
 }
 
 .history {
@@ -350,4 +399,56 @@ footer {
   justify-content: end;
   color: rgba(255, 59, 48, 1);
   padding-right: 20px;
+}
+
+/* styles.css 또는 적절한 CSS 파일에 추가 */
+.warning-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+.warning-modal-content {
+  background-color: white;
+  padding: 32px 24px 24px 32px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 344px;
+  height: 86px;
+  text-align: center;
+  display: flex;
+  gap: 32px;
+  flex-direction: column;
+  justify-content: center;
+}
+.warning-modal-footer {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  bottom: 10px;
+}
+
+.warn-btn {
+  width: 172px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(254, 254, 254, 1);
+}
+
+.warning-modal-confirm-btn {
+  background-color: rgba(247, 247, 252, 1);
+}
+.warning-modal-cancel-btn {
+  background-color: rgba(255, 59, 48, 1);
+  color: rgba(247, 247, 252, 1);
 }
