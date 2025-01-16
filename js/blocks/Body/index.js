@@ -1,21 +1,9 @@
+import { loadTasksFromJSON, loadTasksFromLocalStorage, saveTasksToLocalStorage } from '../../store/task.js';
 import { renderRecords } from '../Header/index.js';
 import { Modal } from '../Modal/index.js';
+import { initializeDragAndDrop } from './dragNdrop.js';
 
 const lists = ['todo', 'doing', 'done'];
-
-const saveTasksToLocalStorage = (tasks) => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-};
-
-const loadTasksFromLocalStorage = () => {
-    const tasks = localStorage.getItem('tasks');
-    return tasks ? JSON.parse(tasks) : [{ type: 'todo', list: [] }, { type: 'doing', list: [] }, { type: 'done', list: [] }];
-};
-
-async function loadTasksFromJSON () {
-    const tasks = loadTasksFromLocalStorage();
-    return tasks;
-};
 
 function createSection(containerId, title, tasks) {
     const container = document.querySelector('main');
@@ -25,7 +13,6 @@ function createSection(containerId, title, tasks) {
     tasks.filter(task => task.type === containerId).forEach(({ type, list }) => {
         list.forEach(({id, title, content}) => {
             const newTask = createTaskElement(type, id, title, content);
-            // newTask.style.order = sortOrder === 'asc' ? id : -id;
 
             fragment.appendChild(newTask);
             listCount++;
@@ -57,7 +44,7 @@ function createSection(containerId, title, tasks) {
 
     document.getElementById(`plus-${containerId}`).addEventListener('click', () => {
         toggleTaskBox(`list-${containerId}`, containerId);
-        ulElement.style.height = `${ulElement.scrollHeight + 300}px`;
+        ulElement.style.height = `${ulElement.scrollHeight + 100}px`;
     });
 
     document.getElementById(`clear-${containerId}`).addEventListener('click', () => {
@@ -65,6 +52,7 @@ function createSection(containerId, title, tasks) {
     });
 
     ulElement.appendChild(fragment);
+    ulElement.style.height = `${ulElement.scrollHeight + 300}px`;
 }
 
 const clearTasks = (containerId) => {
@@ -88,109 +76,6 @@ export const DOMLoaded = async () => {
     createSection('done', '완료한 일', tasks);
 
     initializeDragAndDrop();
-};
-
-const initializeDragAndDrop = () => {
-    let originalParentId = null;
-
-    lists.forEach(listId => {
-        const list = document.getElementById(`list-${listId}`);
-
-        list.addEventListener('dragstart', (e) => {
-            e.target.classList.add('dragging');
-            originalParentId = e.target.parentElement.id;
-        });
-
-        list.addEventListener('dragend', (e) => {
-            e.target.classList.remove('dragging');
-        });
-
-        list.addEventListener('dragover', (e) => {
-            e.preventDefault();
-
-            const afterElement = getDragAfterElement(list, e.clientY);
-            const draggable = document.querySelector('.dragging'); // 드래그 요소
-            if (draggable) {
-                const previousParentId = draggable.parentElement.id;
-
-                if (afterElement) {
-                    list.insertBefore(draggable, afterElement);
-                } else {
-                    list.appendChild(draggable);
-                }
-                list.style.height = `${list.scrollHeight + 300}px`;
-
-                const parentElementId = previousParentId;
-                const targetListId = list.id;
-
-                // console.log(parentElementId, targetListId); // 기존의 섹션 id, 이동된 섹션 id
-                // console.log('draggable', draggable); // 이동된 요소 id
-                // console.log('item', e.target); // drop된 위치 (ul, li 둘 중 하나)
-                
-                const tasks = loadTasksFromLocalStorage();
-                const draggableId = parseInt(draggable.id.split('-')[1]);
-                const draggableTitle = draggable.querySelector('h3').innerText;
-                const draggableContent = draggable.querySelector('p').innerText;
-
-                const updatedTasks = tasks.map(task => {
-                    // 기존 섹션에서 삭제
-                    if (task.type === parentElementId.replace('list-', '')) {
-                        task.list = task.list.filter(t => t.id !== draggableId);
-                    }
-
-                    // 이동된 섹션에서 추가
-                    if (task.type === targetListId.replace('list-', '')) {
-                        const newTask = { id: draggableId, title: draggableTitle, content: draggableContent };
-                        if (afterElement) {
-                            const afterElementId = parseInt(afterElement.id.split('-')[1]);
-                            const afterElementIndex = task.list.findIndex(t => t.id === afterElementId);
-                            task.list.splice(afterElementIndex, 0, newTask);
-                        } else {
-                            task.list.push(newTask);
-                        }
-                    }
-
-                    return task;
-                });
-
-                saveTasksToLocalStorage(updatedTasks);
-            }
-        });
-
-        list.addEventListener('drop', (e) => {
-            e.preventDefault();
-
-            const draggable = document.querySelector('.dragging'); // 드래그 요소
-            if (draggable) {
-                const targetListId = list.id;
-
-                if (originalParentId !== targetListId) {
-                    saveActivity({
-                        title: draggable.querySelector('h3').innerText,
-                        type: 'move',
-                        beforeCategory: originalParentId.split('-')[1],
-                        afterCategory: targetListId.split('-')[1]
-                    });
-                }
-                
-                updateBadgeCount();
-            }
-        });
-    });
-};
-
-const getDragAfterElement = (list, y) => {
-    const draggableElements = [...list.querySelectorAll('.task-item:not(.dragging)')];
-
-    return draggableElements.reduce((closest, child) => {
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box.height / 2;
-        if (offset < 0 && offset > closest.offset) {
-            return { offset: offset, element: child };
-        } else {
-            return closest;
-        }
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
 };
 
 const toggleTaskBox = (listId, type) => {
@@ -322,7 +207,7 @@ const saveActivity = (activity) => {
     renderRecords();
 };
 
-const createTaskElement = (type, id, title, content) => {
+export const createTaskElement = (type, id, title, content) => {
     const task = document.createElement('li');
     task.className = 'task-item';
     task.draggable = true;
@@ -368,7 +253,6 @@ const createTaskElement = (type, id, title, content) => {
     closedImg.alt = 'closed';
 
     closedBtn.onclick = () => {
-        
         const modal = new Modal({
             message: '선택한 카드를 삭제할까요?',
             onDelete: () => {
@@ -381,8 +265,14 @@ const createTaskElement = (type, id, title, content) => {
                     return t;
                 }).filter(t => t.list.length > 0);
                 saveTasksToLocalStorage(updatedTasks);
-                
+                saveActivity({
+                    title,
+                    type: 'delete',
+                    category: type
+                });
+
                 updateBadgeCount();
+                renderRecords();
             }
         });
         modal.open();
@@ -412,22 +302,3 @@ const updateBadgeCount = () => {
         }
     });
 };
-
-const changeBtn = document.getElementById('change-btn');
-const changeBtnText = document.getElementById('change-btn-text');
-let sortOrder = 'asc';
-
-changeBtn.addEventListener('click', () => {
-    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    changeBtnText.textContent = sortOrder === 'asc' ? '생성순' : '최신순';
-
-    const tasks = loadTasksFromLocalStorage();
-    tasks.forEach(task => {
-        task.list.forEach((item, index) => {
-            const taskElement = document.getElementById(`task-${item.id}`);
-            if (taskElement) {
-                // taskElement.style.order = sortOrder === 'asc' ? item.id : -item.id;
-            }
-        });
-    });
-});
