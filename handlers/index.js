@@ -1,3 +1,4 @@
+import { ACTION_TYPE } from "../constants/action.js";
 import {
   handleDragEnd,
   handleDragOver,
@@ -42,7 +43,7 @@ export const addRootEventListener = () => {
       handleClickEdit(e);
     } else if ($closeButton) {
       const type = $closeButton.dataset.type;
-      type === "add"
+      type === ACTION_TYPE.add
         ? handleCancelAdd(e, store)
         : handleCancelEdit(e, store, type);
     } else if ($submitButton) {

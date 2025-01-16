@@ -1,3 +1,4 @@
+import { ACTION_TYPE } from "../../../../../../constants/action.js";
 import { createElement } from "../../../../../../dom.js";
 
 const actionMapper = {
@@ -34,7 +35,7 @@ const createHistoryText = ({ history }) => {
   });
 
   switch (history.action) {
-    case "add":
+    case ACTION_TYPE.add:
       return [
         $title,
         document.createTextNode("을(를) "),
@@ -44,7 +45,7 @@ const createHistoryText = ({ history }) => {
         document.createTextNode("하였습니다."),
       ];
 
-    case "remove":
+    case ACTION_TYPE.remove:
       return [
         $title,
         document.createTextNode("을(를) "),
@@ -52,7 +53,7 @@ const createHistoryText = ({ history }) => {
         document.createTextNode("하였습니다."),
       ];
 
-    case "update":
+    case ACTION_TYPE.update:
       return [
         $title,
         document.createTextNode("을(를) "),
@@ -60,7 +61,7 @@ const createHistoryText = ({ history }) => {
         document.createTextNode("하였습니다."),
       ];
 
-    case "move":
+    case ACTION_TYPE.move:
       return [
         $title,
         document.createTextNode("을(를) "),

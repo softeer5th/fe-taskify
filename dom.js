@@ -1,3 +1,5 @@
+import { ACTION_TYPE } from "./constants/action.js";
+
 export const createElement = (tagName, options = {}) => {
   const $element = document.createElement(tagName);
   const { id, className, text, ...attributes } = options;
@@ -22,7 +24,7 @@ export const createButton = ({
   text = "",
   handleClick,
   disabled,
-  type = "add",
+  type = ACTION_TYPE.add,
 }) => {
   const $button = createElement("button", { id, className, text });
   $button.disabled = disabled ?? false;

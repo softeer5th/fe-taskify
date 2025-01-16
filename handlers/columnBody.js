@@ -1,4 +1,6 @@
+import { ACTION_TYPE } from "../constants/action.js";
 import { STORAGE_KEY } from "../constants/storageKey.js";
+import historyStore from "../store/historyStore.js";
 import { loadLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
 
 export const handleDragStart = (e) => {
@@ -84,7 +86,7 @@ const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
 
   if (prevColumn !== nextColumn) {
     historyStore.action({
-      action: "move",
+      action: ACTION_TYPE.move,
       title,
       prevColumn: prevColumn,
       nextColumn: nextColumn,
