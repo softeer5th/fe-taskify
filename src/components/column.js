@@ -42,9 +42,7 @@ export class Column extends Component {
             this.removeDragGhost();
         });
 
-        this.addEvent("drop", (event) => {
-            onCardMoved()
-        });
+        this.addEvent("drop", () => onCardMoved());
 
         this.setChildren();
     }
@@ -81,8 +79,7 @@ export class Column extends Component {
                 event.preventDefault(); // drop을 허용
             });
 
-            child.object.addEvent("drop", () => {
-            });
+            child.object.addEvent("drop", () => { });
         });
     }
 
@@ -152,24 +149,22 @@ export class Column extends Component {
         const existedDragging = this.current.querySelector(".dragging");
         if (existedDragging && !existedDragging.classList.contains("hide")) return;
 
-        const existedGhostCard = this.current.querySelector(".ghostCard"); //enter 이벤트가 두 번 발생할 경우가 존재 (경계 -> 안쪽으로 이동하면 두 번 호출됨), 중복방지
+        const existedGhostCard = this.current.querySelector(".ghostCard");
         if (existedGhostCard) return;
 
         const dragging = document.querySelector(".dragging");
-        if (!dragging) return; //처음에 dragging 시작했을 때도 호출됨
+        if (!dragging) return;
 
         const cardId = dragging.id.slice(4);
         const cardData = getCardData(cardId);
 
         const ghostCard = new DefaultCard(cardData).createDOM();
-        
+
         ghostCard.addEventListener("dragover", (event) => {
             event.preventDefault(); // drop을 허용
         });
 
-        ghostCard.addEventListener("drop", () => {
-        });
-        
+        ghostCard.addEventListener("drop", () => { });
 
         ghostCard.classList.add("ghostCard");
 
@@ -200,6 +195,7 @@ export class Column extends Component {
         super.render(parent);
         this.hideAddCard();
         this.applyAnimation();
+        this.remeberPreOrder();
     }
 
     rerender() {
@@ -209,7 +205,6 @@ export class Column extends Component {
 
     applyAnimation() {
         if (!previousPositions || !previousPositions[this.columnData.name]) {
-            this.remeberPreOrder();
             return
         }
 
@@ -253,10 +248,11 @@ export class Column extends Component {
             });
 
         });
+
     }
 
     remeberPreOrder() {
-        previousPositions[this.columnData.name] = this.columnData.data.map((card) => {
+        previousPositions[this.columnData.name] = (this.columnData.data).map((card) => {
             const cardElement = this.parent.querySelector(`#card${card.cardId}`);
             if (!cardElement) return;
 
@@ -267,6 +263,6 @@ export class Column extends Component {
                 left: rect.left,
             };
 
-        });
+        })
     }
 }

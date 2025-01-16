@@ -21,7 +21,6 @@ export class ColumnList extends Component {
                         const preColumnIndex = columnList.findIndex(column =>
                             column.data.find(card => card.cardId === Number(draggingCardId))
                         );
-                        console.log("!!!!");
                         onCardMoved(draggingCardId, preColumnIndex, index);
                     }),
                 parentSelector: "#columnList"
