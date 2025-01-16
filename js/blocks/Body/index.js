@@ -314,7 +314,9 @@ const createTaskBox = (type, list, id = null, task = null) => {
 
 const saveActivity = (activity) => {
     const records = JSON.parse(localStorage.getItem('records') || '[]');
-    records.push(activity);
+    const timestamp = + new Date();
+    const activityWithTimestamp = { ...activity, timestamp };
+    records.push(activityWithTimestamp);
     localStorage.setItem('records', JSON.stringify(records));
 
     renderRecords();
