@@ -29,12 +29,15 @@ header {
         display: none;
         background-color: var(--grayscale-50);
         border-radius: 16px;
+        padding: 8px;
+        z-index: 1;
         
         .activity__list__header{
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 16px;
+            width: 366px;
 
             .title {
                 font-size: 16px;
@@ -42,7 +45,7 @@ header {
                 color: var(--grayscale-900);
             } 
 
-            > div {
+            > button {
                 display: flex;
                 align-items: center;
 
@@ -53,10 +56,6 @@ header {
                 }
             }
         }        
-        
-        ul {
-            padding: 0px 8px;
-        }
 
         > ul li:not(:last-child) {
             border-bottom: 1px solid var(--grayscale-200);
@@ -98,4 +97,24 @@ header {
     gap: 8px;
     margin: 16px;
     width: 256px;
+}
+
+.no__record__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    color: var(--grayscale-500);
+}
+
+.record__delete__container{
+    display: flex;
+    justify-content: flex-end;
+    padding: 7.5px 12px;
+    margin: 12px 16px 12px;
+
+    button {
+        color: var(--accent-red);
+        padding: 0;
+    }
 }
