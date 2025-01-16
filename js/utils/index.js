@@ -20,3 +20,23 @@ export const getActivityMessage = (record) => {
             return `${title}을(를) ${beforeCategory}에서 ${afterCategory}으로 ${type} 하였습니다.`;
     }
 };
+
+export const timeDifference = (timestamp) => {
+    const now = new Date();
+    const recordTime = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - recordTime) / 1000);
+
+    const minutes = Math.floor(diffInSeconds / 60);
+    const hours = Math.floor(diffInSeconds / 3600);
+    const days = Math.floor(diffInSeconds / 86400);
+
+    if (minutes === 0) {
+        return '방금 전';
+    } else if (minutes < 60) {
+        return `${minutes}분 전`;
+    } else if (hours < 24) {
+        return `${hours}시간 전`;
+    } else {
+        return `${days}일 전`;
+    }
+};
