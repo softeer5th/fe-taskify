@@ -62,7 +62,6 @@ export const keys = {
     DATA_IDENTIFIER_KEY: 'dataIdentifier',
     LAST_UID_KEY: 'lastUid',
     ACTION_STORAGE_KEY: 'action',
-    ACTION_POINTER_STORAGE_KEY: 'actionPointer',
     HISTORY_STORAGE_KEY: 'history',
     RESET_DATA_KEY: true,
 }

@@ -1,6 +1,6 @@
-import { Action } from '../domain/Action.js'
 import { classNames, keys } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
+import ActionQueue from '../utils/ActionQueue.js'
 import { getCategoryByUid } from '../utils/dataUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 import { redoTodoItemMove, undoTodoItemMove } from './dragManager.js'
@@ -13,24 +13,28 @@ import {
     undoTodoItemEdit,
 } from './todoManager.js'
 
-keys.RESET_DATA_KEY && storeData(keys.ACTION_STORAGE_KEY, [])
-keys.RESET_DATA_KEY && storeData(keys.ACTION_POINTER_STORAGE_KEY, -1)
+// 실제 원하는 size에 +1 해줘야 함
+const UNDO_QUEUE_MAX_LENGTH = 6
 
-let actionList = loadData(keys.ACTION_STORAGE_KEY) ?? []
-let pointer = loadData(keys.ACTION_POINTER_STORAGE_KEY) ?? -1
+keys.RESET_DATA_KEY && storeData(keys.ACTION_STORAGE_KEY, null)
 
-// action이 굉장히 길어지면? 최대 개수 제한하고 circular queue로 구현?
+const { front, current, rear, queue } = loadData(keys.ACTION_STORAGE_KEY) ?? {
+    front: 0,
+    current: 0,
+    rear: 0,
+    queue: new Array(UNDO_QUEUE_MAX_LENGTH),
+}
+const actionQueue = new ActionQueue(
+    UNDO_QUEUE_MAX_LENGTH,
+    front,
+    current,
+    rear,
+    queue
+)
+
 export const addAction = (action) => {
-    pointer++
-    if (pointer == actionList.length) {
-        actionList.push(action)
-    } else {
-        actionList[pointer] = action
-        actionList.splice(pointer + 1)
-    }
-
-    storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
-    storeData(keys.ACTION_STORAGE_KEY, actionList)
+    actionQueue.addAction(action)
+    storeData(keys.ACTION_STORAGE_KEY, actionQueue)
 }
 
 export const initUndoButton = () => {
@@ -52,21 +56,21 @@ export const initRedoButton = () => {
 }
 
 const handleUndo = () => {
-    if (pointer < 0) {
+    const action = actionQueue.undo()
+    if (action === null) {
         throw Error('No action to undo')
     }
-    const action = actionList[pointer]
-    pointer--
     undoAction(action)
+    storeData(keys.ACTION_STORAGE_KEY, actionQueue)
 }
 
 const handleRedo = () => {
-    if (pointer == actionList.length - 1) {
+    const action = actionQueue.redo()
+    if (action === null) {
         throw Error('No action to redo')
     }
-    pointer++
-    const action = actionList[pointer]
     redoAction(action)
+    storeData(keys.ACTION_STORAGE_KEY, actionQueue)
 }
 
 const undoAction = (action) => {
@@ -107,8 +111,6 @@ const undoAction = (action) => {
         case actionTypes.todoSort:
             break
     }
-
-    storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
 }
 
 const redoAction = (action) => {
@@ -149,18 +151,15 @@ const redoAction = (action) => {
         case actionTypes.todoSort:
             break
     }
-
-    storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
 }
 
 const undoTodoItemSort = (category) => {}
 
 export const redoRecentAction = (callback) => {
-    if (pointer == actionList.length - 1) {
+    if (pointer == actionQueue.length - 1) {
         throw Error('No action to redo')
     }
     pointer++
-    const action = actionList[pointer]
-    storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
+    const action = actionQueue[pointer]
     callback(action.actionType, action.data)
 }
