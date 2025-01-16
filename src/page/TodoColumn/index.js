@@ -1,12 +1,24 @@
 import { Alert } from "../../components/Alert/index.js";
 import { Card } from "../../components/Card/index.js";
 import { ColumnTitle } from "../../components/ColumnTitle/index.js";
-import { useState } from "../../lib/hooks/useState.js";
+import { useState } from "../../lib/HamReact/hooks/useState.js";
 import { parser } from "../../lib/jsx-runtime/index.js";
 
 import styles from "./todoColumn.module.js";
 
-export const TodoColumn = ({ title }) => {
+const TodoItem = (todo) => parser`
+                  <li key="${todo.id}">
+                  ${Card({ type: "add-edit" })}
+                  </li>`;
+
+/**
+ *
+ * @param {object} props - Todo 컬럼의 속성.
+ * @param {string} props.title - Todo 컬럼의 제목.
+ * @param {Function} props.onClickDel - Todo 컬럼 삭제 버튼 클릭 시 실행할 함수.
+ * @returns {VDOM} - Todo 컬럼을 나타내는 VDOM.
+ */
+export const TodoColumn = ({ title, onClickDel }) => {
   const [todos, setTodos] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -23,18 +35,11 @@ export const TodoColumn = ({ title }) => {
 
   return parser`
         <div class="${styles.container}">
-            ${ColumnTitle({ title, count: todos.length, onClickPlus: handleClickAddTodo })}
-            <ul class="${styles.list}">
-                ${todos.map((todo) => parser`
-                  <li key="${todo.id}">
-                    ${Card({ type: "add-edit", onClickDelBtn: () => setOpenAlert(true) })}
-                    ${openAlert && Alert({
-    text: "선택한 카드를 삭제할까요?",
-    isOpen: openAlert,
-    onClose: () => setOpenAlert(false),
-    rightOnClick: () => handleClickDeleteTodo(todo.id),
+            ${ColumnTitle({
+    title, count: todos.length, onClickPlus: handleClickAddTodo, onClickDel,
   })}
-                  </li>`)}
+            <ul class="${styles.list}">
+                ${todos.map((todo) => TodoItem(todo))}
             </ul>
         </div>
     `;
