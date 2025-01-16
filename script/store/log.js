@@ -3,7 +3,7 @@ import Observable from "./store.js";
 class LogStore extends Observable {
     #logId;
     #logs;
-    #logPointer
+    #logPointer;
     constructor() {
         super();
         this.#logs = [];

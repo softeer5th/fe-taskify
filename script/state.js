@@ -103,7 +103,7 @@ export default function State() {
     }
 
     function updateTask(index, currentTask, newTask) {
-        const taskIndex = columnTasks[index].indexOf(currentTask);
+        const taskIndex = columnTasks[index].findIndex((task)=>task.taskId === currentTask.taskId);
         columnTasks[index][taskIndex] = {...newTask, taskId: currentTask.taskId};
     }
 

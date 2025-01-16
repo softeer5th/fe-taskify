@@ -10,21 +10,25 @@ export default function FabController(bodyElement, state, logStore) {
         const log = logStore.redo();
         if(!log || log === undefined) return;
 
-        const {type, task, updated, destination} = log;
+        const {type, task, updated, destination, updatedTask} = log;
 
         const columnIdx = task.column;
 
         switch(type) {
             case "ADD":
                 state.addTask(columnIdx, task, task.taskId);
+                
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
             case "REMOVE":
                 state.removeTask(task)
+                
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
             case "UPDATE":
-                console.log('TOBE ');
+                state.updateTask(columnIdx, task, updatedTask);
+                
+                columnController.rerenderTask(task.taskId);
                 break;
             case "MOVE":
                 state.moveTask(destination, task);
@@ -40,7 +44,7 @@ export default function FabController(bodyElement, state, logStore) {
         const log = logStore.undo();
         if(!log || log === undefined) return;
 
-        const {type, task, updated, destination, origin} = log;
+        const {type, task, updated, destination, updatedTask} = log;
 
         const columnIdx = task.column;
 
@@ -49,14 +53,18 @@ export default function FabController(bodyElement, state, logStore) {
         switch(flippedType) {   
             case "ADD":
                 state.addTask(columnIdx, task, task.taskId);
+                
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
             case "REMOVE":
                 state.removeTask(task)
+                
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
             case "UPDATE":
-                console.log('TOBE');
+                state.updateTask(columnIdx, updatedTask, task);
+                
+                columnController.rerenderTask(task.taskId);
                 break;
             case "MOVE":
                 const originColumn = task.column;
