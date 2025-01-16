@@ -1,6 +1,7 @@
 export default function ModalView({ modalText, closeText, activeText, onClickModalCloseButton, onClickModalActiveButton }) {
   const modalBackgroundElement = document.createElement("div");
   modalBackgroundElement.classList.add("modal__background");
+  modalBackgroundElement.tabIndex = 0;
 
   const modalElement = document.createElement("div");
   modalElement.classList.add("modal");

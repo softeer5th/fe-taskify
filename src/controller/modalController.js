@@ -31,11 +31,17 @@ export default function ModalController(model = new Model(), rootElement = docum
     const activeText = "삭제";
 
     const newModalView = ModalView({ modalText, closeText, activeText, onClickModalCloseButton, onClickModalActiveButton });
+    newModalView.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        onClickModalCloseButton();
+      }
+    });
     if (modalView) {
       modalView.replaceWith(newModalView);
     } else {
       rootElement.appendChild(newModalView);
     }
+    newModalView.focus();
   }
 
   return {
