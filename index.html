@@ -272,7 +272,7 @@
         right: 56px;
         width: 368px;
         max-height: 660px;
-        display: flex;
+        display: none;
         flex-direction: column;
         align-items: end;
         border-radius: var(--number-200);
@@ -292,7 +292,11 @@
         "
       >
         <h2 class="display-bold16 text-strong">사용자 활동 기록</h2>
-        <button class="display-bold14" style="display: flex">
+        <button
+          class="display-bold14"
+          style="display: flex"
+          onclick="document.getElementById('history').style.display = 'none';"
+        >
           <img
             src="./assets/icons/closed.svg"
             style="width: 16px; height: 16px"
@@ -309,7 +313,12 @@
       <button class="text-danger display-bold14" style="padding: 12px 20px">
         기록 전체 삭제
       </button>
-      <h4 class="display-medium14 text-weak" style="width: 100%; text-align: center; padding: var(--number-200);">사용자 활동 기록이 없습니다.</h4>
+      <h4
+        class="display-medium14 text-weak"
+        style="width: 100%; text-align: center; padding: var(--number-200)"
+      >
+        사용자 활동 기록이 없습니다.
+      </h4>
     </div>
     <div class="overlay">
       <div class="modal">

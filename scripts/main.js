@@ -6,14 +6,13 @@ export let draggedCardState = createState(null);
 
 const App = () => {
   const main = document.querySelector('main');
-  console.log(loadTodos());
 
   loadTodos().forEach((column) => {
     main.appendChild(Column(column));
   });
 
-  document.querySelector('#history').addEventListener('click', (e) => {
-    console.log('view archived columns');
+  document.querySelector('#history-button').addEventListener('click', () => {
+    document.querySelector('#history').style.display = 'flex';
   });
   document.querySelector('header div button').addEventListener('click', (e) => {
     console.log('convert to sort mode');
