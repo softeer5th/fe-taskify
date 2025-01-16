@@ -1,3 +1,5 @@
+import { historyObserver } from '../../js/history/historyObserver.js';
+
 export const addHistory = (
   timestamp,
   functionType, //ADD, DELETE, EDIT , MOVE
@@ -16,6 +18,7 @@ export const addHistory = (
   const storedHistory = getHistory() || [];
   const updatedHistory = [...storedHistory, history];
   localStorage.setItem("history", JSON.stringify(updatedHistory));
+  historyObserver.notify(updatedHistory);
 };
 
 export const getHistory = () => {
@@ -24,4 +27,5 @@ export const getHistory = () => {
 
 export const clearHistory = () => {
   localStorage.removeItem("history");
+  historyObserver.notify([]);
 };

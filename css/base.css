@@ -7,9 +7,9 @@ body {
   padding: 0 80px;
   background-color: rgba(247, 247, 252, 1);
   font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
-    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
-    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", sans-serif;
+  system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+  "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+  "Segoe UI Symbol", sans-serif;
 }
 
 button {
@@ -291,6 +291,7 @@ footer {
   transition: right 0.3s ease-in-out;
   right: 48px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
 }
+
 .history-modal.close {
   transition: right 0.3s ease-in-out;
   right: -400px; /* (1920px - 1018px - 366px) ≈ 48px, 화면 오른쪽에서의 여백 */
@@ -319,6 +320,11 @@ footer {
 .history-modal-close-btn img {
   width: 16px;
   height: 16px;
+}
+
+.history-modal-main {
+  overflow: scroll;
+  max-height: 560px;
 }
 
 .history {

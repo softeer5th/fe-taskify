@@ -1,5 +1,5 @@
 import { closeCardModal, makeCard, popupCardModal } from "./card/addCard.js";
-import { getColumnTasks } from "../utils/storage/taskManager.js";
+import { getColumnTasks, getTaskByTimestamp } from "../utils/storage/taskManager.js";
 import { setDefaultColumn } from "./setColumn.js";
 import { editCard, closeEditModal } from "./card/editCard.js";
 import { sort } from "./sort.js";
@@ -58,11 +58,36 @@ document.addEventListener("click", ({ target }) => {
   } else if (target.closest(".task-delete-cancel-btn")) {
     closeDeleteModal(false, task);
   } else if (target.closest(".task-delete-confirm-btn")) {
+    const storedTask = getTaskByTimestamp(
+      task.closest(".column").getAttribute("data-column-key"),
+      parseInt(task.getAttribute("data-timestamp"))
+    );
+
+    addHistory(
+      storedTask.timestamp,
+      "DELETE",
+      storedTask.title,
+      parentColumn.getAttribute("data-column-key"),
+      "empty"
+    );
+
     closeDeleteModal(true, task);
   } else if (target.closest(".card-edit-btn")) {
     editCard(task);
   } else if (target.closest(".task-edit-add-btn")) {
     closeEditModal(true, task);
+    const storedTask = getTaskByTimestamp(
+      task.closest(".column").getAttribute("data-column-key"),
+      parseInt(task.getAttribute("data-timestamp"))
+    );
+
+    addHistory(
+      storedTask.timestamp,
+      "EDIT",
+      storedTask.title,
+      parentColumn.getAttribute("data-column-key"),
+      "empty"
+    );
   } else if (target.closest(".task-edit-can-btn")) {
     closeEditModal(false, task);
   } else if (target.closest(".history-btn")) {
@@ -74,6 +99,8 @@ document.addEventListener("click", ({ target }) => {
 
 //드래그
 document.addEventListener("dragstart", ({ target }) => {
+  if (target.closest(".card-edit-btn") || target.closest(".card-close-btn")) return;
+
   dragStartCard(target);
 });
 
