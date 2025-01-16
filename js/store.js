@@ -71,6 +71,7 @@ export function decMemInd() {
     if (memoryIndex>0) {
         memoryIndex -= 1;
     }
+    saveRecentInd();
     return memoryIndex;
 }
 
@@ -78,16 +79,47 @@ export function incMemInd() {
     if (memoryIndex<maxMemInd) {
         memoryIndex += 1;
     }
+    saveRecentInd();
     return memoryIndex;
+}
+
+function saveRecentInd() {
+    localStorage.setItem('memInd', memoryIndex);
+}
+
+function loadRecentInd() {
+    let temp = localStorage.getItem('memInd');
+    if (temp!==null && temp!=="null") {
+        memoryIndex = parseInt(temp);
+    } else {
+        memoryIndex = maxMemInd;
+    }
 }
 
 export function saveData() {
     todoList = todoToObj();
     let todoJson = todoToJson(todoList);
     if (todoJson!==localStorage.getItem(`content${memoryIndex}`)) {
+        // undo를 했던 경우 memoryIndex가 maxMemInd보다 작음
+        if (memoryIndex<maxMemInd) {
+            // 현재 상태를 기준으로 그 이후에 했던 것을 날림
+            removeAfData(maxMemInd-memoryIndex);
+        }
+        memoryIndex = maxMemInd;
+        // 저장하기 위해 앞서 했던 것들을 한칸씩 당겨서 저장
         moveBfData();
         localStorage.setItem(`content${memoryIndex}`, todoJson);
-        console.log("SAVED!!!!");
+        saveRecentInd();
+    }
+}
+
+function removeAfData(gap) {
+    for (let i=memoryIndex; i>-1; i--) {
+        let bfData = localStorage.getItem(`content${i}`);
+        if (bfData!==null && bfData!=="null") {
+            localStorage.setItem(`content${i+gap}`, bfData);
+            localStorage.setItem(`content${i}`, null);
+        }
     }
 }
 
@@ -101,36 +133,27 @@ function moveBfData() {
 }
 
 export function loadData(isInit) {
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i); // 키 가져오기
-        const value = localStorage.getItem(key); // 값 가져오기
-        console.log(`${key}: ${value}`);
-    }
     if (isInit) {
+        loadRecentInd();
         for (let i=0; i<maxMemInd+1; i++) {
-            let temp = todoFromJson(localStorage.getItem(`content${i}`));
-            if (temp) {
-                console.log(temp.todo);
-                todoList = temp.todo;
+            if (i!==memoryIndex) {
+                localStorage.setItem(`content${i}`,null);
+            } else {
+                let temp = todoFromJson(localStorage.getItem(`content${i}`));
+                if (temp) {
+                    todoList = temp.todo;
+                }
             }
-            localStorage.setItem(`content${i-1}`,null);
         }
         localStorage.setItem(`content${maxMemInd}`, todoToJson(todoList));
+        memoryIndex = maxMemInd;
     } else {
         let temp = todoFromJson(localStorage.getItem(`content${memoryIndex}`));
         if (temp) {
             todoList = temp.todo;
         }
     }
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i); // 키 가져오기
-        const value = localStorage.getItem(key); // 값 가져오기
-        console.log(`${key}: ${value}`);
-    }
-    console.log("아오");
-    console.log(todoList);
     if (todoList) {
-        console.log("아잇");
         refreshScreen(todoList);
     } else {
         resetTodo();

@@ -102,7 +102,6 @@ addListener(document.querySelector('.fab-area'), async (event)=>{
 
 addListener(document.querySelector('.add-column'), async (event)=>{
     if (event.type === "click") {
-        console.log("ADD~~~~");
         addColumn();
     } else if (event.type === "mouseover") {
         openFab();
@@ -113,7 +112,6 @@ addListener(document.querySelector('.add-column'), async (event)=>{
 
 addListener(document.querySelector('.undo'), (event)=> {
     if (event.type === 'click') {
-        console.log("undo~~~~");
         undo();
     } else if (event.type === "mouseover") {
         openFab();
@@ -124,7 +122,6 @@ addListener(document.querySelector('.undo'), (event)=> {
 
 addListener(document.querySelector('.redo'), (event)=> {
     if (event.type === 'click') {
-        console.log("redo~~~~");
         redo();
     } else if (event.type === "mouseover") {
         openFab();
