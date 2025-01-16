@@ -73,7 +73,7 @@ export default function HistoryController(model = new Model(), rootElement = doc
   function handleHistoryDeleteButtonClicked(event) {
     event.stopPropagation();
 
-    model.removeAllHistoryLogs();
+    model.setModalState("history", {});
   }
 
   // Model Event Handlers

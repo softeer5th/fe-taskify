@@ -46,6 +46,10 @@ export default class Model {
         order: "latest",
         isHistoryOpen: false,
         mouseOverColumnId: -1,
+        modalState: {
+          state: "",
+          data: {},
+        },
       },
     };
     this.#listeners = [];
@@ -340,5 +344,33 @@ export default class Model {
 
   isUndoAble() {
     return this.#model.currentPointer > 0;
+  }
+
+  setModalState(state, data) {
+    this.#model.state.modalState = {
+      state,
+      data,
+    };
+    this.#notify();
+  }
+
+  activateModal() {
+    const modalState = this.#model.state.modalState;
+    if (modalState.state === "") {
+      return;
+    }
+    if (modalState.state === "column") {
+      this.removeColumn(modalState.data.columnId);
+    } else if (modalState.state === "task") {
+      this.removeTask(modalState.data.taskId);
+    } else if (modalState.state === "history") {
+      this.removeAllHistoryLogs();
+    }
+
+    this.#model.state.modalState = {
+      state: "",
+      data: {},
+    };
+    this.#notify();
   }
 }
