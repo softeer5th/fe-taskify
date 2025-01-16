@@ -1,30 +1,36 @@
-import Model from "../model.js";
+import icons from "../../asset/icon.js";
+
+import Button from "../component/button.js";
 
 import ColumnListView from "../view/columnListView.js";
 import ColumnView from "../view/columnView.js";
-import Fab from "../component/fab.js";
 
-export default function ColumnController(model = new Model(), rootElement = document.getElementById("root")) {
+export default function ColumnController(model, rootElement) {
   const columnListView = ColumnListView();
   rootElement.appendChild(columnListView);
 
-  const fab = Fab({ icon: "plus", color: "brand", onButtonClick: handleAddColumnButtonClick });
+  const fab = Button({
+    className: ["fab", "button-brand"],
+    onClick: handleClickAddColumnButton,
+    children: [icons.plus()],
+  });
   fab.style.right = "48px";
   fab.style.bottom = "48px";
   rootElement.appendChild(fab);
 
-  model.addListener(onModelChanged);
+  model.addListener(render);
 
   render();
 
-  function handleAddColumnButtonClick(event) {
+  // Event Handlers
+
+  function handleClickAddColumnButton(event) {
     event.stopPropagation();
 
     model.addColumn();
-    console.log("Add Column Button Clicked");
   }
 
-  function handleColumnTitleClicked(event) {
+  function handleClickColumnTitle(event) {
     event.stopPropagation();
     const column = event.target.closest(".column");
     const columnId = +column.id;
@@ -32,7 +38,7 @@ export default function ColumnController(model = new Model(), rootElement = docu
     model.setEditingColumnId(columnId);
   }
 
-  function handleColumnTitleFocusOut(event) {
+  function handleFocusOutColumnTitle(event) {
     event.stopPropagation();
     const column = event.target.closest(".column");
     const columnId = +column.id;
@@ -40,21 +46,21 @@ export default function ColumnController(model = new Model(), rootElement = docu
     model.updateColumn(columnId, event.target.value);
   }
 
-  function handleAddTaskButtonClick(event) {
+  function handleClickAddTaskButton(event) {
     event.stopPropagation();
     const columnId = +event.target.closest(".column").id;
 
     model.setEditingTaskColumn(columnId);
   }
 
-  function handleColumnDeleteButtonClicked(event) {
+  function handleClickColumnDeleteButton(event) {
     event.stopPropagation();
     const columnId = +event.target.closest(".column").id;
 
     model.setModalState("column", { columnId });
   }
 
-  function handleColumnMouseEnter(event) {
+  function handleMouseEnterColumn(event) {
     event.stopPropagation();
     const column = event.target.closest(".column");
     const columnId = +column.id;
@@ -64,12 +70,12 @@ export default function ColumnController(model = new Model(), rootElement = docu
     }
   }
 
-  function onModelChanged() {
+  function render() {
     render();
   }
 
   function destroy() {
-    model.removeListener(onModelChanged);
+    model.removeListener(render);
   }
 
   function render() {
@@ -96,15 +102,16 @@ export default function ColumnController(model = new Model(), rootElement = docu
         column: column,
         count: tasksOnModel.filter((task) => task.columnId === column.id).length,
         state: state,
-        onColumnTitleEvent: handleColumnTitleClicked,
-        onAddButtonClicked: handleAddTaskButtonClick,
-        onColumnDeleteButtonClicked: handleColumnDeleteButtonClicked,
+        onColumnTitleEvent: handleClickColumnTitle,
+        onClickAddButton: handleClickAddTaskButton,
+        onClickColumnDeleteButton: handleClickColumnDeleteButton,
       });
-      newColumnView.addEventListener("mouseenter", handleColumnMouseEnter);
+      newColumnView.addEventListener("mouseenter", handleMouseEnterColumn);
       columnListView.appendChild(newColumnView);
       columnViews.push(newColumnView);
     });
 
+    // Update column title
     columnViews.forEach((columnView) => {
       const column = columnOnModel.find((column) => column.id === +columnView.id);
       const columnState = +columnView.id === state.editingColumnId && state.editingTaskId === -1 ? "editing" : "default";
@@ -112,14 +119,15 @@ export default function ColumnController(model = new Model(), rootElement = docu
         column: column,
         count: tasksOnModel.filter((task) => task.columnId === +columnView.id).length,
         state: columnState,
-        onColumnTitleEvent: columnState === "editing" ? handleColumnTitleFocusOut : handleColumnTitleClicked,
-        onAddButtonClicked: handleAddTaskButtonClick,
-        onColumnDeleteButtonClicked: handleColumnDeleteButtonClicked,
+        onColumnTitleEvent: columnState === "editing" ? handleFocusOutColumnTitle : handleClickColumnTitle,
+        onClickAddButton: handleClickAddTaskButton,
+        onClickColumnDeleteButton: handleClickColumnDeleteButton,
       });
 
       columnView.querySelector(".column__title").replaceWith(newColumnView.querySelector(".column__title"));
     });
 
+    // Focus on editing column title
     const editingColumnTitle = rootElement.querySelector(".column__title-edit")?.querySelector(".column__textarea-title");
     if (editingColumnTitle && state.editingTaskId === -1) {
       editingColumnTitle.focus();

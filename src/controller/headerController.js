@@ -2,36 +2,30 @@ import HeaderView from "../view/headerView.js";
 
 export default function HeaderController(model, rootElement) {
   const headerView = HeaderView({
-    onSortButtonClick: handleSortButtonClick,
-    onHistoryButtonClick: handleHistoryButtonClick,
+    onClickSortButton: handleClickSortButton,
+    onClickHistoryButton: handleClickHistoryButton,
   });
 
-  model.addListener(onModelChanged);
   if (rootElement.children.length < 1) {
     rootElement.appendChild(headerView);
   } else if (rootElement.children[0] !== headerView) {
     rootElement.replaceChild(headerView, rootElement.children[0]);
   }
-  render();
 
-  function handleSortButtonClick(event) {
+  // Event Handlers
+
+  function handleClickSortButton(event) {
     event.stopPropagation();
     model.toggleOrder();
   }
 
-  function handleHistoryButtonClick(event) {
+  function handleClickHistoryButton(event) {
     event.stopPropagation();
     model.toggleHistory();
   }
 
-  function render() {}
-
-  function onModelChanged() {
-    render();
-  }
-
   function destroy() {
-    model.removeListener(onModelChanged);
+    model.removeListener(render);
   }
 
   return {

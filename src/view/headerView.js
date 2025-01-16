@@ -1,7 +1,8 @@
-import arrowBoth from "../../public/arrowBoth.js";
-import clock from "../../public/clock.js";
+import icons from "../../asset/icon.js";
 
-export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) {
+import Button from "../component/button.js";
+
+export default function HeaderView({ onClickSortButton, onClickHistoryButton }) {
   const headerElement = document.createElement("header");
   headerElement.classList.add("header");
 
@@ -11,10 +12,10 @@ export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) 
 
   const sortButton = document.createElement("button");
   sortButton.classList.add("header__button--sort");
-  sortButton.addEventListener("click", onSortButtonClick);
+  sortButton.addEventListener("click", onClickSortButton);
 
   const sortButtonIcon = document.createElement("div");
-  sortButtonIcon.innerHTML = arrowBoth;
+  sortButtonIcon.appendChild(icons.arrowBoth());
 
   const sortButtonText = document.createElement("span");
   sortButtonText.textContent = "생성 순";
@@ -22,10 +23,13 @@ export default function HeaderView({ onSortButtonClick, onHistoryButtonClick }) 
   sortButton.appendChild(sortButtonIcon);
   sortButton.appendChild(sortButtonText);
 
-  const historyButton = document.createElement("button");
-  historyButton.classList.add("header__button--history");
-  historyButton.addEventListener("click", onHistoryButtonClick);
-  historyButton.innerHTML = clock;
+  const historyButton = Button({
+    className: ["iconButton"],
+    onClick: onClickHistoryButton,
+    children: [icons.clock()],
+  });
+  historyButton.style.position = "absolute";
+  historyButton.style.right = "80px";
 
   headerElement.appendChild(headerTitle);
   headerElement.appendChild(sortButton);
