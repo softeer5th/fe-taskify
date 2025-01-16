@@ -96,6 +96,7 @@ document.addEventListener("click", ({ target }) => {
       //히스토리 지우기 로직
 
       document.querySelector(".warning-modal").remove();
+
       clearHistory();
     } else if (target.closest(".task-for-delete")) {
       // 카드 지우기 로직
@@ -117,6 +118,7 @@ document.addEventListener("click", ({ target }) => {
         dyingTask.closest(".column").getAttribute("data-column-key"),
         dyingTask.getAttribute("data-timestamp")
       );
+      dyingTask.closest(".column").querySelector(".column-count").textContent--;
       dyingTask.remove();
     }
   }
