@@ -46,6 +46,10 @@ export default class Model {
         order: "latest",
         isHistoryOpen: false,
         mouseOverColumnId: -1,
+        modalState: {
+          state: "",
+          data: {},
+        },
       },
     };
     this.#listeners = [];
@@ -190,8 +194,6 @@ export default class Model {
     if (this.#model.currentPointer > 0) {
       this.#model.currentPointer -= 1;
       this.#notify();
-    } else {
-      return false;
     }
   }
 
@@ -199,8 +201,6 @@ export default class Model {
     if (this.#model.currentPointer < this.#model.history.length - 1) {
       this.#model.currentPointer += 1;
       this.#notify();
-    } else {
-      return false;
     }
   }
 
@@ -208,7 +208,7 @@ export default class Model {
     const currentData = this.getCurrentData();
     const newColumn = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
-      name: addedColumnTitle,
+      title: addedColumnTitle,
     };
     currentData.column.push(newColumn);
     this.#pushHistory(currentData, {
@@ -335,6 +335,42 @@ export default class Model {
   removeAllHistoryLogs() {
     this.#model.history = [{ ...this.#model.history[this.#model.currentPointer], actionLog: "", actionTime: Date.now() }];
     this.#model.currentPointer = 0;
+    this.#notify();
+  }
+
+  isRedoAble() {
+    return this.#model.currentPointer < this.#model.history.length - 1;
+  }
+
+  isUndoAble() {
+    return this.#model.currentPointer > 0;
+  }
+
+  setModalState(state, data) {
+    this.#model.state.modalState = {
+      state,
+      data,
+    };
+    this.#notify();
+  }
+
+  activateModal() {
+    const modalState = this.#model.state.modalState;
+    if (modalState.state === "") {
+      return;
+    }
+    if (modalState.state === "column") {
+      this.removeColumn(modalState.data.columnId);
+    } else if (modalState.state === "task") {
+      this.removeTask(modalState.data.taskId);
+    } else if (modalState.state === "history") {
+      this.removeAllHistoryLogs();
+    }
+
+    this.#model.state.modalState = {
+      state: "",
+      data: {},
+    };
     this.#notify();
   }
 }

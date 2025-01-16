@@ -35,7 +35,7 @@ export default function TaskController(model = new Model(), rootElement = docume
 
     const taskId = +event.target.closest(".task").id;
 
-    model.removeTask(taskId);
+    model.setModalState("task", { taskId });
   }
 
   function handleTaskEditButtonClicked(event) {

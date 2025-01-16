@@ -39,25 +39,29 @@ export default function HistoryController(model = new Model(), rootElement = doc
   function handleRedoButtonClicked(event) {
     event.stopPropagation();
 
-    const redone = model.redo();
-    if (!redone) {
+    if (!model.isRedoAble()) {
       redoButton.animate([{ transform: "translateX(0px)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0px)" }], {
         duration: 150,
         iterations: 2,
       });
+      return;
     }
+
+    model.redo();
   }
 
   function handleUndoButtonClicked(event) {
     event.stopPropagation();
 
-    const undone = model.undo();
-    if (!undone) {
+    if (!model.isUndoAble()) {
       undoButton.animate([{ transform: "translateX(0px)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0px)" }], {
         duration: 150,
         iterations: 2,
       });
+      return;
     }
+
+    model.undo();
   }
 
   function handleHistoryCloseButtonClicked(event) {
@@ -69,7 +73,7 @@ export default function HistoryController(model = new Model(), rootElement = doc
   function handleHistoryDeleteButtonClicked(event) {
     event.stopPropagation();
 
-    model.removeAllHistoryLogs();
+    model.setModalState("history", {});
   }
 
   // Model Event Handlers

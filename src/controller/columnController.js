@@ -50,7 +50,8 @@ export default function ColumnController(model = new Model(), rootElement = docu
   function handleColumnDeleteButtonClicked(event) {
     event.stopPropagation();
     const columnId = +event.target.closest(".column").id;
-    model.removeColumn(columnId);
+
+    model.setModalState("column", { columnId });
   }
 
   function handleColumnMouseEnter(event) {
