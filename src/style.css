@@ -710,16 +710,6 @@ textarea {
     justify-content: center;
 }
 
-.modal__button--close {
-    background-color: var(--grayscale-100);
-    color: var(--grayscale-600);
-}
-
-.modal__button--active {
-    background-color: var(--accent-red);
-    color: var(--grayscale-50);
-}
-
 .modal__background {
     position: fixed;
     width: 100%;

@@ -1,3 +1,5 @@
+import Button from "../component/button.js";
+
 export default function ModalView({ modalText, closeText, activeText, onClickModalCloseButton, onClickModalActiveButton }) {
   const modalBackgroundElement = document.createElement("div");
   modalBackgroundElement.classList.add("modal__background");
@@ -13,17 +15,17 @@ export default function ModalView({ modalText, closeText, activeText, onClickMod
   const modalButtonContainer = document.createElement("div");
   modalButtonContainer.classList.add("modal__button-container");
 
-  const modalCloseButton = document.createElement("button");
-  modalCloseButton.classList.add("modal__button");
-  modalCloseButton.classList.add("modal__button--close");
-  modalCloseButton.textContent = closeText;
-  modalCloseButton.addEventListener("click", onClickModalCloseButton);
+  const modalCloseButton = Button({
+    className: ["button", "button-alt"],
+    onClick: onClickModalCloseButton,
+    children: [closeText],
+  });
 
-  const modalActiveButton = document.createElement("button");
-  modalActiveButton.classList.add("modal__button");
-  modalActiveButton.classList.add("modal__button--active");
-  modalActiveButton.textContent = activeText;
-  modalActiveButton.addEventListener("click", onClickModalActiveButton);
+  const modalActiveButton = Button({
+    className: ["button", "button-danger"],
+    onClick: onClickModalActiveButton,
+    children: [activeText],
+  });
 
   modalButtonContainer.appendChild(modalCloseButton);
   modalButtonContainer.appendChild(modalActiveButton);

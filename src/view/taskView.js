@@ -1,4 +1,5 @@
 import icons from "../../public/icon.js";
+import Button from "../component/button.js";
 
 export default function TaskView({ task, state, onFirstButtonClicked, onSecondButtonClicked }) {
   const taskElement = document.createElement("div");
@@ -48,13 +49,17 @@ export default function TaskView({ task, state, onFirstButtonClicked, onSecondBu
     const editorButton = document.createElement("div");
     editorButton.classList.add("task__editorButton");
 
-    const cancelButton = document.createElement("button");
-    cancelButton.textContent = "취소";
-    cancelButton.addEventListener("click", onFirstButtonClicked);
+    const cancelButton = Button({
+      className: ["button", "button--alt"],
+      onClick: onFirstButtonClicked,
+      children: ["취소"],
+    });
 
-    const saveButton = document.createElement("button");
-    saveButton.textContent = "등록";
-    saveButton.addEventListener("click", onSecondButtonClicked);
+    const saveButton = Button({
+      className: ["button"],
+      onClick: onSecondButtonClicked,
+      children: ["등록"],
+    });
     saveButton.disabled = task.name.length === 0 || task.description.length === 0;
 
     editorButton.appendChild(cancelButton);
