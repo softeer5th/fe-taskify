@@ -24,7 +24,7 @@ export const ColumnTitle = ({
   const inputRef = useRef(null);
   useClickOutside(inputRef, () => {
     setClicked(false);
-    setColumnTitle(inputRef.current.value);
+    setColumnTitle(inputRef.current.value || title);
   });
 
   const handleDoubleClick = () => {
@@ -34,7 +34,7 @@ export const ColumnTitle = ({
   const Title = () => {
     const MAX_LENGTH = 50;
 
-    if (clicked) return parser`<input ref="${inputRef}" class="${styles["title-input"]} ${typos.display.medium[14]}" maxLength=${MAX_LENGTH} />`;
+    if (clicked) return parser`<input ref="${inputRef}" class="${styles["title-input"]} ${typos.display.medium[14]}" value=${columnTitle} maxLength=${MAX_LENGTH} />`;
     return parser`<span onDblclick=${handleDoubleClick} class="${typos.display.bold[16]} ${styles.title}">${columnTitle}</span>`;
   };
 
