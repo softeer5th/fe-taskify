@@ -1,7 +1,5 @@
-import { Model } from "./model.js";
-import { HeaderController } from "./controller/headerController.js";
-import { ColumnListController } from "./controller/columnListController.js";
-import { TaskView } from "./view/taskView.js";
+import Model from "./model.js";
+import MainController from "./controller/mainController.js";
 
 const mockData = {
   column: [
@@ -23,7 +21,7 @@ const mockData = {
       id: 1,
       name: "자바스크립트 공부",
       description: "자바스크립트 공부를 하면서 코드스피츠에 참석하기",
-      createdAt: Date(2021, 8, 1),
+      createdAt: new Date(2021, 8, 1),
       device: "web",
       columnId: 1,
     },
@@ -31,7 +29,7 @@ const mockData = {
       id: 2,
       name: "코드스피츠 참석",
       description: "* 8/1 코드스피츠 참석\n* 8/2 코드스피츠 참석",
-      createdAt: Date(2021, 8, 2),
+      createdAt: new Date(2021, 8, 2),
       device: "web",
       columnId: 2,
     },
@@ -39,9 +37,17 @@ const mockData = {
       id: 3,
       name: "TIL 작성",
       description: "Today I Learned 작성하기",
-      createdAt: Date(2021, 8, 3),
+      createdAt: new Date(2021, 8, 3),
       device: "web",
       columnId: 3,
+    },
+    {
+      id: 4,
+      name: "알고리즘 공부",
+      description: "알고리즘 문제 풀기",
+      createdAt: new Date(2021, 8, 4),
+      device: "web",
+      columnId: 1,
     },
   ],
   user: {
@@ -50,65 +56,7 @@ const mockData = {
   },
 };
 
-const model = Model();
+const model = new Model();
 model.setInitData(mockData);
 const rootElement = document.getElementById("root");
-HeaderController(model, rootElement);
-ColumnListController(model, rootElement);
-
-function unselectTask(event) {
-  event.stopPropagation();
-  const state = model.getCurrentDataState().state;
-  if (state.movingTaskId !== -1 && state.mouseOverColumnId !== -1) {
-    model.moveTask(state.movingTaskId, state.mouseOverColumnId);
-    console.log("Task", state.movingTaskId, "is moved to column", state.mouseOverColumnId);
-  }
-  model.setMovingTaskId(-1);
-}
-
-window.addEventListener("mouseup", unselectTask);
-
-const ghostTask = TaskView({
-  task: {
-    id: -1,
-    name: "",
-    description: "",
-    createdAt: 0,
-    device: "web",
-    columnId: -1,
-  },
-  state: "default",
-});
-ghostTask.classList.add("task--drag");
-ghostTask.style.position = "absolute";
-ghostTask.style.opacity = 0;
-ghostTask.style.pointerEvents = "none";
-ghostTask.style.zIndex = 1000;
-ghostTask.style.transform = "translate(-50%, -50%)";
-rootElement.appendChild(ghostTask);
-
-function moveGhostTask(event) {
-  event.stopPropagation();
-  event.preventDefault();
-  const state = model.getCurrentDataState().state;
-  const task = model.getCurrentDataState().data.task.find((task) => task.id === state.movingTaskId);
-  if (task) {
-    ghostTask.innerHTML = TaskView({
-      task: task,
-      state: "default",
-      onFirstButtonClicked: () => {},
-      onSecondButtonClicked: () => {},
-    }).innerHTML;
-  }
-  if (state.movingTaskId !== -1) {
-    ghostTask.style.top = event.clientY + "px";
-    ghostTask.style.left = event.clientX + "px";
-    ghostTask.style.opacity = 1;
-  } else {
-    ghostTask.style.opacity = 0;
-  }
-}
-
-window.addEventListener("mousemove", moveGhostTask);
-window.addEventListener("mouseup", moveGhostTask);
-window.addEventListener("mousedown", moveGhostTask);
+const mainController = MainController(model, rootElement);
