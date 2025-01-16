@@ -389,21 +389,22 @@ textarea {
 }
 
 .task__content-title {
+    width: 100%;
     font-size: 14px;
     font-weight: 700;
     color: var(--grayscale-900);
-    text-wrap: wrap;
     text-align: left;
-
+    overflow-wrap: anywhere;
 }
 
 .task__content-description {
+    width: 100%;
     font-size: 14px;
     font-weight: 500;
     color: var(--grayscale-600);
     white-space: pre-line;
-    text-wrap: wrap;
     text-align: left;
+    overflow-wrap: anywhere;
 }
 
 .task__content-device {
