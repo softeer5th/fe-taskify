@@ -42,17 +42,21 @@ export default function ColumnComponent() {
         handleDrop,
         handleDragEnter,
         handleDragLeave,
-        handleBlur
+        handleBlur,
+        handleContextMenu
     ) {
         const [addButton, removeButton] =
             columnElement.getElementsByTagName("button");
         const columnIdx = Number(columnElement.getAttribute("index"));
         const formContainer =
             columnElement.getElementsByClassName("card_add")[0];
+        
         addButton.addEventListener("click", () =>
             handleAdd(formContainer, columnIdx)
         );
+
         const listElement = columnElement.querySelector(".card_list");
+        
         listElement.addEventListener("dragover", (e) => e.preventDefault());
         listElement.addEventListener("drop", handleDrop);
         listElement.addEventListener("dragenter", handleDragEnter);
@@ -60,6 +64,8 @@ export default function ColumnComponent() {
 
         const titleElement = columnElement.querySelector('.column_title_container');
         const editElement = renderEditForm(titleElement, (title)=>handleBlur(columnIdx, title))
+        
+        titleElement.addEventListener('contextmenu', handleContextMenu)
         titleElement.addEventListener('dblclick', ()=>{
             titleElement.parentNode.replaceChild(editElement, titleElement);
             editElement.focus();
@@ -90,10 +96,15 @@ export default function ColumnComponent() {
         return inputElement;
     }
 
+    function remove(columnElement) {
+        columnElement.remove()
+    }
+
     return {
         render,
         addEventListener,
         rerenderHeader,
+        remove,
     };
 }
 

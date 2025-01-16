@@ -99,6 +99,7 @@ export default function FabController(bodyElement, state, logStore) {
     function renderInit() {
         const container = document.createElement("div");
         container.setAttribute("id", "fab_container");
+
         const redoElement = fabComponent.render("redo", "surface-default");
         fabComponent.addListener(redoElement, handleRedo);
         container.appendChild(redoElement);
@@ -106,7 +107,18 @@ export default function FabController(bodyElement, state, logStore) {
         const undoElement = fabComponent.render("undo", "surface-default");
         fabComponent.addListener(undoElement, handleUndo);
         container.appendChild(undoElement);
+
+        const addColumnElement = fabComponent.render("plus_white", "surface-brand");
+        fabComponent.addListener(addColumnElement, handleAddColumn);
+        container.appendChild(addColumnElement);
+
         bodyElement.appendChild(container);
+    }
+
+    function handleAddColumn() {
+        const title = prompt('new Column title?');
+
+        columnController.addColumn(title);
     }
 
     function flip(input) {
