@@ -2,13 +2,20 @@ import { renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
 import { addListener } from "./event_listeners.js";
-import { getIsDragging, saveData, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+import { addHistory, getIsDragging, saveData, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+import { makeHistoryObj } from "./history.js";
+import { getColumnTitle, getColumnTitleByCardId } from "./column_action.js";
 
 let gapX = 0;
 let gapY = 0;
 let draggingCardId = 0;
 
-// 입력창 확인 후 버튼 활성화 결정
+export function getCardTitle(cardId) {
+    let card = document.getElementById(`card-id${cardId}`);
+    return card.querySelector('.card-title').textContent;
+}
+
+// 입력창 내용있어야 버튼 들어오도록 감시
 export function checkCardInput() {
     const titleInput = document.getElementById('title-input');
     const titleValue = titleInput.value.trim();
@@ -34,6 +41,7 @@ export async function confirmAddCard(columnId){
     const contentValue = contentInput.value.trim();
     const newCardId = createNewId();
     await renderTemplate('./html/card_template.html', 'card-template', 'card-list'+columnId, {cardId:newCardId, title:titleValue, content:contentValue,});
+    addHistory(makeHistoryObj("등록", titleValue, getColumnTitle(columnId)));
     saveData();
 }
 
@@ -55,6 +63,7 @@ export function delCard(cardId) {
         if (event.type === 'click') {
             hideAlert();
             if (card) {
+                addHistory(makeHistoryObj("삭제", getCardTitle(cardId), getColumnTitleByCardId(cardId)));
                 card.remove();
                 saveData();
             }
@@ -129,6 +138,7 @@ async function confirmEdit(card, cardId){
     const contentInput = card.querySelector('#content-input');
     const contentValue = contentInput.value.trim();
     let columnId = card.parentElement.id;
+    addHistory(makeHistoryObj("변경", getCardTitle(cardId)));
     card.remove();
     await renderTemplate('./html/card_template.html', 'card-template', columnId, {cardId:cardId, title:titleValue, content:contentValue,});
     saveData();

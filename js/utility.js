@@ -11,6 +11,21 @@ export function createNewId () {
     return formatted;
 }
 
+export function calTimePassed(date1, date2) {
+    const diffMs = Math.abs(date1 - date2);
+    const diffMinutes = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMinutes < 60) {
+        return `${diffMinutes}분 전`; // 1시간 이내
+    } else if (diffHours < 24) {
+        return `${diffHours}시간 전`; // 1일 이내
+    } else {
+        return `${diffDays}일 전`; // 1일 이후
+    }
+}
+
 function cardToObj(card) {
     let id = card.id.slice(7);
     let title = card.querySelector('.card-title').textContent;

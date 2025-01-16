@@ -7,9 +7,12 @@ let isOrderChanging = false;
 let isColumnNameChanging = false;
 let isCardEditing = false;
 let isDragging = false;
+
 let todoList = Array();
 let isFabOpen = false;
 let memoryIndex = maxMemInd;
+
+let historyList = Array();
 
 export function getClone () {
     return clone;
@@ -192,4 +195,12 @@ export async function resetTodo() {
         await renderColumn(initData[i],i);
     }
     saveData();
+}
+
+export function addHistory(historyObj) {
+    historyList.push(historyObj);
+}
+
+export function getHistory() {
+    return historyList;
 }

@@ -38,25 +38,19 @@ export function closeFab() {
 
 export function undo() {
     let curMemInd = getMemInd();
-    console.log(getMemInd());
     let newMemInd = decMemInd();
-    console.log(getMemInd());
     if (curMemInd!==newMemInd
         && localStorage.getItem(`content${newMemInd}`)!=="null"
         && localStorage.getItem(`content${newMemInd}`)!==null) {
-        console.log(localStorage.getItem(`content${newMemInd}`)); 
         loadData(false);
     } else if (curMemInd!==newMemInd) {
         incMemInd();
     }
-    console.log(getMemInd());
 }
 
 export function redo() {
     let curMemInd = getMemInd();
-    console.log(getMemInd());
     let newMemInd = incMemInd();
-    console.log(getMemInd());
     if (curMemInd!==newMemInd
         && localStorage.getItem(`content${newMemInd}`) !=="null" 
         && localStorage.getItem(`content${newMemInd}`)!==null) {
@@ -65,5 +59,4 @@ export function redo() {
     } else if (curMemInd!==newMemInd) {
         decMemInd();
     }
-    console.log(getMemInd());
 }

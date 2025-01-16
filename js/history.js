@@ -1,7 +1,9 @@
+import { renderTemplate } from "./main.js";
+import { getHistory } from "./store.js";
+
 const openHistoryButton = document.getElementById('history-button');
 const closeHistoryButton = document.querySelector('.close-history');
 const dialog = document.getElementById('history-dialog');
-
 
 openHistoryButton.addEventListener('click', (event) => {showHistory()});
 closeHistoryButton.addEventListener('click', (event)=> {
@@ -22,8 +24,31 @@ function showHistory() {
 
     dialog.style.left = `${dialogX}px`;
     dialog.style.top = `${dialogY}px`;
+    console.log(getHistory());
 }
 
-function addHistory() {
-    
+/**
+ * 
+ * @param {'등록', '변경', '이동', '삭제'} actionType 
+ * @param {string} subject 
+ * @param {string} from 
+ * @param {string} to 
+ * @returns 
+ */
+export function makeHistoryObj(actionType, subject, from, to) {
+    return {
+        "action-type": actionType,
+        "subject": subject,
+        "from": from,
+        "to": to,
+        "time":new Date()
+    };
+}
+
+
+async function renderHistory(historyObj) {
+    //templateFile, templateId, targetId, props
+    if (actionType==="등록") {
+        await renderTemplate('./html/history_template.html', 'history-template', 'history-dialog', historyObj);
+    }
 }

@@ -5,6 +5,16 @@ import { getIsOrderChanging, saveData, toggleIsColumnNameChanging, toggleIsOrder
 
 let sortingOrder = 1;
 
+export function getColumnTitle (columnId) {
+    let column = document.getElementById(`column-id${columnId}`);
+    return column.querySelector('.column-name').textContent;
+}
+
+export function getColumnTitleByCardId (cardId) {
+    let column = document.getElementById(`card-id${cardId}`).closest('.column-id');
+    return column.querySelector('.column-name').textContent;
+}
+
 export function addCard(id) {
     const parentElement = document.querySelector('#column-id'+id);
     const childElement = parentElement.querySelector("#card-list"+id);
