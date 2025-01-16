@@ -8,18 +8,9 @@ export function Column({ column, setState }) {
   const columnTemplate = document.createElement("div");
   columnTemplate.className = "column-template";
   columnTemplate.appendChild(_columnHeader);
-
-  if (cards.length === 0) {
-    return columnTemplate;
-  }
-
-  const cardList = document.createElement("ol");
-  cardList.id = `list-${column.id}`;
-  cardList.className = "column-card-list";
-  cardList.appendChild(CardList({
+  const cardList = CardList({
     cards, columnId: id, setState
-  }));
-
+  })
 
   columnTemplate.appendChild(cardList);
 

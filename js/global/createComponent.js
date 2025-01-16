@@ -1,7 +1,8 @@
-export function createComponent({ initialState, render, props }) {
+export function createComponent({ initialState, render, props, className = "" }) {
   let state = initialState || null;
   const subscribers = [];
   const rootElement = document.createElement("div");
+  if (className !== "") rootElement.className = className;
 
   const setState = (newState) => {
     state = typeof newState === "function" ? newState(state) : newState;

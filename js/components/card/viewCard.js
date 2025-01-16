@@ -3,7 +3,8 @@ import { createComponent } from "../../global/createComponent.js";
 import { CardViewButtons } from "./buttons/cardViewButtons.js";
 import { CardViewText } from "./text/cardViewText.js";
 
-export const ViewCard = (card, onCardDelete, onCardUpdate) => {
+export const ViewCard = (card, columnId, onCardDelete, onCardUpdate) => {
+
     return createComponent({
         initialState: {
             modalVisible: false,
@@ -12,6 +13,8 @@ export const ViewCard = (card, onCardDelete, onCardUpdate) => {
             const fragment = document.createDocumentFragment();
             const cardContainer = document.createElement("div");
             cardContainer.className = "card-view-template";
+            cardContainer.draggable = true;
+            cardContainer.id = `${columnId}-${card.id}`;
 
             cardContainer.addEventListener("click", e => {
                 const button = e.target.closest("button");
@@ -28,6 +31,23 @@ export const ViewCard = (card, onCardDelete, onCardUpdate) => {
                     }
                 }
             })
+            cardContainer.addEventListener("dragstart", (event) => {
+                const cardElement = event.target.closest(".card-view");
+                if (cardElement) {
+                    console.log(`dragstart: ${columnId}-${card.id}`);
+                    cardElement.classList.add("dragging");
+                    cardElement.style.opacity = "0.5";
+                    event.dataTransfer.setData("text", `${columnId}-${card.id}`);
+                }
+            });
+
+            cardContainer.addEventListener("dragend", (event) => {
+                const cardElement = event.target.closest(".card-view");
+                if (cardElement) {
+                    cardElement.style.opacity = "1";
+                    cardElement.classList.remove("dragging");
+                }
+            });
 
             cardContainer.appendChild(CardViewText(card));
             cardContainer.appendChild(CardViewButtons());
@@ -40,7 +60,8 @@ export const ViewCard = (card, onCardDelete, onCardUpdate) => {
             fragment.appendChild(cardContainer);
 
             return fragment;
-        }
+        },
+        className: "card-view"
     })
 
 }

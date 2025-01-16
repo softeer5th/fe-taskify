@@ -3,14 +3,16 @@ import { ViewCard } from "./viewCard.js";
 
 export const Card = ({
     card,
-    onCardDelete,
-    onCardUpdate
+    columnId,
+    onCardDelete = null,
+    onCardUpdate = null
 }) => {
+
     const { readOnly } = card;
 
     if (readOnly) {
         // 카드 조회
-        return ViewCard(card, onCardDelete, onCardUpdate);
+        return ViewCard(card, columnId, onCardDelete, onCardUpdate);
     }
 
     // 카드 생성/편집
