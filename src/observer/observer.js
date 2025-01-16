@@ -26,11 +26,11 @@ export class TaskModel extends Observable{
     }
 
     deleteTask(taskId){
-        this.tasks =this.tasks.filter(item => item.id != taskId);
+        this.tasks =this.tasks.filter(item => item.id !== taskId);
         this.notify(this.tasks);
     }
     editTask(task){
-        this.tasks = this.tasks.map(item =>item.id == task.id ? { ...item, ...task } : item);
+        this.tasks = this.tasks.map(item =>item.id === task.id ? { ...item, ...task } : item);
         this.notify(this.tasks); 
     }
 
