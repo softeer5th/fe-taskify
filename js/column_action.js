@@ -28,14 +28,18 @@ export function addCard(id) {
     `;
 
     addListener(newDiv.querySelector('.confirm-button'), (event)=>{
-        confirmAddCard(id);
-        let curCard = childElement.querySelector('.new-card');
-        curCard.remove();
+        if (event.type === 'click') {
+            confirmAddCard(id);
+            let curCard = childElement.querySelector('.new-card');
+            curCard.remove();
+        }
     });
 
     addListener(newDiv.querySelector('.cancel-button'),(event)=>{
-        let curCard = childElement.querySelector('.new-card');
-        curCard.remove();
+        if (event.type === 'click') {
+            let curCard = childElement.querySelector('.new-card');
+            curCard.remove();
+        }
     });
 
     newDiv.querySelector('#title-input').addEventListener('input', (event)=>{
@@ -121,6 +125,8 @@ export function toggleSortOrder() {
     }
 }
 
+
+// 카드 정렬
 function sortColumns() {
     let columns = document.getElementById("column-area").children;
     [...columns].forEach((column)=>{

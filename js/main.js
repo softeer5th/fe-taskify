@@ -64,7 +64,9 @@ function setEventForColumn(props) {
     const parentElement = document.querySelector('#column-id'+props.columnId);
     if (!props.isDefault) {
         addListener(parentElement.querySelector('#delete-column-button'), (event) => {
-            delColumn(props.columnId);
+            if (event.type === 'click') {
+                delColumn(props.columnId);
+            }
         });
     }
     addListener(parentElement.querySelector('#add-card-button'), (event)=>{

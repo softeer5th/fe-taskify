@@ -1,7 +1,8 @@
 import { toggleSortOrder,completeColumnName,  } from "./column_action.js";
 import { moveCard, finishDragCard } from "./card_action.js";
 import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, saveData, setClone } from "./store.js";
-import { renderTemplate } from "./main.js";
+import { addColumn, closeFab, openFab } from "./fab_action.js";
+
 
 const eventListeners = new WeakMap();
 
@@ -54,6 +55,15 @@ document.addEventListener('mousemove', (event) => {
     }
 });
 
+document.addEventListener('mouseover', (event) => {
+    triggerListeners(event, event.target)
+});
+
+
+document.addEventListener('mouseout', (event) => {
+    triggerListeners(event, event.target)
+});
+
 document.addEventListener('mouseup', (event) => {
     if (getIsDragging()) {
         finishDragCard(getClone());
@@ -81,10 +91,21 @@ addListener(document.querySelector('.chip'), (event) =>{
     }
 });
 
-addListener(document.querySelector('.fab'), async (event)=>{
+
+addListener(document.querySelector('.fab-area'), async (event)=>{
+    if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
+    }
+})
+
+addListener(document.querySelector('.add-column'), async (event)=>{
     if (event.type === "click") {
-        let newColumnId = document.querySelector("#column-area").childElementCount;
-        await renderTemplate('./html/column_template.html', 'column-template', 'column-area', {columnId:newColumnId, title:"제목없음"});
-        saveData();
+        addColumn();
+    } else if (event.type === "mouseover") {
+        openFab();
+    } else if (event.type === "mouseout") {
+        closeFab();
     }
 })

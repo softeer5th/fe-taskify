@@ -47,13 +47,17 @@ export function delCard(cardId) {
     let card = document.querySelector("#card-id"+cardId);
     delCardAlert.querySelector('.delObj').textContent = "선택한 카드를 삭제할까요?";
     addListener(delCardAlert.querySelector('#cancel-del-card-button'),(event)=>{
-        hideAlert();
+        if (event.type === 'click') {
+            hideAlert();
+        }
     });
     addListener(delCardAlert.querySelector('#confirm-del-card-button'),(event)=>{
-        hideAlert();
-        if (card) {
-            card.remove();
-            saveData();
+        if (event.type === 'click') {
+            hideAlert();
+            if (card) {
+                card.remove();
+                saveData();
+            }
         }
     });
 }
@@ -96,13 +100,17 @@ export function editCard(cardId) {
 
 
     addListener(newActionDiv.querySelector('.confirm-button'), async (event)=>{
-        toggleIsCardEditing();
-        await confirmEdit(card,cardId)
+        if (event.type === 'click') {
+            toggleIsCardEditing();
+            await confirmEdit(card,cardId)
+        }
     });
 
     addListener(newActionDiv.querySelector('.cancel-button'),(event)=>{
-        toggleIsCardEditing();
-        cancelEdit(card,tempMemory);
+        if (event.type === 'click') {
+            toggleIsCardEditing();
+            cancelEdit(card,tempMemory);
+        }
     });
     
     newInfoDiv.querySelector('#title-input').addEventListener('input', (event)=>{
@@ -137,6 +145,7 @@ function cancelEdit(card, tempMemory){
     });
 }
 
+// 카드 이동 시작
 export function startDragCard(event, original, clone, cardId) {
     toggleIsDragging();
     const childElement = document.querySelector("#card-id"+cardId);
@@ -167,6 +176,7 @@ export function startDragCard(event, original, clone, cardId) {
     childElement.remove();
 }
 
+// 카드 이동
 export function moveCard(event, clone) {
     if (!getIsDragging() || !clone) return;
 
@@ -174,6 +184,7 @@ export function moveCard(event, clone) {
     clone.style.top = `${event.clientY-gapY}px`;
 }
 
+// 카드 예정 자리 이동
 export function moveCardIllusion(event, newParent, clone) {
     if (!getIsDragging() || !clone) return;
     const columnArea = document.getElementById("column-area");
@@ -201,6 +212,7 @@ export function moveCardIllusion(event, newParent, clone) {
     }
 }
 
+// 카드 이동 종료
 export function finishDragCard(clone) {
     if (!getIsDragging() || !clone) return ;
 

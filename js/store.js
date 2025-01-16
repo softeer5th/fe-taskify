@@ -7,6 +7,7 @@ let isColumnNameChanging = false;
 let isCardEditing = false;
 let isDragging = false;
 let todoList = Array();
+let isFabOpen = false;
 
 export function getClone () {
     return clone;
@@ -52,13 +53,20 @@ export function toggleIsDragging () {
     isDragging = !isDragging;
 }
 
+export function getIsFabOpen () {
+    return isFabOpen;
+}
+
+export function toggleIsFabOpen() {
+    isFabOpen = !isFabOpen;
+}
+
 export function saveData() {
     todoList = todoToObj();
     let todoJson = todoToJson(todoList);
     if (todoJson!==localStorage.getItem('content5')) {
         moveBfData();
         localStorage.setItem('content5', todoJson);
-        console.log("SAVE!!!!");
     }
 }
 
@@ -73,7 +81,6 @@ function moveBfData() {
 
 export function loadData() {
     todoList = todoFromJson(localStorage.getItem('content5')).todo;
-    console.log("LOAD!!!!");
     refreshScreen(todoList)
 }
 

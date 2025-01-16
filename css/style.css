@@ -40,9 +40,9 @@ main::after {
     position: absolute;
     right: 0;
     top: 0;
-    width: 30px;
+    width: 40px;
     height: 100%;
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent);
+    background: linear-gradient(to left, #F7F7FC, transparent);
 }
 
 .hidden::after{
@@ -62,6 +62,7 @@ main::after {
 }
 
 #sort-icon {
+    cursor: pointer;
     margin-left: 2px;
 }
 
@@ -75,6 +76,7 @@ main::after {
 header .icon-button {
     margin: 0px 10px;
     color: #3b3b3b;
+    cursor: pointer;
 }
 
 ul {
@@ -135,6 +137,7 @@ ul {
 
 .column-header-right .material-icons {
     color: #A0A3BD;
+    cursor: pointer;
 }
 
 #delete-cards-button:hover {
@@ -151,23 +154,52 @@ ul {
     border-radius: 5px;
 }
 
-.fab {
+.fab-area {
     position: fixed;
-    bottom: 50px;
     right: 50px;
+    bottom: 50px;
     width: 56px;
     height: 56px;
-    background-color: #007AFF;
-    color: white;
+}
+
+.fab {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: bottom 0.3s ease;
 }
 
+.add-column {
+    background-color: #007AFF;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+
+.undo-redo {
+    background-color: white;
+    color: black;
+}
+
+.undo-redo .material-icons{
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.undo {
+    z-index: 2;
+}
+
+.redo {
+    z-index: 1;
+}
 
 .modal {
     display: none;
