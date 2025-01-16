@@ -25,7 +25,7 @@ export default function FabController(bodyElement, state, logStore) {
         switch(type) {
             case "ADD":
                 state.addTask(columnIdx, task, task.taskId);
-                
+            
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
             case "REMOVE":
@@ -69,7 +69,7 @@ export default function FabController(bodyElement, state, logStore) {
         switch(flippedType) {   
             case "ADD":
                 state.addTask(columnIdx, task, task.taskId);
-                
+
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
             case "REMOVE":

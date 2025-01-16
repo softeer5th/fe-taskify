@@ -4,6 +4,7 @@ class LogStore extends Observable {
     #logId;
     #logs;
     #logPointer;
+
     constructor() {
         super();
         this.#logs = [];
@@ -33,6 +34,7 @@ class LogStore extends Observable {
 
     undo() {
         if(this.#logPointer >= this.#logs.length || this.#logPointer > 4) return undefined;
+
         const index = this.#logs.length -1 - this.#logPointer;
         this.#logPointer++;
         return this.#getCurrentLog(index);
@@ -40,6 +42,7 @@ class LogStore extends Observable {
 
     redo() {
         if(this.#logPointer === 0 ) return undefined;
+      
         this.#logPointer--;
         const index = this.#logs.length -1 - this.#logPointer;
         return this.#getCurrentLog(index);
