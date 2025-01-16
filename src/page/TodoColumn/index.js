@@ -9,39 +9,51 @@ import styles from "./todoColumn.module.js";
 /**
  *
  * @param {object} props - Todo 컬럼의 속성.
- * @param {string} props.title - Todo 컬럼의 제목.
+ * @param {number} props.id - Todo 컬럼의 식별자.
+ * @param {object[]} props.todoStore - Todo 저장소.
+ * @param {string} props.name - Todo 컬럼의 이름.
  * @param {Function} props.onClickDel - Todo 컬럼 삭제 버튼 클릭 시 실행할 함수.
  * @returns {VDOM} - Todo 컬럼을 나타내는 VDOM.
  */
-export const TodoColumn = ({ title, onClickDel }) => {
+export const TodoColumn = ({
+  id: columnId, todoStore, name, onClickDel,
+}) => {
   const [todos, setTodos] = useState([]);
   const [cardType, setCardType] = useState("add-edit");
   const [todoFlag, setTodoFlag] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
 
-  const createTodo = (id) => {
-    const newTodo = { id };
-    setTodos([...todos, newTodo]);
+  const createTodo = () => {
+    const newTodoId = todoStore.addTodo({ columnId });
+    setTodos([...todos, newTodoId]);
     setTodoFlag(true);
+  };
+
+  const deleteTodo = (id) => {
+    const deletedTodos = todoStore.removeTodo({
+      columnId,
+      todoId: id,
+    });
+    setTodos(deletedTodos);
   };
 
   const handleClickToggleTodo = () => {
     if (!todoFlag) {
-      createTodo(new Date().getTime());
+      createTodo();
       return;
     }
-
-    todos.pop();
-    setTodos([...todos]);
+    const id = todos.pop();
+    deleteTodo(id);
     setTodoFlag(false);
   };
 
   const handleClickDeleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    deleteTodo(id);
   };
 
-  const TodoItem = (todo) => parser`<li key=${todo.id}>
+  const TodoItem = (todo) => parser`<li key=${todo}>
   ${Card({
+    id: todo,
     type: cardType,
     onClickEditBtn() {
       setCardType("add-edit");
@@ -54,7 +66,7 @@ export const TodoColumn = ({ title, onClickDel }) => {
       setTodoFlag(false);
     },
     onClickCancelBtn() {
-      handleClickDeleteTodo(todo.id);
+      handleClickDeleteTodo(todo);
     },
   })}
   ${openAlert && Alert({
@@ -64,7 +76,7 @@ export const TodoColumn = ({ title, onClickDel }) => {
       setOpenAlert(false);
     },
     rightOnClick() {
-      handleClickDeleteTodo(todo.id);
+      handleClickDeleteTodo(todo);
     },
   })} 
 </li>`;
@@ -72,7 +84,7 @@ export const TodoColumn = ({ title, onClickDel }) => {
   return parser`
         <div class="${styles.container}">
             ${ColumnTitle({
-    title,
+    title: name,
     count: todos.length,
     onClickPlus: handleClickToggleTodo,
     onClickDel,
