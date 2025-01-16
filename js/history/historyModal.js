@@ -1,5 +1,5 @@
-import { historyObserver } from './historyObserver.js';
-import { getHistory } from '../../utils/storage/historyManager.js';
+import { historyObserver } from "./historyObserver.js";
+import { getHistory } from "../../utils/storage/historyManager.js";
 
 export const showHistoryModal = () => {
   const modal = document.querySelector(".history-modal");
@@ -54,32 +54,35 @@ const updateHistoryList = (history) => {
   history.sort((a, b) => b.timestamp - a.timestamp);
 
   if (historyList) {
-    historyList.innerHTML = history.map(item => {
-      const column = document.querySelector(`.column[data-column-key="${item.column}"]`)
-      .querySelector(".column-title").innerText;
-      let columnTogo = "";
-      if (item.columnTogo !== "empty") {
-        columnTogo = document.querySelector(`.column[data-column-key="${item.columnTogo}"]`)
-        .querySelector(".column-title").innerText;
-      }
+    historyList.innerHTML = history
+      .map((item) => {
+        const column = document
+          .querySelector(`.column[data-column-key="${item.column}"]`)
+          .querySelector(".column-title").innerText;
+        let columnTogo = "";
+        if (item.columnTogo !== "empty") {
+          columnTogo = document
+            .querySelector(`.column[data-column-key="${item.columnTogo}"]`)
+            .querySelector(".column-title").innerText;
+        }
 
-      let actionText = "";
-      switch (item.functionType) {
-        case "ADD":
-          actionText = `<strong>${item.title}</strong> 을(를) <strong>${column}</strong> 에 <strong>추가</strong> 하였습니다.`; //하고 있던거 컬럼 제목 추가 및 강조 텍스트
-          break;
-        case "DELETE":
-          actionText = `<strong>${item.title}</strong> 을(를) <strong>${column}</strong> 에서 <strong>삭제</strong> 하였습니다.`;
-          break;
-        case "EDIT":
-          actionText = `<storng>${item.title}</strong> 을(를) <strong>수정</strong> 하였습니다.`;
-          break;
-        case "MOVE":
-          actionText = `<strong>${item.title}</strong> 을(를) <strong>${column}</strong>에서 <strong>${columnTogo}</strong>로 <strong>이동</strong> 하였습니다.`;
-          break;
-      }
+        let actionText = "";
+        switch (item.functionType) {
+          case "ADD":
+            actionText = `<strong>${item.title}</strong> 을(를) <strong>${column}</strong> 에 <strong>추가</strong> 하였습니다.`; //하고 있던거 컬럼 제목 추가 및 강조 텍스트
+            break;
+          case "DELETE":
+            actionText = `<strong>${item.title}</strong> 을(를) <strong>${column}</strong> 에서 <strong>삭제</strong> 하였습니다.`;
+            break;
+          case "EDIT":
+            actionText = `<storng>${item.title}</strong> 을(를) <strong>수정</strong> 하였습니다.`;
+            break;
+          case "MOVE":
+            actionText = `<strong>${item.title}</strong> 을(를) <strong>${column}</strong>에서 <strong>${columnTogo}</strong>로 <strong>이동</strong> 하였습니다.`;
+            break;
+        }
 
-      return `
+        return `
         <div class="history">
           <div class="history-profile-icon">
             <img src="../assets/icon/profile-icon.png" alt="profile" style="border-radius:100px">
@@ -89,11 +92,14 @@ const updateHistoryList = (history) => {
             <div class="history-content display-Medium14">
               ${actionText}
             </div>
-            <div class="history-timestamp display-Medium12">${getRelativeTime(item.timestamp)}</div>
+            <div class="history-timestamp display-Medium12">${getRelativeTime(
+              item.timestamp
+            )}</div>
           </div>
         </div>
       `;
-    }).join('');
+      })
+      .join("");
   }
 };
 
