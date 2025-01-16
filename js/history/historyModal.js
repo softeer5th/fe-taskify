@@ -50,6 +50,7 @@ const getRelativeTime = (timestamp) => {
 
 const updateHistoryList = (history) => {
   const historyList = document.querySelector(".history-list");
+  if (!history) return;
   history.sort((a, b) => b.timestamp - a.timestamp);
 
   if (historyList) {
@@ -61,7 +62,7 @@ const updateHistoryList = (history) => {
         columnTogo = document.querySelector(`.column[data-column-key="${item.columnTogo}"]`)
         .querySelector(".column-title").innerText;
       }
-      
+
       let actionText = "";
       switch (item.functionType) {
         case "ADD":

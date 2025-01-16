@@ -6,7 +6,7 @@ import { sort } from "./sort.js";
 import { deleteCard, closeDeleteModal } from "./card/deleteCard.js";
 import { dragendCard, dragoverCard, dragStartCard } from "./card/moveCard.js";
 import { showHistoryModal } from "./history/historyModal.js";
-import { addHistory, getHistory } from "../utils/storage/historyManager.js";
+import { addHistory, clearHistory, getHistory } from "../utils/storage/historyManager.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   setDefaultColumn();
@@ -94,6 +94,8 @@ document.addEventListener("click", ({ target }) => {
     showHistoryModal();
   } else if (target.closest(".history-modal-close-btn")) {
     showHistoryModal();
+  } else if (target.closest(".history-modal-footer")) {
+    clearHistory();
   }
 });
 
