@@ -6,11 +6,6 @@ import { parser } from "../../lib/jsx-runtime/index.js";
 
 import styles from "./todoColumn.module.js";
 
-const TodoItem = (todo) => parser`
-                  <li key="${todo.id}">
-                  ${Card({ type: "add-edit" })}
-                  </li>`;
-
 /**
  *
  * @param {object} props - Todo 컬럼의 속성.
@@ -20,26 +15,60 @@ const TodoItem = (todo) => parser`
  */
 export const TodoColumn = ({ title, onClickDel }) => {
   const [todos, setTodos] = useState([]);
+  const [cardType, setCardType] = useState("add-edit");
+  const [todoFlag, setTodoFlag] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
 
-  const handleClickAddTodo = () => {
-    const newTodo = {
-      id: new Date().getTime(),
-    };
+  const createTodo = (id) => {
+    const newTodo = { id };
     setTodos([...todos, newTodo]);
+    setTodoFlag(true);
+  };
+
+  const handleClickToggleTodo = () => {
+    if (!todoFlag) {
+      createTodo(new Date().getTime());
+      return;
+    }
+
+    todos.pop();
+    setTodos([...todos]);
+    setTodoFlag(false);
   };
 
   const handleClickDeleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  const TodoItem = (todo) => parser`<li key=${todo.id}>
+  ${Card({
+    type: cardType,
+    onClickEditBtn() {
+      setCardType("add-edit");
+    },
+    onClickDelBtn() {
+      handleClickDeleteTodo(todo.id);
+    },
+    onClickEnrollBtn() {
+      setCardType("default");
+      setTodoFlag(false);
+    },
+    onClickCancelBtn() {
+      handleClickDeleteTodo(todo.id);
+    },
+  })}
+</li>`;
+
   return parser`
         <div class="${styles.container}">
             ${ColumnTitle({
-    title, count: todos.length, onClickPlus: handleClickAddTodo, onClickDel,
+    title,
+    count: todos.length,
+    onClickPlus: handleClickToggleTodo,
+    onClickDel,
   })}
             <ul class="${styles.list}">
-                ${todos.map((todo) => TodoItem(todo))}
+                ${todos.map(TodoItem)}
             </ul>
         </div>
     `;
