@@ -1,10 +1,17 @@
+import { ACTION_TYPE } from "../constants/action.js";
 import {
   handleDragEnd,
   handleDragOver,
   handleDragStart,
   handleDrop,
 } from "./columnBody.js";
-import { handleCancelAdd, handleClickAdd } from "./columnHeader.js";
+import {
+  handleCancelAdd,
+  handleClickAdd,
+  handleClickInputOutside,
+  handleDbClickColumnHeader,
+  handleDeleteColumn,
+} from "./columnHeader.js";
 import {
   handleCancelEdit,
   handleInputContent,
@@ -12,7 +19,14 @@ import {
   handleSubmit,
 } from "./columnInputItem.js";
 import { handleClickDelete, handleClickEdit } from "./columnItem.js";
-import { deleteHistory, handleClose, handleDeleteCard } from "./modal.js";
+import {
+  addColumn,
+  deleteColumn,
+  deleteHistory,
+  handleAddColumn,
+  handleClose,
+  handleDeleteCard,
+} from "./modal.js";
 import { handleClickDeleteHistory } from "./userHistory.js";
 
 const store = { isTodoAdding: false };
@@ -32,22 +46,44 @@ export const addRootEventListener = () => {
       ".history__footer .delete__button"
     );
 
+    const $addColumnButton = e.target.closest(".floating__button");
+    const $deleteColumnButton = e.target.closest(".column__deleteButton");
+
+    const $headerInput = e.target.closest(".header__input");
+
     if ($addButton) {
       handleClickAdd(e, store);
     } else if ($deleteHistoryButton) {
       handleClickDeleteHistory();
     } else if ($deleteButton) {
-      handleClickDelete(e);
+      const type = $deleteButton.dataset.type;
+      handleClickDelete(e, type);
     } else if ($editButton) {
       handleClickEdit(e);
     } else if ($closeButton) {
       const type = $closeButton.dataset.type;
-      type === "add"
+      type === ACTION_TYPE.add
         ? handleCancelAdd(e, store)
         : handleCancelEdit(e, store, type);
     } else if ($submitButton) {
       const type = $submitButton.dataset.type;
       handleSubmit(e, store, type);
+    } else if ($addColumnButton) {
+      handleAddColumn();
+    } else if ($deleteColumnButton) {
+      handleDeleteColumn(e);
+    } else if (!$headerInput) {
+      handleClickInputOutside();
+    }
+  });
+
+  $root.addEventListener("dblclick", (e) => {
+    const $columnTitleHeader = e.target.closest(
+      ".column__header__titleContainer"
+    );
+
+    if ($columnTitleHeader) {
+      handleDbClickColumnHeader(e);
     }
   });
 
@@ -107,12 +143,27 @@ export const addModalEventListener = () => {
     const $dimmed = target.closest(".modal__dimmed");
     const $cancelButton = target.closest(".cancel__button");
     const $deleteButton = target.closest(".delete__button");
+    const $columnAddButton = target.closest(".add__button");
 
     if ($dimmed || $cancelButton) {
       handleClose(e);
     } else if ($deleteButton) {
       const type = $deleteButton.dataset.type;
-      type === "card" ? handleDeleteCard(e) : deleteHistory(e);
+
+      switch (type) {
+        case "card":
+          handleDeleteCard(e);
+          break;
+        case "history":
+          deleteHistory(e);
+          break;
+
+        case "column":
+          deleteColumn(e);
+          break;
+      }
+    } else if ($columnAddButton) {
+      addColumn(e);
     }
   });
 };

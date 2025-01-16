@@ -1,3 +1,5 @@
+import { ACTION_TYPE } from "./constants/action.js";
+
 export const createElement = (tagName, options = {}) => {
   const $element = document.createElement(tagName);
   const { id, className, text, ...attributes } = options;
@@ -22,7 +24,7 @@ export const createButton = ({
   text = "",
   handleClick,
   disabled,
-  type = "add",
+  type = ACTION_TYPE.add,
 }) => {
   const $button = createElement("button", { id, className, text });
   $button.disabled = disabled ?? false;
@@ -86,4 +88,50 @@ export const createDeleteSvg = ({ className, ...props }) => {
   $svg.appendChild(path);
 
   return $svg;
+};
+
+export const createPlusSvg = ({ className, ...props }) => {
+  const SVG_NS = "http://www.w3.org/2000/svg";
+
+  const $svg = document.createElementNS(SVG_NS, "svg");
+  $svg.setAttribute("xmlns", SVG_NS);
+  $svg.setAttribute("class", className);
+
+  props &&
+    Object.entries(props).forEach(([key, value]) => {
+      $svg.setAttribute(key, value);
+    });
+
+  const path = document.createElementNS(SVG_NS, "path");
+  path.setAttribute(
+    "d",
+    "M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99799H13V10.998H19V12.998Z"
+  );
+  path.setAttribute("fill", "#FEFEFE");
+
+  $svg.appendChild(path);
+
+  return $svg;
+};
+
+export const createInput = ({
+  id = null,
+  className = null,
+  handleChange,
+  handleInput,
+  handleBlur,
+  placeholder = "",
+  maxLength = 50,
+  value = "",
+}) => {
+  const $input = createElement("input", { id, className });
+  $input.maxLength = maxLength;
+  $input.placeholder = placeholder ?? undefined;
+  $input.value = value;
+
+  $input.addEventListener("change", handleChange);
+  $input.addEventListener("input", handleInput);
+  $input.addEventListener("blur", handleBlur);
+
+  return $input;
 };

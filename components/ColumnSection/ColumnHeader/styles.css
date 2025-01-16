@@ -4,12 +4,14 @@
   gap: 1.2rem;
   justify-content: space-between;
   padding: 0 1.6rem;
+  width: 32rem;
 }
 
 .column__header__titleContainer {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  width: 100%;
 }
 
 .column__title {

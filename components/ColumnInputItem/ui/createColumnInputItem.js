@@ -1,3 +1,4 @@
+import { ACTION_TYPE } from "../../../constants/action.js";
 import { createElement } from "../../../dom.js";
 import createAddButtonContainer from "./createAddButtonContainer.js";
 import createInputContainer from "./createInputContainer.js";
@@ -6,7 +7,7 @@ const createColumnInputItem = ({
   id,
   title = "",
   content = "",
-  type = "add",
+  type = ACTION_TYPE.add,
 }) => {
   const $columnInputItem = createElement("div", {
     className: "column__item",

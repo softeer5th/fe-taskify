@@ -1,5 +1,6 @@
 import ColumnInputItem from "../components/ColumnInputItem/ColumnInputItem.js";
 import createModal from "../components/Modal/createModal.js";
+import { ACTION_TYPE } from "../constants/action.js";
 import historyStore from "../store/historyStore.js";
 import todoStore from "../store/TodoStore.js";
 
@@ -27,7 +28,7 @@ export const handleClickEdit = (e) => {
     id: itemId,
     title,
     content,
-    type: "edit",
+    type: ACTION_TYPE.update,
   });
 
   $columnItem.replaceWith($columnInputItem);
@@ -43,7 +44,7 @@ export const deleteColumnItem = ({ sectionId, itemId }) => {
     deletedId: deletedCard.id,
   });
   historyStore.action({
-    action: "remove",
+    action: ACTION_TYPE.remove,
     title: deletedCard.title,
   });
 };

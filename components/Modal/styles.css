@@ -55,8 +55,25 @@
     background-color: var(--color-surface-brand);
     color: var(--color-text-white-default);
   }
+
+  .add__button {
+    background-color: var(--color-surface-brand);
+    color: var(--color-text-white-default);
+  }
 }
 
 .modal__wrapper textarea {
   text-align: center;
+}
+
+.modal__titleInput {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 1.2rem;
+
+  border: 1px solid var(--color-text-weak);
+
+  ::placeholder {
+    color: var(--color-text-strong);
+  }
 }

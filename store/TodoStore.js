@@ -1,14 +1,15 @@
+import { ACTION_TYPE } from "../constants/action.js";
 import { STORAGE_KEY } from "../constants/storageKey.js";
 import {
   clearLocalStorage,
-  loadLocalStorage,
+  initStorage,
   saveLocalStorage,
 } from "../utils/localStorage.js";
-import { getRandomId } from "../utils/random.js";
+import { getRandomId, getRandomString } from "../utils/random.js";
 import Observable from "./Observable.js";
 
 class TodoStore extends Observable {
-  #todoList = loadLocalStorage(STORAGE_KEY.todoList) || [];
+  #todoList = initStorage(STORAGE_KEY.todoList) || [];
 
   add({ sectionId, todo }) {
     const newTodo = {
@@ -22,7 +23,11 @@ class TodoStore extends Observable {
         ? { ...section, items: [...section.items, newTodo] }
         : section
     );
-    this.notify("add", { sectionId, newTodo, todoList: this.#todoList });
+    this.notify(ACTION_TYPE.add, {
+      sectionId,
+      newTodo,
+      todoList: this.#todoList,
+    });
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 
@@ -36,7 +41,99 @@ class TodoStore extends Observable {
         : section
     );
 
-    this.notify("remove", { sectionId, deletedId, todoList: this.#todoList });
+    this.notify(ACTION_TYPE.remove, {
+      sectionId,
+      deletedId,
+      todoList: this.#todoList,
+    });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  update({ sectionId, updatedId, title, content }) {
+    this.#todoList = [...this.#todoList].map((section) =>
+      section.id === sectionId
+        ? {
+            ...section,
+            items: section.items.map((item) =>
+              item.id === updatedId ? { ...item, title, content } : item
+            ),
+          }
+        : section
+    );
+
+    const updatedTodo = this.#todoList
+      .find((section) => section.id === sectionId)
+      .items.find((item) => item.id === updatedId);
+
+    this.notify(ACTION_TYPE.update, {
+      sectionId,
+      updatedTodo,
+      todoList: this.#todoList,
+    });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  move({ prevSectionId, sectionId, itemId }) {
+    const prevColumn = this.#todoList.find(
+      (section) => section.id === prevSectionId
+    );
+
+    const draggedItem = prevColumn.items.find((item) => item.id === itemId);
+
+    // 드래그 요소를 기존 데이터에서 제거
+    const filteredList = this.#todoList.map((section) =>
+      section.id === prevSectionId
+        ? {
+            ...section,
+            items: section.items.filter((item) => item.id !== itemId),
+          }
+        : section
+    );
+
+    // 이동한 섹션에 데이터 추가
+    this.#todoList = filteredList.map((section) => {
+      if (section.id === sectionId && draggedItem) {
+        return {
+          ...section,
+          items: [...section.items, draggedItem],
+        };
+      }
+      return section;
+    });
+
+    this.notify(ACTION_TYPE.move, {
+      todoList: this.#todoList,
+    });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  columnAdd({ title }) {
+    const newColumn = {
+      id: getRandomString(),
+      title,
+      items: [],
+    };
+
+    this.#todoList = [...this.#todoList, newColumn];
+    this.notify(ACTION_TYPE.columnAdd, { newColumn });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  columnDelete({ sectionId }) {
+    this.#todoList = this.#todoList.filter(
+      (section) => section.id !== sectionId
+    );
+
+    this.notify(ACTION_TYPE.columnDelete, { todoList: this.#todoList });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
+  columnUpdate({ sectionId, title }) {
+    this.#todoList = this.#todoList.map((section) =>
+      section.id === sectionId ? { ...section, title } : section
+    );
+
+    this.notify(ACTION_TYPE.columnUpdate, { sectionId, columnTitle: title });
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 

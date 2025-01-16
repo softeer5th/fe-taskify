@@ -1,5 +1,6 @@
-import { STORAGE_KEY } from "../constants/storageKey.js";
-import { loadLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
+import { ACTION_TYPE } from "../constants/action.js";
+import historyStore from "../store/historyStore.js";
+import todoStore from "../store/TodoStore.js";
 
 export const handleDragStart = (e) => {
   const $columnItem = e.target.closest(".column__item");
@@ -45,61 +46,29 @@ export const handleDrop = (e) => {
     ".column__item__title"
   ).textContent;
 
-  updateTodoList({ sectionId, itemId, prevSectionId, title });
+  updateTodoList({ prevSectionId, sectionId, itemId, title });
 };
 
-const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
-  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
+const updateTodoList = ({ prevSectionId, sectionId, itemId, title }) => {
+  const prevColumnTitle = document.querySelector(
+    `#${prevSectionId} .column__title`
+  );
+  const nextColumnTitle = document.querySelector(
+    `#${sectionId} .column__title`
+  );
 
-  let draggedItem = null;
-
-  const prevColumn = todoList.find(
-    (section) => section.id === prevSectionId
-  ).title;
-  const nextColumn = todoList.find((section) => section.id === sectionId).title;
-
-  const filteredList = todoList.map((section) => {
-    if (section.items.some((item) => item.id === itemId)) {
-      draggedItem = section.items.find((item) => item.id === itemId);
-      return {
-        ...section,
-        items: section.items.filter((item) => item.id !== itemId),
-      };
-    }
-    return section;
+  todoStore.move({
+    prevSectionId,
+    sectionId,
+    itemId,
   });
 
-  const finalList = filteredList.map((section) => {
-    if (section.id === sectionId && draggedItem) {
-      return {
-        ...section,
-        items: [...section.items, draggedItem],
-      };
-    }
-    return section;
-  });
-
-  updateCount(finalList);
-  saveLocalStorage(STORAGE_KEY.todoList, finalList);
-
-  if (prevColumn !== nextColumn) {
+  if (prevColumnTitle !== nextColumnTitle) {
     historyStore.action({
-      action: "move",
+      action: ACTION_TYPE.move,
       title,
-      prevColumn: prevColumn,
-      nextColumn: nextColumn,
+      prevColumn: prevColumnTitle,
+      nextColumn: nextColumnTitle,
     });
   }
-};
-
-const updateCount = (todoList) => {
-  const $columnSection = document.querySelector(".column__section");
-
-  todoList.forEach(({ id, items }) => {
-    const $count = $columnSection
-      .querySelector(`#${id}`)
-      .querySelector(".column__count");
-
-    $count.textContent = items.length;
-  });
 };

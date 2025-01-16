@@ -1,9 +1,10 @@
 import ColumnItem from "../components/ColumnItem/ColumnItem.js";
+import { ACTION_TYPE } from "../constants/action.js";
 import { STORAGE_KEY } from "../constants/storageKey.js";
 import historyStore from "../store/historyStore.js";
 import todoStore from "../store/TodoStore.js";
 import getDevice from "../utils/getDevice.js";
-import { loadLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
+import { loadLocalStorage } from "../utils/localStorage.js";
 
 export const handleInputTitle = (e) => {
   const $input = e.target;
@@ -75,53 +76,13 @@ export const handleSubmit = (e, store, type) => {
 
   const title = $columnItem.querySelector("#title").value.trim();
   const content = $columnItem.querySelector("#content").value.trim();
-
-  type === "add"
-    ? addColumnList({ sectionId, sectionTitle, title, content })
-    : editColumnList({ $columnItem, sectionId, title, content });
-
-  store.isTodoAdding = false;
-};
-
-const editColumnList = ({ $columnItem, sectionId, title, content }) => {
   const itemId = Number($columnItem.dataset.id);
 
-  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
+  type === ACTION_TYPE.add
+    ? addColumnList({ sectionId, sectionTitle, title, content })
+    : editColumnList({ sectionId, itemId, title, content });
 
-  const savedItem = todoList
-    .find((section) => section.id === sectionId)
-    .items.find((item) => item.id === itemId);
-
-  $columnItem.replaceWith(
-    ColumnItem({
-      id: savedItem.id,
-      title: title,
-      content: content,
-      author: savedItem.author,
-    })
-  );
-
-  saveEditTodoList({ todoList, sectionId, itemId, title, content });
-};
-
-const saveEditTodoList = ({ todoList, sectionId, itemId, title, content }) => {
-  const editedColumnList = todoList.map((section) =>
-    section.id === sectionId
-      ? {
-          ...section,
-          items: section.items.map((item) =>
-            item.id === itemId ? { ...item, title, content } : item
-          ),
-        }
-      : section
-  );
-
-  saveLocalStorage(STORAGE_KEY.todoList, editedColumnList);
-
-  historyStore.action({
-    action: "edit",
-    title,
-  });
+  store.isTodoAdding = false;
 };
 
 const addColumnList = ({ sectionId, sectionTitle, title, content }) => {
@@ -134,8 +95,16 @@ const addColumnList = ({ sectionId, sectionTitle, title, content }) => {
 
   todoStore.add({ sectionId, todo: newTodo });
   historyStore.action({
-    action: "add",
+    action: ACTION_TYPE.add,
     column,
+    title,
+  });
+};
+
+const editColumnList = ({ sectionId, itemId, title, content }) => {
+  todoStore.update({ sectionId, updatedId: itemId, title, content });
+  historyStore.action({
+    action: ACTION_TYPE.update,
     title,
   });
 };
