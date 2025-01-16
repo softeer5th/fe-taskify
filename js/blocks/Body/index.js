@@ -1,3 +1,4 @@
+import { renderRecords } from '../Header/index.js';
 import { Modal } from '../Modal/index.js';
 
 const lists = ['todo', 'doing', 'done'];
@@ -90,12 +91,14 @@ export const DOMLoaded = async () => {
 };
 
 const initializeDragAndDrop = () => {
+    let originalParentId = null;
 
     lists.forEach(listId => {
         const list = document.getElementById(`list-${listId}`);
 
         list.addEventListener('dragstart', (e) => {
             e.target.classList.add('dragging');
+            originalParentId = e.target.parentElement.id;
         });
 
         list.addEventListener('dragend', (e) => {
@@ -151,12 +154,27 @@ const initializeDragAndDrop = () => {
                 });
 
                 saveTasksToLocalStorage(updatedTasks);
-                updateBadgeCount();
             }
         });
 
         list.addEventListener('drop', (e) => {
             e.preventDefault();
+
+            const draggable = document.querySelector('.dragging'); // 드래그 요소
+            if (draggable) {
+                const targetListId = list.id;
+
+                if (originalParentId !== targetListId) {
+                    saveActivity({
+                        title: draggable.querySelector('h3').innerText,
+                        type: 'move',
+                        beforeCategory: originalParentId.split('-')[1],
+                        afterCategory: targetListId.split('-')[1]
+                    });
+                }
+                
+                updateBadgeCount();
+            }
         });
     });
 };
@@ -226,6 +244,12 @@ const createTaskBox = (type, list, id = null, task = null) => {
             task.querySelector('p').innerText = contentInput.value;
             taskBox.replaceWith(task);
 
+            saveActivity({
+                title: titleInput.value,
+                type: 'edit',
+                category: type
+            });
+
             const tasks = loadTasksFromLocalStorage();
 
             const updatedTasks = tasks.map(task => {
@@ -254,6 +278,11 @@ const createTaskBox = (type, list, id = null, task = null) => {
             list.insertBefore(newTask, list.firstChild);
             taskBox.remove();
 
+            saveActivity({
+                title: titleInput.value,
+                type: 'add',
+                category: type
+            });
             const nextId = tasks.reduce((sum, item) => sum + item.list.length, 0);
             tasks.forEach(task => {
                 if (task.type === type) {
@@ -281,6 +310,14 @@ const createTaskBox = (type, list, id = null, task = null) => {
     taskBox.appendChild(btnWrapper);
 
     return taskBox;
+};
+
+const saveActivity = (activity) => {
+    const records = JSON.parse(localStorage.getItem('records') || '[]');
+    records.push(activity);
+    localStorage.setItem('records', JSON.stringify(records));
+
+    renderRecords();
 };
 
 const createTaskElement = (type, id, title, content) => {
