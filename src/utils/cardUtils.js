@@ -3,12 +3,10 @@ import { ColumnCard, modalInstances } from '../components/Card/ColumnCard.js';
 import {  doneModel, progressModel, todoModel } from './mockup.js';
 
 export function showCardList(element,cardList){
-
-    //여기서 추가를하는게 아니라 삭제를 해야함 그걸 어떻게 해야할지 고민 
-    while (element.children.length > 1) {
-        element.removeChild(element.lastChild);
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
     }
-
+    
     const fragment = document.createDocumentFragment();
     cardList.map((item)=>{
         fragment.appendChild(ColumnCard({
@@ -28,7 +26,7 @@ export function showCardList(element,cardList){
     element.appendChild(fragment);
 }
 
-export function addCardToggle({addForm,headerColumn}){
+export function addCardToggle({addForm,cardColumn}){
     if (addForm) {
         addForm.remove();
     } else {
@@ -42,7 +40,7 @@ export function addCardToggle({addForm,headerColumn}){
             closeText: "취소",
         });
         
-        headerColumn.insertAdjacentElement('afterend', newForm); 
+        cardColumn.insertAdjacentElement('afterBegin', newForm); 
     }
     return;
 }
@@ -82,7 +80,7 @@ export function deleteCardToggle({columnCard}){
 }
 
 export function deleteCard({columnCard,columnName,tasksData}){
-    const cardId=columnCard.id
+    const cardId=Number(columnCard.id)
     const [model, columnSort] = handleColumn(columnName);
     model.deleteTask(cardId)
         
@@ -95,7 +93,7 @@ export function deleteCard({columnCard,columnName,tasksData}){
 
 let originalTitle = ''; 
 let originalContent = '';  
-let cardId = ''
+let cardId = 0;
 
 export function editCardToggle({editForm,columnCard}){
     if(!editForm){
@@ -134,7 +132,7 @@ export function editCard({editForm,columnName,tasksData}){
         const newTitle = editForm.querySelector('#card-title').value;
         const newContent = editForm.querySelector('#card-content').value;
         const editCard = {
-            id : cardId,
+            id : Number(cardId),
             title:newTitle,
             content:newContent,
             author: "author by web",
@@ -153,6 +151,28 @@ export function editCard({editForm,columnName,tasksData}){
     }
 }
 
+export function createOrder({chipContainer,tasksData}){
+    chipContainer.id='createOrder';
+    const chipContent=chipContainer.querySelector('.chip-content')
+    chipContent.textContent= '생성 순';
+    sortCardsWithAnimation("createOrder")
+    const sortedTaskData = sortDataById(tasksData,"createOrder")
+    localStorage.setItem("tasks",JSON.stringify(sortedTaskData))
+
+}
+
+export function latestOrder({chipContainer,tasksData}){
+    chipContainer.id='latestOrder';
+    const chipContent=chipContainer.querySelector('.chip-content')
+    chipContent.textContent= '최신 순';
+    sortCardsWithAnimation("latestOrder");
+    const sortedTaskData = sortDataById(tasksData,"latestOrder");
+    localStorage.setItem("tasks",JSON.stringify(sortedTaskData))
+    
+    
+}
+
+
 export function handleColumn(columnName) {
     if (columnName === 'todo-column') {
         return [todoModel, 'todos'];
@@ -161,4 +181,56 @@ export function handleColumn(columnName) {
     } else if (columnName === 'done-column') {
         return [doneModel, 'done'];
     }
+}
+
+export function sortCardsWithAnimation(type) {
+    const columns = document.querySelectorAll('.column-card-box'); 
+
+    //각각의 컬럼들
+    columns.forEach((column) => {
+        const cards = Array.from(column.children);
+        const columnBox =column.closest('.column-box')
+        const [model, columnSort] = handleColumn(columnBox.id);
+        let sortedCards=[]
+        
+        if(type==='latestOrder'){
+            sortedCards = cards.sort((a,b)=> a.id-b.id);
+        }
+        else{
+            sortedCards = cards.sort((a,b)=> b.id-a.id)
+        }
+        
+        
+
+         let accumulatedHeight = column.offsetTop; // 누적 높이를 추적
+         sortedCards.forEach((sortedCard) => {
+             const originalCard = cards.find((card) => card.id === sortedCard.id); // 현재 카드의 위치
+             const currentTop = originalCard.offsetTop; //현재 카드의  y축 위치
+             const targetTop = accumulatedHeight; // 목표 y축 위치는 누적 높이
+             
+             const translateY = targetTop - currentTop;
+
+             originalCard.style.transition = "transform 0.3s ease";
+             originalCard.style.transform = `translateY(${translateY}px)`;
+ 
+             accumulatedHeight += originalCard.offsetHeight + 10;
+ 
+         });
+
+         model.sortTask(type);
+    })
+    
+}
+
+
+export function sortDataById(data,type) {
+    const sortedData = {};
+
+    Object.keys(data).forEach((key) => {
+        sortedData[key] = [...data[key]].sort((a, b) => {
+            return type === 'latestOrder' ? a.id - b.id : b.id - a.id;
+        });
+    });
+
+    return sortedData;
 }
