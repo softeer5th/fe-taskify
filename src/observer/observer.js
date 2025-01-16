@@ -34,6 +34,16 @@ export class TaskModel extends Observable{
         this.notify(this.tasks); 
     }
 
+    sortTask(order) {
+        this.tasks.sort((a, b) => {
+            if (order === 'latestOrder') {
+                return a.id > b.id ? 1 : -1;
+            } else if(order === 'createOrder') {
+                return a.id < b.id ? 1 : -1;
+            }
+        });
+    }
+
 }
 
 
