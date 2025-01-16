@@ -1,9 +1,4 @@
-// TODO: 파일 따로 분리
-const CATEGORY = {
-    todo: '해야할 일',
-    doing: '하고 있는 일',
-    done: '완료한 일',
-};
+import { getActivityMessage } from "../../utils/index.js";
 
 export const toggleClockBtn = () => {
     const clockBtn = document.querySelector('#clock-btn');
@@ -18,16 +13,37 @@ export const toggleClockBtn = () => {
     });
 }
 
+export const removeRecords = () => {
+        localStorage.removeItem('records');
+        renderRecords();
+}
+
 export const renderRecords = () => {
     const recordsFromStorage = JSON.parse(localStorage.getItem('records')) || [];
 
+    const activityList = document.querySelector('.activity__list');
+    const activityListUl = document.querySelector('.activity__list > ul');
+    const removeContainer = document.querySelector('.record__delete__container');
+    const noRecordContainer = document.querySelector('.no__record__container');
+    if (activityListUl) {
+        activityListUl.remove();
+        removeContainer.remove();
+    }
+
+
     if(recordsFromStorage.length === 0) {
-        activityList.appendChild(document.createElement('li')).textContent = '사용자 활동 기록이 없습니다.';
+        const noRecordContainer = document.createElement('li');
+        noRecordContainer.textContent = '사용자 활동 기록이 없습니다.';
+        noRecordContainer.classList.add('medium14', 'no__record__container');
+        activityList.appendChild(noRecordContainer)
         return ;
     }
-    
+    if(noRecordContainer) {
+        noRecordContainer.remove();
+    }
+
     const activityContianer = document.createElement('ul');
-    const activityList = document.querySelector('.activity__list');
+
     recordsFromStorage.forEach((record, index) => {
         const recordContainer = document.createElement('li');
         recordContainer.className = 'record__container';
@@ -57,18 +73,13 @@ export const renderRecords = () => {
             case 'update':
                 type = '변경';
                 break;
-            case 'register':
-                type = '등록';
-                break;
-            case 'delete':
-                type = '삭제';
-                break;
             default:
                 type = '알 수 없음';
                 break;
         }
-        content.innerHTML = `<strong style="color: black;">${record.title}</strong>을(를) <strong style="color: black;">${CATEGORY[record.beforeCategory]}</strong>에서 <strong style="color: black;">${CATEGORY[record.afterCategory]}</strong>으로 <strong style="color: black;">${type}</strong> 하였습니다.`;
+        content.innerHTML = getActivityMessage(record);
         const time = document.createElement('p');
+        // TODO: 변경 필요
         time.textContent = `3분전`;
         time.className = 'medium12';
         time.style.color = '#A0A3BD';
@@ -82,4 +93,14 @@ export const renderRecords = () => {
     });
 
     activityList.appendChild(activityContianer);
+    
+    const recordDeleteContainer = document.createElement('div');
+    recordDeleteContainer.className = 'record__delete__container';
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '기록 전체 삭제';
+    deleteBtn.className = 'bold14';
+    deleteBtn.addEventListener(('click'), removeRecords);
+    recordDeleteContainer.appendChild(deleteBtn);
+
+    activityList.appendChild(recordDeleteContainer);
 }
