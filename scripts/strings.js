@@ -59,6 +59,7 @@ export const templateNames = {
 
 export const keys = {
     TODO_CATEGORY_KEY: 'todoCategory',
+    DATA_IDENTIFIER_KEY: 'dataIdentifier',
     LAST_UID_KEY: 'lastUid',
     ACTION_STORAGE_KEY: 'action',
     ACTION_POINTER_STORAGE_KEY: 'actionPointer',

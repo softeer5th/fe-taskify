@@ -43,8 +43,9 @@ export const handleUndo = () => {
 
 const undoAction = (action) => {
     const category = getCategoryByUid(action.data.categoryUid)
-    const prevCategory = getCategoryByUid(action.data.prevCategoryUid)
-    const currentCategory = getCategoryByUid(action.data.currentCategoryUid)
+    const prevCategory = getCategoryByUid(action.data.prevCategoryUid) ?? null
+    const currentCategory =
+        getCategoryByUid(action.data.currentCategoryUid) ?? null
 
     switch (action.type) {
         case actionTypes.todoCreate:
@@ -78,7 +79,9 @@ const undoAction = (action) => {
     storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
 }
 
-const undoTodoItemCreate = (category, todoItem) => {}
+const undoTodoItemCreate = (category, todoItem) => {
+    const currentTodoItem = {}
+}
 
 const undoTodoItemDelete = (category, todoItem, index) => {}
 

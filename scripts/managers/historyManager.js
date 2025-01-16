@@ -6,6 +6,7 @@ import { formatDateToTimeAgo } from '../utils/dateUtil.js'
 import { createDomElementAsChild } from '../utils/domUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
 
+// storeData(keys.HISTORY_STORAGE_KEY, [])
 let historyList = loadData(keys.HISTORY_STORAGE_KEY) ?? []
 let isHistoryViewOpen = false
 let historyViewElement = null
@@ -58,6 +59,7 @@ const renderHistoryView = () => {
                 component.querySelector(
                     `.${classNames.historyItemTime}`
                 ).textContent = formatDateToTimeAgo(new Date(action.timeStamp))
+                return action.uid
             },
             false
         )
@@ -75,16 +77,16 @@ const makeContentLabel = (action) => {
 
     switch (action.type) {
         case actionTypes.todoCreate:
-            content = `${todoItem.values.title}을(를) ${category.values.categoryName}에 등록하였습니다.`
+            content = `${todoItem.title}을(를) ${category.categoryName}에 등록하였습니다.`
             break
         case actionTypes.todoDelete:
-            content = `${todoItem.values.title}을(를) ${category.values.categoryName}에서 삭제하였습니다.`
+            content = `${todoItem.title}을(를) ${category.categoryName}에서 삭제하였습니다.`
             break
         case actionTypes.todoEdit:
-            content = `${prevTodoItem.values.title}을(를) 변경하였습니다.`
+            content = `${prevTodoItem.title}을(를) 변경하였습니다.`
             break
         case actionTypes.todoMove:
-            content = `${prevTodoItem.values.title}을(를) ${prevCategory.values.categoryName}에서 ${currentCategory.values.categoryName}으로 이동하였습니다.`
+            content = `${prevTodoItem.title}을(를) ${prevCategory.categoryName}에서 ${currentCategory.categoryName}으로 이동하였습니다.`
             break
         case actionTypes.todoSort:
             // content = ``

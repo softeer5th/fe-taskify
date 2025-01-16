@@ -1,12 +1,19 @@
 import { classNames, keys } from '../strings.js'
 import { makeTodoMoveAction } from '../utils/actionFactory.js'
-import { findDomElement } from '../utils/domUtil.js'
+import { getTodoItemInfoByUid } from '../utils/dataUtil.js'
+import {
+    findDomElement,
+    findDomElementByUid,
+    getIdentifierByUid,
+    getUidByIdentifier,
+} from '../utils/domUtil.js'
 import { getState } from '../utils/stateUtil.js'
 import { storeData } from '../utils/storageUtil.js'
 import { addAction } from './actionManager.js'
 import { addHistory } from './historyManager.js'
 import { renewTodoCount } from './todoManager.js'
 
+// const DEBUG = true
 const DEBUG = false
 
 let originElementId = null
@@ -23,17 +30,15 @@ export const manageDragEvents = (dragTargetElement) => {
     const element = dragTargetElement
     element.addEventListener('dragstart', (e) => {
         element.classList.add(classNames.afterImage)
-        const index = Array.from(element.parentNode.children).indexOf(element)
+        const eventTargetUid = getUidByIdentifier(e.target.id)
 
-        const category = getState(keys.TODO_CATEGORY_KEY).find((category) => {
-            return category.values.todoList.some(
-                (todoItem) => todoItem.identifier === e.target.id
-            )
-        })
+        const { category, index, todoItem } =
+            getTodoItemInfoByUid(eventTargetUid)
+
         originElementId = e.target.id
         originCategory = category
         originIndex = index
-        originTodoItem = category.values.todoList[index]
+        originTodoItem = category.todoList[index]
         prevCategory = category
         currentCategory = category
         prevIndex = index
@@ -49,7 +54,7 @@ export const manageDragEvents = (dragTargetElement) => {
 export const manageDropEvents = (dragReceiverElement, category) => {
     const component = dragReceiverElement
 
-    component.addEventListener('dragover', (e) => {
+    dragReceiverElement.addEventListener('dragover', (e) => {
         // 드롭을 허용하기 위해 기본 동작 취소
         e.preventDefault()
     })
@@ -62,11 +67,14 @@ export const manageDropEvents = (dragReceiverElement, category) => {
         const categoryList = getState(keys.TODO_CATEGORY_KEY)
         for (let category of categoryList) {
             // 카테고리 식별
-            const parentElement = findDomElement(category.identifier)
+            // TODO: refactor
+            const parentElement = findDomElement(
+                getIdentifierByUid(category.uid)
+            )
             if (!parentElement.contains(e.target)) continue
             prevCategory = currentCategory
             currentCategory = category
-            if (prevCategory.identifier !== currentCategory.identifier) {
+            if (prevCategory.uid !== currentCategory.uid) {
                 // 카테고리가 바뀌면 dom update
                 updateFlag = true
 
@@ -80,11 +88,8 @@ export const manageDropEvents = (dragReceiverElement, category) => {
             }
 
             // todoList의 몇 번째 index인지 식별
-            for (let [
-                idx,
-                todoItem,
-            ] of currentCategory.values.todoList.entries()) {
-                if (todoItem.identifier === e.target.id) {
+            for (let [idx, todoItem] of currentCategory.todoList.entries()) {
+                if (getIdentifierByUid(todoItem.uid) === e.target.id) {
                     // err
                     prevIndex = currentIndex
                     currentIndex = idx
@@ -110,14 +115,10 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                 isInDragZone = true
                 if (DEBUG) {
                     console.log('[ dragzone ]')
-                    console.log(
-                        'prevCategory',
-                        prevCategory.identifier,
-                        prevIndex
-                    )
+                    console.log('prevCategory', prevCategory.uid, prevIndex)
                     console.log(
                         'currentCategory',
-                        currentCategory.identifier,
+                        currentCategory.uid,
                         currentIndex
                     )
                 }
@@ -130,35 +131,31 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                         .querySelector(`.${classNames.todoBody}`)
                         .appendChild(ghostElement)
 
-                    currentCategory.values.todoList.push(
-                        prevCategory.values.todoList[prevIndex]
+                    currentCategory.todoList.push(
+                        prevCategory.todoList[prevIndex]
                     )
-                    prevCategory.values.todoList.splice(prevIndex, 1)
-                    prevIndex = currentCategory.values.todoList.length - 1
+                    prevCategory.todoList.splice(prevIndex, 1)
+                    prevIndex = currentCategory.todoList.length - 1
                     currentIndex = prevIndex
-                    DEBUG &&
-                        console.log(
-                            prevCategory.identifier,
-                            currentCategory.identifier
-                        )
+                    DEBUG && console.log(prevCategory.uid, currentCategory.uid)
                     return
                 }
 
                 if (prevCategory === currentCategory) {
-                    currentIndex = currentCategory.values.todoList.length - 1
+                    currentIndex = currentCategory.todoList.length - 1
                 }
             }
 
-            const targetElement = findDomElement(
-                currentCategory.values.todoList[currentIndex].identifier //err
+            const targetElement = findDomElementByUid(
+                currentCategory.todoList[currentIndex].uid //err
             )
 
             if (prevCategory !== currentCategory) {
                 targetElement.before(ghostElement)
-                const originTodoItem = prevCategory.values.todoList[prevIndex]
-                const todoList = currentCategory.values.todoList
-                prevCategory.values.todoList.splice(prevIndex, 1)
-                currentCategory.values.todoList = [
+                const originTodoItem = prevCategory.todoList[prevIndex]
+                const todoList = currentCategory.todoList
+                prevCategory.todoList.splice(prevIndex, 1)
+                currentCategory.todoList = [
                     ...todoList.slice(0, currentIndex),
                     originTodoItem,
                     ...todoList.slice(currentIndex),
@@ -166,10 +163,10 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                 return
             }
 
-            const todoList = currentCategory.values.todoList
+            const todoList = currentCategory.todoList
             if (prevIndex < currentIndex) {
                 targetElement.after(ghostElement)
-                currentCategory.values.todoList = [
+                currentCategory.todoList = [
                     ...todoList.slice(0, prevIndex),
                     ...todoList.slice(prevIndex + 1, currentIndex + 1),
                     todoList[prevIndex],
@@ -177,7 +174,7 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                 ]
             } else if (prevIndex > currentIndex) {
                 targetElement.before(ghostElement)
-                currentCategory.values.todoList = [
+                currentCategory.todoList = [
                     ...todoList.slice(0, currentIndex),
                     todoList[prevIndex],
                     ...todoList.slice(currentIndex, prevIndex),
@@ -186,7 +183,7 @@ export const manageDropEvents = (dragReceiverElement, category) => {
             }
         }
     })
-    component.addEventListener('dragleave', (e) => {
+    dragReceiverElement.addEventListener('dragleave', (e) => {
         dragDepth--
         if (dragDepth > 0) return
         DEBUG && console.log('dragleave', prevIndex, currentIndex)
@@ -197,7 +194,7 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                 currentCategory.identifier
             )
     })
-    component.addEventListener('drop', (e) => {
+    dragReceiverElement.addEventListener('drop', (e) => {
         DEBUG &&
             console.log(
                 'drop',
@@ -216,10 +213,10 @@ export const manageDropEvents = (dragReceiverElement, category) => {
 
         if (originCategory !== currentCategory) {
             const todoMoveAction = makeTodoMoveAction(
-                originCategory.values.uid,
-                currentCategory.values.uid,
+                originCategory.uid,
+                currentCategory.uid,
                 originTodoItem,
-                currentCategory.values.todoList[currentIndex],
+                currentCategory.todoList[currentIndex],
                 originIndex,
                 currentIndex
             )
