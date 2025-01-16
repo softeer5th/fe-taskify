@@ -1,4 +1,4 @@
-import { historyObserver } from '../../js/history/historyObserver.js';
+import { historyObserver } from "../../js/history/historyObserver.js";
 
 export const addHistory = (
   timestamp,
@@ -8,7 +8,7 @@ export const addHistory = (
   ColumnTogo
 ) => {
   const history = {
-    timestamp: timestamp, //num
+    timestamp: Date.now(), //num
     functionType: functionType, // string
     title: title, //str
     column: column, //str

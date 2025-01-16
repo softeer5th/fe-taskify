@@ -108,9 +108,9 @@ document.addEventListener("click", ({ target }) => {
         .getAttribute("data-column-key");
 
       addHistory(
-        dyingTask.timestamp,
+        parseInt(dyingTask.getAttribute("data-timestamp")),
         "DELETE",
-        dyingTask.title,
+        dyingTask.querySelector(".task-title").innerText,
         colForDyingTask,
         "empty"
       );
