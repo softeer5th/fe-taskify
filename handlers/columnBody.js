@@ -1,7 +1,6 @@
 import { ACTION_TYPE } from "../constants/action.js";
-import { STORAGE_KEY } from "../constants/storageKey.js";
 import historyStore from "../store/historyStore.js";
-import { loadLocalStorage, saveLocalStorage } from "../utils/localStorage.js";
+import todoStore from "../store/TodoStore.js";
 
 export const handleDragStart = (e) => {
   const $columnItem = e.target.closest(".column__item");
@@ -47,61 +46,29 @@ export const handleDrop = (e) => {
     ".column__item__title"
   ).textContent;
 
-  updateTodoList({ sectionId, itemId, prevSectionId, title });
+  updateTodoList({ prevSectionId, sectionId, itemId, title });
 };
 
-const updateTodoList = ({ sectionId, itemId, prevSectionId, title }) => {
-  // 데이터 처리
-  const todoList = loadLocalStorage(STORAGE_KEY.todoList);
-
-  const prevColumn = todoList.find((section) => section.id === prevSectionId);
-  const nextColumn = todoList.find((section) => section.id === sectionId);
-
-  const draggedItem = prevColumn.items.find((item) => item.id === itemId);
-
-  const filteredList = todoList.map((section) =>
-    section.id === prevSectionId
-      ? {
-          ...section,
-          items: section.items.filter((item) => item.id !== itemId),
-        }
-      : section
+const updateTodoList = ({ prevSectionId, sectionId, itemId, title }) => {
+  const prevColumnTitle = document.querySelector(
+    `#${prevSectionId} .column__title`
+  );
+  const nextColumnTitle = document.querySelector(
+    `#${sectionId} .column__title`
   );
 
-  const finalList = filteredList.map((section) => {
-    if (section.id === sectionId && draggedItem) {
-      return {
-        ...section,
-        items: [...section.items, draggedItem],
-      };
-    }
-    return section;
+  todoStore.move({
+    prevSectionId,
+    sectionId,
+    itemId,
   });
 
-  // UI 업데이트
-  updateCount(finalList);
-
-  // 데이터 처리
-  saveLocalStorage(STORAGE_KEY.todoList, finalList);
-
-  if (prevColumn !== nextColumn) {
+  if (prevColumnTitle !== nextColumnTitle) {
     historyStore.action({
       action: ACTION_TYPE.move,
       title,
-      prevColumn: prevColumn.title,
-      nextColumn: nextColumn.title,
+      prevColumn: prevColumnTitle,
+      nextColumn: nextColumnTitle,
     });
   }
-};
-
-const updateCount = (todoList) => {
-  const $columnSection = document.querySelector(".column__section");
-
-  todoList.forEach(({ id, items }) => {
-    const $count = $columnSection
-      .querySelector(`#${id}`)
-      .querySelector(".column__count");
-
-    $count.textContent = items.length;
-  });
 };

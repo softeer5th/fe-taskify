@@ -20,6 +20,12 @@ todoStore.subscribe(
   (action, { sectionId, newTodo, deletedId, updatedTodo, todoList }) => {
     const $columnBody = document.querySelector(`#${sectionId} .column__body`);
 
+    if (action === ACTION_TYPE.move) {
+      updateColumnCountAll(todoList);
+
+      return;
+    }
+
     if (action === ACTION_TYPE.add) {
       $columnBody.replaceChild(
         ColumnItem({ ...newTodo }),
@@ -56,6 +62,18 @@ const updateCount = ({ $columnBody, newTodoList, sectionId }) => {
     .querySelector(".column__count");
 
   $columnCount.textContent = itemLength;
+};
+
+const updateColumnCountAll = (newTodoList) => {
+  const $columnSection = document.querySelector(".column__section");
+
+  newTodoList.forEach(({ id, items }) => {
+    const $count = $columnSection
+      .querySelector(`#${id}`)
+      .querySelector(".column__count");
+
+    $count.textContent = items.length;
+  });
 };
 
 export default ColumnItem;

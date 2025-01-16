@@ -73,6 +73,40 @@ class TodoStore extends Observable {
     saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
   }
 
+  move({ prevSectionId, sectionId, itemId }) {
+    const prevColumn = this.#todoList.find(
+      (section) => section.id === prevSectionId
+    );
+
+    const draggedItem = prevColumn.items.find((item) => item.id === itemId);
+
+    // 드래그 요소를 기존 데이터에서 제거
+    const filteredList = this.#todoList.map((section) =>
+      section.id === prevSectionId
+        ? {
+            ...section,
+            items: section.items.filter((item) => item.id !== itemId),
+          }
+        : section
+    );
+
+    // 이동한 섹션에 데이터 추가
+    this.#todoList = filteredList.map((section) => {
+      if (section.id === sectionId && draggedItem) {
+        return {
+          ...section,
+          items: [...section.items, draggedItem],
+        };
+      }
+      return section;
+    });
+
+    this.notify(ACTION_TYPE.move, {
+      todoList: this.#todoList,
+    });
+    saveLocalStorage(STORAGE_KEY.todoList, this.#todoList);
+  }
+
   clear() {
     this.#todoList = [];
     this.notify(this.#todoList);
