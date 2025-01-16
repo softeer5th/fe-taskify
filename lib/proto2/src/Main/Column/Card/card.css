@@ -4,7 +4,6 @@
 .card {
     box-sizing: border-box;
     width: 100%;
-    min-height: 104px;
     padding: 16px;
     border-radius: 8px;
     background: rgba(254, 254, 254, 1);
@@ -13,6 +12,10 @@
     display: flex;
     justify-content: space-between;
     gap: 16px;
+
+    position: absolute;
+    top: 0px;
+    transition: top 0.3s ease;
 }
 
 .textArea {
@@ -60,6 +63,7 @@
 
 
 .cardModifyButton {
+    height: fit-content;
     display: flex;
     justify-content: space-between;
     width: 100%;
