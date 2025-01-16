@@ -34,7 +34,8 @@ export default class Model {
               thumbnailUrl: "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
             },
           },
-          action: "init",
+          actionLog: "init",
+          actionTime: Date.now(),
         },
       ],
       currentPointer: history.length - 1,
@@ -56,10 +57,32 @@ export default class Model {
     this.#listeners.forEach((listener) => listener());
   }
 
+  #createHistoryActionLog(actionType, actionData) {
+    switch (actionType) {
+      case "addColumn":
+        return `<strong>${actionData.addedColumnTitle}</strong> 열을 <strong>추가</strong>하였습니다.`;
+      case "updateColumn":
+        return `<strong>${actionData.updatedColumnTitle}</strong> 열을 <strong>변경</strong>하였습니다.`;
+      case "removeColumn":
+        return `<strong>${actionData.removedColumnTitle}</strong> 열을 <strong>삭제</strong>하였습니다.`;
+      case "addTask":
+        return `<strong>${actionData.addedTaskName}</strong>을(를) <strong>${actionData.addedColumnTitle}</strong>에 <strong>등록</strong>했습니다.`;
+      case "moveTask":
+        return `<strong>${actionData.movedTaskName}</strong>을(를) <strong>${actionData.fromColumnTitle}</strong>에서 <strong>${actionData.toColumnTitle}</strong>로 <strong>이동</strong>하였습니다.`;
+      case "editTask":
+        return `<strong>${actionData.updatedTaskName}</strong>을(를) <strong>수정</strong>하였습니다.`;
+      case "removeTask":
+        return `<strong>${actionData.removedTaskName}</strong>을(를) <strong>삭제</strong>하였습니다.`;
+      default:
+        return "";
+    }
+  }
+
   #pushHistory(newData, action) {
+    const actionLog = this.#createHistoryActionLog(action.type, action);
     const newHistory = {
       data: newData,
-      action,
+      actionLog,
       actionTime: Date.now(),
     };
     this.#model.history.push(newHistory);
@@ -164,9 +187,11 @@ export default class Model {
   }
 
   undo() {
-    if (this.#model.currentPointer > 1) {
+    if (this.#model.currentPointer > 0) {
       this.#model.currentPointer -= 1;
       this.#notify();
+    } else {
+      return false;
     }
   }
 
@@ -174,19 +199,21 @@ export default class Model {
     if (this.#model.currentPointer < this.#model.history.length - 1) {
       this.#model.currentPointer += 1;
       this.#notify();
+    } else {
+      return false;
     }
   }
 
-  addColumn(addedColumnName = "New Column") {
+  addColumn(addedColumnTitle = "New Column") {
     const currentData = this.getCurrentData();
     const newColumn = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
-      name: addedColumnName,
+      name: addedColumnTitle,
     };
     currentData.column.push(newColumn);
     this.#pushHistory(currentData, {
       type: "addColumn",
-      addedColumnName: addedColumnName,
+      addedColumnTitle: addedColumnTitle,
     });
   }
 
@@ -199,7 +226,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "updateColumn",
-      updatedColumnName: updatedColumTitle,
+      updatedColumnTitle: updatedColumTitle,
     });
   }
 
@@ -213,7 +240,7 @@ export default class Model {
 
     this.#pushHistory(currentData, {
       type: "removeColumn",
-      removedColumnName: removedColumn.title,
+      removedColumnTitle: removedColumn.title,
     });
   }
 
@@ -232,9 +259,12 @@ export default class Model {
     this.#model.state.editingTaskId = -1;
     this.#model.state.editingColumnId = -1;
 
+    const addedColumnTitle = currentData.column.find((column) => column.id === columnId).title;
+
     this.#pushHistory(currentData, {
       type: "addTask",
       addedTaskName: addedTaskName,
+      addedColumnTitle: addedColumnTitle,
     });
   }
 
@@ -249,8 +279,8 @@ export default class Model {
     this.#pushHistory(currentData, {
       type: "moveTask",
       movedTaskName: task.name,
-      fromColumnId,
-      toColumnId,
+      fromColumnTitle: currentData.column.find((column) => column.id === fromColumnId).title,
+      toColumnTitle: currentData.column.find((column) => column.id === toColumnId).title,
     });
   }
 
@@ -283,5 +313,28 @@ export default class Model {
 
   getCurrentTaskData() {
     return this.getCurrentData().task;
+  }
+
+  getAllHistoryLogs() {
+    const history = deepCopy(this.#model.history.slice(0, this.#model.currentPointer + 1));
+    let historyLogs = [];
+    history.map((history) => {
+      if (history.actionLog !== "init" && history.actionLog !== "") {
+        historyLogs = [
+          ...historyLogs,
+          {
+            actionLog: history.actionLog,
+            actionTime: history.actionTime,
+          },
+        ];
+      }
+    });
+    return historyLogs.reverse();
+  }
+
+  removeAllHistoryLogs() {
+    this.#model.history = [{ ...this.#model.history[this.#model.currentPointer], actionLog: "", actionTime: Date.now() }];
+    this.#model.currentPointer = 0;
+    this.#notify();
   }
 }
