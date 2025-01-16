@@ -15,7 +15,7 @@ const createCard = (mode, cardData, columnElement, columnState) => {
     addCard: (updatedCardData) => {
       columnState.setState((prev) => ({
         ...prev,
-        cards: [...prev.cards, updatedCardData],
+        cards: [ updatedCardData, ...prev.cards],
       }));
     },
     deleteCard: (deleteCardId) => {
