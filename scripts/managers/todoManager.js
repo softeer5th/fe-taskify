@@ -41,7 +41,7 @@ export const initTodo = () => {
 
         const res = []
         for (let i = 0; i < categoryCnt; i++) {
-            res.push(Category(`id-${id}`, `id-${id}`))
+            res.push(Category(`id-${id}`))
             id += eleCnt + 1
         }
         categoryList = res
@@ -51,14 +51,7 @@ export const initTodo = () => {
             const res = []
             for (let i = 0; i < eleCnt; i++) {
                 id++
-                res.push(
-                    TodoItem(
-                        `id-${id}`,
-                        `id-${id}`,
-                        `내용 - ${index}-${i}`,
-                        'web'
-                    )
-                )
+                res.push(TodoItem(`id-${id}`, `내용 - ${index}-${i}`, 'web'))
             }
             id += 1
             category.todoList = res
@@ -204,7 +197,7 @@ const createTodoItem = (title, content, author, category) => {
         templateNames.todoItem,
         todoBodyElement,
         (identifier, component) => {
-            todoItem = TodoItem(identifier, title, content, author)
+            todoItem = TodoItem(title, content, author)
             addTodoItem(todoItem, category, 0)
             initTodoItemElement(component, todoItem)
             return todoItem.uid
@@ -294,12 +287,7 @@ const editTodoItem = (uid) => {
                         templateNames.todoItem,
                         editFormElement,
                         (identifier, component) => {
-                            editedTodoItem = TodoItem(
-                                identifier,
-                                title,
-                                content,
-                                author
-                            )
+                            editedTodoItem = TodoItem(title, content, author)
                             initTodoItemElement(component, editedTodoItem)
                             todoList[targetIdx] = editedTodoItem
                         }
@@ -325,7 +313,6 @@ const editTodoItem = (uid) => {
                         findDomElement(identifier),
                         (identifier, component) => {
                             const abortedTodoItem = TodoItem(
-                                identifier,
                                 originTitle,
                                 originContent,
                                 originAuthor

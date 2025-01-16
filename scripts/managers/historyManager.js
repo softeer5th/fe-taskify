@@ -68,7 +68,6 @@ const renderHistoryView = () => {
 
 const makeContentLabel = (action) => {
     let content = ''
-    console.log(action.data)
     const category = getCategoryByUid(action.data.categoryUid)
     const prevCategory = getCategoryByUid(action.data.prevCategoryUid)
     const currentCategory = getCategoryByUid(action.data.currentCategoryUid)

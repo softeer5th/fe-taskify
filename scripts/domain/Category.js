@@ -1,6 +1,6 @@
 import { generateUid } from '../utils/dataUtil.js'
 
-const createCategory = (identifier, categoryName, todoList = []) => {
+const createCategory = (categoryName, todoList = []) => {
     return {
         uid: generateUid(),
         categoryName,
