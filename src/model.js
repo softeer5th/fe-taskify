@@ -191,14 +191,14 @@ export default class Model {
   }
 
   undo() {
-    if (this.#model.currentPointer > 0) {
+    if (this.isUndoAble()) {
       this.#model.currentPointer -= 1;
       this.#notify();
     }
   }
 
   redo() {
-    if (this.#model.currentPointer < this.#model.history.length - 1) {
+    if (this.isRedoAble()) {
       this.#model.currentPointer += 1;
       this.#notify();
     }
@@ -276,6 +276,11 @@ export default class Model {
 
     this.#model.state.movingTaskId = -1;
 
+    if (fromColumnId === toColumnId) {
+      this.#notify();
+      return;
+    }
+
     this.#pushHistory(currentData, {
       type: "moveTask",
       movedTaskTitle: task.title,
@@ -343,7 +348,7 @@ export default class Model {
   }
 
   isUndoAble() {
-    return this.#model.currentPointer > 0;
+    return this.#model.currentPointer > 0 && this.#model.history.length - this.#model.currentPointer <= 5;
   }
 
   setModalState(state, data) {
