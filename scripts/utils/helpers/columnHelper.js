@@ -1,4 +1,5 @@
 import Card from '../../components/card.js';
+import { addLogToHistory } from './etcHelper.js';
 
 /**
  * 카드 생성 함수
@@ -15,8 +16,14 @@ const createCard = (mode, cardData, columnElement, columnState) => {
     addCard: (updatedCardData) => {
       columnState.setState((prev) => ({
         ...prev,
-        cards: [ updatedCardData, ...prev.cards],
+        cards: [updatedCardData, ...prev.cards],
       }));
+      addLogToHistory({
+        actionType: 'add',
+        cardTitle: updatedCardData.title,
+        fromColumnTitle: columnState.columnName,
+        loggedTime: new Date(),
+    });
     },
     deleteCard: (deleteCardId) => {
       columnState.setState((prev) => ({
