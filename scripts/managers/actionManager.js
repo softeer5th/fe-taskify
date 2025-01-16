@@ -3,6 +3,7 @@ import { classNames, keys } from '../strings.js'
 import { actionTypes } from '../types/actionTypes.js'
 import { getCategoryByUid } from '../utils/dataUtil.js'
 import { loadData, storeData } from '../utils/storageUtil.js'
+import { undoTodoItemMove } from './dragManager.js'
 import {
     undoTodoItemCreate,
     undoTodoItemDelete,
@@ -94,15 +95,6 @@ const undoAction = (action) => {
 
     storeData(keys.ACTION_POINTER_STORAGE_KEY, pointer)
 }
-
-const undoTodoItemMove = (
-    prevCategory,
-    currentCategory,
-    prevTodoItem,
-    currentTodoItem,
-    prevIndex,
-    currentIndex
-) => {}
 
 const undoTodoItemSort = (category) => {}
 

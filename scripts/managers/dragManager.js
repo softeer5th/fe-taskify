@@ -61,8 +61,6 @@ export const manageDropEvents = (dragReceiverElement, category) => {
     let dragDepth = 0
     component.addEventListener('dragenter', (e) => {
         dragDepth++
-
-        const ghostElement = findDomElement(originElementId)
         let updateFlag = false
         const categoryList = getState(keys.TODO_CATEGORY_KEY)
         for (let category of categoryList) {
@@ -124,6 +122,8 @@ export const manageDropEvents = (dragReceiverElement, category) => {
                 }
             }
             if (!updateFlag) return
+
+            const ghostElement = findDomElement(originElementId)
 
             if (isInDragZone) {
                 if (prevCategory !== currentCategory) {
@@ -211,19 +211,19 @@ export const manageDropEvents = (dragReceiverElement, category) => {
 
         storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
 
-        if (originCategory !== currentCategory) {
-            const todoMoveAction = makeTodoMoveAction(
-                originCategory.uid,
-                currentCategory.uid,
-                originTodoItem,
-                currentCategory.todoList[currentIndex],
-                originIndex,
-                currentIndex
-            )
+        const todoMoveAction = makeTodoMoveAction(
+            originCategory.uid,
+            currentCategory.uid,
+            originTodoItem,
+            currentCategory.todoList[currentIndex],
+            originIndex,
+            currentIndex
+        )
 
-            addAction(todoMoveAction)
+        if (originCategory !== currentCategory) {
             addHistory(todoMoveAction)
         }
+        addAction(todoMoveAction)
 
         originElementId = null
         originCategory = null
@@ -233,4 +233,33 @@ export const manageDropEvents = (dragReceiverElement, category) => {
         currentCategory = null
         currentIndex = null
     })
+}
+
+// TODO: 인자로 prevTodoItem, currentTodoItem -> todoItem 으로 통일
+export const undoTodoItemMove = (
+    prevCategory,
+    currentCategory,
+    prevTodoItem,
+    currentTodoItem,
+    prevIndex,
+    currentIndex
+) => {
+    const sourceElement = findDomElementByUid(currentTodoItem.uid)
+    let destElement
+    if (prevIndex === prevCategory.todoList.length) {
+        const parentElement = findDomElementByUid(
+            prevCategory.uid
+        ).querySelector(`.${classNames.todoBody}`)
+        parentElement.append(sourceElement)
+    } else {
+        destElement = findDomElementByUid(prevCategory.todoList[prevIndex].uid)
+        destElement.before(sourceElement)
+    }
+
+    currentCategory.todoList.splice(currentIndex, 1)
+    prevCategory.todoList.splice(prevIndex, 0, prevTodoItem)
+
+    storeData(keys.TODO_CATEGORY_KEY, getState(keys.TODO_CATEGORY_KEY))
+    renewTodoCount(prevCategory)
+    renewTodoCount(currentCategory)
 }

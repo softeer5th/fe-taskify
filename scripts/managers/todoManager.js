@@ -334,6 +334,7 @@ export const undoTodoItemCreate = (category, todoItem) => {
     const { _, index, __ } = getTodoItemInfo(todoItem.uid)
     removeDomElement(findDomElementByUid(todoItem.uid).id)
     category.todoList.splice(index, 1)
+    renewTodoCount(category)
 }
 
 export const undoTodoItemDelete = (category, todoItem, index) => {
@@ -342,17 +343,15 @@ export const undoTodoItemDelete = (category, todoItem, index) => {
         `.${classNames.todoBody}`
     )
 
-    if (index === 0 || index === category.todoList.length) {
+    if (index === category.todoList.length) {
         createDomElementAsChild(
             templateNames.todoItem,
-            findDomElementByUid(category.uid).querySelector(
-                `.${classNames.todoBody}`
-            ),
+            todoBodyElement,
             (identifier, component) => {
                 initTodoItemElement(component, copiedTodoItem)
                 return copiedTodoItem.uid
             },
-            index === 0 ? false : true
+            true
         )
     } else {
         const originChildElement = findDomElementByUid(
@@ -370,6 +369,7 @@ export const undoTodoItemDelete = (category, todoItem, index) => {
     }
 
     addTodoItemToList(copiedTodoItem, category, index)
+    renewTodoCount(category)
 }
 
 export const undoTodoItemEdit = (
