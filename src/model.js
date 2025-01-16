@@ -190,8 +190,6 @@ export default class Model {
     if (this.#model.currentPointer > 0) {
       this.#model.currentPointer -= 1;
       this.#notify();
-    } else {
-      return false;
     }
   }
 
@@ -199,8 +197,6 @@ export default class Model {
     if (this.#model.currentPointer < this.#model.history.length - 1) {
       this.#model.currentPointer += 1;
       this.#notify();
-    } else {
-      return false;
     }
   }
 
@@ -208,7 +204,7 @@ export default class Model {
     const currentData = this.getCurrentData();
     const newColumn = {
       id: Date.now(), // TODO: Use UUID or other unique id instead
-      name: addedColumnTitle,
+      title: addedColumnTitle,
     };
     currentData.column.push(newColumn);
     this.#pushHistory(currentData, {
@@ -336,5 +332,13 @@ export default class Model {
     this.#model.history = [{ ...this.#model.history[this.#model.currentPointer], actionLog: "", actionTime: Date.now() }];
     this.#model.currentPointer = 0;
     this.#notify();
+  }
+
+  isRedoAble() {
+    return this.#model.currentPointer < this.#model.history.length - 1;
+  }
+
+  isUndoAble() {
+    return this.#model.currentPointer > 0;
   }
 }
