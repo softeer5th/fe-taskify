@@ -132,6 +132,19 @@ textarea {
     backdrop-filter: blur(4px);
 }
 
+.iconButton {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grayscale-500);
+}
+
+.iconButton-danger:hover {
+    color: var(--accent-red);
+}
+
 .button-brand {
     background-color: var(--accent-blue);
     color: var(--grayscale-50);
@@ -215,21 +228,6 @@ textarea {
     justify-content: center;
 }
 
-.header__button--history {
-    width: 24px;
-    height: 24px;
-    border-radius: 8px;
-    position: absolute;
-    right: 80px;
-}
-
-.header__button--history svg {
-    width: 24px;
-    height: 24px;
-    color: var(--grayscale-600);
-}
-
-
 /* Column List Style */
 .column-list {
     width: 100%;
@@ -261,9 +259,9 @@ textarea {
     width: 320px;
     height: auto;
     padding: 0px 16px;
-    gap: 8px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 
@@ -322,18 +320,10 @@ textarea {
     text-align: center;
 }
 
-.column__title button,
-.column__title-edit button {
-    width: 24px;
-    height: 24px;
-    display: block;
-    color: var(--grayscale-500);
-}
-
-.column__title button svg,
-.column__title-edit button svg {
-    width: 24px;
-    height: 24px;
+.column__icon-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
 }
 
 .column__task-list {
@@ -431,18 +421,6 @@ textarea {
     flex-direction: column;
 }
 
-.task__iconButton-icon {
-    width: 24px;
-    height: 24px;
-    color: var(--grayscale-500);
-}
-
-.task__iconButton-icon:first-child {
-    &:hover {
-        color: var(--accent-red);
-    }
-}
-
 .task__editorButton {
     display: flex;
     flex-direction: row;
@@ -452,31 +430,6 @@ textarea {
     justify-content: center;
 }
 
-.task__editorButton button {
-    flex: 1;
-    width: 100%;
-    height: 32px;
-    border-radius: 8px;
-    padding: 0px 8px;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: center;
-    justify-content: center;
-}
-
-.task__editorButton button:nth-child(1) {
-    background-color: var(--grayscale-100);
-    color: var(--grayscale-600);
-}
-
-.task__editorButton button:nth-child(2) {
-    background-color: var(--accent-blue);
-    color: var(--grayscale-50);
-
-    &:disabled {
-        opacity: 0.3;
-    }
-}
 
 /* History Style */
 

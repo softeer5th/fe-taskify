@@ -101,16 +101,18 @@ export default function TaskView({ task, state, onClickFirstButton, onClickSecon
     const buttonGroup = document.createElement("div");
     buttonGroup.classList.add("task__iconButton");
 
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("task__iconButton-icon");
-    deleteButton.appendChild(icons.closed());
-    deleteButton.addEventListener("click", onClickFirstButton);
+    const deleteButton = Button({
+      className: ["iconButton", "iconButton-danger"],
+      onClick: onClickFirstButton,
+      children: [icons.closed()],
+    });
     deleteButton.addEventListener("mousedown", (event) => event.stopPropagation());
 
-    const editButton = document.createElement("button");
-    editButton.classList.add("task__iconButton-icon");
-    editButton.appendChild(icons.edit());
-    editButton.addEventListener("click", onClickSecondButton);
+    const editButton = Button({
+      className: ["iconButton"],
+      onClick: onClickSecondButton,
+      children: [icons.edit()],
+    });
     editButton.addEventListener("mousedown", (event) => event.stopPropagation());
 
     buttonGroup.appendChild(deleteButton);

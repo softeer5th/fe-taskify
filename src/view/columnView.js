@@ -1,5 +1,7 @@
 import icons from "../../asset/icon.js";
 
+import Button from "../component/button.js";
+
 const COUNT_MAX = 99;
 
 export default function ColumnView({ column, count, state, onColumnTitleEvent, onClickAddButton, onClickColumnDeleteButton }) {
@@ -42,18 +44,25 @@ export default function ColumnView({ column, count, state, onColumnTitleEvent, o
     columnTitle.appendChild(columnTextarea);
   }
 
-  const columnAddButton = document.createElement("button");
-  columnAddButton.classList.add("column__add-button");
-  columnAddButton.appendChild(icons.plus());
-  columnAddButton.addEventListener("click", onClickAddButton);
+  const columnIconButtons = document.createElement("div");
+  columnIconButtons.classList.add("column__icon-buttons");
 
-  const columnCloseButton = document.createElement("button");
-  columnCloseButton.classList.add("column__close-button");
-  columnCloseButton.appendChild(icons.closed());
-  columnCloseButton.addEventListener("click", onClickColumnDeleteButton);
+  const columnAddButton = Button({
+    className: ["iconButton"],
+    onClick: onClickAddButton,
+    children: [icons.plus()],
+  });
 
-  columnTitle.appendChild(columnAddButton);
-  columnTitle.appendChild(columnCloseButton);
+  const columnCloseButton = Button({
+    className: ["iconButton", "iconButton-danger"],
+    onClick: onClickColumnDeleteButton,
+    children: [icons.closed()],
+  });
+
+  columnIconButtons.appendChild(columnAddButton);
+  columnIconButtons.appendChild(columnCloseButton);
+
+  columnTitle.appendChild(columnIconButtons);
 
   columnElement.appendChild(columnTitle);
 

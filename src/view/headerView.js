@@ -1,5 +1,7 @@
 import icons from "../../asset/icon.js";
 
+import Button from "../component/button.js";
+
 export default function HeaderView({ onClickSortButton, onClickHistoryButton }) {
   const headerElement = document.createElement("header");
   headerElement.classList.add("header");
@@ -21,10 +23,13 @@ export default function HeaderView({ onClickSortButton, onClickHistoryButton }) 
   sortButton.appendChild(sortButtonIcon);
   sortButton.appendChild(sortButtonText);
 
-  const historyButton = document.createElement("button");
-  historyButton.classList.add("header__button--history");
-  historyButton.addEventListener("click", onClickHistoryButton);
-  historyButton.appendChild(icons.clock());
+  const historyButton = Button({
+    className: ["iconButton"],
+    onClick: onClickHistoryButton,
+    children: [icons.clock()],
+  });
+  historyButton.style.position = "absolute";
+  historyButton.style.right = "80px";
 
   headerElement.appendChild(headerTitle);
   headerElement.appendChild(sortButton);
