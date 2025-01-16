@@ -12,8 +12,8 @@ export default function HistoryController(model, rootElement) {
   const historyView = HistoryView({
     history,
     user,
-    onHistoryCloseButtonClicked: handleClickHistoryCloseButton,
-    onHistoryDeleteButtonClicked: handleClickHistoryDeleteButton,
+    onClickHistoryCloseButton: handleClickHistoryCloseButton,
+    onClickHistoryDeleteButton: handleClickHistoryDeleteButton,
   });
 
   rootElement.appendChild(historyView);
