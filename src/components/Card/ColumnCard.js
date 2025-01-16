@@ -1,9 +1,16 @@
+import { Background } from '../../layout/Background/Background.js';
+import { PrimaryModal } from '../../observer/observer.js';
 import { loadCss } from '../../utils/loadcss.js';
 import { Button } from '../Button/Button.js';
+import { Modal } from '../Modal/Modal.js';
 
-export function ColumnCard({type,title,content,author,addText,closeText,checkId,editId,closeId,deleteId}){
-    const columnCard = document.createElement('div');
+
+export const modalInstances = {};
+
+export function ColumnCard({id,type,title,content,author,addText,closeText,checkId,editId,closeId,deleteId}){
+    const columnCard = document.createElement('li');
     columnCard.className = 'column-card-container';
+    columnCard.id= id;
     columnCard.innerHTML =`
         <div class='column-content-container'>
             <div class='column-content-box'></div>
@@ -29,6 +36,7 @@ export function ColumnCard({type,title,content,author,addText,closeText,checkId,
         createCardButtons({columnCard,contentBox,type,closeText,addText,checkId,closeId})
     }
     else{
+        columnCard.draggable="true";
         contentBox.innerHTML = `
             <div class='column-card-title'>${title}</div>
             <div class='column-card-content'>${content}</div>
@@ -54,16 +62,51 @@ export function ColumnCard({type,title,content,author,addText,closeText,checkId,
 
         iconBox.insertAdjacentElement('beforeend',editButton);
         iconBox.insertAdjacentElement('beforeend',deleteButton);
-        if(type === 'drag'){
-            columnCard.classList.add('card-drag-container');
-        }else if (type === 'place'){
-            columnCard.classList.add('card-place-container');
-        }
             
     }
+    if (!modalInstances[id]) {
+        modalInstances[id] = new PrimaryModal();
+    }
+
+    modalInstances[id].subscribe((isOpen)=>{
+        const modal = columnCard.querySelector('.modal-container'); 
+        const background = columnCard.querySelector('.background-container'); 
+        if(isOpen){    
+        const fragment = document.createDocumentFragment()
+        const deleteModal = Modal({
+            content: '선택한 카드를 삭제할까요?',
+            checkId:'card-delete',
+            closeId:'card-delete-toggle',
+            closeText:'취소',
+            checkText:'삭제'
+        })
+
+        fragment.appendChild(Background());  
+        fragment.appendChild(deleteModal);  
+        columnCard.appendChild(fragment);
+        return
+        }else{
+            if(background)background.remove();
+            if(modal)modal.remove()            
+            return
+        }
+        
+    })
 
 
     loadCss('../src/components/Card/ColumnCard.css')
+
+
+    columnCard.addEventListener('dragstart',()=>{
+        columnCard.classList.add('card-drag-container');
+    })
+
+    columnCard.addEventListener('dragend',()=>{
+        columnCard.classList.remove('card-drag-container');
+    })
+
+    
+
     return columnCard;
 }
 
@@ -94,4 +137,5 @@ export function createCardButtons({columnCard,contentBox,type,closeText,addText,
 
     contentBox.insertAdjacentElement('afterend', buttonBox);
 }
+
 

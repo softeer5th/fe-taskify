@@ -15,3 +15,9 @@
     gap:4px;
 
 }
+
+.column-card-box{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
