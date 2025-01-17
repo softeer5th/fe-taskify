@@ -22,3 +22,7 @@ body > div {
 button:hover {
     cursor: pointer;
 }
+
+strong {
+    font-weight: bold;
+}
