@@ -27,8 +27,8 @@ export default class Model {
       history: [
         {
           data: {
-            column: [],
-            task: [],
+            column: JSON.parse(localStorage.getItem("column")) || [],
+            task: JSON.parse(localStorage.getItem("task")) || [],
             user: {
               name: "TestUser1",
               thumbnailUrl: "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
@@ -38,7 +38,7 @@ export default class Model {
           actionTime: Date.now(),
         },
       ],
-      currentPointer: history.length - 1,
+      currentPointer: 0,
       state: {
         editingTaskId: -1,
         editingColumnId: -1,
@@ -59,6 +59,8 @@ export default class Model {
 
   #notify() {
     this.#listeners.forEach((listener) => listener());
+    localStorage.setItem("column", JSON.stringify(this.#model.history[this.#model.currentPointer].data.column));
+    localStorage.setItem("task", JSON.stringify(this.#model.history[this.#model.currentPointer].data.task));
   }
 
   #createHistoryActionLog(actionType, actionData) {
@@ -96,6 +98,16 @@ export default class Model {
 
   // Public method
 
+  initHistory(history) {
+    this.#model.history = history;
+    this.#model.currentPointer = history.length - 1;
+    this.#notify();
+  }
+
+  exportHistory() {
+    return deepCopy(this.#model.history);
+  }
+
   getCurrentData() {
     const currentHistory = this.#model.history[this.#model.currentPointer];
     const currentData = currentHistory.data;
@@ -118,8 +130,7 @@ export default class Model {
   }
 
   unsetEditingTaskId() {
-    this.#model.state.editingTaskId = -1;
-    this.#notify();
+    this.setEditingTaskId(-1);
   }
 
   setEditingColumnId(columnId) {
@@ -128,8 +139,7 @@ export default class Model {
   }
 
   unsetEditingColumnId() {
-    this.#model.state.editingColumnId = -1;
-    this.#notify();
+    this.setEditingColumnId(-1);
   }
 
   setEditingTaskColumn(columnId) {
@@ -150,8 +160,7 @@ export default class Model {
   }
 
   unsetMovingTaskId() {
-    this.#model.state.movingTaskId = -1;
-    this.#notify();
+    this.setMovingTaskId(-1);
   }
 
   toggleOrder() {
@@ -184,10 +193,12 @@ export default class Model {
     this.#listeners = this.#listeners.filter((li) => li !== listener);
   }
 
-  initHistory(history) {
-    this.#model.history = history;
-    this.#model.currentPointer = history.length - 1;
-    this.#notify();
+  isRedoAble() {
+    return this.#model.currentPointer < this.#model.history.length - 1;
+  }
+
+  isUndoAble() {
+    return this.#model.currentPointer > 0 && this.#model.history.length - this.#model.currentPointer <= 5;
   }
 
   undo() {
@@ -341,14 +352,6 @@ export default class Model {
     this.#model.history = [{ ...this.#model.history[this.#model.currentPointer], actionLog: "", actionTime: Date.now() }];
     this.#model.currentPointer = 0;
     this.#notify();
-  }
-
-  isRedoAble() {
-    return this.#model.currentPointer < this.#model.history.length - 1;
-  }
-
-  isUndoAble() {
-    return this.#model.currentPointer > 0 && this.#model.history.length - this.#model.currentPointer <= 5;
   }
 
   setModalState(state, data) {
