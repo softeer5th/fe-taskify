@@ -1,5 +1,5 @@
 import { renderTemplate } from "./main.js";
-import { getHistory } from "./store.js";
+import { clearHistory, getHistory } from "./store.js";
 
 const openHistoryButton = document.getElementById('history-button');
 const closeHistoryButton = document.querySelector('.close-history');
@@ -24,7 +24,12 @@ function showHistory() {
 
     dialog.style.left = `${dialogX}px`;
     dialog.style.top = `${dialogY}px`;
-    console.log(getHistory());
+}
+
+export function toggleContentExist() {
+    const historyArea = document.getElementById('history-area');
+    const hasChildren = historyArea.querySelectorAll('.history-li').length > 0;
+    historyArea.setAttribute('data-has-children', hasChildren);
 }
 
 export function relocateHistory() {// 버튼의 위치 정보 가져오기
@@ -60,26 +65,30 @@ export function makeHistoryObj(actionType, subject, from, to) {
 
 export async function renderHistory(historyObj) {
     //templateFile, templateId, targetId, props
-    console.log(historyObj);
     await renderTemplate('./html/history_template.html', 'history-template', 'history-area', historyObj, true);
-    console.log(historyObj.actionType)
     if (historyObj.actionType==="등록" || historyObj.actionType==="삭제") {
         document.querySelector('.detail').innerHTML = `
-        <span class="accent">${historyObj.subject}</span>을(를)&nbsp;
-        <span class="accent">${historyObj.from}</span>에서&nbsp;
+        <span class="accent">${historyObj.subject}</span>을(를)  
+        <span class="accent">${historyObj.from}</span>에서&nbsp  
         <span class="accent">${historyObj.actionType}</span>하였습니다.
         `;
     } else if (historyObj.actionType==="변경") {
         document.querySelector('.detail').innerHTML = `
-        <span class="accent">${historyObj.subject}</span>을(를)&nbsp;
+        <span class="accent">${historyObj.subject}</span>을(를)  
         <span class="accent">${historyObj.actionType}</span>하였습니다.
         `;
     } else if (historyObj.actionType==="이동") {
         document.querySelector('.detail').innerHTML = `
-        <span class="accent">${historyObj.subject}</span>을(를)&nbsp;
-        <span class="accent">${historyObj.from}</span>에서&nbsp;
-        <span class="accent">${historyObj.to}</span>으로&nbsp;
+        <span class="accent">${historyObj.subject}</span>을(를)  
+        <span class="accent">${historyObj.from}</span>에서  
+        <span class="accent">${historyObj.to}</span>으로  
         <span class="accent">${historyObj.actionType}</span>하였습니다.
         `;
     }
+}
+
+export function clearHistoryDialog() {
+    clearHistory();
+    let historyArea = document.getElementById('history-area');
+    historyArea.innerHTML = `<div class="no-history">사용자 활동 기록이 없습니다.</div>`;
 }

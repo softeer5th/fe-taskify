@@ -3,6 +3,7 @@ import { todoFromJson, todoToJson, todoToObj } from "./utility.js";
 
 const maxMemInd = 5;
 let clone = null;
+let originColumn = null;
 let isOrderChanging = false;
 let isColumnNameChanging = false;
 let isCardEditing = false;
@@ -20,6 +21,14 @@ export function getClone () {
 
 export function setClone (newClone) {
     clone = newClone;
+}
+
+export function getOriginColumn() {
+    return originColumn;
+}
+
+export function setOriginColumn(column) {
+    originColumn = column;
 }
 
 
@@ -113,6 +122,7 @@ export function saveData() {
         moveBfData();
         localStorage.setItem(`content${memoryIndex}`, todoJson);
         saveRecentInd();
+        console.log("SAVED!!!");
     }
 }
 
@@ -203,4 +213,8 @@ export function addHistory(historyObj) {
 
 export function getHistory() {
     return historyList;
+}
+
+export function clearHistory() {
+    historyList.length = 0;
 }
