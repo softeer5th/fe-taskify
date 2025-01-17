@@ -1,4 +1,4 @@
-import { DELETE_ICON } from "../assets/icons/delete.js";
+import { DELETE_ICON } from "../assets/icons/deleteIcon.js";
 import { parseToDoc } from "../utils/parseToDoc.js";
 
 export const card = (id, title = "", content = "") => {
