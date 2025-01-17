@@ -17,7 +17,7 @@ export class Column extends Component {
         this.children.input.object.clearInput();
         this.hideAddCard();
     };
-  
+
     onEditCard = (index) => {
         const preData = this.children[`card${index}`].object.cardData;
         this.createEditCard(index, preData);
@@ -218,8 +218,8 @@ export class Column extends Component {
             const rect = cardElement.getBoundingClientRect();
             return {
                 id: card.cardId,
-                top: rect.top,
-                left: rect.left,
+                top: cardElement.offsetTop,
+                left: cardElement.offsetLeft,
                 element: cardElement,
             };
         });
@@ -261,8 +261,8 @@ export class Column extends Component {
             const rect = cardElement.getBoundingClientRect();
             return {
                 id: card.cardId,
-                top: rect.top,
-                left: rect.left,
+                top: cardElement.offsetTop,
+                left: cardElement.offsetLeft,
             };
 
         })

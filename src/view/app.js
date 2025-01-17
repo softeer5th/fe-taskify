@@ -18,7 +18,7 @@ export class App extends Component {
         todoStore.sort(this.currentSortType);
 
         this.columnData = todoStore.getAllData();
-        
+
         this.rerender();
     }
 
@@ -86,7 +86,6 @@ export class App extends Component {
     }
 
     rerender() {
-        console.log("data", this.columnData);
         this.setChildren();
         super.rerender();
     }
