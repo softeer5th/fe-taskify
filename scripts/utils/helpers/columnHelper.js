@@ -21,9 +21,9 @@ const createCard = (mode, cardData, columnElement, columnState) => {
       addLogToHistory({
         actionType: 'add',
         cardTitle: updatedCardData.title,
-        fromColumnTitle: columnState.columnName,
+        fromColumnName: columnState.getState().columnName,
         loggedTime: new Date(),
-    });
+      });
     },
     deleteCard: (deleteCardId) => {
       columnState.setState((prev) => ({
