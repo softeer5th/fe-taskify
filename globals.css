@@ -1,6 +1,6 @@
 @import url('/public/fonts/pretendard.css');
 
-*{ 
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -9,7 +9,7 @@
 
     ::-webkit-scrollbar {
         display: none;
-      }
+    }
 }
 
 button {
@@ -144,7 +144,6 @@ body {
 .shadow-up {
     box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.32);
     backdrop-filter: blur(4px)
-
 }
 
 .shadow-floating {

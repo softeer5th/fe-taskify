@@ -1,6 +1,6 @@
-import HeaderComponent from "../../components/header.js";
-import { LogComponent } from "../../components/log.js";
-import ModalComponent from "../../components/modal.js";
+import HeaderComponent from "../../components/header/header.js";
+import { LogComponent } from "../../components/log/log.js";
+import ModalComponent from "../../components/modal/modal.js";
 import ColumnController from "./column.js";
 
 export default function HeaderController(state, bodyElement, logStore) {

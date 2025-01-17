@@ -1,6 +1,6 @@
-import LogStore from "../script/store/log.js";
-import { timeCalculator } from "../script/utils.js";
-import ModalComponent from "./modal.js";
+import LogStore from "../../script/store/log.js";
+import { timeCalculator } from "../../script/lib/utils.js";
+import ModalComponent from "../modal/modal.js";
 
 export function LogComponent(columns, store, handleClear) {
     store.subscribe(rerender);

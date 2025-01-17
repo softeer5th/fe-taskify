@@ -1,0 +1,22 @@
+.card {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    padding: 16px;
+}
+
+.card_text_container {
+    flex-grow: 1;
+    word-break: break-all;
+
+    h4 {
+        margin-bottom: 8px;
+    }
+}
+
+.card_button_container {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+}

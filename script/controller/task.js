@@ -1,6 +1,6 @@
-import ModalComponent from "../../components/modal.js";
-import FormComponent from "../../components/form.js";
-import TaskComponent from "../../components/task.js";
+import ModalComponent from "../../components/modal/modal.js";
+import FormComponent from "../../components/form/form.js";
+import TaskComponent from "../../components/task/task.js";
 
 export default function TaskController(state, logStore, rerender) {
     const formComponent = FormComponent();
