@@ -25,11 +25,18 @@ const createCard = (mode, cardData, columnElement, columnState) => {
         loggedTime: new Date(),
       });
     },
-    deleteCard: (deleteCardId) => {
+    deleteCard: (deleteCardData, isForDelete) => {
       columnState.setState((prev) => ({
         ...prev,
-        cards: prev.cards.filter((card) => card.id !== deleteCardId),
+        cards: prev.cards.filter((card) => card.id !== deleteCardData.id),
       }));
+      if (isForDelete)
+        addLogToHistory({
+          actionType: 'delete',
+          cardTitle: deleteCardData.title,
+          fromColumnName: columnState.getState().columnName,
+          loggedTime: new Date(),
+        });
     },
     editCard: (updatedCardData) => {
       columnState.setState((prev) => ({
@@ -38,6 +45,11 @@ const createCard = (mode, cardData, columnElement, columnState) => {
           updatedCardData.id === card.id ? updatedCardData : card
         ),
       }));
+      addLogToHistory({
+        actionType: 'edit',
+        cardTitle: updatedCardData.title,
+        loggedTime: new Date(),
+      });
     },
     initCardsInColumn: () => initCardsInColumn(columnElement, columnState),
   });

@@ -55,7 +55,8 @@ const addLogToHistory = ({
       : minutesDiff < 1
       ? '방금 전'
       : `${minutesDiff}분 전`;
-  history.querySelector('#gap-div').after(newLogElement);
+  const logDiv = history.querySelector('#log-div');
+  logDiv.insertBefore(newLogElement, logDiv.firstChild);
 };
 
 const generateLogText = ({
@@ -78,7 +79,7 @@ const generateLogText = ({
   logTotal.push(createSpanElement(cardTitle, true));
   logTotal.push(createSpanElement('을(를) ', false));
   logTotal.push(createSpanElement(fromColumnName, true));
-  logTotal.push(createSpanElement('에서 ', false));
+  if (fromColumnName) logTotal.push(createSpanElement('에서 ', false));
   if (toColumnName) {
     logTotal.push(createSpanElement(toColumnName, true));
     logTotal.push(createSpanElement('(으)로 ', false));
