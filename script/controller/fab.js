@@ -1,4 +1,4 @@
-import FabComponent from "../components/fab.js";
+import FabComponent from "../../components/fab.js";
 import ColumnController from "./column.js";
 
 export default function FabController(bodyElement, state, logStore) {

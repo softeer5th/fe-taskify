@@ -1,6 +1,6 @@
-import FormComponent from "../components/form.js";
-import ColumnComponent from "../components/column.js";
-import ModalComponent from "../components/modal.js";
+import FormComponent from "../../components/form.js";
+import ColumnComponent from "../../components/column.js";
+import ModalComponent from "../../components/modal.js";
 import TaskController from "./task.js";
 
 export default function ColumnController(state, bodyElement, logStore) {

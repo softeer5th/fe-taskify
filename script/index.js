@@ -1,7 +1,7 @@
-import ColumnController from "./column.js";
-import FabController from "./fab.js";
-import HeaderController from "./header.js";
-import State from "./state.js";
+import ColumnController from "./controller/column.js";
+import FabController from "./controller/fab.js";
+import HeaderController from "./controller/header.js";
+import State from "./store/state.js";
 import LogStore from "./store/log.js";
 
 const state = State();
