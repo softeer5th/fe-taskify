@@ -3,7 +3,7 @@ import { LogComponent } from "../../components/log/log.js";
 import ModalComponent from "../../components/modal/modal.js";
 import ColumnController from "./column.js";
 
-export default function HeaderController(state, bodyElement, logStore) {
+export default function HeaderController(state, logStore) {
     const { columns, columnTasks } = state.getColumns();
     const headerComponent = HeaderComponent();
     const logComponent = LogComponent(columns, logStore, renderClearLogModal);
@@ -13,7 +13,7 @@ export default function HeaderController(state, bodyElement, logStore) {
         const headerElement = headerComponent.render();
         headerComponent.addListener(headerElement, handleSort, renderLog);
 
-        bodyElement.appendChild(headerElement);
+        document.body.appendChild(headerElement);
     }
 
     function renderClearLogModal() {
@@ -25,18 +25,18 @@ export default function HeaderController(state, bodyElement, logStore) {
 
     function renderLog() {
         const logs = logStore.getLogs();
-        const existLogElement = bodyElement.querySelector("#log_layer");
+        const existLogElement = document.body.querySelector("#log_layer");
 
         if (existLogElement) {
             logComponent.remove();
         } else {
             const logElement = logComponent.render(logs);
-            bodyElement.appendChild(logElement);
+            document.body.appendChild(logElement);
         }
     }
 
     function handleSort() {
-        const columnController = ColumnController(state, bodyElement);
+        const columnController = ColumnController(state);
         const currentOrder = state.flipOrder();
 
         for (let i = 0; i < columns.length; i++) {

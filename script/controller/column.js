@@ -3,7 +3,7 @@ import ColumnComponent from "../../components/column/column.js";
 import ModalComponent from "../../components/modal/modal.js";
 import TaskController from "./task.js";
 
-export default function ColumnController(state, bodyElement, logStore) {
+export default function ColumnController(state, logStore) {
     const { columns: columnList, columnTasks } = state.getColumns();
     const columnComponent = ColumnComponent();
     const formComponent = FormComponent();
@@ -77,7 +77,7 @@ export default function ColumnController(state, bodyElement, logStore) {
     // 입력받은 tasks와 현재 존재하는 task Element를 비교하여 존재하는 Element는 재사용, 존재하지 않는 Element는 생성, 필요 없어진 Element는 삭제 진행
     // 애니메이션 적용
     function renderColumn(idx, tasks) {
-        const columnElement = bodyElement.querySelectorAll('.column')[idx];        
+        const columnElement = document.body.querySelectorAll('.column')[idx];        
         const columnListElement = columnElement.querySelector(".card_list");
 
         const currentCounter = Number(columnElement.querySelector('.column_task_counter').textContent);
@@ -227,7 +227,7 @@ export default function ColumnController(state, bodyElement, logStore) {
 
     // Column 동적 생성 및 이벤트 등록
     function renderInit() {
-        bodyElement.oncontextmenu = (e) => e.preventDefault();
+        document.body.oncontextmenu = (e) => e.preventDefault();
         const mainElement = document.createElement("main");
         const columnContainerElement = document.createElement("ul");
         columnContainerElement.setAttribute("id", "column_container");
@@ -254,7 +254,7 @@ export default function ColumnController(state, bodyElement, logStore) {
 
         columnContainerElement.appendChild(columnListFragment);
         mainElement.appendChild(columnContainerElement);
-        bodyElement.appendChild(mainElement);
+        document.body.appendChild(mainElement);
     }
 
     function addColumn(title) {

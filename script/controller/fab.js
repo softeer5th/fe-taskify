@@ -1,9 +1,9 @@
 import FabComponent from "../../components/main/fab.js";
 import ColumnController from "./column.js";
 
-export default function FabController(bodyElement, state, logStore) {
+export default function FabController(state, logStore) {
     const fabComponent = FabComponent();
-    const columnController = ColumnController(state, bodyElement, logStore);
+    const columnController = ColumnController(state, logStore);
     const {columns, columnTasks} = state.getColumns();
 
     function handleRedo(e) {
@@ -112,7 +112,7 @@ export default function FabController(bodyElement, state, logStore) {
         fabComponent.addListener(addColumnElement, handleAddColumn);
         container.appendChild(addColumnElement);
 
-        bodyElement.appendChild(container);
+        document.body.appendChild(container);
     }
 
     function handleAddColumn() {
