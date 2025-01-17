@@ -1,7 +1,7 @@
 import { CardData } from "../data/cardData.js";
 import { ColumnData } from "../data/columnData.js";
 
-export const columnData = [
+export var columnData = [
         new ColumnData(
             "해야할 일",
             [

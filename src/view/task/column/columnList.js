@@ -5,7 +5,7 @@ export class ColumnList extends Component {
 
     rootId = "columnList";
 
-    constructor(columnList, onCardAdded = (columnIndex, cardData) => { }, onCardDeleted = (columnIndex, cardIndex) => { }, onCardMoved = (cardId, preColumnIndex, newColumnIndex) => { }) {
+    constructor(columnList, onCardAdded = (columnIndex, cardData) => { }, onCardDeleted = (columnIndex, cardIndex) => { }, onCardEdited = (columnIndex, cardIndex, newCardData) => { }, onCardMoved = (cardId, preColumnIndex, newColumnIndex) => { }) {
         super();
 
         columnList.forEach((columnData, index) => {
@@ -16,6 +16,8 @@ export class ColumnList extends Component {
                     },
                     (cardIndex) => {
                         onCardDeleted(index, cardIndex);
+                    }, (cardIndex, newCardData) => {
+                        onCardEdited(index, cardIndex, newCardData);
                     }, () => {
                         const draggingCardId = document.querySelector(".dragging").id.slice(4);
                         const preColumnIndex = columnList.findIndex(column =>

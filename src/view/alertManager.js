@@ -6,7 +6,8 @@ export class AlertManager {
         this.modal = document.createElement("div");
         this.modal.id = "alert";
 
-        document.body.insertBefore(this.modal, document.body.firstChild);
+        // console.log(document.querySelector("#app"));
+        document.body.insertBefore(this.modal, document.querySelector("#app").nextSibling);
         
         this.hideDialog();
     }

@@ -31,7 +31,6 @@ export class DefaultCard extends Component {
             })
         };
         this.onEditClick = onEditClick;
-
     }
 
     template() {
@@ -55,7 +54,6 @@ export class DefaultCard extends Component {
     `;
     }
 
-    // <img src=${this.closeIconRef} alt="close-icon" class="card-icon" id = "close-icon" />
     render(parent) {
 
         super.render(parent);
@@ -64,7 +62,7 @@ export class DefaultCard extends Component {
 
         const close = this.current.querySelector("#close-icon");
         close.classList.add("card-icon");
-        
+
         if (close) {
             close.addEventListener("click", (event) => {
                 this.onCloseClick();
@@ -74,11 +72,9 @@ export class DefaultCard extends Component {
         const edit = this.current.querySelector("#edit-icon");
 
         if (edit) {
-
             edit.addEventListener("click", (event) => {
                 this.onEditClick();
             }, false);
-
         }
     }
 

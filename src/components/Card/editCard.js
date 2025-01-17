@@ -92,6 +92,7 @@ export class EditCard extends Component {
             b = bodyInput.value
         }
 
+        console.log("carddddddDd", t,b);
         return new CardData(t, b, "web");
 
     }

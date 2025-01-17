@@ -1,6 +1,6 @@
 import Component from "../../../components/component.js";
 import { alertManager } from "../index.js";
-import { getCardData } from "../route/store/todoStore.js";
+import { todoStore } from "../route/store/todoStore.js";
 import { DefaultCard } from "./Card/card.js";
 import { EditCard } from "./Card/editCard.js";
 import { ColumnHeader } from "./columnHeader.js";
@@ -17,18 +17,18 @@ export class Column extends Component {
         this.children.input.object.clearInput();
         this.hideAddCard();
     };
-
+  
     onEditCard = (index) => {
         const preData = this.children[`card${index}`].object.cardData;
         this.createEditCard(index, preData);
         this.rerender();
     }
 
-    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }, onCardMoved = () => { }) {
+    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }, onCardEdited = (cardIndex, newCardData) => { }, onCardMoved = () => { }) {
         super();
         this.columnData = columnData;
         this.addRootclass("column");
-        this.setCallback(onCardAdded, onCardDelete, onCardMoved);
+        this.setCallback(onCardAdded, onCardDelete, onCardEdited, onCardMoved);
 
         this.addEvent("dragover", (event) => {
             if (!event.target.classList.contains(this.rootSelectorClassName)) return;
@@ -48,9 +48,11 @@ export class Column extends Component {
         this.setChildren();
     }
 
-    setCallback(onCardAdded, onCardDelete, onCardMoved) {
+    setCallback(onCardAdded, onCardDelete, onCardEdited, onCardMoved) {
 
         this.onCardDelete = onCardDelete;
+
+        this.onCardEdited = onCardEdited;
 
         this.onNewCardAdded = (newCardData) => {
             onCardAdded(newCardData);
@@ -122,8 +124,7 @@ export class Column extends Component {
             object: new EditCard(
                 preCardData,
                 (newCardData) => {
-                    this.createDefaultCard(index, newCardData);
-                    this.rerender();
+                    this.onCardEdited(index, newCardData);
                 },
                 () => {
                     this.createDefaultCard(index, preCardData);
@@ -157,7 +158,7 @@ export class Column extends Component {
         if (!dragging) return;
 
         const cardId = dragging.id.slice(4);
-        const cardData = getCardData(cardId);
+        const cardData = todoStore.getCardData(cardId);
 
         const ghostCard = new DefaultCard(cardData).createDOM();
 
@@ -254,7 +255,7 @@ export class Column extends Component {
 
     remeberPreOrder() {
         previousPositions[this.columnData.name] = (this.columnData.data).map((card) => {
-            const cardElement = this.parent.querySelector(`#card${card.cardId}`);
+            const cardElement = this.current.querySelector(`#card${card.cardId}`);
             if (!cardElement) return;
 
             const rect = cardElement.getBoundingClientRect();

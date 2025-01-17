@@ -2,11 +2,11 @@ import Component from "../components/component.js";
 import { Header } from "./task/header/header.js";
 import { ColumnList } from "./task/column/columnList.js";
 import { sortType } from "../route/data/sortType.js";
-import { getAllData } from "../route/store/todoStore.js";
+import { todoStore } from "../route/store/todoStore.js";
 
 export class App extends Component {
 
-    columnData = getAllData();
+    columnData = todoStore.getAllData();
 
     rootId = "appContainer";
 
@@ -15,30 +15,44 @@ export class App extends Component {
     onSortClick = (newSortType) => {
         this.currentSortType = newSortType;
 
-        this.sort();
-       
+        todoStore.sort(this.currentSortType);
+
+        this.columnData = todoStore.getAllData();
+        
         this.rerender();
     }
 
     onHistoryClick = () => { }
 
     onCardAdded = (columnIndex, cardData) => {
-        this.columnData[columnIndex].addCard(cardData);
+        todoStore.addCard(columnIndex,cardData);
+        todoStore.sort(this.currentSortType);
 
+        this.columnData = todoStore.getAllData();
         this.rerender();
     }
 
     onCardDeleted = (columnIndex, cardIndex) => {
-        this.columnData[columnIndex].removeData(cardIndex);
+        todoStore.removeCard(columnIndex, cardIndex);
+        todoStore.sort(this.currentSortType);
+        this.columnData = todoStore.getAllData();
 
         this.rerender();
     }
 
+    onCardEdited = (columnIndex, cardIndex, newCardData) => {
+        todoStore.editCard(columnIndex, cardIndex, newCardData);
+        this.columnData = todoStore.getAllData();
+        this.rerender();
+    }
+
     onCardMoved = (cardId, preColumnIndex, newColumnIndex) => {
-        const temp = this.columnData[preColumnIndex].getCard(cardId);
-        this.columnData[preColumnIndex].removeDataById(cardId);
-        this.columnData[newColumnIndex].addCard(temp);
-        this.sort();
+        const temp = todoStore.getCardData(cardId);
+        todoStore.removeCardById(cardId);
+        todoStore.addCard(newColumnIndex, temp);
+        todoStore.sort(this.currentSortType);
+        this.columnData = todoStore.getAllData();
+
         this.rerender();
     }
 
@@ -50,36 +64,14 @@ export class App extends Component {
     setChildren() {
         this.children = {
             header: {
-                object: new Header(this.currentSortType,this.onSortClick, this.onHistoryClick),
+                object: new Header(this.currentSortType, this.onSortClick, this.onHistoryClick),
                 parentSelector: "#header",
             },
-            column:{
-                object: new ColumnList(this.columnData, this.onCardAdded, this.onCardDeleted, this.onCardMoved),
+            column: {
+                object: new ColumnList(this.columnData, this.onCardAdded, this.onCardDeleted, this.onCardEdited, this.onCardMoved),
                 parentSelector: "#taskContent",
             }
         }
-    }
-
-    sort(){
-        if (this.currentSortType === sortType.create) {
-            this.sortByCreated();
-        } else {
-            this.sortByRecent();
-        }
-    }
-    
-    sortByCreated() {
-        this.columnData = this.columnData.map((columnData) => {
-            columnData.data = columnData.data.sort((cardData1, cardData2) => cardData1.cardId - cardData2.cardId);
-            return columnData;
-        });
-    }
-
-    sortByRecent() {
-        this.columnData = this.columnData.map((columnData) => {
-            columnData.data = columnData.data.sort((cardData1, cardData2) => cardData2.cardId - cardData1.cardId);
-            return columnData;
-        });
     }
 
     template() {
@@ -94,6 +86,7 @@ export class App extends Component {
     }
 
     rerender() {
+        console.log("data", this.columnData);
         this.setChildren();
         super.rerender();
     }
