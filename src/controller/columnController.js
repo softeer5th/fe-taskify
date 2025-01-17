@@ -124,7 +124,7 @@ export default function ColumnController(model, rootElement) {
         onClickColumnDeleteButton: handleClickColumnDeleteButton,
       });
 
-      columnView.querySelector(".column__title").replaceWith(newColumnView.querySelector(".column__title"));
+      columnView.querySelector(".column__header").replaceWith(newColumnView.querySelector(".column__header"));
     });
 
     // Focus on editing column title
