@@ -1,6 +1,5 @@
-import LogStore from "../script/store/log.js";
-import { timeCalculator } from "../script/utils.js";
-import ModalComponent from "./modal.js";
+import { ACTION_ADD, ACTION_MOVE, ACTION_REMOVE, ACTION_UPDATE } from "../../script/lib/constant.js";
+import { timeCalculator } from "../../script/lib/utils.js";
 
 export function LogComponent(columns, store, handleClear) {
     store.subscribe(rerender);
@@ -55,16 +54,16 @@ export function LogComponent(columns, store, handleClear) {
         let template = ``;
 
         switch (actionType) {
-            case "ADD":
+            case ACTION_ADD:
                 template = templateAdd({ title, originTitle });
                 break;
-            case "REMOVE":
+            case ACTION_REMOVE:
                 template = templateRemove({ title, originTitle });
                 break;
-            case "UPDATE":
+            case ACTION_UPDATE:
                 template = templateUpdate({ title });
                 break;
-            case "MOVE":
+            case ACTION_MOVE:
                 const destinationTitle = findColumnName(destination);
                 template = templateMove({
                     title,
@@ -106,22 +105,23 @@ export function LogComponent(columns, store, handleClear) {
     function render(logs) {
         const logElement = document.createElement("div");
         logElement.setAttribute("id", "log_layer");
-        logElement.setAttribute(
-            "class",
-            "surface-default rounded-200 shadow-floating"
-        );
+        logElement.classList = "surface-default rounded-200 shadow-floating";
         logElement.innerHTML = template();
+
+        const closeButton = logElement.querySelector("button");
+        closeButton.addEventListener("click", () => removeSelf());
 
         const logListElement = logElement.querySelector("#log_layer_list");
 
         if (!logs || logs.length === 0) {
             logElement.appendChild(emptyElement);
         } else {
-            const logFragElement = document.createDocumentFragment();
-            logs.forEach((el) => {
-                const logLiElement = renderLog(el);
-                logFragElement.appendChild(logLiElement);
-            });
+            
+            const logFragElement = logs.reduce((acc, cur) => {
+                acc.appendChild(renderLog(cur));
+                return acc;
+            }, document.createDocumentFragment());
+
             logListElement.append(logFragElement);
             logElement.appendChild(footerElement);
         }
@@ -129,11 +129,9 @@ export function LogComponent(columns, store, handleClear) {
         return logElement;
     }
 
-    function remove() {
+    function removeSelf() {
         const logElement = document.body.querySelector("#log_layer");
-        if (logElement) {
-            document.body.removeChild(logElement);
-        }
+        logElement.remove();
     }
 
     function renderEmpty() {
@@ -154,7 +152,7 @@ export function LogComponent(columns, store, handleClear) {
 
     function rerenderLog(log, logElement) {
         const updated = log.updated;
-        const timestamp = logElement.querySelector('.log_timestamp');
+        const timestamp = logElement.querySelector(".log_timestamp");
 
         const { time, type: timeType } = timeCalculator(updated, new Date());
         timestamp.textContent = `${time}${timeType} 전`;
@@ -191,9 +189,10 @@ export function LogComponent(columns, store, handleClear) {
                     (log) => log.logId === logId
                 );
 
+                
                 if (matchedLog) {
                     logFragElement.appendChild(matchedLog.element);
-                    rerenderLog(log, matchedLog.element)
+                    rerenderLog(log, matchedLog.element);
                 } else {
                     const logLiElement = renderLog(log);
                     logFragElement.appendChild(logLiElement);
@@ -209,6 +208,6 @@ export function LogComponent(columns, store, handleClear) {
 
     return {
         render,
-        remove,
+        removeSelf,
     };
 }

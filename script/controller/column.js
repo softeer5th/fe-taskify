@@ -1,9 +1,10 @@
-import FormComponent from "../components/Form.js";
-import ColumnComponent from "../components/column.js";
-import ModalComponent from "../components/modal.js";
+import FormComponent from "../../components/form/form.js";
+import ColumnComponent from "../../components/column/column.js";
+import ModalComponent from "../../components/modal/modal.js";
 import TaskController from "./task.js";
+import { ACTION_ADD, ACTION_MOVE } from "../lib/constant.js";
 
-export default function ColumnController(state, bodyElement, logStore) {
+export default function ColumnController(state, logStore) {
     const { columns: columnList, columnTasks } = state.getColumns();
     const columnComponent = ColumnComponent();
     const formComponent = FormComponent();
@@ -25,7 +26,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         state.moveTask(columnIdx, task);
         logStore.addLog({
             task: task,
-            type: "MOVE",
+            type: ACTION_MOVE,
             updated: new Date(),
             destination: columnIdx
         })
@@ -77,7 +78,7 @@ export default function ColumnController(state, bodyElement, logStore) {
     // 입력받은 tasks와 현재 존재하는 task Element를 비교하여 존재하는 Element는 재사용, 존재하지 않는 Element는 생성, 필요 없어진 Element는 삭제 진행
     // 애니메이션 적용
     function renderColumn(idx, tasks) {
-        const columnElement = bodyElement.querySelectorAll('.column')[idx];        
+        const columnElement = document.body.querySelectorAll('.column')[idx];        
         const columnListElement = columnElement.querySelector(".card_list");
 
         const currentCounter = Number(columnElement.querySelector('.column_task_counter').textContent);
@@ -202,7 +203,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         const newId = state.addTask(columnIdx, newTask);
         logStore.addLog({
             task: {...newTask, taskId: newId},
-            type: "ADD",
+            type: ACTION_ADD,
             updated: new Date(),
         })
         renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]));
@@ -218,7 +219,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         }
 
         const { cardElement, formElement } = formComponent.render();
-        formComponent.addAddEventListener(formElement, (title, content) =>
+        formComponent.addAddListener(formElement, (title, content) =>
             handleSubmit(title, content, columnIdx)
         );
 
@@ -227,7 +228,7 @@ export default function ColumnController(state, bodyElement, logStore) {
 
     // Column 동적 생성 및 이벤트 등록
     function renderInit() {
-        bodyElement.oncontextmenu = (e) => e.preventDefault();
+        document.body.oncontextmenu = (e) => e.preventDefault();
         const mainElement = document.createElement("main");
         const columnContainerElement = document.createElement("ul");
         columnContainerElement.setAttribute("id", "column_container");
@@ -239,7 +240,7 @@ export default function ColumnController(state, bodyElement, logStore) {
 
         for (let column of columnList) {
             const columnElement = columnComponent.render(column);
-            columnComponent.addEventListener(
+            columnComponent.addListener(
                 columnElement,
                 (formContainer, columnIdx) =>
                     renderAddForm(formContainer, columnIdx),
@@ -254,14 +255,14 @@ export default function ColumnController(state, bodyElement, logStore) {
 
         columnContainerElement.appendChild(columnListFragment);
         mainElement.appendChild(columnContainerElement);
-        bodyElement.appendChild(mainElement);
+        document.body.appendChild(mainElement);
     }
 
     function addColumn(title) {
         const column = state.addColumn(title);
 
         const columnElement = columnComponent.render(column);
-        columnComponent.addEventListener(
+        columnComponent.addListener(
             columnElement,
             (formContainer, columnIdx) =>
                 renderAddForm(formContainer, columnIdx),
@@ -284,7 +285,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         const modalComponent = ModalComponent();
         modalComponent.render(`"${title}" 컬럼을 삭제하시겠습니까?`, () => {
             state.removeColumn(columnIdx);
-            columnComponent.remove(columnElement);
+            columnComponent.removeSelf(columnElement);
             logStore.clearLog();
         });
     }

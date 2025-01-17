@@ -1,3 +1,5 @@
+import { MAX_TASKS } from "../../script/lib/constant.js";
+
 export default function ColumnComponent() {
 
     // Column 컴포넌트 템플릿
@@ -27,7 +29,7 @@ export default function ColumnComponent() {
     // Column 컴포넌트 렌더링 함수
     function render(column) {
         const columnElement = document.createElement("li");
-        columnElement.setAttribute("class", "column");
+        columnElement.classList = "column";
         columnElement.setAttribute("index", column.index);
         columnElement.innerHTML = template({ title: column.title });
 
@@ -36,7 +38,7 @@ export default function ColumnComponent() {
 
     // 생성된 Column에 이벤트 등록 함수
     // handleAdd : + 버튼을 눌러서 Task를 생성하기 위한 Form을 생성하는 Callback
-    function addEventListener(
+    function addListener(
         columnElement,
         handleAdd,
         handleDrop,
@@ -96,16 +98,14 @@ export default function ColumnComponent() {
         return inputElement;
     }
 
-    function remove(columnElement) {
+    function removeSelf(columnElement) {
         columnElement.remove()
     }
 
     return {
         render,
-        addEventListener,
+        addListener,
         rerenderHeader,
-        remove,
+        removeSelf,
     };
 }
-
-const MAX_TASKS = 99;

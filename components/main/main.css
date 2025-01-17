@@ -1,0 +1,33 @@
+main {
+    height: calc(100vh - 64px);
+    padding: 32px 80px;
+}
+
+#fab_container {
+    position: absolute;
+    right: 48px;
+    bottom: 48px;    
+}
+
+.fab_button {
+    padding: 12px;
+    margin-bottom: 16px;
+    
+    &:last-of-type {
+        margin: 0px;
+    }
+}
+
+
+.vibration {
+    animation: vibration .1s infinite;
+  }
+  
+  @keyframes vibration {
+    from {
+      transform: translateX(2px);
+    }
+    to {
+        transform: translateX(-2px);
+    }
+  }

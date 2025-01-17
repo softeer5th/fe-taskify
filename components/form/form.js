@@ -27,7 +27,7 @@ export default function FormComponent() {
 
     // render로 생성된 Form에 submit, cancel, change 이벤트 등록 함수
     // handleSubmit : Task 생성을 위한 정보를 submit하는 callback 함수
-    function addAddEventListener(formElement, handleSubmit) {
+    function addAddListener(formElement, handleSubmit) {
         const [cancelButton, submitButton] =
             formElement.getElementsByTagName("button");
         formElement.addEventListener("submit", (e) => onSubmit(e, handleSubmit));
@@ -60,7 +60,7 @@ export default function FormComponent() {
     // renderEdit으로 생성된 Form에 submit, cancel, change 이벤트 등록 함수
     // handleSubmit : Task 수정을 위한 정보를 submit하는 callback 함수
     // handleCancel : Task 수정을 취소하는 callback 함수
-    function addUpdateEventListener(formElement, handleSubmit, handleCancel) {
+    function addUpdateListener(formElement, handleSubmit, handleCancel) {
         const [cancelButton, submitButton] =
             formElement.getElementsByTagName("button");
         submitButton.removeAttribute("disabled");
@@ -115,5 +115,5 @@ export default function FormComponent() {
         formElement.parentNode.removeChild(formElement);
     }
 
-    return { render,initEdit, renderEdit, addAddEventListener, addUpdateEventListener };
+    return { render,initEdit, renderEdit, addAddListener, addUpdateListener };
 }

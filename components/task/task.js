@@ -31,10 +31,7 @@ export default function TaskComponent() {
         const { title, content, created, column, taskId } = task;
         // 새 카드 컴포넌트 생성
         const newTaskElement = document.createElement("li");
-        newTaskElement.setAttribute(
-            "class",
-            "card surface-default shadow-normal rounded-100"
-        );
+        newTaskElement.classList = "card surface-default shadow-normal rounded-100";
         newTaskElement.setAttribute('taskid', taskId)
         newTaskElement.setAttribute("draggable", "true");
         newTaskElement.innerHTML = template({ title, content });
@@ -45,7 +42,7 @@ export default function TaskComponent() {
     // Task 컴포넌트 이벤트 등록 함수
     // handleRemove : closed 버튼 클릭 callback
     // handleUpdate : edit 버튼 클릭 callback
-    function addEventListener(taskElement, handleRemove, handleUpdate, handleDrag) {
+    function addListener(taskElement, handleRemove, handleUpdate, handleDrag) {
 
         const buttons = taskElement.getElementsByTagName("button");
         const [deleteButton, editButton] = buttons;
@@ -57,7 +54,7 @@ export default function TaskComponent() {
 
     return {
         render,
-        addEventListener,
+        addListener,
         renderSwap,
     }
 }
