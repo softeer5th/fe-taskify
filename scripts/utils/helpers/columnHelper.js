@@ -1,4 +1,6 @@
 import Card from '../../components/card.js';
+import { addLogToHistory } from './etcHelper.js';
+import { updateHistory } from './localStorageHelper.js';
 
 /**
  * 카드 생성 함수
@@ -15,14 +17,27 @@ const createCard = (mode, cardData, columnElement, columnState) => {
     addCard: (updatedCardData) => {
       columnState.setState((prev) => ({
         ...prev,
-        cards: [ updatedCardData, ...prev.cards],
+        cards: [updatedCardData, ...prev.cards],
       }));
+      updateHistory({
+        actionType: 'add',
+        cardTitle: updatedCardData.title,
+        fromColumnName: columnState.getState().columnName,
+        loggedTime: new Date(),
+      });
     },
-    deleteCard: (deleteCardId) => {
+    deleteCard: (deleteCardData, isForDelete) => {
       columnState.setState((prev) => ({
         ...prev,
-        cards: prev.cards.filter((card) => card.id !== deleteCardId),
+        cards: prev.cards.filter((card) => card.id !== deleteCardData.id),
       }));
+      if (isForDelete)
+        updateHistory({
+          actionType: 'delete',
+          cardTitle: deleteCardData.title,
+          fromColumnName: columnState.getState().columnName,
+          loggedTime: new Date(),
+        });
     },
     editCard: (updatedCardData) => {
       columnState.setState((prev) => ({
@@ -31,6 +46,11 @@ const createCard = (mode, cardData, columnElement, columnState) => {
           updatedCardData.id === card.id ? updatedCardData : card
         ),
       }));
+      updateHistory({
+        actionType: 'edit',
+        cardTitle: updatedCardData.title,
+        loggedTime: new Date(),
+      });
     },
     initCardsInColumn: () => initCardsInColumn(columnElement, columnState),
   });

@@ -3,7 +3,10 @@ import {
   createCard,
   initCardsInColumn,
 } from '../utils/helpers/columnHelper.js';
-import { updateColumn } from '../utils/helpers/localStorageHelper.js';
+import {
+  updateColumn,
+  updateHistory,
+} from '../utils/helpers/localStorageHelper.js';
 import createState from '../store/models/stateHelper.js';
 import Card from './card.js';
 /**
@@ -81,7 +84,9 @@ const Column = (columnData) => {
   columnElement.addEventListener('dragover', (event) => {
     event.preventDefault(); // 이벤트 전파 방지
 
-    const draggedCard = document.getElementById(draggedCardState.getState().cardState.id); // 드래그 중인 요소 선택
+    const draggedCard = document.getElementById(
+      draggedCardState.getState().cardState.id
+    ); // 드래그 중인 요소 선택
 
     const dropzone_li = event.target.closest('li'); // 드롭된 위치 선택
     const dropzone_ul = event.target.closest('ul'); // 드롭된 위치 선택
@@ -128,6 +133,18 @@ const Column = (columnData) => {
       return { ...prev, cards };
     });
     initCardsInColumn(columnElement, columnState);
+    if (
+      draggedCardState.getState().fromColumnName !==
+      columnState.getState().columnName
+    ) {
+      updateHistory({
+        actionType: 'move',
+        cardTitle: draggedCardInfo.title,
+        fromColumnName: draggedCardState.getState().fromColumnName,
+        toColumnName: columnState.getState().columnName,
+        loggedTime: new Date(),
+      });
+    }
 
     // draggedCardState 초기화
     draggedCardState.setState(null);

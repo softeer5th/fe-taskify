@@ -95,44 +95,25 @@ const updateColumn = (updatedColumn) => {
   localStorage.setItem('todos', JSON.stringify(newTodos));
 };
 
-/**
- * 특정 투두 카드를 로컬스토리지에서 삭제하는 함수
- * @param {number} targetColumnId - 삭제되는 columnId
- * @param {number} targetCardId - 삭제되는 cardId
- */
-const deleteTodos = (targetColumnId, targetCardId) => {
-  const Todos = JSON.parse(localStorage.getItem('columns')) || [];
-  const targetColumn = Todos.find(
-    (column) => column.columnId === targetColumnId
-  );
+const loadHistory = () => {
+  let history = JSON.parse(localStorage.getItem('history'));
 
-  if (targetColumn) {
-    targetColumn.cards = targetColumn.cards.filter(
-      (card) => card.id !== targetCardId
-    );
-    localStorage.setItem('columns', JSON.stringify(todos));
-  } else {
-    console.warn(`Column with id ${targetColumnId} not found`);
+  if (!history) {
+    history = [];
+    localStorage.setItem('history', JSON.stringify(history));
   }
+
+  return history;
 };
 
-/**
- * 특정 투두 카드를 로컬스토리지에서 수정하는 함수
- */
-const editTodos = (targetColumnId, targetCardId) => {
-  const Todos = JSON.parse(localStorage.getItem('columns')) || [];
-  const targetColumn = Todos.find(
-    (column) => column.columnId === targetColumnId
-  );
+const updateHistory = (newLog) => {
+  const history = loadHistory();
 
-  if (targetColumn) {
-    targetColumn.cards = targetColumn.cards.map((card) =>
-      card.id === targetCardId ? { ...card, title, body } : card
-    );
-    localStorage.setItem('columns', JSON.stringify(todos));
-  } else {
-    console.warn(`Column with id ${targetColumnId} not found`);
-  }
+  localStorage.setItem('history', JSON.stringify([newLog, ...history]));
 };
 
-export { loadTodos, updateColumn, deleteTodos, editTodos };
+const initHistory = () => {
+  localStorage.setItem('history', JSON.stringify([]));
+};
+
+export { loadTodos, updateColumn, loadHistory, updateHistory, initHistory };

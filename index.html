@@ -39,10 +39,18 @@
             </div>
           </div>
           <button id="add-card" class="plus-button">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99799H13V10.998H19V12.998Z" fill="#A0A3BD"/>
-              </svg>
-              
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99799H13V10.998H19V12.998Z"
+                fill="#A0A3BD"
+              />
+            </svg>
           </button>
           <button id="close-column" class="delete-button">
             <svg
@@ -141,12 +149,42 @@
     <template id="button-template">
       <button class="display-bold14 card"></button>
     </template>
-    <!-- 아이콘 버튼 템플릿 -->
-    <template id="icon-template"> </template>
-    <!-- 정적 텍스트 템플릿 -->
-    <template id="freezed-text-template"> </template>
-    <!-- 텍스트 폼 템플릿 -->
-    <template id="text-form-template"> </template>
+    <!-- 로그 템플릿 -->
+    <template id="log-template">
+      <div>
+        <div
+          style="
+            width: 100%;
+            display: flex;
+            padding: var(--number-200);
+            gap: var(--number-200);
+          "
+        >
+          <img
+            src="/assets/bert.jpeg"
+            style="border-radius: 100%; width: 40px; height: 40px"
+          />
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: var(--number-100);
+            "
+          >
+            <h3 class="display-medium14 text-default">@hammsik</h3>
+            <div id="log" style="display: flex; flex-wrap: wrap"></div>
+            <p id="logged-time" class="display-medium12 text-weak"></p>
+          </div>
+        </div>
+        <hr style="width: 100%; border: 0.5px solid rgba(0, 0, 0, 0.074);" />
+      </div>
+    </template>
+    <template id="log-bold">
+      <span class="display-bold14 text-bold"></span>
+    </template>
+    <template id="log-default">
+      <span class="display-medium14 text-default"></span>
+    </template>
   </head>
   <body
     class="surface-alt"
@@ -201,7 +239,7 @@
             </p>
           </button>
         </div>
-        <button id="history">
+        <button id="history-button">
           <img src="./assets/icons/icon.svg" alt="history" />
         </button>
       </header>
@@ -235,6 +273,81 @@
           <img src="./assets/icons/plus-large.svg" alt="plus" />
         </button>
       </div>
+    </div>
+    <div
+      id="history"
+      class="surface-default"
+      style="
+        position: fixed;
+        top: 64px;
+        right: 56px;
+        width: 368px;
+        max-height: 660px;
+        display: none;
+        flex-direction: column;
+        align-items: end;
+        border-radius: var(--number-200);
+        padding: var(--number-100);
+        gap: var(--number-100);
+        box-shadow: var(--shadow-floating);
+      "
+    >
+      <div
+        style="
+          width: 100%;
+          height: 32px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--number-300);
+        "
+      >
+        <h2 class="display-bold16 text-strong">사용자 활동 기록</h2>
+        <button
+          class="display-bold14"
+          style="display: flex"
+          onclick="document.getElementById('history').style.display = 'none';"
+        >
+          <img
+            src="./assets/icons/closed.svg"
+            style="width: 16px; height: 16px"
+          />
+          <p
+            class="display-bold14 text-default"
+            style="padding: 0 var(--number-50)"
+          >
+            닫기
+          </p>
+        </button>
+      </div>
+      <div
+        id="log-div"
+        style="
+          width: 100%;
+          height: 100%;
+          flex-direction: column;
+          overflow-y: auto;
+        "
+      ></div>
+      <button
+        id="init-history"
+        class="text-danger display-bold14"
+        style="padding: 12px 20px"
+      >
+        기록 전체 삭제
+      </button>
+      <h4
+        id="empty-log"
+        class="display-medium14 text-weak"
+        style="
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          padding: var(--number-200);
+        "
+      >
+        사용자 활동 기록이 없습니다.
+      </h4>
     </div>
     <div class="overlay">
       <div class="modal">
