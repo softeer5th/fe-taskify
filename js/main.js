@@ -23,10 +23,9 @@ function adaptProps(component, templateId, props) {
             component.querySelector('.card-title').textContent = props.title;
             component.querySelector('.card-content').textContent = props.content;
         } else if (templateId==='history-template') {
-            let recTime = component.querySelector('.record-time')
-            let date = new Date();
-            recTime.textContent = calTimePassed(date, props.time);
-            recTime.setAttribute('data-date', date.toISOString());
+            let recTime = component.querySelector('.record-time');
+            recTime.textContent = calTimePassed(new Date(), new Date(props.time));
+            recTime.setAttribute('data-date', props.time);
         }
     }
     return component;
@@ -197,6 +196,7 @@ const resizeObserver = new ResizeObserver((entries) => {
 });
 
 // 요소 크기 변경 감지 시작
-resizeObserver.observe(element);
+resizeObserver.observe(element)
+
 
 loadData(true);

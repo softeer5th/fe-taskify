@@ -2,7 +2,7 @@ import { toggleSortOrder,completeColumnName,  } from "./column_action.js";
 import { moveCard, finishDragCard } from "./card_action.js";
 import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, resetTodo, saveData, setClone } from "./store.js";
 import { addColumn, closeFab, openFab, redo, undo } from "./fab_action.js";
-import { clearHistoryDialog } from "./history.js";
+import { cleanHistoryData } from "./history.js";
 
 
 const eventListeners = new WeakMap();
@@ -141,6 +141,6 @@ addListener(document.querySelector('.reset'), (event) =>{
 
 addListener(document.querySelector('.clear-history'), (event)=> {
     if (event.type === "click") {
-        clearHistoryDialog();
+        cleanHistoryData();
     }
 });

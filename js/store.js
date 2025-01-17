@@ -1,3 +1,4 @@
+import { renderHistory } from "./history.js";
 import { renderTemplate } from "./main.js";
 import { todoFromJson, todoToJson, todoToObj } from "./utility.js";
 
@@ -110,7 +111,7 @@ function loadRecentInd() {
 
 export function saveData() {
     todoList = todoToObj();
-    let todoJson = todoToJson(todoList);
+    let todoJson = todoToJson(todoList, historyList);
     if (todoJson!==localStorage.getItem(`content${memoryIndex}`)) {
         // undo를 했던 경우 memoryIndex가 maxMemInd보다 작음
         if (memoryIndex<maxMemInd) {
@@ -155,26 +156,28 @@ export function loadData(isInit) {
                 let temp = todoFromJson(localStorage.getItem(`content${i}`));
                 if (temp) {
                     todoList = temp.todo;
+                    historyList = temp.history || [];
                 }
             }
         }
-        localStorage.setItem(`content${maxMemInd}`, todoToJson(todoList));
+        localStorage.setItem(`content${maxMemInd}`, todoToJson(todoList, historyList));
         memoryIndex = maxMemInd;
     } else {
         let temp = todoFromJson(localStorage.getItem(`content${memoryIndex}`));
         if (temp) {
             todoList = temp.todo;
+            historyList = temp.history || [];
         }
     }
     if (todoList!==null && todoList.length>0) {
-        refreshScreen(todoList);
+        refreshScreen(todoList, historyList);
     } else {
         resetTodo();
     }
 }
 
 
-function refreshScreen (todoList) {
+async function refreshScreen (todoList, historyList) {
     document.querySelector('#column-area').innerHTML = ``;
     todoList.forEach(async (todo, i)=>{
         await renderColumn(todo, i);
@@ -182,6 +185,14 @@ function refreshScreen (todoList) {
             await renderCard(card, i)
         })
     });
+    if (historyList!==null && historyList.length>0) {
+        const historyArea = document.getElementById('history-area');
+        historyArea.innerHTML = ``;
+        historyArea.setAttribute('data-has-children', false);
+        for (let i =0; i<historyList.length; i++) {
+            await renderHistory(historyList[i]);
+        }
+    } 
 }
 
 async function renderColumn(columnData, index) {
@@ -195,7 +206,9 @@ async function renderCard(cardData, columnIndex) {
 
 export async function resetTodo() {
     document.querySelector('#column-area').innerHTML = ``;
+    document.getElementById('history-area').innerHTML = ``;
     localStorage.clear();
+    clearHistory();
     let initData = [
         {"title":"해야할 일"},
         {"title":"하고 있는 일"},

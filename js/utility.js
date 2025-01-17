@@ -63,9 +63,10 @@ export function todoToObj() {
     return columnList;
 }
 
-export function todoToJson(columnListData) {
+export function todoToJson(columnListData, historyData) {
     let todoJsonData = {
-        "todo" : columnListData
+        "todo" : columnListData,
+        "history": historyData
     };
     return JSON.stringify(todoJsonData);
 }
