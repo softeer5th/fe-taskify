@@ -4,7 +4,7 @@ import { deleteColumnButton } from "./delete_column_button.js";
 import { addListener } from "./event_listeners.js";
 import { getClone, loadData, setClone } from "./store.js";
 import { calTimePassed } from "./utility.js";
-import { relocateHistory } from "./history.js";
+import { relocateHistory, toggleContentExist } from "./history.js";
 
 // 탬플릿에 Props 적용
 function adaptProps(component, templateId, props) {
@@ -23,7 +23,9 @@ function adaptProps(component, templateId, props) {
             component.querySelector('.card-title').textContent = props.title;
             component.querySelector('.card-content').textContent = props.content;
         } else if (templateId==='history-template') {
-            component.querySelector('.record-time').textContent = calTimePassed(new Date(), props.time);
+            let recTime = component.querySelector('.record-time');
+            recTime.textContent = calTimePassed(new Date(), new Date(props.time));
+            recTime.setAttribute('data-date', props.time);
         }
     }
     return component;
@@ -166,13 +168,23 @@ export async function renderTemplate(templateFile, templateId, targetId, props, 
 }
 
 // MutationObserver 설정
-const observer = new MutationObserver(() => {
+const observer1 = new MutationObserver(() => {
     toggleColumnShadow();
 });
 
 // MutationObserver를 관찰할 대상과 옵션 설정
-observer.observe(document.querySelector('#column-area'), {
+observer1.observe(document.querySelector('#column-area'), {
     attributes: true,
+    childList: true,
+});
+
+// MutationObserver 설정
+const observer2 = new MutationObserver(() => {
+    toggleContentExist();
+});
+
+// MutationObserver를 관찰할 대상과 옵션 설정
+observer2.observe(document.querySelector('#history-area'), {
     childList: true,
 });
 
@@ -184,6 +196,7 @@ const resizeObserver = new ResizeObserver((entries) => {
 });
 
 // 요소 크기 변경 감지 시작
-resizeObserver.observe(element);
+resizeObserver.observe(element)
+
 
 loadData(true);

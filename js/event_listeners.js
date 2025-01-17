@@ -2,6 +2,7 @@ import { toggleSortOrder,completeColumnName,  } from "./column_action.js";
 import { moveCard, finishDragCard } from "./card_action.js";
 import { getClone, getIsCardEditing, getIsColumnNameChanging, getIsDragging, getIsOrderChanging, resetTodo, saveData, setClone } from "./store.js";
 import { addColumn, closeFab, openFab, redo, undo } from "./fab_action.js";
+import { cleanHistoryData } from "./history.js";
 
 
 const eventListeners = new WeakMap();
@@ -66,7 +67,7 @@ document.addEventListener('mouseout', (event) => {
 
 document.addEventListener('mouseup', (event) => {
     if (getIsDragging()) {
-        finishDragCard(getClone());
+        finishDragCard(event, getClone());
         setClone(null);
     }
 });
@@ -134,5 +135,12 @@ addListener(document.querySelector('.redo'), (event)=> {
 addListener(document.querySelector('.reset'), (event) =>{
     if (event.type === "click") {
         resetTodo();
+    }
+});
+
+
+addListener(document.querySelector('.clear-history'), (event)=> {
+    if (event.type === "click") {
+        cleanHistoryData();
     }
 });

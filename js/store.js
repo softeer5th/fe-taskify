@@ -1,8 +1,10 @@
+import { renderHistory } from "./history.js";
 import { renderTemplate } from "./main.js";
 import { todoFromJson, todoToJson, todoToObj } from "./utility.js";
 
 const maxMemInd = 5;
 let clone = null;
+let originColumn = null;
 let isOrderChanging = false;
 let isColumnNameChanging = false;
 let isCardEditing = false;
@@ -13,6 +15,7 @@ let isFabOpen = false;
 let memoryIndex = maxMemInd;
 
 let historyList = Array();
+let isHistoryOpen = false;
 
 export function getClone () {
     return clone;
@@ -20,6 +23,14 @@ export function getClone () {
 
 export function setClone (newClone) {
     clone = newClone;
+}
+
+export function getOriginColumn() {
+    return originColumn;
+}
+
+export function setOriginColumn(column) {
+    originColumn = column;
 }
 
 
@@ -66,6 +77,14 @@ export function toggleIsFabOpen() {
     isFabOpen = !isFabOpen;
 }
 
+export function getIsHistoryOpen() {
+    return isHistoryOpen;
+}
+
+export function toggleIsHistoryOpen() {
+    isHistoryOpen = !isHistoryOpen;
+}
+
 export function getMemInd() {
     return memoryIndex;
 }
@@ -101,7 +120,7 @@ function loadRecentInd() {
 
 export function saveData() {
     todoList = todoToObj();
-    let todoJson = todoToJson(todoList);
+    let todoJson = todoToJson(todoList, historyList);
     if (todoJson!==localStorage.getItem(`content${memoryIndex}`)) {
         // undo를 했던 경우 memoryIndex가 maxMemInd보다 작음
         if (memoryIndex<maxMemInd) {
@@ -113,6 +132,7 @@ export function saveData() {
         moveBfData();
         localStorage.setItem(`content${memoryIndex}`, todoJson);
         saveRecentInd();
+        console.log("SAVED!!!");
     }
 }
 
@@ -145,26 +165,28 @@ export function loadData(isInit) {
                 let temp = todoFromJson(localStorage.getItem(`content${i}`));
                 if (temp) {
                     todoList = temp.todo;
+                    historyList = temp.history || [];
                 }
             }
         }
-        localStorage.setItem(`content${maxMemInd}`, todoToJson(todoList));
+        localStorage.setItem(`content${maxMemInd}`, todoToJson(todoList, historyList));
         memoryIndex = maxMemInd;
     } else {
         let temp = todoFromJson(localStorage.getItem(`content${memoryIndex}`));
         if (temp) {
             todoList = temp.todo;
+            historyList = temp.history || [];
         }
     }
     if (todoList!==null && todoList.length>0) {
-        refreshScreen(todoList);
+        refreshScreen(todoList, historyList);
     } else {
         resetTodo();
     }
 }
 
 
-function refreshScreen (todoList) {
+async function refreshScreen (todoList, historyList) {
     document.querySelector('#column-area').innerHTML = ``;
     todoList.forEach(async (todo, i)=>{
         await renderColumn(todo, i);
@@ -172,6 +194,14 @@ function refreshScreen (todoList) {
             await renderCard(card, i)
         })
     });
+    if (historyList!==null && historyList.length>0) {
+        const historyArea = document.getElementById('history-area');
+        historyArea.innerHTML = ``;
+        historyArea.setAttribute('data-has-children', false);
+        for (let i =0; i<historyList.length; i++) {
+            await renderHistory(historyList[i]);
+        }
+    } 
 }
 
 async function renderColumn(columnData, index) {
@@ -185,7 +215,9 @@ async function renderCard(cardData, columnIndex) {
 
 export async function resetTodo() {
     document.querySelector('#column-area').innerHTML = ``;
+    document.getElementById('history-area').innerHTML = ``;
     localStorage.clear();
+    clearHistory();
     let initData = [
         {"title":"해야할 일"},
         {"title":"하고 있는 일"},
@@ -203,4 +235,8 @@ export function addHistory(historyObj) {
 
 export function getHistory() {
     return historyList;
+}
+
+export function clearHistory() {
+    historyList.length = 0;
 }

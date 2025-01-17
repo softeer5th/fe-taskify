@@ -2,7 +2,7 @@ import { renderTemplate, setEventForCard } from "./main.js";
 import { createDeleteCardAlert, hideAlert, overlay } from "./alert.js";
 import { createNewId } from "./utility.js";
 import { addListener } from "./event_listeners.js";
-import { addHistory, getIsDragging, saveData, toggleIsCardEditing, toggleIsDragging } from "./store.js";
+import { addHistory, getIsDragging, getOriginColumn, saveData, setOriginColumn, toggleIsCardEditing, toggleIsDragging } from "./store.js";
 import { makeHistoryObj, renderHistory } from "./history.js";
 import { getColumnTitle, getColumnTitleByCardId } from "./column_action.js";
 
@@ -115,7 +115,7 @@ export function editCard(cardId) {
     addListener(newActionDiv.querySelector('.confirm-button'), async (event)=>{
         if (event.type === 'click') {
             toggleIsCardEditing();
-            await confirmEdit(card,cardId)
+            await confirmEdit(card,cardId);
         }
     });
 
@@ -145,6 +145,9 @@ async function confirmEdit(card, cardId){
     addHistory(makeHistoryObj("변경", getCardTitle(cardId)));
     card.remove();
     await renderTemplate('./html/card_template.html', 'card-template', columnId, {cardId:cardId, title:titleValue, content:contentValue,});
+    let historyObj = makeHistoryObj("변경", getCardTitle(cardId));
+    addHistory(historyObj);
+    renderHistory(historyObj);
     saveData();
 }
 
@@ -165,6 +168,7 @@ export function startDragCard(event, original, clone, cardId) {
     const childElement = document.querySelector("#card-id"+cardId);
     clone.style.width = window.getComputedStyle(childElement).width;
     draggingCardId = cardId;
+    setOriginColumn(getColumnTitleByCardId(cardId));
     const columnArea = document.getElementById("column-area");
     [...columnArea.children].forEach((column)=> {
         let tempCard = original.cloneNode(true);
@@ -227,7 +231,7 @@ export function moveCardIllusion(event, newParent, clone) {
 }
 
 // 카드 이동 종료
-export function finishDragCard(clone) {
+export function finishDragCard(event, clone) {
     if (!getIsDragging() || !clone) return ;
 
     const tempCards = document.querySelectorAll('.temp-card');
@@ -241,5 +245,12 @@ export function finishDragCard(clone) {
     toggleIsDragging();
     clone.remove();
     document.body.classList.remove('no-select');
+    let closestColumnId = event.target.closest('.column-id').id.slice(9);
+    let cardId = clone.id.slice(7);
+    if (getOriginColumn()!==getColumnTitle(closestColumnId)) {
+        let historyObj = makeHistoryObj("이동", getCardTitle(cardId), getOriginColumn(), getColumnTitle(closestColumnId));
+        addHistory(historyObj);
+        renderHistory(historyObj);
+    }
     saveData();
 }

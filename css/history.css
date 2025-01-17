@@ -5,26 +5,22 @@
 
 .history-dialog {
     position: absolute;
+    display: block;
     background: white;
+    right: -500px;
     border: 1px solid #ccc;
-    padding: 10px;
     box-shadow: 0 10px 16px #6E80913D, 0 0 4px #6E80913D;
     width: 360px;
     box-shadow: 0 16 16 0 #6E80913D;
     border-radius: 10px;
     border: none;
-    padding: 20px;
-    display: none;
-}
-
-.history-dialog.visible {
-    display: block;
+    padding: 20px 20px 10px 20px;
+    transition: transform 0.5s ease;
 }
 
 .history-dialog-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 40px;
 }
 
 
@@ -57,11 +53,28 @@
     font-weight: bold;
 }
 
+#history-area {
+    margin: 15px 0px;
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
 .history-li {
     list-style: none;
     display: flex;
     margin: 20px 0;
     height: auto;
+}
+
+.no-history{
+    display: block;
+    text-align: center;
+    color: #A0A3BD;
+    margin-top: 10px;
+}
+
+[data-has-children="true"]  .no-history {
+    display: none;
 }
 
 .thumb {
@@ -75,11 +88,22 @@
 }
 
 .detail {
-    display: flex;
     margin: 8px 0;
 }
 
 .accent {
     font-weight: bold;
     color: #4E4B66;
+}
+
+.clear-history {
+    display: none;
+    color: #FF3B30;
+    background-color: transparent;
+    font-weight: bold;
+    float: right;
+}
+
+[data-has-children="true"] ~ .clear-history {
+    display: block;
 }
