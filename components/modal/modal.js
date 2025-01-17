@@ -48,9 +48,10 @@ export default function ModalComponent() {
     // Modal 이벤트 등록 함수
     // handleRemove : Danger 버튼 클릭 callback
     function addListener(modalElement, handleRemove) {
-        const buttons = modalElement.getElementsByTagName('button');
-        buttons[0].addEventListener('click', closeModal);
-        buttons[1].addEventListener('click', () => {
+        const [cancelButton, removeButton] = modalElement.getElementsByTagName('button');
+
+        cancelButton.addEventListener('click', closeModal);
+        removeButton.addEventListener('click', () => {
             handleRemove();
             closeModal();
         })

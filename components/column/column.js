@@ -27,7 +27,7 @@ export default function ColumnComponent() {
     // Column 컴포넌트 렌더링 함수
     function render(column) {
         const columnElement = document.createElement("li");
-        columnElement.setAttribute("class", "column");
+        columnElement.classList = "column";
         columnElement.setAttribute("index", column.index);
         columnElement.innerHTML = template({ title: column.title });
 

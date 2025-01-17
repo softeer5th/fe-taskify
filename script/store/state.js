@@ -1,5 +1,5 @@
 export default function State() {
-    let orderingState = 1;
+    let orderingState = "oldest";
     let taskId = 0;
 
     let columnTasks = [];
@@ -32,7 +32,7 @@ export default function State() {
     }
 
     function flipOrder() {
-        orderingState = -orderingState;
+        orderingState = orderingState === 'oldest' ? 'newest' : 'oldest'
         return orderingState;
     }
 
@@ -139,7 +139,8 @@ export default function State() {
     }
 
     function sortTask(task) {
-        return task.sort((a, b) => orderingState * (a.created - b.created))
+        const order = orderingState === 'oldest' ? 1 : -1;
+        return task.sort((a, b) => order * (a.created - b.created))
     }
 
     init();

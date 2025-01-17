@@ -104,10 +104,7 @@ export function LogComponent(columns, store, handleClear) {
     function render(logs) {
         const logElement = document.createElement("div");
         logElement.setAttribute("id", "log_layer");
-        logElement.setAttribute(
-            "class",
-            "surface-default rounded-200 shadow-floating"
-        );
+        logElement.classList = "surface-default rounded-200 shadow-floating";
         logElement.innerHTML = template();
 
         const closeButton = logElement.querySelector("button");
@@ -118,11 +115,12 @@ export function LogComponent(columns, store, handleClear) {
         if (!logs || logs.length === 0) {
             logElement.appendChild(emptyElement);
         } else {
-            const logFragElement = document.createDocumentFragment();
-            logs.forEach((el) => {
-                const logLiElement = renderLog(el);
-                logFragElement.appendChild(logLiElement);
-            });
+            
+            const logFragElement = logs.reduce((acc, cur) => {
+                acc.appendChild(renderLog(cur));
+                return acc;
+            }, document.createDocumentFragment());
+
             logListElement.append(logFragElement);
             logElement.appendChild(footerElement);
         }
@@ -190,6 +188,7 @@ export function LogComponent(columns, store, handleClear) {
                     (log) => log.logId === logId
                 );
 
+                
                 if (matchedLog) {
                     logFragElement.appendChild(matchedLog.element);
                     rerenderLog(log, matchedLog.element);
