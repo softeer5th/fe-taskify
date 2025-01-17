@@ -77,7 +77,7 @@ const Card = ({
           handler: () => {
             overlay.style.display = 'none';
             cardElement.remove();
-            deleteCard(cardState.getState().id);
+            deleteCard(cardState.getState(), true);
           },
         },
       ]);
@@ -124,8 +124,9 @@ const Card = ({
     cardMode.setState('place');
     draggedCardState.setState({
       cardState: cardState.getState(),
+      fromColumnName: cardElement.parentElement.querySelector('h2').textContent,
       fromColumnInit: () => {
-        deleteCard(cardState.getState().id);
+        deleteCard(cardState.getState(), false);
         initCardsInColumn();
       },
     }),
