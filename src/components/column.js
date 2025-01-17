@@ -177,7 +177,7 @@ export class Column extends Component {
     }
 
     removeDragGhost() {
-        const ghostCard = this.current.querySelector(`.${ghostCardClassName}`);
+        const ghostCard = this.current.querySelector(`.${this.ghostCardClassName}`);
         if (ghostCard) {
             this.current.removeChild(ghostCard);
         } else {
