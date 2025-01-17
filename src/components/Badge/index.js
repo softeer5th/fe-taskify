@@ -19,7 +19,7 @@ export const Badge = ({ text }) => {
     if (Number(text) > 9) {
       return `${text}+`;
     }
-    return text;
+    return text.toString();
   };
 
   return parser`

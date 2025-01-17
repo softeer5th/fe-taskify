@@ -1,9 +1,7 @@
-import { Card } from "../components/Card/index.js";
-import { parser } from "../lib/jsx-runtime/index.js";
+import MainPage from "../page/index.js";
 
-const App = () => parser`
-        <div>
-            ${Card({ title: "TITLE", body: "BODY" })}
-        </div>`;
+const App = () => (
+  MainPage()
+);
 
 export default App;

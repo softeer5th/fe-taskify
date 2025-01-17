@@ -1,4 +1,4 @@
-const setAttrs = (props, events, element) => {
+const setAttrs = (props, events, element, newElement) => {
   if (!(element instanceof HTMLElement || element instanceof SVGElement)) {
     return;
   }
@@ -28,7 +28,7 @@ const setAttrs = (props, events, element) => {
       if (element.nodeName === "path" && (key === "stroke" || key === "fill")) {
         element.setAttribute(key, "current");
       } else if (key === "ref") {
-        value.current = element;
+        value.current = newElement;
       } else element.setAttribute(key, value.toString());
     });
   };

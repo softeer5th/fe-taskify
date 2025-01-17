@@ -1,6 +1,6 @@
 import { updateDOM } from "../manageDOM/updateDOM.js";
 import {
-  getValidState,
+  setInitState,
   stateId,
   getStoreState,
   setStoreState,
@@ -14,7 +14,8 @@ import {
  */
 export const useState = (initState) => {
   const currentStateId = stateId;
-  const state = getValidState(initState);
+  setInitState(currentStateId, initState);
+
   const setState = (nextState) => {
     if (Object.is(getStoreState(currentStateId), nextState)) return;
     setStoreState(currentStateId, nextState);
@@ -22,5 +23,5 @@ export const useState = (initState) => {
   };
 
   increaseStateId();
-  return [state, setState];
+  return [getStoreState(currentStateId), setState];
 };

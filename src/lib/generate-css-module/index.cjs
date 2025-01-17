@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
-const componentsDir = path.resolve(process.cwd(), "src/components");
+const srcDir = path.resolve(process.cwd(), "src");
 
 /**
  * 디렉토리 내의 모든 CSS Module 파일을 가져옵니다.
@@ -75,7 +75,7 @@ const updateStyleCSSFile = (newCSSString) => {
  *
  */
 const main = () => {
-  const moduleCSSFiles = getAllModuleCSSFiles(componentsDir);
+  const moduleCSSFiles = getAllModuleCSSFiles(srcDir);
   const newCSS = moduleCSSFiles.map(updateCSSFiles);
   updateStyleCSSFile(newCSS.join("\n"));
 };

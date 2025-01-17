@@ -49,7 +49,7 @@ const updateElement = ($parent, newVDOM, initVDOM) => {
   }
 
   if (newVDOM && newVDOM.type !== "text") {
-    setAttrs(newVDOM.props, newVDOM.events, $current);
+    setAttrs(newVDOM.props, newVDOM.events, $current, newVDOM.current);
   }
 };
 

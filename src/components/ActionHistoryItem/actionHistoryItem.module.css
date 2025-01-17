@@ -1,0 +1,39 @@
+.container {
+    width: 344px;
+    padding: var(--gap-200);
+
+    display: flex;
+    gap: var(--gap-200);
+
+    background-color: var(--surface-default);   
+}
+
+.img-container {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--border-default);
+    border-radius: 50%;
+
+    background-color: var(--surface-alt);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-100);
+}
+
+.body {
+    color: var(--text-default);
+}
+
+.bold {
+    color: var(--text-bold);
+}
+
+.timestamp {
+    color: var(--text-weak);
+}
