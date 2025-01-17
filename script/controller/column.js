@@ -284,7 +284,7 @@ export default function ColumnController(state, logStore) {
         const modalComponent = ModalComponent();
         modalComponent.render(`"${title}" 컬럼을 삭제하시겠습니까?`, () => {
             state.removeColumn(columnIdx);
-            columnComponent.remove(columnElement);
+            columnComponent.removeSelf(columnElement);
             logStore.clearLog();
         });
     }

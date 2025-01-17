@@ -110,6 +110,9 @@ export function LogComponent(columns, store, handleClear) {
         );
         logElement.innerHTML = template();
 
+        const closeButton = logElement.querySelector("button");
+        closeButton.addEventListener("click", () => removeSelf());
+
         const logListElement = logElement.querySelector("#log_layer_list");
 
         if (!logs || logs.length === 0) {
@@ -127,11 +130,9 @@ export function LogComponent(columns, store, handleClear) {
         return logElement;
     }
 
-    function remove() {
+    function removeSelf() {
         const logElement = document.body.querySelector("#log_layer");
-        if (logElement) {
-            document.body.removeChild(logElement);
-        }
+        logElement.remove();
     }
 
     function renderEmpty() {
@@ -152,7 +153,7 @@ export function LogComponent(columns, store, handleClear) {
 
     function rerenderLog(log, logElement) {
         const updated = log.updated;
-        const timestamp = logElement.querySelector('.log_timestamp');
+        const timestamp = logElement.querySelector(".log_timestamp");
 
         const { time, type: timeType } = timeCalculator(updated, new Date());
         timestamp.textContent = `${time}${timeType} 전`;
@@ -191,7 +192,7 @@ export function LogComponent(columns, store, handleClear) {
 
                 if (matchedLog) {
                     logFragElement.appendChild(matchedLog.element);
-                    rerenderLog(log, matchedLog.element)
+                    rerenderLog(log, matchedLog.element);
                 } else {
                     const logLiElement = renderLog(log);
                     logFragElement.appendChild(logLiElement);
@@ -207,6 +208,6 @@ export function LogComponent(columns, store, handleClear) {
 
     return {
         render,
-        remove,
+        removeSelf,
     };
 }

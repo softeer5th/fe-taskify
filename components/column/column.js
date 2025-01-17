@@ -96,7 +96,7 @@ export default function ColumnComponent() {
         return inputElement;
     }
 
-    function remove(columnElement) {
+    function removeSelf(columnElement) {
         columnElement.remove()
     }
 
@@ -104,7 +104,7 @@ export default function ColumnComponent() {
         render,
         addListener,
         rerenderHeader,
-        remove,
+        removeSelf,
     };
 }
 

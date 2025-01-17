@@ -28,7 +28,7 @@ export default function HeaderController(state, logStore) {
         const existLogElement = document.body.querySelector("#log_layer");
 
         if (existLogElement) {
-            logComponent.remove();
+            logComponent.removeSelf();
         } else {
             const logElement = logComponent.render(logs);
             document.body.appendChild(logElement);
