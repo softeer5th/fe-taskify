@@ -6,5 +6,4 @@ export class ColumnData {
         this.data = data;
     }
 
-   
 }

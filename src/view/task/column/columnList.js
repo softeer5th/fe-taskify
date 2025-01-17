@@ -1,5 +1,6 @@
 import { Column } from "../../../components/column.js";
 import Component from "../../../components/component.js";
+import { cardIdPrefixLength, draggingCardClassName } from "../../utils.js";
 
 export class ColumnList extends Component {
 
@@ -19,7 +20,7 @@ export class ColumnList extends Component {
                     }, (cardIndex, newCardData) => {
                         onCardEdited(index, cardIndex, newCardData);
                     }, () => {
-                        const draggingCardId = document.querySelector(".dragging").id.slice(4);
+                        const draggingCardId = this.getDraggingCardId();
                         const preColumnIndex = columnList.findIndex(column =>
                             column.data.find(card => card.cardId === Number(draggingCardId))
                         );
@@ -30,7 +31,9 @@ export class ColumnList extends Component {
         });
     }
 
-
+    getDraggingCardId(){
+        return document.querySelector(`.${draggingCardClassName}`).id.slice(cardIdPrefixLength);
+    }
 
     template() {
         return '';
