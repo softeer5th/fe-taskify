@@ -3,10 +3,9 @@ import {
   createCard,
   initCardsInColumn,
 } from '../utils/helpers/columnHelper.js';
-import { updateColumn } from '../utils/helpers/localStorageHelper.js';
+import { updateColumn, updateHistory } from '../utils/helpers/localStorageHelper.js';
 import createState from '../store/models/stateHelper.js';
 import Card from './card.js';
-import { addLogToHistory } from '../utils/helpers/etcHelper.js';
 /**
  * @typedef {Object} Card
  * @property {number} id - 카드 ID
@@ -131,7 +130,7 @@ const Column = (columnData) => {
       return { ...prev, cards };
     });
     initCardsInColumn(columnElement, columnState);
-    addLogToHistory({
+    updateHistory({
       actionType: 'move',
       cardTitle: draggedCardInfo.title,
       fromColumnName: draggedCardState.getState().fromColumnName,

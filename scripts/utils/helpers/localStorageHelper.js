@@ -106,8 +106,14 @@ const loadHistory = () => {
   return history;
 };
 
-const updateHistory = (newHistory) => {
-  localStorage.setItem('history', JSON.stringify(history));
+const updateHistory = (newLog) => {
+  const history = loadHistory();
+
+  localStorage.setItem('history', JSON.stringify([newLog, ...history]));
 };
 
-export { loadTodos, updateColumn, loadHistory, updateHistory };
+const initHistory = () => {
+  localStorage.setItem('history', JSON.stringify([]));
+};
+
+export { loadTodos, updateColumn, loadHistory, updateHistory, initHistory };

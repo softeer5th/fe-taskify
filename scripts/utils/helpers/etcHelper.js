@@ -32,8 +32,6 @@ const addLogToHistory = ({
     .getElementById('log-template')
     .content.cloneNode(true);
 
-  console.log(actionType, cardTitle, fromColumnName, toColumnName, loggedTime);
-
   const logTexts = generateLogText({
     actionType,
     cardTitle,
@@ -44,19 +42,21 @@ const addLogToHistory = ({
   // 생성된 텍스트를 추가
   newLogElement.querySelector('#log').append(...logTexts);
 
+  
   // 시간 차이 계산 후 1시간 단위 면 ~시간 전, 분 단위면 ~분 전
   const nowTime = new Date();
-  const timeDiff = nowTime - loggedTime;
+  const timeDiff = nowTime - new Date(loggedTime);
   const minutesDiff = Math.floor(timeDiff / (1000 * 60));
   const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
+  console.log(nowTime, loggedTime, timeDiff, minutesDiff, hoursDiff);
   newLogElement.querySelector('#logged-time').textContent =
     hoursDiff > 0
       ? `${hoursDiff}시간 전`
       : minutesDiff < 1
       ? '방금 전'
       : `${minutesDiff}분 전`;
-  const logDiv = history.querySelector('#log-div');
-  logDiv.insertBefore(newLogElement, logDiv.firstChild);
+
+  history.querySelector('#log-div').appendChild(newLogElement);
 };
 
 const generateLogText = ({
@@ -99,8 +99,12 @@ const generateLogText = ({
   }
   logTotal.push(createSpanElement('하였습니다.', false));
 
-  logTotal.forEach((e) => console.log(typeof e));
   return logTotal;
 };
 
-export { initModal, addLogToHistory };
+const removeAllHistory = () => {
+  const history = document.getElementById('history');
+  history.querySelector('#log-div').innerHTML = '';
+};
+
+export { initModal, addLogToHistory, removeAllHistory };

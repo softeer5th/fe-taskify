@@ -313,13 +313,26 @@
           </p>
         </button>
       </div>
-      <div id="log-div" style="width: 100%; height: 100%; overflow-y: auto;"></div>
-      <button class="text-danger display-bold14" style="padding: 12px 20px">
+      <div
+        id="log-div"
+        style="width: 100%; height: 100%; flex-direction: column; overflow-y: auto"
+      ></div>
+      <button
+        id="init-history"
+        class="text-danger display-bold14"
+        style="padding: 12px 20px"
+      >
         기록 전체 삭제
       </button>
       <h4
+        id="empty-log"
         class="display-medium14 text-weak"
-        style="width: 100%; text-align: center; padding: var(--number-200)"
+        style="
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          padding: var(--number-200);
+        "
       >
         사용자 활동 기록이 없습니다.
       </h4>
