@@ -1,5 +1,5 @@
 import { renderTemplate } from "./main.js";
-import { clearHistory, getHistory, saveData } from "./store.js";
+import { clearHistory, getHistory, getIsHistoryOpen, saveData, toggleIsHistoryOpen } from "./store.js";
 import { calTimePassed } from "./utility.js";
 
 const openHistoryButton = document.getElementById('history-button');
@@ -7,13 +7,16 @@ const closeHistoryButton = document.querySelector('.close-history');
 const dialog = document.getElementById('history-dialog');
 
 openHistoryButton.addEventListener('click', (event) => {showHistory()});
-closeHistoryButton.addEventListener('click', (event)=> {
-    dialog.classList.toggle('visible');
-});
+closeHistoryButton.addEventListener('click', (event)=> {showHistory()});
 
 
 function showHistory() {
-    dialog.classList.toggle('visible'); // 클릭 시 토글
+    toggleIsHistoryOpen();
+    if (getIsHistoryOpen()) {
+        dialog.style.transform = `translateX(${-550}px)`;
+    } else {
+        dialog.style.transform = `translateX(${0}px)`;
+    }
     updateTime();
 
     // 버튼의 위치 정보 가져오기
@@ -21,10 +24,8 @@ function showHistory() {
 
     // 다이얼로그 위치 계산 (버튼 아래에 표시)
     const dialogWidth = dialog.offsetWidth;
-    const dialogX = buttonRect.right - dialogWidth; // 버튼의 오른쪽 위치
     const dialogY = buttonRect.bottom + window.scrollY; // 버튼의 하단 위치 + 스크롤 값
 
-    dialog.style.left = `${dialogX}px`;
     dialog.style.top = `${dialogY}px`;
 }
 
@@ -39,10 +40,8 @@ export function relocateHistory() {// 버튼의 위치 정보 가져오기
 
     // 다이얼로그 위치 계산 (버튼 아래에 표시)
     const dialogWidth = dialog.offsetWidth;
-    const dialogX = buttonRect.right - dialogWidth; // 버튼의 오른쪽 위치
     const dialogY = buttonRect.bottom + window.scrollY; // 버튼의 하단 위치 + 스크롤 값
 
-    dialog.style.left = `${dialogX}px`;
     dialog.style.top = `${dialogY}px`;
 }
 

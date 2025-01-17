@@ -15,6 +15,7 @@ let isFabOpen = false;
 let memoryIndex = maxMemInd;
 
 let historyList = Array();
+let isHistoryOpen = false;
 
 export function getClone () {
     return clone;
@@ -74,6 +75,14 @@ export function getIsFabOpen () {
 
 export function toggleIsFabOpen() {
     isFabOpen = !isFabOpen;
+}
+
+export function getIsHistoryOpen() {
+    return isHistoryOpen;
+}
+
+export function toggleIsHistoryOpen() {
+    isHistoryOpen = !isHistoryOpen;
 }
 
 export function getMemInd() {

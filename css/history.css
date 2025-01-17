@@ -5,19 +5,17 @@
 
 .history-dialog {
     position: absolute;
+    display: block;
     background: white;
+    right: -500px;
     border: 1px solid #ccc;
     box-shadow: 0 10px 16px #6E80913D, 0 0 4px #6E80913D;
     width: 360px;
     box-shadow: 0 16 16 0 #6E80913D;
     border-radius: 10px;
     border: none;
-    display: none;
     padding: 20px 20px 10px 20px;
-}
-
-.history-dialog.visible {
-    display: block;
+    transition: transform 0.5s ease;
 }
 
 .history-dialog-header {
