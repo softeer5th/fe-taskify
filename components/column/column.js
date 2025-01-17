@@ -1,4 +1,4 @@
-import { MAX_TASKS } from "../../script/lib/constant";
+import { MAX_TASKS } from "../../script/lib/constant.js";
 
 export default function ColumnComponent() {
 
