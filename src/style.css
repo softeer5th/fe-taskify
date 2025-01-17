@@ -465,6 +465,7 @@ input.column__title-text {
     display: flex;
     flex-direction: row;
     align-items: center;
+    color: var(--grayscale-600);
 }
 
 .history__title-button-icon {
@@ -482,7 +483,6 @@ input.column__title-text {
     padding-right: 4px;
     font-size: 15px;
     font-weight: 500;
-    color: var(--grayscale-600);
     text-align: center;
 }
 
