@@ -70,10 +70,6 @@ export default function ColumnController(model, rootElement) {
     }
   }
 
-  function render() {
-    render();
-  }
-
   function destroy() {
     model.removeListener(render);
   }
