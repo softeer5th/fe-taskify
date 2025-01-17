@@ -1,5 +1,6 @@
 import { renderTemplate } from "./main.js";
 import { clearHistory, getHistory } from "./store.js";
+import { calTimePassed } from "./utility.js";
 
 const openHistoryButton = document.getElementById('history-button');
 const closeHistoryButton = document.querySelector('.close-history');
@@ -13,6 +14,7 @@ closeHistoryButton.addEventListener('click', (event)=> {
 
 function showHistory() {
     dialog.classList.toggle('visible'); // 클릭 시 토글
+    updateTime();
 
     // 버튼의 위치 정보 가져오기
     const buttonRect = openHistoryButton.getBoundingClientRect();
@@ -44,6 +46,14 @@ export function relocateHistory() {// 버튼의 위치 정보 가져오기
     dialog.style.top = `${dialogY}px`;
 }
 
+export function updateTime() {
+    document.querySelectorAll('.record-time').forEach((timeElement)=>{
+        const storedDate = new Date(timeElement.getAttribute('data-date'));
+        const passedTime = calTimePassed(new Date(), storedDate);
+        timeElement.textContent = passedTime;
+    })
+}
+
 /**
  * 
  * @param {'등록', '변경', '이동', '삭제'} actionType 
@@ -65,6 +75,14 @@ export function makeHistoryObj(actionType, subject, from, to) {
 
 export async function renderHistory(historyObj) {
     //templateFile, templateId, targetId, props
+    const historyArea = document.getElementById('history-area');
+    if (historyArea.getAttribute('data-has-children')==="true") {
+        console.log(historyObj);
+        console.log(historyArea.getAttribute('data-has-children'))
+        const divider = document.createElement('hr');
+        divider.style.border = '1px solid #EFF0F6';
+        historyArea.prepend(divider);
+    }
     await renderTemplate('./html/history_template.html', 'history-template', 'history-area', historyObj, true);
     if (historyObj.actionType==="등록" || historyObj.actionType==="삭제") {
         document.querySelector('.detail').innerHTML = `
@@ -91,4 +109,5 @@ export function clearHistoryDialog() {
     clearHistory();
     let historyArea = document.getElementById('history-area');
     historyArea.innerHTML = `<div class="no-history">사용자 활동 기록이 없습니다.</div>`;
+    historyArea.setAttribute('data-has-children', false);
 }

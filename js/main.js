@@ -23,7 +23,10 @@ function adaptProps(component, templateId, props) {
             component.querySelector('.card-title').textContent = props.title;
             component.querySelector('.card-content').textContent = props.content;
         } else if (templateId==='history-template') {
-            component.querySelector('.record-time').textContent = calTimePassed(new Date(), props.time);
+            let recTime = component.querySelector('.record-time')
+            let date = new Date();
+            recTime.textContent = calTimePassed(date, props.time);
+            recTime.setAttribute('data-date', date.toISOString());
         }
     }
     return component;

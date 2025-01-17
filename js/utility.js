@@ -14,7 +14,7 @@ export function createNewId () {
 export function calTimePassed(date1, date2) {
     const diffMs = Math.abs(date1 - date2);
     const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffMs / 60);
+    const diffMinutes = Math.floor(diffSeconds / 60);
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
     if (diffSeconds < 60) {
