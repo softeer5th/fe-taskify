@@ -1,6 +1,7 @@
 import ModalComponent from "../../components/modal/modal.js";
 import FormComponent from "../../components/form/form.js";
 import TaskComponent from "../../components/task/task.js";
+import { ACTION_REMOVE, ACTION_UPDATE } from "../lib/constant.js";
 
 export default function TaskController(state, logStore, rerender) {
     const formComponent = FormComponent();
@@ -53,7 +54,7 @@ export default function TaskController(state, logStore, rerender) {
             state.removeTask(task);
             logStore.addLog({
                 task: task,
-                type: "REMOVE",
+                type: ACTION_REMOVE,
                 updated: new Date(),
             })
             rerender(task.column);
@@ -73,7 +74,7 @@ export default function TaskController(state, logStore, rerender) {
         state.updateTask(task.column, task, newTask);
         logStore.addLog({
             task: task,
-            type: "UPDATE",
+            type: ACTION_UPDATE,
             updated: new Date(),
             updatedTask: newTask
         });

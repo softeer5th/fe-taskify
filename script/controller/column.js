@@ -2,6 +2,7 @@ import FormComponent from "../../components/form/form.js";
 import ColumnComponent from "../../components/column/column.js";
 import ModalComponent from "../../components/modal/modal.js";
 import TaskController from "./task.js";
+import { ACTION_ADD, ACTION_MOVE } from "../lib/constant.js";
 
 export default function ColumnController(state, logStore) {
     const { columns: columnList, columnTasks } = state.getColumns();
@@ -25,7 +26,7 @@ export default function ColumnController(state, logStore) {
         state.moveTask(columnIdx, task);
         logStore.addLog({
             task: task,
-            type: "MOVE",
+            type: ACTION_MOVE,
             updated: new Date(),
             destination: columnIdx
         })
@@ -202,7 +203,7 @@ export default function ColumnController(state, logStore) {
         const newId = state.addTask(columnIdx, newTask);
         logStore.addLog({
             task: {...newTask, taskId: newId},
-            type: "ADD",
+            type: ACTION_ADD,
             updated: new Date(),
         })
         renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]));

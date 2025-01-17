@@ -1,3 +1,5 @@
+import { MAX_TASKS } from "../../script/lib/constant";
+
 export default function ColumnComponent() {
 
     // Column 컴포넌트 템플릿
@@ -107,5 +109,3 @@ export default function ColumnComponent() {
         removeSelf,
     };
 }
-
-const MAX_TASKS = 99;

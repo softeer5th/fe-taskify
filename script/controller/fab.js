@@ -1,4 +1,5 @@
 import FabComponent from "../../components/main/fab.js";
+import { ACTION_ADD, ACTION_MOVE, ACTION_REMOVE, ACTION_UPDATE } from "../lib/constant.js";
 import ColumnController from "./column.js";
 
 export default function FabController(state, logStore) {
@@ -23,22 +24,22 @@ export default function FabController(state, logStore) {
         const columnIdx = task.column;
 
         switch(type) {
-            case "ADD":
+            case ACTION_ADD:
                 state.addTask(columnIdx, task, task.taskId);
             
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
-            case "REMOVE":
+            case ACTION_REMOVE:
                 state.removeTask(task)
                 
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
-            case "UPDATE":
+            case ACTION_UPDATE:
                 state.updateTask(columnIdx, task, updatedTask);
                 
                 columnController.rerenderTask(task.taskId);
                 break;
-            case "MOVE":
+            case ACTION_MOVE:
                 state.moveTask(destination, task);
 
                 columnController.renderColumn(task.column, state.sortTask(columnTasks[task.column]))
@@ -67,22 +68,22 @@ export default function FabController(state, logStore) {
         const flippedType = flip(type);
 
         switch(flippedType) {   
-            case "ADD":
+            case ACTION_ADD:
                 state.addTask(columnIdx, task, task.taskId);
 
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
-            case "REMOVE":
+            case ACTION_REMOVE:
                 state.removeTask(task)
                 
                 columnController.renderColumn(columnIdx, state.sortTask(columnTasks[columnIdx]))
                 break;
-            case "UPDATE":
+            case ACTION_UPDATE:
                 state.updateTask(columnIdx, updatedTask, task);
                 
                 columnController.rerenderTask(task.taskId);
                 break;
-            case "MOVE":
+            case ACTION_MOVE:
                 const originColumn = task.column;
                 const newTask = {...task, column: destination}
 
@@ -122,7 +123,7 @@ export default function FabController(state, logStore) {
     }
 
     function flip(input) {
-        return input === "ADD" ? "REMOVE" : input === "REMOVE" ? "ADD" : input;
+        return input === ACTION_ADD ? ACTION_REMOVE : input === ACTION_REMOVE ? ACTION_ADD : input;
       }
       
 

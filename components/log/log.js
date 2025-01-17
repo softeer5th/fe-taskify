@@ -1,3 +1,4 @@
+import { ACTION_ADD, ACTION_MOVE, ACTION_REMOVE, ACTION_UPDATE } from "../../script/lib/constant.js";
 import { timeCalculator } from "../../script/lib/utils.js";
 
 export function LogComponent(columns, store, handleClear) {
@@ -53,16 +54,16 @@ export function LogComponent(columns, store, handleClear) {
         let template = ``;
 
         switch (actionType) {
-            case "ADD":
+            case ACTION_ADD:
                 template = templateAdd({ title, originTitle });
                 break;
-            case "REMOVE":
+            case ACTION_REMOVE:
                 template = templateRemove({ title, originTitle });
                 break;
-            case "UPDATE":
+            case ACTION_UPDATE:
                 template = templateUpdate({ title });
                 break;
-            case "MOVE":
+            case ACTION_MOVE:
                 const destinationTitle = findColumnName(destination);
                 template = templateMove({
                     title,
