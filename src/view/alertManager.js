@@ -2,11 +2,13 @@ import { AlertDialog } from "../components/alert.js";
 
 export class AlertManager {
     
+    dialogVisibilityClassName = "hide";
+
     constructor() {
         this.modal = document.createElement("div");
         this.modal.id = "alert";
 
-        document.body.insertBefore(this.modal, document.body.firstChild);
+        document.body.insertBefore(this.modal, document.querySelector("#app").nextSibling);
         
         this.hideDialog();
     }
@@ -17,7 +19,7 @@ export class AlertManager {
 
         this.modal.appendChild(this.alert);
 
-        this.modal.classList.remove("hide");
+        this.modal.classList.remove(this.dialogVisibilityClassName);
     }
 
     hideDialog() {
@@ -25,6 +27,6 @@ export class AlertManager {
             this.modal.removeChild(this.modal.firstChild);
         }
 
-        this.modal.classList.add("hide");
+        this.modal.classList.add(this.dialogVisibilityClassName);
     }
 }

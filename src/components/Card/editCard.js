@@ -6,6 +6,8 @@ export class EditCard extends Component {
 
     maxTextLength = 500;
 
+    disabledButtonClassName = "disabled";
+
     children = {
         dismiss: {
             object: new Button("취소", null, "dismiss-button"),
@@ -45,13 +47,13 @@ export class EditCard extends Component {
     disableConfirmButton() {
         const confirmButton = this.current.querySelector(".card-buttons .confirm-button");
 
-        confirmButton.classList.add("disabled");
+        confirmButton.classList.add(this.disabledButtonClassName);
     }
 
     ableConfirmButton() {
         const confirmButton = this.current.querySelector(".card-buttons .confirm-button");
 
-        confirmButton.classList.remove("disabled");
+        confirmButton.classList.remove(this.disabledButtonClassName);
     }
 
     clearInput() {
@@ -111,11 +113,8 @@ export class EditCard extends Component {
         const bodyInput = this.current.querySelector(".card-body");
 
 
-        titleInput.style.height = "auto"; 
-        titleInput.style.height = titleInput.scrollHeight + "px"; 
-
-        bodyInput.style.height = "auto"; 
-        bodyInput.style.height = bodyInput.scrollHeight + "px"; 
+        this.calculateTextAreaHeight(titleInput);
+        this.calculateTextAreaHeight(bodyInput);
 
         if (bodyInput.value.length == 0 || titleInput.value.length == 0) {
             this.disableConfirmButton();
@@ -129,8 +128,7 @@ export class EditCard extends Component {
                 this.ableConfirmButton();
             }
 
-            titleInput.style.height = "auto"; 
-            titleInput.style.height = titleInput.scrollHeight + "px"; 
+            this.calculateTextAreaHeight(titleInput);
         });
 
         bodyInput.addEventListener('input', () => {
@@ -141,9 +139,13 @@ export class EditCard extends Component {
                 this.ableConfirmButton();
             }
 
-            bodyInput.style.height = "auto"; 
-            bodyInput.style.height = bodyInput.scrollHeight + "px"; 
+            this.calculateTextAreaHeight(bodyInput);
         });
+    }
+
+    calculateTextAreaHeight(input){
+        input.style.height = "auto"; 
+        input.style.height = input.scrollHeight + "px"; 
     }
 
 }

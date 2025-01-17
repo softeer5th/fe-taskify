@@ -1,11 +1,12 @@
 import { Column } from "../../../components/column.js";
 import Component from "../../../components/component.js";
+import { cardIdPrefixLength, draggingCardClassName } from "../../utils.js";
 
 export class ColumnList extends Component {
 
     rootId = "columnList";
 
-    constructor(columnList, onCardAdded = (columnIndex, cardData) => { }, onCardDeleted = (columnIndex, cardIndex) => { }, onCardMoved = (cardId, preColumnIndex, newColumnIndex) => { }) {
+    constructor(columnList, onCardAdded = (columnIndex, cardData) => { }, onCardDeleted = (columnIndex, cardIndex) => { }, onCardEdited = (columnIndex, cardIndex, newCardData) => { }, onCardMoved = (cardId, preColumnIndex, newColumnIndex) => { }) {
         super();
 
         columnList.forEach((columnData, index) => {
@@ -16,8 +17,10 @@ export class ColumnList extends Component {
                     },
                     (cardIndex) => {
                         onCardDeleted(index, cardIndex);
+                    }, (cardIndex, newCardData) => {
+                        onCardEdited(index, cardIndex, newCardData);
                     }, () => {
-                        const draggingCardId = document.querySelector(".dragging").id.slice(4);
+                        const draggingCardId = this.getDraggingCardId();
                         const preColumnIndex = columnList.findIndex(column =>
                             column.data.find(card => card.cardId === Number(draggingCardId))
                         );
@@ -28,7 +31,9 @@ export class ColumnList extends Component {
         });
     }
 
-
+    getDraggingCardId(){
+        return document.querySelector(`.${draggingCardClassName}`).id.slice(cardIdPrefixLength);
+    }
 
     template() {
         return '';

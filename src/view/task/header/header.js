@@ -6,6 +6,7 @@ export class Header extends Component {
 
     rootId = "headerContent";
 
+    historyIconId = "history-icon";
     historyIconRef = "/assets/images/clock.svg";
 
     currentSortType = sortType.create;
@@ -40,7 +41,7 @@ export class Header extends Component {
              <div id = "header-logo">
                 TASKIFY
             </div>
-            <img src = "${this.historyIconRef}" alt = "history-icon" id = "history-icon"/>
+            <img src = "${this.historyIconRef}" alt = "history-icon" id = "${this.historyIconId}"/>
         `;
     }
 
@@ -54,7 +55,7 @@ export class Header extends Component {
 
         super.render(parent);
 
-        const history = parent.querySelector("#history-icon");
+        const history = parent.querySelector(`#${this.historyIconId}`);
 
         if (history) {
             history.addEventListener("click", this.onHistoryClick);
@@ -74,7 +75,7 @@ export class Header extends Component {
 
         super.rerender();
 
-        const history = this.parent.querySelector("#history-icon");
+        const history = this.parent.querySelector(`#${this.historyIconId}`);
 
         if (history) {
             history.addEventListener("click", this.onHistoryClick);

@@ -1,6 +1,6 @@
 import Component from "../../../components/component.js";
-import { alertManager } from "../index.js";
-import { getCardData } from "../route/store/todoStore.js";
+import { todoStore } from "../route/store/todoStore.js";
+import { draggingCardClassName } from "../view/utils.js";
 import { DefaultCard } from "./Card/card.js";
 import { EditCard } from "./Card/editCard.js";
 import { ColumnHeader } from "./columnHeader.js";
@@ -8,6 +8,9 @@ import { ColumnHeader } from "./columnHeader.js";
 let previousPositions = {};
 
 export class Column extends Component {
+
+    inputCardVisibilityClassName = "hide";
+    ghostCardClassName = "ghostCard";
 
     onColumnDelete = () => { };
 
@@ -24,11 +27,11 @@ export class Column extends Component {
         this.rerender();
     }
 
-    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }, onCardMoved = () => { }) {
+    constructor(columnData, onCardAdded = (newCardData) => { }, onCardDelete = (cardIndex) => { }, onCardEdited = (cardIndex, newCardData) => { }, onCardMoved = () => { }) {
         super();
         this.columnData = columnData;
         this.addRootclass("column");
-        this.setCallback(onCardAdded, onCardDelete, onCardMoved);
+        this.setCallback(onCardAdded, onCardDelete, onCardEdited, onCardMoved);
 
         this.addEvent("dragover", (event) => {
             if (!event.target.classList.contains(this.rootSelectorClassName)) return;
@@ -48,9 +51,11 @@ export class Column extends Component {
         this.setChildren();
     }
 
-    setCallback(onCardAdded, onCardDelete, onCardMoved) {
+    setCallback(onCardAdded, onCardDelete, onCardEdited, onCardMoved) {
 
         this.onCardDelete = onCardDelete;
+
+        this.onCardEdited = onCardEdited;
 
         this.onNewCardAdded = (newCardData) => {
             onCardAdded(newCardData);
@@ -100,7 +105,7 @@ export class Column extends Component {
         const input = this.parent.querySelector(`.${inputRootClass}`);
 
         if (this.isHidden(input)) {
-            input.classList.remove("hide");
+            input.classList.remove(this.inputCardVisibilityClassName);
         }
     }
 
@@ -109,12 +114,12 @@ export class Column extends Component {
         const input = this.parent.querySelector(`.${inputRootClass}`);
 
         if (!this.isHidden(input)) {
-            input.classList.add("hide");
+            input.classList.add(this.inputCardVisibilityClassName);
         }
     }
 
     isHidden(element) {
-        return element.classList.contains("hide");
+        return element.classList.contains(this.inputCardVisibilityClassName);
     }
 
     createEditCard(index, preCardData) {
@@ -122,8 +127,7 @@ export class Column extends Component {
             object: new EditCard(
                 preCardData,
                 (newCardData) => {
-                    this.createDefaultCard(index, newCardData);
-                    this.rerender();
+                    this.onCardEdited(index, newCardData);
                 },
                 () => {
                     this.createDefaultCard(index, preCardData);
@@ -147,17 +151,17 @@ export class Column extends Component {
 
     showDragGhost() {
 
-        const existedDragging = this.current.querySelector(".dragging");
-        if (existedDragging && !existedDragging.classList.contains("hide")) return;
+        const existedDragging = this.current.querySelector(`.${draggingCardClassName}`);
+        if (existedDragging && !existedDragging.classList.contains(this.inputCardVisibilityClassName)) return;
 
-        const existedGhostCard = this.current.querySelector(".ghostCard");
+        const existedGhostCard = this.current.querySelector(`.${this.ghostCardClassName}`);
         if (existedGhostCard) return;
 
-        const dragging = document.querySelector(".dragging");
+        const dragging = document.querySelector(`.${draggingCardClassName}`);
         if (!dragging) return;
 
         const cardId = dragging.id.slice(4);
-        const cardData = getCardData(cardId);
+        const cardData = todoStore.getCardData(cardId);
 
         const ghostCard = new DefaultCard(cardData).createDOM();
 
@@ -167,13 +171,13 @@ export class Column extends Component {
 
         ghostCard.addEventListener("drop", () => { });
 
-        ghostCard.classList.add("ghostCard");
+        ghostCard.classList.add(this.ghostCardClassName);
 
         this.current.insertBefore(ghostCard, this.current.firstChild.nextSibling);
     }
 
     removeDragGhost() {
-        const ghostCard = this.current.querySelector(".ghostCard");
+        const ghostCard = this.current.querySelector(`.${this.ghostCardClassName}`);
         if (ghostCard) {
             this.current.removeChild(ghostCard);
         } else {
@@ -182,10 +186,10 @@ export class Column extends Component {
     }
 
     hideDraggingGhostCard() {
-        const existedDragging = this.current.querySelector(".dragging");
+        const existedDragging = this.current.querySelector(`.${draggingCardClassName}`);
         if (!existedDragging) return;
 
-        existedDragging.classList.add("hide");
+        existedDragging.classList.add(this.inputCardVisibilityClassName);
     }
 
     template() {
@@ -217,8 +221,8 @@ export class Column extends Component {
             const rect = cardElement.getBoundingClientRect();
             return {
                 id: card.cardId,
-                top: rect.top,
-                left: rect.left,
+                top: cardElement.offsetTop,
+                left: cardElement.offsetLeft,
                 element: cardElement,
             };
         });
@@ -254,14 +258,14 @@ export class Column extends Component {
 
     remeberPreOrder() {
         previousPositions[this.columnData.name] = (this.columnData.data).map((card) => {
-            const cardElement = this.parent.querySelector(`#card${card.cardId}`);
+            const cardElement = this.current.querySelector(`#card${card.cardId}`);
             if (!cardElement) return;
 
             const rect = cardElement.getBoundingClientRect();
             return {
                 id: card.cardId,
-                top: rect.top,
-                left: rect.left,
+                top: cardElement.offsetTop,
+                left: cardElement.offsetLeft,
             };
 
         })
