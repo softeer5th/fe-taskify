@@ -26,7 +26,7 @@ export default function HeaderComponent() {
         return headerElement;
     }
 
-    function addEventListener(headerElement, handleSort, handleLog) {
+    function addListener(headerElement, handleSort, handleLog) {
         const [sortButton, logButton] = headerElement.getElementsByTagName('button');
         
         sortButton.addEventListener('click', ()=>{
@@ -38,6 +38,6 @@ export default function HeaderComponent() {
 
     return {
         render,
-        addEventListener
+        addListener
     };
 }

@@ -1,4 +1,4 @@
-import FormComponent from "../components/Form.js";
+import FormComponent from "../components/form.js";
 import ColumnComponent from "../components/column.js";
 import ModalComponent from "../components/modal.js";
 import TaskController from "./task.js";
@@ -218,7 +218,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         }
 
         const { cardElement, formElement } = formComponent.render();
-        formComponent.addAddEventListener(formElement, (title, content) =>
+        formComponent.addAddListener(formElement, (title, content) =>
             handleSubmit(title, content, columnIdx)
         );
 
@@ -239,7 +239,7 @@ export default function ColumnController(state, bodyElement, logStore) {
 
         for (let column of columnList) {
             const columnElement = columnComponent.render(column);
-            columnComponent.addEventListener(
+            columnComponent.addListener(
                 columnElement,
                 (formContainer, columnIdx) =>
                     renderAddForm(formContainer, columnIdx),
@@ -261,7 +261,7 @@ export default function ColumnController(state, bodyElement, logStore) {
         const column = state.addColumn(title);
 
         const columnElement = columnComponent.render(column);
-        columnComponent.addEventListener(
+        columnComponent.addListener(
             columnElement,
             (formContainer, columnIdx) =>
                 renderAddForm(formContainer, columnIdx),

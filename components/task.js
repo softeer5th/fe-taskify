@@ -45,7 +45,7 @@ export default function TaskComponent() {
     // Task 컴포넌트 이벤트 등록 함수
     // handleRemove : closed 버튼 클릭 callback
     // handleUpdate : edit 버튼 클릭 callback
-    function addEventListener(taskElement, handleRemove, handleUpdate, handleDrag) {
+    function addListener(taskElement, handleRemove, handleUpdate, handleDrag) {
 
         const buttons = taskElement.getElementsByTagName("button");
         const [deleteButton, editButton] = buttons;
@@ -57,7 +57,7 @@ export default function TaskComponent() {
 
     return {
         render,
-        addEventListener,
+        addListener,
         renderSwap,
     }
 }

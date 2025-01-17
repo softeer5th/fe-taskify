@@ -1,5 +1,5 @@
 import ModalComponent from "../components/modal.js";
-import FormComponent from "../components/Form.js";
+import FormComponent from "../components/form.js";
 import TaskComponent from "../components/task.js";
 
 export default function TaskController(state, logStore, rerender) {
@@ -11,7 +11,7 @@ export default function TaskController(state, logStore, rerender) {
         const task = state.getTask(taskId);
         const editFormElement = formComponent.renderEdit(task);
 
-        formComponent.addUpdateEventListener(
+        formComponent.addUpdateListener(
             editFormElement,
             (e) => {
                 editTask(e, editFormElement, taskId);
@@ -30,7 +30,7 @@ export default function TaskController(state, logStore, rerender) {
         const task = state.getTask(taskId);
         const newTaskElement = taskComponent.render(task);
 
-        taskComponent.addEventListener(
+        taskComponent.addListener(
             newTaskElement,
             () => removeTask(taskId, newTaskElement),
             () =>
@@ -80,7 +80,7 @@ export default function TaskController(state, logStore, rerender) {
 
         const newTaskElement = taskComponent.render(newTask);
 
-        taskComponent.addEventListener(
+        taskComponent.addListener(
             newTaskElement,
             () => removeTask(taskId, newTaskElement),
             () =>
@@ -99,7 +99,7 @@ export default function TaskController(state, logStore, rerender) {
     function dragTask(e, taskId) {
         const task = state.getTask(taskId)
         const dummyElement = taskComponent.render(task);
-        taskComponent.addEventListener(dummyElement);
+        taskComponent.addListener(dummyElement);
 
         dummyElement.style.opacity = 0.3;
 

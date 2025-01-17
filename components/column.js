@@ -36,7 +36,7 @@ export default function ColumnComponent() {
 
     // 생성된 Column에 이벤트 등록 함수
     // handleAdd : + 버튼을 눌러서 Task를 생성하기 위한 Form을 생성하는 Callback
-    function addEventListener(
+    function addListener(
         columnElement,
         handleAdd,
         handleDrop,
@@ -102,7 +102,7 @@ export default function ColumnComponent() {
 
     return {
         render,
-        addEventListener,
+        addListener,
         rerenderHeader,
         remove,
     };

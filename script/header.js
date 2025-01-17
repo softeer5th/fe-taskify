@@ -11,7 +11,7 @@ export default function HeaderController(state, bodyElement, logStore) {
     // Column 동적 생성 및 이벤트 등록
     function renderInit() {
         const headerElement = headerComponent.render();
-        headerComponent.addEventListener(headerElement, handleSort, renderLog);
+        headerComponent.addListener(headerElement, handleSort, renderLog);
 
         bodyElement.appendChild(headerElement);
     }
