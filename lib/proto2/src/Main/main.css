@@ -4,4 +4,62 @@
 .columnList {
     display: flex;
     gap: 24px;
+    overflow-x: scroll;
+}
+
+
+.buttonBox {
+    position: fixed;
+    width: 56px;
+    height: 56px;
+    right: 56px;
+    bottom: 56px;
+}
+
+.buttonBox > button {
+    //visibility: hidden;
+    position: absolute;
+    width: 56px;
+    height: 56px;
+
+    right: 0;
+    bottom: 0;
+
+    border-radius: 100%;
+    background: rgba(254, 254, 254, 1);
+
+    box-shadow: 0px 2px 8px 0px rgba(110, 128, 145, 0.16);
+
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(0);
+
+    backdrop-filter: blur(4px);
+
+}
+
+.buttonBox > button:last-child {
+    visibility: visible;
+    background: rgba(0, 122, 255, 1);
+}
+
+.buttonBox > button:hover {
+    opacity: 0.8;
+}
+
+.buttonBox > button:active {
+    opacity: 1;
+}
+
+.buttonBox:hover {
+    height: 200px;
+}
+
+.buttonBox:hover > button:nth-child(1) {
+    visibility: visible;
+    transform: translateY(-72px);
+}
+
+.buttonBox:hover > button:nth-child(2) {
+    visibility: visible;
+    transform: translateY(-144px);
 }
