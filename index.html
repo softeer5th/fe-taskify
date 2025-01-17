@@ -151,25 +151,32 @@
     </template>
     <!-- 로그 템플릿 -->
     <template id="log-template">
-      <div
-        style="
-          width: 100%;
-          display: flex;
-          padding: var(--number-200);
-          gap: var(--number-200);
-        "
-      >
-        <img
-          src="/assets/bert.jpeg"
-          style="border-radius: 100%; width: 40px; height: 40px"
-        />
+      <div>
         <div
-          style="display: flex; flex-direction: column; gap: var(--number-100)"
+          style="
+            width: 100%;
+            display: flex;
+            padding: var(--number-200);
+            gap: var(--number-200);
+          "
         >
-          <h3 class="display-medium14 text-default">@hammsik</h3>
-          <div id="log" style="display: flex; flex-wrap: wrap"></div>
-          <p id="logged-time" class="display-medium12 text-weak"></p>
+          <img
+            src="/assets/bert.jpeg"
+            style="border-radius: 100%; width: 40px; height: 40px"
+          />
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: var(--number-100);
+            "
+          >
+            <h3 class="display-medium14 text-default">@hammsik</h3>
+            <div id="log" style="display: flex; flex-wrap: wrap"></div>
+            <p id="logged-time" class="display-medium12 text-weak"></p>
+          </div>
         </div>
+        <hr style="width: 100%; border: 0.5px solid rgba(0, 0, 0, 0.074);" />
       </div>
     </template>
     <template id="log-bold">
@@ -315,7 +322,12 @@
       </div>
       <div
         id="log-div"
-        style="width: 100%; height: 100%; flex-direction: column; overflow-y: auto"
+        style="
+          width: 100%;
+          height: 100%;
+          flex-direction: column;
+          overflow-y: auto;
+        "
       ></div>
       <button
         id="init-history"

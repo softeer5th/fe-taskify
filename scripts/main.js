@@ -52,7 +52,7 @@ const App = () => {
       toggleDisplay(document.querySelector('#init-history'), true);
       toggleDisplay(document.querySelector('#empty-log'), false);
       toggleDisplay(document.querySelector('#log-div'), true);
-      loadHistory().forEach((log) => {
+      history.forEach((log) => {
         addLogToHistory(log);
       });
     } else {

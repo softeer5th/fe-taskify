@@ -48,7 +48,6 @@ const addLogToHistory = ({
   const timeDiff = nowTime - new Date(loggedTime);
   const minutesDiff = Math.floor(timeDiff / (1000 * 60));
   const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
-  console.log(nowTime, loggedTime, timeDiff, minutesDiff, hoursDiff);
   newLogElement.querySelector('#logged-time').textContent =
     hoursDiff > 0
       ? `${hoursDiff}시간 전`
@@ -57,6 +56,8 @@ const addLogToHistory = ({
       : `${minutesDiff}분 전`;
 
   history.querySelector('#log-div').appendChild(newLogElement);
+
+  return newLogElement;
 };
 
 const generateLogText = ({

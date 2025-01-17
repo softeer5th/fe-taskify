@@ -3,7 +3,10 @@ import {
   createCard,
   initCardsInColumn,
 } from '../utils/helpers/columnHelper.js';
-import { updateColumn, updateHistory } from '../utils/helpers/localStorageHelper.js';
+import {
+  updateColumn,
+  updateHistory,
+} from '../utils/helpers/localStorageHelper.js';
 import createState from '../store/models/stateHelper.js';
 import Card from './card.js';
 /**
@@ -130,13 +133,18 @@ const Column = (columnData) => {
       return { ...prev, cards };
     });
     initCardsInColumn(columnElement, columnState);
-    updateHistory({
-      actionType: 'move',
-      cardTitle: draggedCardInfo.title,
-      fromColumnName: draggedCardState.getState().fromColumnName,
-      toColumnName: columnState.getState().columnName,
-      loggedTime: new Date(),
-    });
+    if (
+      draggedCardState.getState().fromColumnName !==
+      columnState.getState().columnName
+    ) {
+      updateHistory({
+        actionType: 'move',
+        cardTitle: draggedCardInfo.title,
+        fromColumnName: draggedCardState.getState().fromColumnName,
+        toColumnName: columnState.getState().columnName,
+        loggedTime: new Date(),
+      });
+    }
 
     // draggedCardState 초기화
     draggedCardState.setState(null);
