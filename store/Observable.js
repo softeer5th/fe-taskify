@@ -10,8 +10,6 @@ export class Observable {
     this.observers.delete(observer);
   }
   notify(actionType, data) {
-    this.observers[actionType].forEach((observer) =>
-      observer(actionType, data)
-    );
+    this.observers.forEach((observer) => observer(actionType, data));
   }
 }
