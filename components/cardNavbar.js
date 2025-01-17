@@ -1,4 +1,6 @@
 import { parseToDoc } from "../utils/parseToDoc.js";
+import { ADD_ICON } from "../assets/icons/addIcon.js";
+import { DELETE_ICON } from "../assets/icons/deleteIcon.js";
 const TITLE_TEXT = {
   todo: "해야할 일",
   doing: "하고 있는 일",
@@ -14,10 +16,10 @@ export const cardNavbar = (sectionType, count = 0) => {
       </div>
       <div class="add-container-icon">
         <button class="add-icon todo-add-icon" data-section="${sectionType}">
-          <img  src="./assets/icons/add.svg" alt="" />
+          ${ADD_ICON}
         </button>
         <button class="delete-icon">
-          <img src="./assets/icons/delete.svg" alt="" />
+          ${DELETE_ICON}
         </button>
       </div>
     </div>`;

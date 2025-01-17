@@ -37,14 +37,16 @@ const getGapBetweenCards = () => {
 // 특정 id를 가진 카드의 정렬 후 Y 좌표 계산 함수
 const calculateSortedYPosition = (cardId, orderedListId, cardListArr) => {
   const sortedIdx = orderedListId.indexOf(Number(cardId));
-  let yPosition = 0;
 
   // 해당 카드 위에 있는 모든 카드들의 높이 + gap 합산
-  for (let i = 0; i < sortedIdx; i++) {
-    const prevCardId = orderedListId[i];
-    const prevCard = cardListArr.find((card) => Number(card.id) === prevCardId);
-    yPosition += prevCard.offsetHeight + getGapBetweenCards();
-  }
+  const yPosition = orderedListId
+    .slice(0, sortedIdx)
+    .reduce((totalHeight, currentCardId) => {
+      const card = cardListArr.find(
+        (card) => Number(card.id) === currentCardId
+      );
+      return totalHeight + card.offsetHeight + getGapBetweenCards();
+    }, 0);
 
   return yPosition;
 };
@@ -52,13 +54,21 @@ const calculateSortedYPosition = (cardId, orderedListId, cardListArr) => {
 // 정렬 전 현재 Y 좌표 계산 함수
 const calculateCurrentYPosition = (card, cardListArr) => {
   const currentIdx = cardListArr.indexOf(card);
-  let yPosition = 0;
+  // let yPosition = 0;
 
   // 현재 카드 위에 있는 모든 카드들의 높이 + gap 합산
   for (let i = 0; i < currentIdx; i++) {
     yPosition += cardListArr[i].offsetHeight + getGapBetweenCards();
   }
 
+  // 해당 카드 위에 있는 모든 카드들의 높이 + gap 합산
+  const yPosition = cardListArr
+    .slice(0, currentIdx)
+    .reduce(
+      (totalHeight, card) =>
+        totalHeight + card.offsetHeight + getGapBetweenCards(),
+      0
+    );
   return yPosition;
 };
 
