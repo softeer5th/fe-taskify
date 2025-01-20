@@ -15,7 +15,8 @@
 
     position: absolute;
     top: 0px;
-    transition: top 0.3s ease;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
 }
 
 .textArea {
